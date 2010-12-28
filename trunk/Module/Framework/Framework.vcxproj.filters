@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Singleton">
+      <UniqueIdentifier>{4e1387a6-5ad1-49f5-ad3f-1b8a329a1a16}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Singleton\CSingleton.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

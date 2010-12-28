@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "choding", "choding\choding.vcxproj", "{C9C6239E-3D85-45D6-A845-D7FF29B52E2E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Framework", "Module\Framework\Framework.vcxproj", "{88E0D194-A83B-40A7-B083-AC72BE0F2C0F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snowboard", "Module\Snowboard\Snowboard.vcxproj", "{23CB9CE5-28F4-4008-9FCA-EF35894456A5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C9C6239E-3D85-45D6-A845-D7FF29B52E2E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C9C6239E-3D85-45D6-A845-D7FF29B52E2E}.Debug|Win32.Build.0 = Debug|Win32
+		{C9C6239E-3D85-45D6-A845-D7FF29B52E2E}.Release|Win32.ActiveCfg = Release|Win32
+		{C9C6239E-3D85-45D6-A845-D7FF29B52E2E}.Release|Win32.Build.0 = Release|Win32
+		{88E0D194-A83B-40A7-B083-AC72BE0F2C0F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{88E0D194-A83B-40A7-B083-AC72BE0F2C0F}.Debug|Win32.Build.0 = Debug|Win32
+		{88E0D194-A83B-40A7-B083-AC72BE0F2C0F}.Release|Win32.ActiveCfg = Release|Win32
+		{88E0D194-A83B-40A7-B083-AC72BE0F2C0F}.Release|Win32.Build.0 = Release|Win32
+		{23CB9CE5-28F4-4008-9FCA-EF35894456A5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{23CB9CE5-28F4-4008-9FCA-EF35894456A5}.Debug|Win32.Build.0 = Debug|Win32
+		{23CB9CE5-28F4-4008-9FCA-EF35894456A5}.Release|Win32.ActiveCfg = Release|Win32
+		{23CB9CE5-28F4-4008-9FCA-EF35894456A5}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
