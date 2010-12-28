@@ -3,19 +3,19 @@
 
 #include <cassert>
 
-template < typename T > class Singleton
+template < typename T > class CSingleton
 {
 	static T* ms_Singleton;
 
 public:
-	Singleton(void)
+	CSingleton(void)
 	{
 		assert( !ms_Singleton && L"하나만 맹거주세요~~" );
 		int offset = (int)(T*)1 - (int)(Singleton <T>*)(T*)1;
 		ms_Singleton = (T*)((int)this + offset);
 	}
 
-	~Singleton()
+	~CSingleton()
 	{
 		assert( ms_Singleton && L"이미 없는데 왜 또 없앨려고 하나용~~"); 
 		ms_Singleton = NULL; 
