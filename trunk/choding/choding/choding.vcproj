@@ -58,6 +58,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -167,6 +168,14 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath=".\Main\chodingType.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Main\CommonHeader.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Main\Main.cpp"
 				>
 			</File>
@@ -197,6 +206,10 @@
 			<Filter
 				Name="Base"
 				>
+				<File
+					RelativePath=".\Framework\Base\CObject.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\Framework\Base\CObject.h"
 					>

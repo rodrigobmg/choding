@@ -2,8 +2,10 @@
 #define _CHODING_SINGLETON_
 
 #include <cassert>
+#include "../Base/CObject.h"
 
-template < typename T > class CSingleton
+template < typename T > 
+class CSingleton : public CObject
 {
 	static T* ms_Singleton;
 
@@ -15,7 +17,7 @@ public:
 		ms_Singleton = (T*)((int)this + offset);
 	}
 
-	~CSingleton()
+	virtual ~CSingleton()
 	{
 		assert( ms_Singleton && L"이미 없는데 왜 또 없앨려고 하나용~~"); 
 		ms_Singleton = 0; 

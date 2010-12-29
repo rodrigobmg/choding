@@ -6,11 +6,15 @@
 class CObject
 {
 public:
-	CObject(){};
-	virtual ~CObject(){};
+	CObject();
+	virtual ~CObject();
+
+	void IncRefCount();
+	void DecRefCount();
+	void Initialize();
 
 private:
 	int m_iRefCount;
-}
+};
 
 #endif
