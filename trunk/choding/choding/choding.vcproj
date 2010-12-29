@@ -16,7 +16,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../../Application"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -170,10 +170,38 @@
 				RelativePath=".\Main\Main.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\Main\Test.h"
+		</Filter>
+		<Filter
+			Name="Framework"
+			>
+			<Filter
+				Name="ResManager"
 				>
-			</File>
+				<File
+					RelativePath=".\Framework\ResManager\ResManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Framework\ResManager\ResManager.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Singleton"
+				>
+				<File
+					RelativePath=".\Framework\Singleton\CSingleton.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Base"
+				>
+				<File
+					RelativePath=".\Framework\Base\CObject.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

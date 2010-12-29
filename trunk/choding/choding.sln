@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "choding", "choding\choding.vcproj", "{464437F1-3B58-4045-8421-619E78EF8B5C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Framework", "..\chodingModule\Framework\Framework.vcproj", "{E81FE0D7-989F-4ABE-954D-384F4C9C77CF}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snowboard", "..\chodingModule\Snowboard\Snowboard.vcproj", "{BBD6C08E-312D-4591-881C-CCA7796C4495}"
 EndProject
 Global
@@ -17,10 +15,6 @@ Global
 		{464437F1-3B58-4045-8421-619E78EF8B5C}.Debug|Win32.Build.0 = Debug|Win32
 		{464437F1-3B58-4045-8421-619E78EF8B5C}.Release|Win32.ActiveCfg = Release|Win32
 		{464437F1-3B58-4045-8421-619E78EF8B5C}.Release|Win32.Build.0 = Release|Win32
-		{E81FE0D7-989F-4ABE-954D-384F4C9C77CF}.Debug|Win32.ActiveCfg = Debug|Win32
-		{E81FE0D7-989F-4ABE-954D-384F4C9C77CF}.Debug|Win32.Build.0 = Debug|Win32
-		{E81FE0D7-989F-4ABE-954D-384F4C9C77CF}.Release|Win32.ActiveCfg = Release|Win32
-		{E81FE0D7-989F-4ABE-954D-384F4C9C77CF}.Release|Win32.Build.0 = Release|Win32
 		{BBD6C08E-312D-4591-881C-CCA7796C4495}.Debug|Win32.ActiveCfg = Debug|Win32
 		{BBD6C08E-312D-4591-881C-CCA7796C4495}.Debug|Win32.Build.0 = Debug|Win32
 		{BBD6C08E-312D-4591-881C-CCA7796C4495}.Release|Win32.ActiveCfg = Release|Win32
