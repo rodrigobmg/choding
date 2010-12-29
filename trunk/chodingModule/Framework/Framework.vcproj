@@ -147,10 +147,6 @@
 		</Configuration>
 	</Configurations>
 	<References>
-		<ProjectReference
-			ReferencedProjectIdentifier="{BBD6C08E-312D-4591-881C-CCA7796C4495}"
-			RelativePathToProject="..\chodingModule\Snowboard\Snowboard.vcproj"
-		/>
 	</References>
 	<Files>
 		<Filter

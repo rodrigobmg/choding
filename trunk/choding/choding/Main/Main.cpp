@@ -1,14 +1,24 @@
-#include <Windows.h>
+//#include <Windows.h>
 #include <iostream>
 
-#include "../../../chodingModule/Framework/Singleton/CSingleton.h"
+//#include "../../../chodingModule/Framework/Singleton/CSingleton.h"
 #include "Test.h"
+
+void CreateSingleton()
+{
+	Test::CreateSingleton();
+}
+
+void DestroySingleton()
+{
+	Test::DestroySingleton();
+}
 
 int main()
 {
-	Test::CreateSingleton();
-	//Test::GetInstance().Run();
+	CreateSingleton();
+	Test::GetInstance().Run();
 	std::cout << "hello world\n" ;
 
-	Test::DestroySingleton();
+	DestroySingleton();
 }
