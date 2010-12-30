@@ -4,10 +4,11 @@
 
 
 /*
-
-template< typename T >
-T CResManager::Load( std::wstring& wstrResPath )
+template< typename Resource >
+Resource* CResManager::Load( wchar_t* filename )
 {
-	printf( "Load Res \n" );
+	//Resource* pRes = new Resource;
+	printf( "Load Texture" );
+	return m_Res;
 }
 */

@@ -12,8 +12,9 @@ public:
 	CSingleton()
 	{
 		assert( !ms_Singleton && L"하나만 맹거주세요~~" );
-		int offset = (int)(T*)1 - (int)(CSingleton <T>*)(T*)1;
-		ms_Singleton = (T*)((int)this + offset);
+ 		int32_t offset = (int32_t)(T*)1 - (int32_t)(CSingleton <T>*)(T*)1;
+ 		ms_Singleton = (T*)((int32_t)this + offset);
+//		ms_Singleton = 0; 
 	}
 
 	virtual ~CSingleton()

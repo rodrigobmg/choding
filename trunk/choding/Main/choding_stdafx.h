@@ -9,15 +9,8 @@
 #include <vector>
 #include <d3dx9.h>
 #include <assert.h>
-
+#include <string.h>
 
 #include "choding_type.h"
-
-/*
-
-#include "Framework/Base/CObject.h"
-#include "Framework/ResManager/ResManager.h"
-#include "Framework/Singleton/CSingleton.h"*/
-
 
 #endif

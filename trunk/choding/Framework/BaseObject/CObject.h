@@ -1,18 +1,39 @@
 #ifndef _CHODING_BASEOBJECT_
 #define _CHODING_BASEOBJECT_
 
+#include "choding_stdafx.h"
+
 class CObject
 {
 public:
-	CObject();
-	virtual ~CObject();
+	CObject()
+	{
+		vInitialize();
+		IncRefCount();
+	}
+	virtual ~CObject()
+	{
+		DecRefCount();
+		if ( m_iRefCount != 0 )
+			assert( "해제할때 0 이어야함" );
+	}	
 
-	void IncRefCount();
-	void DecRefCount();
-	void Initialize();
+	void DecRefCount()		
+	{ 
+		--m_iRefCount; 
+		if ( m_iRefCount < 0 )
+			assert( "왜 0보다 작나요? " );
+	}
+	
+	int32_t GetRefCount()		{ return m_iRefCount; }
+	void IncRefCount()		{ ++m_iRefCount; }
 
 private:
-	int m_iRefCount;
+
+	void vInitialize()		{ m_iRefCount = 0; }
+
+
+	int32_t m_iRefCount;
 };
 
 #endif

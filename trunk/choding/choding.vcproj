@@ -216,10 +216,6 @@
 				Name="BaseObject"
 				>
 				<File
-					RelativePath=".\Framework\BaseObject\CObject.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\Framework\BaseObject\CObject.h"
 					>
 				</File>
