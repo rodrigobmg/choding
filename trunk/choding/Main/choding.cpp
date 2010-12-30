@@ -5,6 +5,7 @@
 
 #include "../Framework/ResourceManager/ResManager.h"
 
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	printf( "hello world\n");
@@ -12,6 +13,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//g_pTextureResMgr::->SetRootDir( "hi" );
 	resMgr_Texture::CreateSingleton();
 
+	CSnowboard::Init( NULL );
 
 	resMgr_Texture::GetInstance().SetRootDir( L"hi" );
 	//res_Texture_ptr pTexture = resMgr_Texture::GetInstance().Load( L"hi" );
