@@ -5,15 +5,21 @@
 
 #include "../Framework/ResourceManager/ResManager.h"
 
+#include "../../chodingModule/Snowboard/Framework/Snowboard.h"
+
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	printf( "hello world\n");
-	
+
 	//g_pTextureResMgr::->SetRootDir( "hi" );
 	resMgr_Texture::CreateSingleton();
 
-	CSnowboard::Init( NULL );
+
+	//CSnowboard* pSnow = new CSnowboard;
+	//pSnow->Init( NULL );
+	//HWND hWnd;
+	//snowboard.Init( hWnd );
+	
 
 	resMgr_Texture::GetInstance().SetRootDir( L"hi" );
 	//res_Texture_ptr pTexture = resMgr_Texture::GetInstance().Load( L"hi" );
@@ -24,7 +30,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	resMgr_Texture::DestroySingleton();
-
 
 	return 0;
 }

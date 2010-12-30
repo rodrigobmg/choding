@@ -11,6 +11,7 @@
 #include <assert.h>
 #include <string.h>
 #include <d3dx9tex.h>
+#include <shlwapi.h>
 
 #include "choding_type.h"
 

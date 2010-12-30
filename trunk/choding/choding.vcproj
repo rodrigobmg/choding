@@ -225,8 +225,16 @@
 				>
 			</Filter>
 			<Filter
-				Name="Profiling"
+				Name="Profile"
 				>
+				<File
+					RelativePath=".\Framework\Profile\Profile.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Framework\Profile\Profile.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="MemoryPool"

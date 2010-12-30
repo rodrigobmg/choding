@@ -5,36 +5,7 @@
 
 #include "Snowboard_stdafx.h"
 
-class CObject
-{
-public:
-
-	CObject()
-	{
-		vInitialize();
-		IncRefCount();
-	};
-
-	virtual ~CObject()
-	{
-		DecRefCount();
-		if ( m_iRefCount != 0 )
-			assert( "0일때 해제" );
-	};
-
-	void	IncRefCount(){ ++m_iRefCount; }
-	void	DecRefCount(){ --m_iRefCount; }
-	int32_t GetRefCount(){ return m_iRefCount; }
-
-private:
-
-	void	vInitialize(){ m_iRefCount = 0; }
-	int32_t m_iRefCount;
-
-};
-
-
-class CSnowboard : public CObject
+class CSnowboard
 {
 public:
 	CSnowboard(){};
