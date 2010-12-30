@@ -10,6 +10,7 @@
 #include <d3dx9.h>
 #include <assert.h>
 #include <string.h>
+#include <d3dx9tex.h>
 
 #include "choding_type.h"
 

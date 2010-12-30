@@ -48,7 +48,7 @@ class CResManager : public CSingleton< CResManager<Resource> >
 public:
 	CResManager()
 	{
-		m_Res = NULL;
+		m_pRes = NULL;
 	};
 	virtual ~CResManager()
 	{
@@ -58,18 +58,30 @@ public:
 	void			SetRootDir( std::wstring strRootdir ) { m_wstrRootDir = strRootdir; }
 //	Resource*		Get( int32_t iKey );
 
+
 	//Resource*		Load( wchar_t* filename );
 	//template<>		LPDIRECT3DTEXTURE9* Load( wchar_t* filename );
 
-	Resource*		Get() { return m_Res; }
+	Resource*		Get()
+	{ 
+		return m_pRes; 
+	}
 	
 private:
 	
 	std::wstring	m_wstrRootDir;
-	Resource*		m_Res;		
+	Resource*		m_pRes;		
 
 public:
 };
+
+namespace resMgr{
+
+	template< class T >
+	T*				Load( wchar_t* filename );
+	template<>		LPDIRECT3DTEXTURE9* Load( wchar_t* filename );
+
+}
 
 typedef		Resource< LPDIRECT3DTEXTURE9 >			res_Texture;
 typedef		res_Texture*							res_Texture_ptr;

@@ -220,6 +220,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Log"
+				>
+			</Filter>
+			<Filter
+				Name="Profiling"
+				>
+			</Filter>
+			<Filter
+				Name="MemoryPool"
+				>
+			</Filter>
+			<Filter
+				Name="Utility"
+				>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
