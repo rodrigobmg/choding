@@ -54,3 +54,12 @@ Sun_CCoreBase* Sun_CCoreManager::RegisterCore( const tstring& strName, Sun_CCore
 	return pCore;
 }
 
+Sun_CCoreBase* Sun_CCoreManager::GetCore( const tstring& strName )
+{
+	Core_HASHMAP_ITERATOR itCore = m_CoreList.find( strName );
+	if( itCore != m_CoreList.end() )
+		return itCore->second;
+
+	
+	return NULL;
+}

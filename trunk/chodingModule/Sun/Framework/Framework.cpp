@@ -61,16 +61,20 @@ void Sun_CFramewrok::ProcLoop()
 
 bool Sun_CFramewrok::CreateCoreManager()
 {
-	//이곳에서 코어 생성 inputCore, RenderCore, SceneCore
 	assert( NULL == g_pCoreManager);
 
-
+	//CoreManager를 생성
 	g_pCoreManager = new Sun_CCoreManager(m_hWnd);
 	
 
-	
+	//이곳에서 코어 생성 inputCore, GraphicCore, ResourceCore, SceneCore
 	m_pGraphicCore = dynamic_cast<Sun_CGraphicCore*>(g_pCoreManager->RegisterCore( CORENAME_GRAPHIC, new Sun_CGraphicCore ));
-	//m_pGraphicCore = (Sun_CGraphicCore*)g_pCoreManager->RegisterCore( CORENAME_GRAPHIC, new Sun_CGraphicCore);
+
+
+
+
+
+
 
 	return true;
 }

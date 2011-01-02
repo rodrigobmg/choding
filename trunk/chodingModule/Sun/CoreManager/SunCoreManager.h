@@ -14,6 +14,9 @@ public:
 	Sun_CCoreBase* RegisterCore(const tstring& strName, Sun_CCoreBase* pCore);
 	void	DestroyCore();
 
+
+	inline Sun_CCoreBase* GetCore(const tstring& strName);
+
 protected:
 	typedef stdext::hash_map<tstring, Sun_CCoreBase*>			 Core_HASHMAP;
 	typedef stdext::hash_map<tstring, Sun_CCoreBase*>::iterator  Core_HASHMAP_ITERATOR;
