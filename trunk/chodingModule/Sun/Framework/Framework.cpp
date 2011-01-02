@@ -65,11 +65,11 @@ bool Sun_CFramewrok::CreateCoreManager()
 	assert( NULL == g_pCoreManager);
 
 
-	//g_pCoreManager = new Sun_CCoreManager(m_hWnd);
+	g_pCoreManager = new Sun_CCoreManager(m_hWnd);
 	
 
 	
-	//m_pGraphicCore = dynamic_cast<Sun_CGraphicCore*>(g_pCoreManager->RegisterCore( CORENAME_GRAPHIC, new Sun_CGraphicCore ));
+	m_pGraphicCore = dynamic_cast<Sun_CGraphicCore*>(g_pCoreManager->RegisterCore( CORENAME_GRAPHIC, new Sun_CGraphicCore ));
 	//m_pGraphicCore = (Sun_CGraphicCore*)g_pCoreManager->RegisterCore( CORENAME_GRAPHIC, new Sun_CGraphicCore);
 
 	return true;

@@ -1,7 +1,7 @@
 #pragma once
 
 
-class DLL_API Sun_CGraphicCore : Sun_CCoreBase
+class DLL_API Sun_CGraphicCore : public Sun_CCoreBase
 {
 public:
 	Sun_CGraphicCore();
