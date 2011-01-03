@@ -20,6 +20,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	//HWND hWnd;
 	//snowboard.Init( hWnd );
 	
+	std::wstring wstr = L"니마 wb";
+	std::string	str  = "니마 mb";
+
+	wstr = util::conversion_string::mb2wc( str.c_str() , util::conversion_string::Korea );
 
 	resMgr_Texture::GetInstance().SetRootDir( L"hi" );
 	//res_Texture_ptr pTexture = resMgr_Texture::GetInstance().Load( L"hi" );
