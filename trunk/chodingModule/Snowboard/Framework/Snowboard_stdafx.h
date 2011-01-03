@@ -13,6 +13,14 @@
 #include <d3dx9tex.h>
 #include <winbase.h>
 
+
+/*
+#if defined(DLL_EXPORT)
+#define DLL_API __declspec(dllexport)
+#else
+#define DLL_API __declspec(dllimport)
+#endif*/
+
 #include "Snowboard_type.h"
 
 #endif
