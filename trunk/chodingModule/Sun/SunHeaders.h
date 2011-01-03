@@ -17,10 +17,15 @@ typedef basic_string<TCHAR> tstring;
 
 
 
+#include "CoreManager/Renderer/SunRendererBase.h"
+#include "CoreManager/Renderer/SunRendererDX9.h"
 
 #include "CoreManager/Core/SunCoreBase.h"
 #include "CoreManager/Core/SunGraphicCore.h"
 
 #include "CoreManager/SunCoreManager.h"
+
+
+
 
 extern Sun_CCoreManager*		g_pCoreManager;

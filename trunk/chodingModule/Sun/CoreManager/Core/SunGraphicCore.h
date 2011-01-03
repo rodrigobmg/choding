@@ -13,5 +13,6 @@ public:
 	virtual void UpdateCore();
 
 protected:
+	Sun_CRendererBase*		m_pRenderer;
 
 };

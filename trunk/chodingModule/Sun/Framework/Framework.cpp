@@ -70,12 +70,6 @@ bool Sun_CFramewrok::CreateCoreManager()
 	//이곳에서 코어 생성 inputCore, GraphicCore, ResourceCore, SceneCore
 	m_pGraphicCore = dynamic_cast<Sun_CGraphicCore*>(g_pCoreManager->RegisterCore( CORENAME_GRAPHIC, new Sun_CGraphicCore ));
 
-
-
-
-
-
-
 	return true;
 }
 

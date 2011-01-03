@@ -220,6 +220,26 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Renderer"
+				>
+				<File
+					RelativePath=".\CoreManager\Renderer\SunRendererBase.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CoreManager\Renderer\SunRendererBase.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CoreManager\Renderer\SunRendererDX9.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CoreManager\Renderer\SunRendererDX9.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
