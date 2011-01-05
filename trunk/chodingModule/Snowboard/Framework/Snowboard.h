@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef _H_SNOWBOARD_MAIN_
-#define _H_SNOWBOARD_MAIN_
-
 #include "Snowboard_stdafx.h"
 
 class CSnowboard
@@ -26,5 +23,3 @@ private:
 	LPDIRECT3DTEXTURE9      m_pTexture;  // = NULL; // Our texture
 
 };
-
-#endif	_H_SNOWBOARD_MAIN_

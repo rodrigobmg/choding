@@ -15,7 +15,7 @@ bool InitModule( HWND hWnd , HINSTANCE hInstance )
 {
 	//모듈 할당및 초기화
 	g_pSnowboard = new CSnowboard;
-//	g_pSnowboard->Init( hWnd );
+	g_pSnowboard->Init( hWnd );
 	return true;
 }
 

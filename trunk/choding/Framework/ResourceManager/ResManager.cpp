@@ -17,13 +17,15 @@ template<> LPDIRECT3DTEXTURE9 resMgr::Load( wchar_t* filename )
 	//	파일 사이즈 체크
 	int32_t iFileSize = GetFileSize(fpFile , NULL );
 
-	D3DXIMAGE_INFO kImageInfo;
+//	D3DXIMAGE_INFO kImageInfo;
 	//HRESULT hr = D3DXGetImageInfoFromFileInMemory((void*)fpFile, iFileSize , &kImageInfo);
-	HRESULT hr;
+//	HRESULT hr;
+/*
 	if(D3D_OK != hr)
 	{
 		return NULL;
-	}
+	}*/
+
 	
 
 	printf( "Load Texture" );
