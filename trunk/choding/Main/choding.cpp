@@ -9,11 +9,20 @@
 
 #include "../Framework/Profile/Profile.h"
 
-bool InitModule()
+CSnowboard* g_pSnowboard = NULL;
+
+bool InitModule( HWND hWnd , HINSTANCE hInstance )
 {
 	//모듈 할당및 초기화
-
+	g_pSnowboard = new CSnowboard;
+//	g_pSnowboard->Init( hWnd );
 	return true;
+}
+
+void DestroyModule()
+{
+	if ( g_pSnowboard )
+		delete g_pSnowboard;
 }
 
 LRESULT WINAPI MsgProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
@@ -41,9 +50,10 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 								GetDesktopWindow() , NULL ,
 								wc.hInstance , NULL );
 
-	if ( !InitModule() )
+	if ( !InitModule( hWnd , wc.hInstance ) )
 	{
 		UnregisterClass( L"Choding" , wc.hInstance );
+		DestroyModule();	
 		return 0;
 	}
 
@@ -65,5 +75,6 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 	}
 
 	UnregisterClass( L"Choding" , wc.hInstance );
+	DestroyModule();
 	return 0;
 }
