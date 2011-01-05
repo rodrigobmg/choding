@@ -9,6 +9,13 @@
 
 #include "../Framework/Profile/Profile.h"
 
+bool InitModule()
+{
+	//모듈 할당및 초기화
+
+	return true;
+}
+
 LRESULT WINAPI MsgProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
 {
 	switch( msg )
@@ -33,6 +40,12 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 								500 , 500 ,
 								GetDesktopWindow() , NULL ,
 								wc.hInstance , NULL );
+
+	if ( !InitModule() )
+	{
+		UnregisterClass( L"Choding" , wc.hInstance );
+		return 0;
+	}
 
 	ShowWindow( hWnd , SW_SHOWDEFAULT );
 	UpdateWindow( hWnd );
