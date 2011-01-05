@@ -1,8 +1,8 @@
 #ifndef _CHODING_COMMON_HEADER_
 #define _CHODING_COMMON_HEADER_
 
+#include <Windows.h>
 #include "tchar.h"
-#include "stdio.h"
 #include <iostream>
 #include <cassert>
 #include <map>
