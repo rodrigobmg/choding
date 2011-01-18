@@ -28,3 +28,8 @@ HRESULT CSnowboard::Init( HWND hWnd )
 
 	return S_OK;
 }
+
+void CSnowboard::Run()
+{
+	int a= 0;
+}

@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../chodingModule\Lib;Main/;./"
+				AdditionalIncludeDirectories="E:\Project\choding\chodingModule\Snowboard\Framework;../../chodingModule\Lib;Main/;./"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -173,6 +173,14 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{4532E540-0FED-4A93-BB17-03F7214E661B}"
+			RelativePathToProject=".\chodingModule\Snowboard\Snowboard.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F}"
+			RelativePathToProject=".\chodingModule\Sun\Sun.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
