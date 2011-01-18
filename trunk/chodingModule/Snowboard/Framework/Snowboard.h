@@ -1,10 +1,6 @@
 #pragma once
 
-//#include "Snowboard_stdafx.h"
-
-
-#include <d3dx9.h>
-#include <d3d9.h>
+#include "Snowboard_stdafx.h"
 
 class CSnowboard
 {
