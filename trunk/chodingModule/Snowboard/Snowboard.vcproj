@@ -166,6 +166,38 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Core"
+			>
+			<Filter
+				Name="Base"
+				>
+				<File
+					RelativePath=".\Core\Base\CObject.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Renderer"
+				>
+				<File
+					RelativePath=".\Core\Renderer\Renderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Renderer\Renderer.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Camera"
+				>
+			</Filter>
+			<Filter
+				Name="Resource"
+				>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>
