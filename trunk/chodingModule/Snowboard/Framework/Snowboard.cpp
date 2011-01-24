@@ -1,35 +1,59 @@
-#include "Snowboard_stdafx.h"
-
 #include "Snowboard.h"
 
-HRESULT CSnowboard::Init( HWND hWnd )
+#include "../Core/CoreMgr.h"
+#include "../Core/Renderer/RendererDX9.h"
+
+CSnowboard::CSnowboard():m_pCoreMgr(NULL)
 {
-	// Create the D3D object.
-	if( NULL == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) )
-		return E_FAIL;
 
-	// Set up the structure used to create the D3DDevice. Since we are now
-	// using more complex geometry, we will create a device with a zbuffer.
-	D3DPRESENT_PARAMETERS d3dpp;
-	ZeroMemory( &d3dpp, sizeof(d3dpp) );
-	d3dpp.Windowed = TRUE;
-	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
-	d3dpp.EnableAutoDepthStencil = TRUE;
-	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
-
-	// Create the D3DDevice
-	if( FAILED( m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,
-		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-		&d3dpp, &m_pd3dDevice ) ) )
-	{
-		return E_FAIL;
-	}
-
-	return S_OK;
 }
 
-void CSnowboard::Run()
+CSnowboard::~CSnowboard()
 {
-	int a= 0;
+
+}
+bool CSnowboard::InitModule()
+{
+	m_pCoreMgr = CCoreMgr::New();
+	return true;
+}
+
+bool	CSnowboard::InitRenderer( HWND hWnd )
+{
+	if ( m_pCoreMgr == NULL )
+	{
+		assert( "코어 널포인트" );
+		return FALSE;
+	}
+
+	if ( m_pRendererDX9 != NULL )
+	{
+		assert( "널포인터이어야하며 재할당할시에는 코어매니져에서 해제한후 할당받아야한다." );
+		return FALSE;
+	}
+		
+	m_pRendererDX9 = dynamic_cast< CRendererDX9*>( m_pCoreMgr->RegisterCore( L"Renderer" , new CRendererDX9 ) );
+
+	return TRUE;
+}
+
+bool	CSnowboard::InitCamera()
+{
+	return TRUE;
+}
+
+bool	CSnowboard::InitResource()
+{
+	return TRUE;
+}
+
+void CSnowboard::Update()
+{
+	if ( m_pRendererDX9 )
+		m_pRendererDX9->UpdateFrame();
+}
+
+void CSnowboard::DestroyModule()
+{
+	m_pCoreMgr->DestroyCore();
 }

@@ -62,7 +62,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="d3dx9d.lib d3d9.lib winmm.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_D.lib"
 				AdditionalLibraryDirectories=""
 			/>
@@ -169,11 +168,23 @@
 		<Filter
 			Name="Core"
 			>
+			<File
+				RelativePath=".\Core\CoreMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Core\CoreMgr.h"
+				>
+			</File>
 			<Filter
 				Name="Base"
 				>
 				<File
-					RelativePath=".\Core\Base\CObject.h"
+					RelativePath=".\Core\Base\Snow.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Base\Snow.h"
 					>
 				</File>
 			</Filter>
@@ -181,11 +192,19 @@
 				Name="Renderer"
 				>
 				<File
-					RelativePath=".\Core\Renderer\Renderer.cpp"
+					RelativePath=".\Core\Renderer\RendererBase.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Core\Renderer\Renderer.h"
+					RelativePath=".\Core\Renderer\RendererBase.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Renderer\RendererDX9.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Renderer\RendererDX9.h"
 					>
 				</File>
 			</Filter>

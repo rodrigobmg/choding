@@ -5,9 +5,8 @@
 
 #include "../Framework/ResourceManager/ResManager.h"
 
-#include "Snowboard.h"
-
 #include "../Framework/Profile/Profile.h"
+#include "../../chodingModule/Snowboard/Framework/Snowboard.h"
 
 CSnowboard* g_pSnowboard = NULL;
 
@@ -15,8 +14,12 @@ bool InitModule( HWND hWnd , HINSTANCE hInstance )
 {
 	//모듈 할당및 초기화
 	g_pSnowboard = new CSnowboard;
-	g_pSnowboard->Init( hWnd );
-	g_pSnowboard->Run();
+	if ( !g_pSnowboard->InitModule() )
+		return false;
+
+	if ( !g_pSnowboard->InitRenderer( hWnd ) )
+		return false;
+
 	return true;
 }
 
@@ -36,6 +39,14 @@ LRESULT WINAPI MsgProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
 	}
 
 	return DefWindowProc( hWnd , msg , wParam , lParam );
+}
+
+bool Update()
+{
+	if ( g_pSnowboard )
+		g_pSnowboard->Update();
+
+	return true;
 }
 
 int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
@@ -71,7 +82,8 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 		}
 		else
 		{
-			//Do~~
+			if ( !Update() )
+				break;
 		}
 	}
 

@@ -1,12 +1,19 @@
 #pragma once 
 
-#include <iostream>
-#include <cassert>
-#include <d3dx9.h>
-#include <assert.h>
-#include <winbase.h>
-#include <d3d9.h>
-#include <Strsafe.h>
-
 #include "Snowboard_type.h"
 
+#include <Windows.h>
+
+#include <d3dx9.h>
+#include <assert.h>
+#include <d3d9.h>
+
+
+#include <tchar.h>
+
+
+#include <HASH_MAP>
+#include <String>
+
+using namespace std;
+typedef basic_string<TCHAR> tstring;
