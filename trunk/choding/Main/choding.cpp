@@ -26,7 +26,9 @@ bool InitModule( HWND hWnd , HINSTANCE hInstance )
 void DestroyModule()
 {
 	if ( g_pSnowboard )
-		delete g_pSnowboard;
+	{
+		g_pSnowboard->DestroyModule();
+	}
 }
 
 LRESULT WINAPI MsgProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
