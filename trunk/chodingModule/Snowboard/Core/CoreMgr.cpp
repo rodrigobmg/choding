@@ -3,11 +3,17 @@
 CCoreMgr::CCoreMgr()
 {
 	SetName( OBJECT_COREMGR );
+	Clear();
 }
 
 CCoreMgr::~CCoreMgr()
 {
 
+}
+
+void CCoreMgr::Clear()
+{
+	m_mapCore.clear();
 }
 
 CCoreMgr* CCoreMgr::New()
@@ -36,7 +42,7 @@ CSnow* CCoreMgr::RegisterCore( const tstring& corename , CSnow* pCore )
 	return pCore;
 }
 
-void CCoreMgr::DestroyCore()
+void CCoreMgr::Destroy()
 {
 	HASHMAPCore_ITERATOR itbegin = m_mapCore.begin();
 	HASHMAPCore_ITERATOR itend	= m_mapCore.end();

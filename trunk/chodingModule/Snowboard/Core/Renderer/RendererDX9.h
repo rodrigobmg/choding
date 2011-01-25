@@ -18,12 +18,13 @@ public:
 
 	CRendererDX9();
 	virtual ~CRendererDX9();
-
 	
-	virtual HRESULT Initialize( HWND hWnd );	
+	virtual	void	Clear();
+	virtual HRESULT	Create( HWND hWnd );
 	virtual void	Destroy();	
-	virtual void	UpdateFrame();
 
-	LPDIRECT3DDEVICE9		GetDevice()	{ return m_pd3dDevice; }
+
+	virtual void		UpdateFrame();
+	LPDIRECT3DDEVICE9	GetDevice()		{ return m_pd3dDevice; }
 
 };

@@ -19,9 +19,11 @@
 #define OBJECT_RENDERERDX9	L"RendererDX9"
 #define OBJECT_COREMGR		L"CoreMgr"
 #define OBJECT_RES_BASE		L"ResBase"
+#define OBJECT_RES_TEXTURE	L"ResTypeTexture"
 #define OBJECT_RES_MGR		L"ResMgr"
 
-#define SAFE_RELEASE(v){if(v){v->Release(); v = NULL;}}
+
+
 #define SAFE_DELETE(v) {if(v){delete v; v = NULL;}}
 #define SAFE_DELETE_ARRAY(v) { if(v) { delete[] v; v = NULL; } }
 

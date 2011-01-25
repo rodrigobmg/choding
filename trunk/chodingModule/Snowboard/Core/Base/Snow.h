@@ -14,9 +14,7 @@ public:
 
 	void			SetName(const tstring& strName )	{ m_strName = strName; }
 	const tstring&	GetName()							{ return m_strName; }
-
-	virtual	void	Release();
-
+	
 private:
 
 	int32_t		m_iRefCount;

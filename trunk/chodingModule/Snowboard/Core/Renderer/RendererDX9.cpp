@@ -34,7 +34,7 @@ void CRendererDX9::end()
 
 }
 
-HRESULT CRendererDX9::Initialize( HWND hWnd )
+HRESULT CRendererDX9::Create( HWND hWnd )
 {
 	// Create the D3D object.
 	if( NULL == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) )
@@ -62,6 +62,11 @@ HRESULT CRendererDX9::Initialize( HWND hWnd )
 }
 
 void CRendererDX9::Destroy()
+{
+
+}
+
+void CRendererDX9::Clear()
 {
 
 }

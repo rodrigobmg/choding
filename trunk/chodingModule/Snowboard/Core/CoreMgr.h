@@ -19,9 +19,11 @@ public:
 
 	CSnow*			RegisterCore( const tstring& corename, CSnow* pCore );
 	void			UnregisterCore( const tstring& corename );
-	void			DestroyCore();
 
 	CSnow*			GetCore( const tstring& strCoreName );
 	int				GetContainerSize()			{ return (int)m_mapCore.size(); }
+
+	virtual	void	Clear();
+	virtual void	Destroy();
 	
 };

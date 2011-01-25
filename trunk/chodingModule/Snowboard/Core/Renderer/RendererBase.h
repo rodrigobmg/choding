@@ -14,6 +14,5 @@ public:
 	CRendererBase();
 	virtual ~CRendererBase();
 	
-	virtual HRESULT Initialize( HWND hWnd ) = 0;
 	virtual void UpdateFrame() = 0;	
 };

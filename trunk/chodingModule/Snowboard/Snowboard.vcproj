@@ -216,14 +216,6 @@
 				Name="Resource"
 				>
 				<File
-					RelativePath=".\Core\Resource\ResBase.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Resource\ResBase.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Core\Resource\ResMgr.cpp"
 					>
 				</File>
@@ -231,6 +223,18 @@
 					RelativePath=".\Core\Resource\ResMgr.h"
 					>
 				</File>
+				<Filter
+					Name="Type"
+					>
+					<File
+						RelativePath=".\Core\Resource\Type\ResTexture.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Resource\Type\ResTexture.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<File

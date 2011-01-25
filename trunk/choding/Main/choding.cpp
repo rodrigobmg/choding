@@ -20,15 +20,16 @@ bool InitModule( HWND hWnd , HINSTANCE hInstance )
 	if ( !g_pSnowboard->InitRenderer( hWnd ) )
 		return false;
 
+	if ( !g_pSnowboard->InitResource() )
+		return false;
+
 	return true;
 }
 
 void DestroyModule()
 {
 	if ( g_pSnowboard )
-	{
 		g_pSnowboard->DestroyModule();
-	}
 }
 
 LRESULT WINAPI MsgProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
