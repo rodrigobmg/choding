@@ -3,8 +3,7 @@
 CSnow::CSnow()
 {
 	m_iRefCount = 0;
-	m_strName = L"Base";
-
+	SetName( OBJECT_BASE );
 	IncRefCount();	
 }
 

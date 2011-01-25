@@ -14,5 +14,16 @@
 #define CORE_CAMERA			L"CameraCore"
 #define CORE_RESOURCE		L"ResourceCore"
 
+#define OBJECT_BASE			L"Base"
+#define OBJECT_RENDERBASE	L"RenderBase"
+#define OBJECT_RENDERERDX9	L"RendererDX9"
+#define OBJECT_COREMGR		L"CoreMgr"
+#define OBJECT_RES_BASE		L"ResBase"
+#define OBJECT_RES_MGR		L"ResMgr"
+
+#define SAFE_RELEASE(v){if(v){v->Release(); v = NULL;}}
+#define SAFE_DELETE(v) {if(v){delete v; v = NULL;}}
+#define SAFE_DELETE_ARRAY(v) { if(v) { delete[] v; v = NULL; } }
+
 using namespace std;
 typedef basic_string<TCHAR> tstring;

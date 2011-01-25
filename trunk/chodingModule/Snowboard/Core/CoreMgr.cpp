@@ -2,7 +2,7 @@
 
 CCoreMgr::CCoreMgr()
 {
-	SetName( L"CoreMgr" );
+	SetName( OBJECT_COREMGR );
 }
 
 CCoreMgr::~CCoreMgr()
@@ -43,7 +43,7 @@ void CCoreMgr::DestroyCore()
 
 	for ( ; itbegin != itend ; ++itbegin )
 	{
-		delete itbegin->second;
+		SAFE_DELETE( itbegin->second )
 	}
 
 	m_mapCore.clear();
@@ -55,6 +55,6 @@ void CCoreMgr::UnregisterCore( const tstring& corename )
 	if ( it == m_mapCore.end() )
 		return;
 
-	delete it->second;
+	SAFE_DELETE( it->second );
 	m_mapCore.erase( it );
 }

@@ -2,17 +2,21 @@
 
 CRendererDX9::CRendererDX9()
 {
-	SetName( L"RendererDX9" );
+	SetName( OBJECT_RENDERERDX9 );
 }
 
 CRendererDX9::~CRendererDX9()
 {
-
+	Destroy();
 }
 
 void CRendererDX9::UpdateFrame()
 {
+	this->begin();
 
+	this->render();
+
+	this->end();
 }
 
 void CRendererDX9::render()
@@ -55,4 +59,9 @@ HRESULT CRendererDX9::Initialize( HWND hWnd )
 	}
 
 	return S_OK;
+}
+
+void CRendererDX9::Destroy()
+{
+
 }

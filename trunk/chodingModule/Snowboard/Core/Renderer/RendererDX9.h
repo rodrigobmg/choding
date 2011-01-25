@@ -21,7 +21,8 @@ public:
 
 	
 	virtual HRESULT Initialize( HWND hWnd );	
-	virtual void UpdateFrame();
+	virtual void	Destroy();	
+	virtual void	UpdateFrame();
 
 	LPDIRECT3DDEVICE9		GetDevice()	{ return m_pd3dDevice; }
 

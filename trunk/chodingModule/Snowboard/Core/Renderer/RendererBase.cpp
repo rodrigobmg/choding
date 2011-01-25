@@ -2,7 +2,7 @@
 
 CRendererBase::CRendererBase()
 {
-	SetName( L"RendererBase" );
+	SetName( OBJECT_RENDERBASE );
 }
 
 CRendererBase::~CRendererBase()
