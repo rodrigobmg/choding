@@ -10,10 +10,12 @@
 
 CSnowboard* g_pSnowboard = NULL;
 
-bool InitModule( HWND hWnd , HINSTANCE hInstance )
+bool InitModule( HWND hWnd )
 {
 	//모듈 할당및 초기화
 	g_pSnowboard = new CSnowboard;
+	g_pSnowboard->DestroyModule();
+
 	if ( !g_pSnowboard->InitModule() )
 		return false;
 
@@ -65,7 +67,7 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 								GetDesktopWindow() , NULL ,
 								wc.hInstance , NULL );
 
-	if ( !InitModule( hWnd , wc.hInstance ) )
+	if ( !InitModule( hWnd ) )
 	{
 		UnregisterClass( L"Choding" , wc.hInstance );
 		DestroyModule();	

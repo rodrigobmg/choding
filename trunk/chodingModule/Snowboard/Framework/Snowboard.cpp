@@ -2,6 +2,7 @@
 
 #include "../Core/CoreMgr.h"
 #include "../Core/Renderer/RendererDX9.h"
+#include "../Core/Resource/Type/ResTexture.h"
 
 CSnowboard::CSnowboard()
 {
@@ -47,7 +48,12 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 		
 	m_pRendererDX9 = dynamic_cast< CRendererDX9* >( m_pCoreMgr->RegisterCore( CORE_RENDERER , new CRendererDX9 ) );
 	if ( m_pRendererDX9 )
-		m_pRendererDX9->Create( hWnd );
+	{
+		if ( FAILED( m_pRendererDX9->Create( hWnd ) ) )
+		{
+			return FALSE;
+		}		
+	}
 
 	return TRUE;
 }
@@ -88,11 +94,14 @@ void CSnowboard::Update()
 
 void CSnowboard::DestroyModule()
 {
-	m_pCoreMgr->Destroy();
+	if ( m_pCoreMgr )
+		m_pCoreMgr->Destroy();
 }
 
 void CSnowboard::TestFunc()
 {
 	if ( m_pResMgr )
 		m_pResMgr->Load( L"banana.bmp" , m_pRendererDX9->GetDevice() );
+
+	CResTexture* pTexture = dynamic_cast<CResTexture*>( m_pResMgr->Get( L"banana.bmp" ) );
 }

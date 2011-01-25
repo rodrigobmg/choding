@@ -9,6 +9,8 @@
 #include <tchar.h>
 #include <HASH_MAP>
 #include <String>
+#include <Strsafe.h>
+
 
 #define CORE_RENDERER		L"RendererCore"
 #define CORE_CAMERA			L"CameraCore"
