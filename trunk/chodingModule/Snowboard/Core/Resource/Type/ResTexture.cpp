@@ -18,7 +18,7 @@ void CResTexture::Clear()
 
 void CResTexture::Destroy()
 {
-
+	SAFE_DELETE(m_pTexture);
 }
 
 void CResTexture::Create()

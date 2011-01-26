@@ -30,7 +30,7 @@ bool CResMrg::Load( const wchar_t* filename , LPDIRECT3DDEVICE9 pDevice )
 		//없네?
 		LPDIRECT3DTEXTURE9 pTexture;
 		CResTexture* pResTex = new CResTexture;		
-		if ( SUCCEEDED( D3DXCreateTextureFromFile( pDevice , filename , (LPDIRECT3DTEXTURE9*)(pResTex->Get()) ) ) )
+		if ( SUCCEEDED( D3DXCreateTextureFromFile( pDevice , filename , pResTex->GetPtr() ) ) )
 		{
 			m_mapRes.insert( make_pair( filename , pResTex ) );
 		}
@@ -69,7 +69,7 @@ bool CResMrg::Load( const wchar_t* filename , LPDIRECT3DDEVICE9 pDevice )
 	{
 		CResTexture* pResTex = new CResTexture;
 		//있네?
-		if ( SUCCEEDED( D3DXCreateTextureFromFile( pDevice , filename , (LPDIRECT3DTEXTURE9*)pResTex->Get() ) ) )
+		if ( SUCCEEDED( D3DXCreateTextureFromFile( pDevice , filename , pResTex->GetPtr() ) ) )
 			m_mapRes.insert( make_pair( filename , pResTex ) );
 	}
 	return true;

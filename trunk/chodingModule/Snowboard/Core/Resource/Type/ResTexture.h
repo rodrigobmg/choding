@@ -13,6 +13,7 @@ public:
 	virtual ~CResTexture();
 
 	LPDIRECT3DTEXTURE9			Get() { return m_pTexture; }
+	LPDIRECT3DTEXTURE9*			GetPtr() { return &m_pTexture; }
 	virtual	void				Clear();
 	virtual void				Create();
 	virtual void				Destroy();	
