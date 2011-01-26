@@ -161,8 +161,6 @@ int _tmain(int argc, _TCHAR* argv[])
 		offset = offset << 1;
 	}
 
-
-
 	return 0;
 }
 
