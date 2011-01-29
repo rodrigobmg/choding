@@ -237,6 +237,46 @@
 				</Filter>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="Utility"
+			>
+			<File
+				RelativePath=".\Utility\console_logger.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\console_logger.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\html_logger.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\html_logger.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\logger.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\logger.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\logger.ini"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\Utility.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\Utility.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>
