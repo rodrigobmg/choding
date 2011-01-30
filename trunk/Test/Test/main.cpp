@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <tchar.h>
+#include <algorithm>
+#include <string>
 
 using namespace std;
 
@@ -131,6 +133,70 @@ T	List<T>::pop_back()
 	return t;
 }
 
+//일치하는 시작점의 포인터 주소 리턴
+char* search( char* s , char* olds , char* news )
+{
+	char *result, *sr;
+	size_t i, count = 0;
+	size_t oldlen = strlen(olds); 
+		
+	if (oldlen < 1) 
+		return s;
+
+	size_t newlen = strlen(news);
+
+
+	if (newlen != oldlen) 
+	{
+		for (i = 0; s[i] != '\0';) 
+		{
+			if (memcmp(&s[i], olds, oldlen) == 0) 
+			{
+				count++;
+				i += oldlen;
+			}
+			else 
+				i++;
+		}
+	} 
+	else 
+		i = strlen(s);
+
+
+	result = (char *) malloc(i + 1 + count * (newlen - oldlen));
+	if (result == NULL)
+		return NULL;
+
+
+	sr = result;
+	while (*s) 
+	{
+		if (memcmp(s, olds, oldlen) == 0) 
+		{
+			memcpy(sr, news, newlen);
+			sr += newlen;
+			s  += oldlen;
+		} 
+		else
+			*sr++ = *s++;
+	}
+
+	*sr = '\0';
+
+	return result;
+}
+
+void replace( char* text , char* condition , char* rep )
+{
+
+	char* re = search( text , condition , rep );
+// 	string test = text;
+// 	replace_if(test.begin(), test.end(), bind2nd(equal_to<char>(), condition), rep );
+// 	cout << test << endl;
+
+}
+
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	List<int> list;
@@ -161,6 +227,11 @@ int _tmain(int argc, _TCHAR* argv[])
 		offset = offset << 1;
 	}
 
+	char* text = "this pen is a pencil";
+	char* p = text;
+
+	replace( p , "pen" , "1" );
+	
 	return 0;
 }
 
