@@ -31,5 +31,6 @@
 #define SAFE_DELETE(v) {if(v){delete v; v = NULL;}}
 #define SAFE_DELETE_ARRAY(v) { if(v) { delete[] v; v = NULL; } }
 
+
 using namespace std;
 typedef basic_string<TCHAR> tstring;

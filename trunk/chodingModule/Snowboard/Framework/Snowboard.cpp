@@ -52,7 +52,7 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 		if ( FAILED( m_pRendererDX9->Create( hWnd ) ) )
 		{
 			return FALSE;
-		}		
+		}	
 	}
 
 	return TRUE;

@@ -63,7 +63,7 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 	RegisterClassEx( &wc );
 
 	HWND hWnd = CreateWindow( L"Choding" , L"Choding" , WS_OVERLAPPEDWINDOW , 100 , 100,
-								500 , 500 ,
+								300 , 300 ,
 								GetDesktopWindow() , NULL ,
 								wc.hInstance , NULL );
 
