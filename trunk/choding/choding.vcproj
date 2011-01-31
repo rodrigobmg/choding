@@ -259,34 +259,6 @@
 				Name="Utility"
 				>
 				<File
-					RelativePath=".\Framework\Utility\console_logger.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Framework\Utility\console_logger.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Framework\Utility\html_logger.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Framework\Utility\html_logger.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Framework\Utility\logger.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Framework\Utility\logger.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Framework\Utility\logger.ini"
-					>
-				</File>
-				<File
 					RelativePath=".\Framework\Utility\Utility.cpp"
 					>
 				</File>

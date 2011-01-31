@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+
 #include "console_logger.h"
 #include <tchar.h>
 

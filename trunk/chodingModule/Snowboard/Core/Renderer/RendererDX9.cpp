@@ -12,6 +12,9 @@ CRendererDX9::~CRendererDX9()
 
 void CRendererDX9::UpdateFrame()
 {
+	if ( m_pd3dDevice == NULL )
+		return;
+
 	this->begin();
 
 	this->render();
@@ -21,17 +24,29 @@ void CRendererDX9::UpdateFrame()
 
 void CRendererDX9::render()
 {
-
+	
 }
 
 void CRendererDX9::begin()
 {
+	if ( m_pd3dDevice )
+		m_pd3dDevice->Clear( 0 , NULL , D3DCLEAR_TARGET , D3DCOLOR_XRGB( 0, 0, 255 ),
+		1.0f, 0 );
 
+
+	if ( m_pd3dDevice )
+		m_pd3dDevice->BeginScene();
 }
 
 void CRendererDX9::end()
 {
+	if (m_pd3dDevice)
+	{
+		m_pd3dDevice->EndScene();
+	}
 
+	if( m_pd3dDevice )
+		m_pd3dDevice->Present( NULL , NULL , NULL , NULL );
 }
 
 HRESULT CRendererDX9::Create( HWND hWnd )
@@ -63,7 +78,10 @@ HRESULT CRendererDX9::Create( HWND hWnd )
 
 void CRendererDX9::Destroy()
 {
-
+	if ( m_pd3dDevice )
+		m_pd3dDevice->Release();
+	if ( m_pD3D )
+		m_pD3D->Release();
 }
 
 void CRendererDX9::Clear()

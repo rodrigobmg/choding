@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "choding_stdafx.h"
+#include "../Framework/Snowboard_stdafx.h"
 
 namespace util
 {

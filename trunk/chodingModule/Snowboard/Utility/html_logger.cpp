@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+
 #include "html_logger.h"
 #include <tchar.h>
 #include "common_util.h"
