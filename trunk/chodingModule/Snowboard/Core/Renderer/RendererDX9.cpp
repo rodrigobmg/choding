@@ -85,7 +85,7 @@ void CRendererDX9::render()
 	{
 		m_pd3dDevice->SetStreamSource( 0, m_pVertexBuffer , 0, sizeof( CUSTOMVERTEX ) );
 		m_pd3dDevice->SetFVF( D3DFVF_CUSTOMVERTEX );
-		m_pd3dDevice->DrawPrimitive( D3DPT_TRIANGLELIST , 0 , 1 );
+		m_pd3dDevice->DrawPrimitive( D3DPT_TRIANGLESTRIP , 1 , 2 );
 
 		m_pd3dDevice->EndScene();
 	}
@@ -106,12 +106,15 @@ HRESULT CRendererDX9::initvb()
 {
 	CUSTOMVERTEX vertices[] = 
 	{
-		{ 100.f, 0.0f, 0.f, 1.0f, 0xffff0000,	},
+		{ 100.f, 10.0f, 0.f, 1.0f, 0xffff0000,	},
 		{ 250.f, 250.f , 0.f, 1.0f, 0xff00ff00,},
 		{ 50.f, 250.f , 0.f, 1.0f, 0xff00ffff, },
+		{ 50.f , 100.f , 0.f , 1.0f , 0xf0f0f0ff, }, 
+		{ 10.f , 50.f , 0.f , 1.0f , 0xfff000ff, },
+		{ 300.f , 300.f , 0.f , 1.0f , 0x000f0000, },
 	};
 
-	if ( FAILED(m_pd3dDevice->CreateVertexBuffer( 3*sizeof(CUSTOMVERTEX),
+	if ( FAILED(m_pd3dDevice->CreateVertexBuffer( 6*sizeof(CUSTOMVERTEX),
 		0,
 		D3DFVF_CUSTOMVERTEX,
 		D3DPOOL_DEFAULT,

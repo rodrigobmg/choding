@@ -11,12 +11,12 @@ CSnow::~CSnow()
 {
 	DecRefCount();
 	if ( m_iRefCount != 0 )
-		assert( "해제할때 0 이어야함" );
+		assert( 0 && "해제할때 0 이어야함" );
 }
 
 void CSnow::DecRefCount()
 {
 	--m_iRefCount; 
 	if ( m_iRefCount < 0 )
-		assert( "왜 0보다 작나요? " );
+		assert( 0 && "왜 0보다 작나요? " );
 }
