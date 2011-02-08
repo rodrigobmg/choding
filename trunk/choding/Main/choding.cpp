@@ -16,13 +16,7 @@ bool InitModule( HWND hWnd )
 	g_pSnowboard = new CSnowboard;
 	g_pSnowboard->DestroyModule();
 
-	if ( !g_pSnowboard->InitModule() )
-		return false;
-
-	if ( !g_pSnowboard->InitRenderer( hWnd ) )
-		return false;
-
-	if ( !g_pSnowboard->InitResource() )
+	if ( !g_pSnowboard->InitModule( hWnd ) )
 		return false;
 
 	return true;

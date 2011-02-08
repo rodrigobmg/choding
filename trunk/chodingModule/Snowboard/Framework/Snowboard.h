@@ -12,14 +12,14 @@ public:
 	CSnowboard();
 	virtual ~CSnowboard();
 
-	bool		InitModule();
+	bool		InitModule( HWND hWnd );
 	void		DestroyModule();
 	void		Update();
 	HRESULT		MsgProc();
 
 	bool		InitRenderer( HWND hWnd );
 	bool		InitCamera();
-	bool		InitResource();
+	bool		InitResource( LPDIRECT3DDEVICE9 device );
 
 	void		Clear();
 

@@ -20,15 +20,21 @@ void CSnowboard::Clear()
 	m_pResMgr		= NULL;
 }
 
-bool CSnowboard::InitModule()
+bool CSnowboard::InitModule( HWND hWnd )
 {
+	InitRenderer( hWnd );
+	InitCamera();
+	InitResource( m_pRendererDX9->GetDevice() );
+
+	TestFunc();
+
 	return true;
 }
 
 bool	CSnowboard::InitRenderer( HWND hWnd )
 {
 	m_pRendererDX9 = dynamic_cast< CRendererDX9* >( CCoreFactory::CreateCore( CORE_RENDERER ) );
-
+	m_pRendererDX9->Create( hWnd );
 	return TRUE;
 }
 
@@ -37,10 +43,10 @@ bool	CSnowboard::InitCamera()
 	return TRUE;
 }
 
-bool	CSnowboard::InitResource()
+bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 {
 	m_pResMgr = dynamic_cast< CResMrg* >( CCoreFactory::CreateCore( CORE_RESOURCE ) );
-
+	m_pResMgr->Create( device );
 	return TRUE;
 }
 
@@ -59,7 +65,12 @@ void CSnowboard::DestroyModule()
 void CSnowboard::TestFunc()
 {
 	if ( m_pResMgr )
-		m_pResMgr->Load( L"banana.bmp" , m_pRendererDX9->GetDevice() );
+		m_pResMgr->Get( L"banana.bmp" , true );
 
-	CResTexture* pTexture = dynamic_cast<CResTexture*>( m_pResMgr->Get( L"banana.bmp" ) );
+	CResTexture* p = dynamic_cast< CResTexture*> ( m_pResMgr->Get( L"banana.bmp" ) );
+	LPDIRECT3DDEVICE9 temp;
+	if ( p )
+	{		
+		p->Get()->GetDevice( &temp );
+	}
 }

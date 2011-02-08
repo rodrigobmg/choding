@@ -29,6 +29,7 @@
 
 #define _LOGGER_ON_
 
+#define SAFE_RELEASE(v) {if(v){ v->Release() ; v = NULL;}}
 #define SAFE_DELETE(v) {if(v){delete v; v = NULL;}}
 #define SAFE_DELETE_ARRAY(v) { if(v) { delete[] v; v = NULL; } }
 
