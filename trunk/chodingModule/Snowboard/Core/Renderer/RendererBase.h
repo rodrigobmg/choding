@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Base/Snow.h"
+#include "../Base/CoreBase.h"
 
-class CRendererBase : public CSnow{
+class CRendererBase : public CCoreBase{
 
 private:
 	

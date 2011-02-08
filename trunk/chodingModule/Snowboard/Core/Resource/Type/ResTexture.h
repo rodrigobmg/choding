@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Base/Snow.h"
+#include "ResBaseType.h"
 
-class CResTexture : public CSnow{
+class CResTexture : public CBaseRes{
 
 private:
 
@@ -14,8 +14,9 @@ public:
 
 	LPDIRECT3DTEXTURE9			Get() { return m_pTexture; }
 	LPDIRECT3DTEXTURE9*			GetPtr() { return &m_pTexture; }
-	virtual	void				Clear();
-	virtual void				Create();
-	virtual void				Destroy();	
+
+	virtual void		Clear();
+	virtual HRESULT		Create();
+	virtual HRESULT		Release();
 
 };

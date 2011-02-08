@@ -1,66 +1,35 @@
 #include "CoreMgr.h"
 
-CCoreMgr::CCoreMgr()
+#include "Renderer/RendererDX9.h"
+#include "Resource/ResMgr.h"
+
+CCoreFactory::CCoreFactory()
 {
-	SetName( OBJECT_COREMGR );
-	Clear();
 }
 
-CCoreMgr::~CCoreMgr()
+CCoreFactory::~CCoreFactory()
 {
 
 }
 
-void CCoreMgr::Clear()
+CCoreBase*	CCoreFactory::CreateCore( const tstring& coretype )
 {
-	m_mapCore.clear();
-}
-
-CCoreMgr* CCoreMgr::New()
-{
-	return new CCoreMgr;
-}
-
-CSnow* CCoreMgr::GetCore( const tstring& strCoreName )
-{
-	HASHMAPCore_ITERATOR iter = m_mapCore.find( strCoreName );
-	if ( iter != m_mapCore.end() )
-		return iter->second;	
-
-	return NULL;	
-}
-
-CSnow* CCoreMgr::RegisterCore( const tstring& corename , CSnow* pCore )
-{
-	if ( pCore == NULL || corename == L"" )
+	if ( coretype == CORE_RESOURCE )
 	{
-		assert( "왜 널을 넣으려 했나요?" );
+		return new CResMrg;	
+	}
+	else if ( coretype == CORE_RENDERER )
+	{
+		return new CRendererDX9;
+	}
+	else if ( coretype == CORE_CAMERA )
+	{
+		//return new CCama
 		return NULL;
 	}
-
-	m_mapCore.insert( make_pair( corename , pCore ) );
-	return pCore;
-}
-
-void CCoreMgr::Destroy()
-{
-	HASHMAPCore_ITERATOR itbegin = m_mapCore.begin();
-	HASHMAPCore_ITERATOR itend	= m_mapCore.end();
-
-	for ( ; itbegin != itend ; ++itbegin )
+	else
 	{
-		SAFE_DELETE( itbegin->second )
+		assert( 0 && "정의되지 않은 코어는 생성될수 없습니다." );
+		return NULL;
 	}
-
-	m_mapCore.clear();
-}
-
-void CCoreMgr::UnregisterCore( const tstring& corename )
-{
-	HASHMAPCore_ITERATOR it = m_mapCore.find( corename );
-	if ( it == m_mapCore.end() )
-		return;
-
-	SAFE_DELETE( it->second );
-	m_mapCore.erase( it );
 }

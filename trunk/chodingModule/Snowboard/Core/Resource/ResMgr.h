@@ -1,13 +1,14 @@
 #pragma once
 
-#include "../Base/Snow.h"
+#include "../Base/CoreBase.h"
+#include "Type/ResBaseType.h"
 
-class CResMrg : public CSnow{
+class CResMrg : public CCoreBase{
 
 private:
 	
-	typedef stdext::hash_map<tstring, CSnow*>				HASHMAPRes;
-	typedef stdext::hash_map<tstring, CSnow*>::iterator		HASHMAPRes_ITERATOR;
+	typedef stdext::hash_map<tstring, CBaseRes*>				HASHMAPRes;
+	typedef stdext::hash_map<tstring, CBaseRes*>::iterator		HASHMAPRes_ITERATOR;
 
 	HASHMAPRes		m_mapRes;
 
@@ -17,10 +18,11 @@ public:
 	CResMrg();
 	virtual ~CResMrg();
 
-	bool		Load( const wchar_t* filename , LPDIRECT3DDEVICE9 pDevice );
-	CSnow*		Get( const wchar_t* filename );
+	bool			Load( const wchar_t* filename , LPDIRECT3DDEVICE9 pDevice );
+	CBaseRes*		Get( const wchar_t* filename );
 
-	void		Create();
-	void		Clear();
+	virtual void	Clear();
+	virtual HRESULT	Create();
+	virtual HRESULT Release();
 
 };

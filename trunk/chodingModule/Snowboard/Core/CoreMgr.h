@@ -1,29 +1,13 @@
 #pragma once
 
-#include "Base/Snow.h"
+#include "Base/CoreBase.h"
 
-class CCoreMgr : public CSnow{
-
-private:
-
-	typedef stdext::hash_map<tstring, CSnow*>				HASHMAPCore;
-	typedef stdext::hash_map<tstring, CSnow*>::iterator		HASHMAPCore_ITERATOR;
-
-	HASHMAPCore		m_mapCore;
+// ÄÚ¾î ÆÑÅä¸®
+class CCoreFactory {
 
 public:
-	CCoreMgr();
-	virtual ~CCoreMgr();
+	CCoreFactory();
+	virtual ~CCoreFactory();
 
-	static CCoreMgr*	New();
-
-	CSnow*			RegisterCore( const tstring& corename, CSnow* pCore );
-	void			UnregisterCore( const tstring& corename );
-
-	CSnow*			GetCore( const tstring& strCoreName );
-	int				GetContainerSize()			{ return (int)m_mapCore.size(); }
-
-	virtual	void	Clear();
-	virtual void	Destroy();
-	
+	static CCoreBase*		CreateCore( const tstring& coretype );
 };

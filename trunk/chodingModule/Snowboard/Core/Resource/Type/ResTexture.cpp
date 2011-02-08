@@ -16,12 +16,15 @@ void CResTexture::Clear()
 	m_pTexture = NULL;
 }
 
-void CResTexture::Destroy()
+HRESULT CResTexture::Create()
 {
-	SAFE_DELETE(m_pTexture);
+	return S_OK;
 }
 
-void CResTexture::Create()
+HRESULT CResTexture::Release()
 {
+	if ( m_pTexture )
+		m_pTexture->Release();
 
+	return S_OK;
 }

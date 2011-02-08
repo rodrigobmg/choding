@@ -17,6 +17,7 @@
 #define CORE_RESOURCE		L"ResourceCore"
 
 #define OBJECT_BASE			L"Base"
+#define OBJECT_BASE_CORE	L"CoreBase"
 #define OBJECT_RENDERBASE	L"RenderBase"
 #define OBJECT_RENDERERDX9	L"RendererDX9"
 #define OBJECT_COREMGR		L"CoreMgr"

@@ -180,6 +180,14 @@
 				Name="Base"
 				>
 				<File
+					RelativePath=".\Core\Base\CoreBase.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Base\CoreBase.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Core\Base\Snow.cpp"
 					>
 				</File>
@@ -226,6 +234,10 @@
 				<Filter
 					Name="Type"
 					>
+					<File
+						RelativePath=".\Core\Resource\Type\ResBaseType.h"
+						>
+					</File>
 					<File
 						RelativePath=".\Core\Resource\Type\ResTexture.cpp"
 						>

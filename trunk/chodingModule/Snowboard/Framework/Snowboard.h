@@ -28,6 +28,4 @@ private:
 	
 	CRendererDX9*	m_pRendererDX9;
 	CResMrg*		m_pResMgr;
-	CCoreMgr*		m_pCoreMgr;
-
 };

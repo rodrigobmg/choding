@@ -29,8 +29,7 @@ public:
 	
 	virtual	void	Clear();
 	virtual HRESULT	Create( HWND hWnd );
-	virtual void	Destroy();	
-
+	virtual HRESULT Release();
 
 	virtual void		UpdateFrame();
 	LPDIRECT3DDEVICE9	GetDevice()		{ return m_pd3dDevice; }

@@ -16,44 +16,18 @@ CSnowboard::~CSnowboard()
 
 void CSnowboard::Clear()
 {
-	m_pCoreMgr		= NULL;
 	m_pRendererDX9	= NULL;
 	m_pResMgr		= NULL;
 }
 
 bool CSnowboard::InitModule()
 {
-	m_pCoreMgr = CCoreMgr::New();
-	if ( m_pCoreMgr == NULL )
-	{
-		assert("할당실패");
-		return false;
-	}
 	return true;
 }
 
 bool	CSnowboard::InitRenderer( HWND hWnd )
 {
-	if ( m_pCoreMgr == NULL )
-	{
-		assert( "코어 널포인트" );
-		return FALSE;
-	}
-
-	if ( m_pCoreMgr->GetCore( CORE_RENDERER ) != NULL )
-	{
-		assert( "널포인터이어야하며 재할당할시에는 코어매니져에서 해제한후 할당받아야한다." );
-		return FALSE;
-	}
-		
-	m_pRendererDX9 = dynamic_cast< CRendererDX9* >( m_pCoreMgr->RegisterCore( CORE_RENDERER , new CRendererDX9 ) );
-	if ( m_pRendererDX9 )
-	{
-		if ( FAILED( m_pRendererDX9->Create( hWnd ) ) )
-		{
-			return FALSE;
-		}	
-	}
+	m_pRendererDX9 = dynamic_cast< CRendererDX9* >( CCoreFactory::CreateCore( CORE_RENDERER ) );
 
 	return TRUE;
 }
@@ -65,23 +39,7 @@ bool	CSnowboard::InitCamera()
 
 bool	CSnowboard::InitResource()
 {
-	if ( m_pCoreMgr == NULL )
-	{
-		assert( "코어 널포인트" );
-		return FALSE;
-	}
-
-	if ( m_pCoreMgr->GetCore( CORE_RESOURCE ) != NULL )
-	{
-		assert( "널포인터이어야하며 재할당할시에는 코어매니져에서 해제한후 할당받아야한다." );
-		return FALSE;
-	}
-
-	m_pResMgr = dynamic_cast< CResMrg* >( m_pCoreMgr->RegisterCore( CORE_RESOURCE , new CResMrg ) );
-	if ( m_pResMgr )
-		m_pResMgr->Create();
-
-	TestFunc();
+	m_pResMgr = dynamic_cast< CResMrg* >( CCoreFactory::CreateCore( CORE_RESOURCE ) );
 
 	return TRUE;
 }
@@ -94,9 +52,9 @@ void CSnowboard::Update()
 
 void CSnowboard::DestroyModule()
 {
-	if ( m_pCoreMgr )
-		m_pCoreMgr->Destroy();
 }
+
+
 
 void CSnowboard::TestFunc()
 {

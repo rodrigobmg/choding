@@ -15,10 +15,10 @@ CRendererDX9::CRendererDX9()
 
 CRendererDX9::~CRendererDX9()
 {
-	Destroy();
+	Release();
 }
 
-void CRendererDX9::Destroy()
+HRESULT CRendererDX9::Release()
 {
 	if ( m_pd3dDevice )
 		m_pd3dDevice->Release();
@@ -26,6 +26,8 @@ void CRendererDX9::Destroy()
 		m_pD3D->Release();
 	if ( m_pVertexBuffer )
 		m_pVertexBuffer->Release();
+
+	return S_OK;
 }
 
 void CRendererDX9::Clear()
