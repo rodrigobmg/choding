@@ -199,17 +199,8 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 		return false;
 	}
 
-	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
-	if ( itAll != m_mapRes.end() )
-	{
-		itAll->second.insert( pair< const TCHAR* , CBaseRes*>( filename.c_str() , pres ) );
-	}
-	else
-	{
-		HASHMAPRes hmap;
-		hmap.insert( make_pair( filename.c_str() , pres ) );
-		m_mapRes.insert( pair< const TCHAR* , HASHMAPRes >( alias , hmap ) );
-	}
+	m_mapRes[alias].insert( make_pair( filename , pres ) );
+
 	return true;
 }
 

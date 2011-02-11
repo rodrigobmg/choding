@@ -16,8 +16,8 @@ private:
 		TEX = 0,
 	};
 
-	typedef stdext::hash_map< const TCHAR* , CBaseRes* >			HASHMAPRes;
-	typedef stdext::hash_map< const TCHAR* , CBaseRes* >::iterator	HASHMAPRes_ITERATOR;	
+	typedef stdext::hash_map< tstring , CBaseRes* >			HASHMAPRes;
+	typedef stdext::hash_map< tstring , CBaseRes* >::iterator	HASHMAPRes_ITERATOR;	
 
 	typedef std::list<tstring>	FILE_LIST;
 	typedef struct RES_STRUCT{
