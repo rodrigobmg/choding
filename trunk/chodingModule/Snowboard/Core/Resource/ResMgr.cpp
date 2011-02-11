@@ -1,7 +1,6 @@
 #include "ResMgr.h"
 
 #include "Type/ResTexture.h"
-#include "../CoreMgr.h"
 #include <algorithm>
 
 CResMrg::CResMrg()
@@ -30,13 +29,13 @@ HRESULT CResMrg::Create( LPDIRECT3DDEVICE9 device )
 
 HRESULT CResMrg::Release()
 {
-	//std::for_each( m_mapRes.begin() , m_mapRes.end() , functor::deleter() );
-	//std::for_each( m_mapAllFilelist.begin() , m_mapAllFilelist.end() , functor::deleter() );
+//	std::for_each( m_mapRes.begin() , m_mapRes.end() , functor::deleter() );
+//	std::for_each( m_mapAllFilelist.begin() , m_mapAllFilelist.end() , functor::deleter() );
 	Clear();
 	return S_OK;
 }
 
-bool CResMrg::isExist( const wchar_t* filename )
+bool CResMrg::isExist( const TCHAR* filename )
 {
 	HASHMAPRes_ITERATOR it = m_mapRes.find( filename );
 	if ( it != m_mapRes.end() )
@@ -55,14 +54,14 @@ CBaseRes*	CResMrg::CreateRes( RES_TYPE eResType )
 	return NULL;
 }
 
-int CResMrg::GetResType( const wchar_t* filename )
+int CResMrg::GetResType( const TCHAR* filename )
 {
 	size_t lensize = wcslen( filename );
 	
-	return lensize;
+	return (int)lensize;
 }
 
-CBaseRes* CResMrg::Get( const wchar_t* filename , bool bforceloading )
+CBaseRes* CResMrg::Get( const TCHAR* filename , bool bforceloading )
 {
 	if ( isExist( filename ) )
 	{
@@ -89,7 +88,7 @@ CBaseRes* CResMrg::Get( const wchar_t* filename , bool bforceloading )
 	return NULL;
 }
 
-bool	CResMrg::loadResforDir( const wchar_t* dirpath , FILE_LIST& filelist , bool bRecursive )
+bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , bool bRecursive )
 {
 	if ( dirpath == NULL )
 		return false;
@@ -97,7 +96,7 @@ bool	CResMrg::loadResforDir( const wchar_t* dirpath , FILE_LIST& filelist , bool
 	WIN32_FIND_DATA fd;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 
-	wstring dirspec( dirpath );
+	tstring dirspec( dirpath );
 	dirspec += L"\\*";
 
 	hFind = FindFirstFile( dirspec.c_str(), &fd);
@@ -113,7 +112,7 @@ bool	CResMrg::loadResforDir( const wchar_t* dirpath , FILE_LIST& filelist , bool
 				&& _tcscmp(fd.cFileName, L".svn")
 				)
 			{
-				wchar_t curpath[MAX_PATH];
+				TCHAR curpath[MAX_PATH];
 				ZeroMemory( curpath , sizeof( curpath ) );
 				wsprintf( curpath , L"%s\\%s" , dirpath , fd.cFileName );
 
@@ -122,14 +121,14 @@ bool	CResMrg::loadResforDir( const wchar_t* dirpath , FILE_LIST& filelist , bool
 		}
 		else if ( fd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY )
 		{
-			wstring wstr( fd.cFileName );
+			tstring wstr( fd.cFileName );
 			size_t pos = wstr.find( L"." );
 			if ( pos > 0 )
 			{
-				wchar_t curpath[MAX_PATH];
+				TCHAR curpath[MAX_PATH];
 				ZeroMemory( curpath , sizeof( curpath ) );
 				wsprintf( curpath , L"%s\\%s" , dirpath , fd.cFileName );
-				wstring wstr( curpath );
+				tstring wstr( curpath );
 				for_each( wstr.begin() , wstr.end() , functor::ToLowerW() );
 				filelist.push_back( wstr );
 			}	
@@ -142,7 +141,7 @@ bool	CResMrg::loadResforDir( const wchar_t* dirpath , FILE_LIST& filelist , bool
 	return (err == ERROR_NO_MORE_FILES);
 }
 
-void CResMrg::CreateList( const wchar_t* alias , const wchar_t* path , const bool brecursive )
+void CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const bool brecursive )
 {	
 	RES_ALL_FILELIST_MAP::iterator it = m_mapAllFilelist.find( path );
 	if ( it == m_mapAllFilelist.end() )
@@ -152,7 +151,7 @@ void CResMrg::CreateList( const wchar_t* alias , const wchar_t* path , const boo
 		if ( !resStruct.filelist.empty() )
 		{
 			resStruct.filelist.sort();
-			m_mapAllFilelist.insert( pair< const wchar_t* , RES_STRUCT >( alias , resStruct ) );
+			m_mapAllFilelist.insert( pair< const TCHAR* , RES_STRUCT >( alias , resStruct ) );
 		}		
 	}
 	else
@@ -162,7 +161,19 @@ void CResMrg::CreateList( const wchar_t* alias , const wchar_t* path , const boo
 	}
 }
 
-HRESULT CResMrg::LoadResfromList( const wchar_t* alias )
+
+void CResMrg::ReleaseResfromList( const TCHAR* alias )
+{
+	HASHMAPRes_ITERATOR it = m_mapRes.find( alias );
+	if ( it != m_mapRes.end() )
+	{
+		SAFE_RELEASE( it->second );
+		m_mapRes.erase( it );
+	}	
+}
+
+
+HRESULT CResMrg::LoadResfromList( const TCHAR* alias )
 {
 	RES_ALL_FILELIST_MAP::iterator itAlllist = m_mapAllFilelist.find( alias );
 	if ( itAlllist == m_mapAllFilelist.end() )
@@ -182,33 +193,42 @@ HRESULT CResMrg::LoadResfromList( const wchar_t* alias )
 	//확장자 구분해서 알아서 맞게끔 로드해서 m_mapRes에 넣어준다.
 	FILE_LIST filelist = stRes.filelist;
 	FILE_LIST::iterator it = filelist.begin();
-	wstring ext;
+	tstring ext;
 	for ( ; it != filelist.end() ; ++it )
 	{
 		size_t poscomma = it->rfind( L"." );
 		ext				= it->substr( poscomma + 1 , it->length() );
-		loadFactory( ext.c_str() , (*it) );
+		if ( !loadFactory( ext.c_str() , (*it) ) )
+			return S_FALSE;
 	}
 
 	stRes.bLoaded = true;
+	return S_OK;
 }
 
-bool CResMrg::loadFactory( const wchar_t* ext , wstring& filepath )
+bool CResMrg::loadFactory( const TCHAR* ext , tstring& filepath )
 {
-	if ( !wcscmp( ext , L"bmp" ) )
+	if ( !_tcscmp( ext , L"bmp" ) )
 	{
 		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath.c_str() ) );
 		if ( ptex == NULL )
 			return S_FALSE;
 
-		wstring wstrpath(filepath);
+		tstring wstrpath(filepath);
 		size_t poscomma  = wstrpath.rfind( L"\\" );
-		wstring filename = wstrpath.substr( poscomma + 1 , wstrpath.length() );
+		tstring filename = wstrpath.substr( poscomma + 1 , wstrpath.length() );
+		if ( isExist( filepath.c_str() ) )
+		{
+			assert( 0 && "키값 중복이 있어서는 안된다." );
+		}
 		m_mapRes.insert( make_pair( filename.c_str() , ptex ) );
+		return true;
 	}
+
+	return false;
 }
 
-CBaseRes* CResMrg::loadTexture( const wchar_t* filepath )
+CBaseRes* CResMrg::loadTexture( const TCHAR* filepath )
 {
 	CResTexture* pRes = new CResTexture;
 	if ( pRes == NULL )
@@ -217,12 +237,14 @@ CBaseRes* CResMrg::loadTexture( const wchar_t* filepath )
 	if ( m_pDevice == NULL )
 		return NULL;
 
-	if ( !wcscmp( filepath , L"" ) )
+	if ( !_tcscmp( filepath , L"" ) )
 		return NULL;
 
 	if ( SUCCEEDED( D3DXCreateTextureFromFile( m_pDevice , filepath , pRes->GetPtr() ) ) )
 	{
 		return pRes;
 	}
+
+	return NULL;
 }
 

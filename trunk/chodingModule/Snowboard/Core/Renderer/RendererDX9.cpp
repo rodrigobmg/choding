@@ -20,12 +20,9 @@ CRendererDX9::~CRendererDX9()
 
 HRESULT CRendererDX9::Release()
 {
-	if ( m_pd3dDevice )
-		m_pd3dDevice->Release();
-	if ( m_pD3D )
-		m_pD3D->Release();
-	if ( m_pVertexBuffer )
-		m_pVertexBuffer->Release();
+	SAFE_RELEASE(m_pd3dDevice);
+	SAFE_RELEASE(m_pD3D);
+	SAFE_RELEASE(m_pVertexBuffer);
 
 	return S_OK;
 }

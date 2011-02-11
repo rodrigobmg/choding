@@ -169,11 +169,11 @@
 			Name="Core"
 			>
 			<File
-				RelativePath=".\Core\CoreMgr.cpp"
+				RelativePath=".\Core\CoreFactory.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Core\CoreMgr.h"
+				RelativePath=".\Core\CoreFactory.h"
 				>
 			</File>
 			<Filter

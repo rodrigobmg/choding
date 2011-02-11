@@ -1,6 +1,6 @@
 #include "Snowboard.h"
 
-#include "../Core/CoreMgr.h"
+#include "../Core/CoreFactory.h"
 #include "../Core/Renderer/RendererDX9.h"
 #include "../Core/Resource/Type/ResTexture.h"
 
@@ -64,14 +64,15 @@ void CSnowboard::DestroyModule()
 
 void CSnowboard::TestFunc()
 {
-	wchar_t curpath[ MAX_PATH ];
+	TCHAR curpath[ MAX_PATH ];
 	GetCurrentDirectory( MAX_PATH, curpath );
-	wchar_t respath[MAX_PATH];
+	TCHAR respath[MAX_PATH];
 	wsprintf( respath , L"%s\\%s" , curpath , L"Resource" );
 
 	if ( m_pResMgr )
 	{
 		m_pResMgr->CreateList( L"test" , respath , 1 );
 		m_pResMgr->LoadResfromList( L"test" );
+		m_pResMgr->ReleaseResfromList( L"test" );
 	}
 }

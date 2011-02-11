@@ -186,10 +186,11 @@ char* search( char* s , char* olds , char* news )
 	return result;
 }
 
-void replace( char* text , char* condition , char* rep )
+char* replace( char* text , char* condition , char* rep )
 {
 
 	char* re = search( text , condition , rep );
+	return re;
 // 	string test = text;
 // 	replace_if(test.begin(), test.end(), bind2nd(equal_to<char>(), condition), rep );
 // 	cout << test << endl;
@@ -230,7 +231,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	char* text = "this pen is a pencil";
 	char* p = text;
 
-	replace( p , "pen" , "1" );
+	printf( "%s" , replace( p , "pen" , "12313123" ) );
 	
 	return 0;
 }

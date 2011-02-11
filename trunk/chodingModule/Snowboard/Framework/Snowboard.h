@@ -2,7 +2,7 @@
 
 #include "Snowboard_stdafx.h"
 
-#include "../Core/CoreMgr.h"
+#include "../Core/CoreFactory.h"
 #include "../Core/Renderer/RendererDX9.h"
 #include "../Core/Resource/ResMgr.h"
 

@@ -1,4 +1,4 @@
-#include "CoreMgr.h"
+#include "CoreFactory.h"
 
 #include "Renderer/RendererDX9.h"
 #include "Resource/ResMgr.h"

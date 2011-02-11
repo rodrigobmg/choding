@@ -19,7 +19,7 @@ private:
 	typedef stdext::hash_map< tstring , CBaseRes* >				HASHMAPRes;
 	typedef stdext::hash_map< tstring , CBaseRes* >::iterator	HASHMAPRes_ITERATOR;
 
-	typedef std::list<wstring>	FILE_LIST;
+	typedef std::list<tstring>	FILE_LIST;
 	typedef struct RES_STRUCT{
 		bool bLoaded;
 		FILE_LIST filelist;
@@ -31,30 +31,31 @@ private:
 	};	
 
 	
-	typedef std::map< const wchar_t* , RES_STRUCT >	RES_ALL_FILELIST_MAP;	
+	typedef std::map< const TCHAR* , RES_STRUCT >	RES_ALL_FILELIST_MAP;	
 
 	HASHMAPRes			m_mapRes;
 	LPDIRECT3DDEVICE9	m_pDevice;
 
 	RES_ALL_FILELIST_MAP	m_mapAllFilelist;
 
-	bool				isExist( const wchar_t* filename );
-	bool				loadResforDir( const wchar_t* dirpath , std::list<wstring>& filename, bool bRecursive );
+	bool				isExist( const TCHAR* filename );
+	bool				loadResforDir( const TCHAR* dirpath , std::list<tstring>& filename, bool bRecursive );
 	
-	bool				loadFactory( const wchar_t* ext , wstring& filename );
+	bool				loadFactory( const TCHAR* ext , tstring& filename );
 
-	CBaseRes*			loadTexture( const wchar_t* filename );
+	CBaseRes*			loadTexture( const TCHAR* filename );
 
 public:
 	CResMrg();
 	virtual ~CResMrg();
 
-	CBaseRes*			Get( const wchar_t* filename , bool bforceloading = false );
+	CBaseRes*			Get( const TCHAR* filename , bool bforceloading = false );
 	CBaseRes*			CreateRes( RES_TYPE eResType );
-	int					GetResType( const wchar_t* filename );	
+	int					GetResType( const TCHAR* filename );	
 
-	void				CreateList( const wchar_t* alias , const wchar_t* path , const bool brecursive );
-	HRESULT				LoadResfromList( const wchar_t* alias );
+	void				CreateList( const TCHAR* alias , const TCHAR* path , const bool brecursive );
+	void				ReleaseResfromList( const TCHAR* alias );
+	HRESULT				LoadResfromList( const TCHAR* alias );
 	
 
 	virtual void		Clear();
