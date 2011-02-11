@@ -58,6 +58,10 @@ void CSnowboard::Update()
 
 void CSnowboard::DestroyModule()
 {
+	if ( m_pRendererDX9 )
+		m_pRendererDX9->Release();
+	if ( m_pResMgr )
+		m_pResMgr->Release();
 }
 
 
@@ -73,6 +77,11 @@ void CSnowboard::TestFunc()
 	{
 		m_pResMgr->CreateList( L"test" , respath , L"bmp;tga;jpg;" , 1 );
 		m_pResMgr->LoadResfromList( L"test" );
-		m_pResMgr->ReleaseResfromList( L"test" );
+
+		m_pResMgr->CreateList( L"tex" , respath , L"bmp;tga;jpg;" , 1 );
+		m_pResMgr->LoadResfromList( L"tex" );
+
+		//m_pResMgr->ReleaseResfromList( L"test" );
+		m_pResMgr->Release();
 	}
 }

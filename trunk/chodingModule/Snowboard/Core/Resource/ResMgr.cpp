@@ -29,11 +29,33 @@ HRESULT CResMrg::Create( LPDIRECT3DDEVICE9 device )
 
 HRESULT CResMrg::Release()
 {
-//	std::for_each( m_mapRes.begin() , m_mapRes.end() , functor::deleter() );
-//	std::for_each( m_mapAllFilelist.begin() , m_mapAllFilelist.end() , functor::deleter() );
+	RES_CONTAINER::iterator itAll = m_mapRes.begin();
+	for ( ; itAll != m_mapRes.end() ;  )
+	{
+		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );
+		m_mapRes.erase( itAll++ );
+	}
+
+	RES_ALL_FILELIST_MAP::iterator itlist = m_mapAllFilelist.begin();
+	for ( ; itlist != m_mapAllFilelist.end() ; )
+	{
+		m_mapAllFilelist.erase( itlist++ );
+	}
+	
 	Clear();
 	return S_OK;
 }
+
+void CResMrg::ReleaseResfromList( const TCHAR* alias )
+{
+	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
+	if ( itAll != m_mapRes.end() )
+	{
+		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );		
+		m_mapRes.erase( itAll );
+	}	
+}
+
 
 CBaseRes* CResMrg::isExist( const TCHAR* alias , const TCHAR* filename )
 {
@@ -155,18 +177,6 @@ void CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* 
 		return;
 	}
 }
-
-
-void CResMrg::ReleaseResfromList( const TCHAR* alias )
-{
-	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
-	if ( itAll != m_mapRes.end() )
-	{
-		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );		
-		m_mapRes.erase( itAll );
-	}	
-}
-
 
 HRESULT CResMrg::LoadResfromList( const TCHAR* alias )
 {
