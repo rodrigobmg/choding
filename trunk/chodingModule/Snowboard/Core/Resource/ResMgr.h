@@ -40,13 +40,28 @@ private:
 	LPDIRECT3DDEVICE9	m_pDevice;
 
 	CBaseRes*			isExist( const TCHAR* alias , const TCHAR* filename );
-	bool				loadResforDir( const TCHAR* dirpath , std::list<tstring>& filename, bool bRecursive );
+	bool				loadResforDir( const TCHAR* dirpath ,
+										std::list<tstring>& filename, 
+										std::list<tstring>& tokenlist , 
+										bool bRecursive 
+										);
 	
-	bool				loadFactory( const TCHAR* alias, const TCHAR* ext , tstring& filename );
+	bool				loadFactory( const TCHAR* alias, 
+										const TCHAR* ext ,
+										tstring& filename 
+										);
 
 	CBaseRes*			loadTexture( const TCHAR* filename );
+	bool				stackdata( const TCHAR* alias , 
+									const TCHAR* path , 
+									CBaseRes* pres 
+									);
+	
+	void				makeToken( const TCHAR* token , 
+									std::list<tstring>& tokenlist , 
+									const TCHAR* delimiters 
+									);
 
-	bool				stackdata( const TCHAR* alias , const TCHAR* path , CBaseRes* pres );
 
 public:
 	CResMrg();
@@ -54,7 +69,11 @@ public:
 
 	CBaseRes*			Get( const TCHAR* alias , const TCHAR* filename );
 
-	void				CreateList( const TCHAR* alias , const TCHAR* path , const bool brecursive );
+	void				CreateList( const TCHAR* alias , 
+									const TCHAR* path , 
+									const TCHAR* token , 
+									const bool brecursive 
+									);
 	void				ReleaseResfromList( const TCHAR* alias );
 	HRESULT				LoadResfromList( const TCHAR* alias );
 	

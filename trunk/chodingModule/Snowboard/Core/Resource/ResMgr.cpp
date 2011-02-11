@@ -54,7 +54,7 @@ CBaseRes* CResMrg::Get( const TCHAR* alias , const TCHAR* filename )
 	return isExist( alias ,filename );
 }
 
-bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , bool bRecursive )
+bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::list<tstring>& tokenlist , bool bRecursive )
 {
 	if ( dirpath == NULL )
 		return false;
@@ -82,7 +82,7 @@ bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , bool b
 				ZeroMemory( curpath , sizeof( curpath ) );
 				wsprintf( curpath , L"%s\\%s" , dirpath , fd.cFileName );
 
-				loadResforDir( curpath , filelist , bRecursive );
+				loadResforDir( curpath , filelist , tokenlist, bRecursive );
 			}
 		}
 		else if ( fd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY )
@@ -96,7 +96,12 @@ bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , bool b
 				wsprintf( curpath , L"%s\\%s" , dirpath , fd.cFileName );
 				tstring wstr( curpath );
 				for_each( wstr.begin() , wstr.end() , functor::ToLower() );
-				filelist.push_back( wstr );
+				
+				size_t poscomma = wstr.rfind( L"." );
+				tstring ext		= wstr.substr( poscomma + 1 , wstr.length() );
+
+				if ( std::binary_search( tokenlist.begin() , tokenlist.end() , ext ) )
+					filelist.push_back( wstr );
 			}	
 		}
 		
@@ -107,13 +112,37 @@ bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , bool b
 	return (err == ERROR_NO_MORE_FILES);
 }
 
-void CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const bool brecursive )
+
+void CResMrg::makeToken( const TCHAR* token , std::list<tstring>& tokenlist , const TCHAR* delimiters )
+{
+	tstring tstrtoken(token);
+	// 맨 첫 글자가 구분자인 경우 무시
+	tstring::size_type lastPos = tstrtoken.find_first_not_of(delimiters, 0);
+	// 구분자가 아닌 첫 글자를 찾는다
+	tstring::size_type pos     = tstrtoken.find_first_of(delimiters, lastPos);
+
+	while ( tstring::npos != pos || tstring::npos != lastPos)
+	{
+		// token을 찾았으니 vector에 추가한다
+		tokenlist.push_back( tstrtoken.substr(lastPos, pos - lastPos) );
+		// 구분자를 뛰어넘는다.  "not_of"에 주의하라
+		lastPos = tstrtoken.find_first_not_of( delimiters, pos);
+		// 다음 구분자가 아닌 글자를 찾는다
+		pos = tstrtoken.find_first_of(delimiters, lastPos);
+	}
+
+	tokenlist.sort();
+}
+
+void CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* token , const bool brecursive )
 {	
 	RES_ALL_FILELIST_MAP::iterator it = m_mapAllFilelist.find( path );
 	if ( it == m_mapAllFilelist.end() )
 	{
+		std::list<tstring> tokenlist;
+		makeToken( token , tokenlist , L";" );
 		RES_STRUCT resStruct;
-		loadResforDir( path , resStruct.filelist , brecursive );
+		loadResforDir( path , resStruct.filelist , tokenlist , brecursive );
 		if ( !resStruct.filelist.empty() )
 		{
 			resStruct.filelist.sort();

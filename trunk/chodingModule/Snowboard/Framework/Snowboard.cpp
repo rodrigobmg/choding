@@ -71,7 +71,7 @@ void CSnowboard::TestFunc()
 
 	if ( m_pResMgr )
 	{
-		m_pResMgr->CreateList( L"test" , respath , 1 );
+		m_pResMgr->CreateList( L"test" , respath , L"bmp;tga;jpg;" , 1 );
 		m_pResMgr->LoadResfromList( L"test" );
 		m_pResMgr->ReleaseResfromList( L"test" );
 	}
