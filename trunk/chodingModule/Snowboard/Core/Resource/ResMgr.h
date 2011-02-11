@@ -28,6 +28,10 @@ private:
 			bLoaded = false;
 			filelist.clear();
 		}
+		~RES_STRUCT()
+		{
+			filelist.clear();
+		}
 	};	
 	typedef std::map< const TCHAR* , RES_STRUCT >	RES_ALL_FILELIST_MAP;	
 	
@@ -75,6 +79,7 @@ public:
 									const bool brecursive 
 									);
 	void				ReleaseResfromList( const TCHAR* alias );
+	void				ReleaseResList( const TCHAR* alias );
 	HRESULT				LoadResfromList( const TCHAR* alias );
 	
 

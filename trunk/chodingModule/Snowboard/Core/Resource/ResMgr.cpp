@@ -54,8 +54,30 @@ void CResMrg::ReleaseResfromList( const TCHAR* alias )
 		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );		
 		m_mapRes.erase( itAll );
 	}	
+
+	RES_ALL_FILELIST_MAP::iterator itList = m_mapAllFilelist.find( alias );
+	if ( itList != m_mapAllFilelist.end() )
+	{
+		itList->second.bLoaded = false;
+	}
 }
 
+void CResMrg::ReleaseResList( const TCHAR* alias )
+{
+	RES_ALL_FILELIST_MAP::iterator itList = m_mapAllFilelist.find( alias );
+	if ( itList != m_mapAllFilelist.end() )
+	{
+		if( itList->second.bLoaded == true )
+		{
+			assert( 0 && "메모리에 로드중인 리스트는 지울수 없다. 메모리에서 해제한후 지워라");			
+			return;
+		}
+		else
+		{
+			m_mapAllFilelist.erase( itList );
+		}
+	}
+}
 
 CBaseRes* CResMrg::isExist( const TCHAR* alias , const TCHAR* filename )
 {
