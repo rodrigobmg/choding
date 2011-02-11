@@ -11,6 +11,7 @@
 #include <String>
 #include <Strsafe.h>
 
+#include "../Utility/Utility.h"
 
 #define CORE_RENDERER		L"RendererCore"
 #define CORE_CAMERA			L"CameraCore"

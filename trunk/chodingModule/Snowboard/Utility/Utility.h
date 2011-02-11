@@ -33,3 +33,61 @@ namespace util
 	}// end of namespace string
 }// end of namespace util
 
+namespace functor
+{
+	struct deleter{
+		template<typename T> void operator() (T*& t){
+			if(t){delete t; t=NULL;}
+		}
+		template<typename KEY, typename VALUE> 
+		void operator() (std::pair<const KEY, VALUE>& t){
+			if(t.second){delete t.second; t.second=NULL;}
+		}
+	};
+	struct array_deleter{
+		template<typename T> void operator() (T*& t){
+			if(t){delete [] t; t=NULL;}
+		}
+		template<typename KEY, typename VALUE> 
+		void operator() (std::pair<const KEY, VALUE>& t){
+			if(t.second){delete [] t.second; t.second=NULL;}
+		}
+	};
+
+	struct update{
+		template<typename T> void operator() (T*& t){
+			if(t){ t->Update(); }
+		}
+		template<typename KEY, typename VALUE> 
+		void operator() (std::pair<const KEY, VALUE>& t){
+			if(t.second){ t.second.Update(); }
+		}
+	};
+
+	struct release{
+		template<typename T> void operator() (T*& t){
+			if(t){ t->Release(); }
+		}
+		template<typename KEY, typename VALUE> 
+		void operator() (std::pair<const KEY, VALUE>& t){
+			if(t.second){ t.second.Release(); }
+		}
+	};
+
+	struct ToLowerA{ 
+		void operator() (char& c) const { c = static_cast<char>(tolower(c)); }
+	};
+
+	struct ToLowerW{ 
+		void operator() (wchar_t& c) const { c = static_cast<wchar_t>(tolower(c)); }
+	};
+
+	struct ToUpperA{
+		void operator() (char& c ) const { c= static_cast<char>(toupper(c)); }
+	};
+
+	struct ToUpperW{
+		void operator() (wchar_t& c ) const { c= static_cast<wchar_t>(toupper(c)); }
+	};
+}// end of namespace functor
+

@@ -64,13 +64,14 @@ void CSnowboard::DestroyModule()
 
 void CSnowboard::TestFunc()
 {
-	if ( m_pResMgr )
-		m_pResMgr->Get( L"banana.bmp" , true );
+	wchar_t curpath[ MAX_PATH ];
+	GetCurrentDirectory( MAX_PATH, curpath );
+	wchar_t respath[MAX_PATH];
+	wsprintf( respath , L"%s\\%s" , curpath , L"Resource" );
 
-	CResTexture* p = dynamic_cast< CResTexture*> ( m_pResMgr->Get( L"banana.bmp" ) );
-	LPDIRECT3DDEVICE9 temp;
-	if ( p )
-	{		
-		p->Get()->GetDevice( &temp );
+	if ( m_pResMgr )
+	{
+		m_pResMgr->CreateList( L"test" , respath , 1 );
+		m_pResMgr->LoadResfromList( L"test" );
 	}
 }
