@@ -11,6 +11,10 @@ private:
 public:
 	CResTexture();
 	virtual ~CResTexture();
+	CResTexture& operator=(const CResTexture& rhs)
+	{
+		m_pTexture = rhs.m_pTexture;
+	}
 
 	LPDIRECT3DTEXTURE9			Get() { return m_pTexture; }
 	LPDIRECT3DTEXTURE9*			GetPtr() { return &m_pTexture; }

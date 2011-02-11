@@ -35,57 +35,23 @@ HRESULT CResMrg::Release()
 	return S_OK;
 }
 
-bool CResMrg::isExist( const TCHAR* filename )
+CBaseRes* CResMrg::isExist( const TCHAR* alias , const TCHAR* filename )
 {
-	HASHMAPRes_ITERATOR it = m_mapRes.find( filename );
-	if ( it != m_mapRes.end() )
-		return true;
-	else
-		return false;
-}
-
-CBaseRes*	CResMrg::CreateRes( RES_TYPE eResType )
-{
-	if ( eResType == TEX )
+	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
+	if ( itAll != m_mapRes.end() )
 	{
-		return new CResTexture;
+		HASHMAPRes_ITERATOR it = itAll->second.find( filename );
+		if ( it != itAll->second.end() )
+			return it->second;
 	}
 
 	return NULL;
 }
 
-int CResMrg::GetResType( const TCHAR* filename )
+
+CBaseRes* CResMrg::Get( const TCHAR* alias , const TCHAR* filename )
 {
-	size_t lensize = wcslen( filename );
-	
-	return (int)lensize;
-}
-
-CBaseRes* CResMrg::Get( const TCHAR* filename , bool bforceloading )
-{
-	if ( isExist( filename ) )
-	{
-		HASHMAPRes_ITERATOR it = m_mapRes.find( filename );
-		return it->second;
-	}
-
-	//bforceloading이 ture면 다시 로딩해서 읽어 온다. 
-	if ( bforceloading == false )
-	{
-		return NULL;
-	}
-	else
-	{
-		HASHMAPRes_ITERATOR it = m_mapRes.find( filename );
-		if ( it == m_mapRes.end() )
-		{
-		}
-		else
-		{
-		}
-	}
-
-	return NULL;
+	return isExist( alias ,filename );
 }
 
 bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , bool bRecursive )
@@ -129,7 +95,7 @@ bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , bool b
 				ZeroMemory( curpath , sizeof( curpath ) );
 				wsprintf( curpath , L"%s\\%s" , dirpath , fd.cFileName );
 				tstring wstr( curpath );
-				for_each( wstr.begin() , wstr.end() , functor::ToLowerW() );
+				for_each( wstr.begin() , wstr.end() , functor::ToLower() );
 				filelist.push_back( wstr );
 			}	
 		}
@@ -164,11 +130,11 @@ void CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const bool br
 
 void CResMrg::ReleaseResfromList( const TCHAR* alias )
 {
-	HASHMAPRes_ITERATOR it = m_mapRes.find( alias );
-	if ( it != m_mapRes.end() )
+	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
+	if ( itAll != m_mapRes.end() )
 	{
-		SAFE_RELEASE( it->second );
-		m_mapRes.erase( it );
+		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );		
+		m_mapRes.erase( itAll );
 	}	
 }
 
@@ -198,7 +164,7 @@ HRESULT CResMrg::LoadResfromList( const TCHAR* alias )
 	{
 		size_t poscomma = it->rfind( L"." );
 		ext				= it->substr( poscomma + 1 , it->length() );
-		if ( !loadFactory( ext.c_str() , (*it) ) )
+		if ( !loadFactory( alias , ext.c_str() , (*it) ) )
 			return S_FALSE;
 	}
 
@@ -206,26 +172,45 @@ HRESULT CResMrg::LoadResfromList( const TCHAR* alias )
 	return S_OK;
 }
 
-bool CResMrg::loadFactory( const TCHAR* ext , tstring& filepath )
+bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , tstring& filepath )
 {
 	if ( !_tcscmp( ext , L"bmp" ) )
 	{
 		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath.c_str() ) );
 		if ( ptex == NULL )
 			return S_FALSE;
-
-		tstring wstrpath(filepath);
-		size_t poscomma  = wstrpath.rfind( L"\\" );
-		tstring filename = wstrpath.substr( poscomma + 1 , wstrpath.length() );
-		if ( isExist( filepath.c_str() ) )
-		{
-			assert( 0 && "키값 중복이 있어서는 안된다." );
-		}
-		m_mapRes.insert( make_pair( filename.c_str() , ptex ) );
-		return true;
+		
+		bool bresult = true;
+		bresult = stackdata( alias , filepath.c_str() , ptex );		
+		return bresult;
 	}
 
 	return false;
+}
+
+bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* pres )
+{
+	tstring wstrpath(filepath);
+	size_t poscomma  = wstrpath.rfind( L"\\" );
+	tstring filename = wstrpath.substr( poscomma + 1 , wstrpath.length() );
+	if ( isExist( alias , filename.c_str() ) )
+	{
+		assert( 0 && "키값 중복이 있어서는 안된다." );
+		return false;
+	}
+
+	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
+	if ( itAll != m_mapRes.end() )
+	{
+		itAll->second.insert( pair< const TCHAR* , CBaseRes*>( filename.c_str() , pres ) );
+	}
+	else
+	{
+		HASHMAPRes hmap;
+		hmap.insert( make_pair( filename.c_str() , pres ) );
+		m_mapRes.insert( pair< const TCHAR* , HASHMAPRes >( alias , hmap ) );
+	}
+	return true;
 }
 
 CBaseRes* CResMrg::loadTexture( const TCHAR* filepath )

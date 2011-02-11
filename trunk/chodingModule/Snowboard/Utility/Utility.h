@@ -74,20 +74,8 @@ namespace functor
 		}
 	};
 
-	struct ToLowerA{ 
-		void operator() (char& c) const { c = static_cast<char>(tolower(c)); }
-	};
-
-	struct ToLowerW{ 
-		void operator() (wchar_t& c) const { c = static_cast<wchar_t>(tolower(c)); }
-	};
-
-	struct ToUpperA{
-		void operator() (char& c ) const { c= static_cast<char>(toupper(c)); }
-	};
-
-	struct ToUpperW{
-		void operator() (wchar_t& c ) const { c= static_cast<wchar_t>(toupper(c)); }
+	struct ToLower{ 
+		void operator() (TCHAR& c) const { c = static_cast<TCHAR>(tolower(c)); }
 	};
 }// end of namespace functor
 
