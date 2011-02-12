@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="E:\Project\choding\chodingModule\Snowboard\Framework;../../chodingModule\Lib;Main/;./"
+				AdditionalIncludeDirectories="../../chodingModule\Lib;Main/;./"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
