@@ -76,12 +76,12 @@ void CSnowboard::TestFunc()
 	if ( m_pResMgr )
 	{
 		m_pResMgr->CreateList( L"test" , respath , L"bmp;tga;jpg;" , 1 );
-		m_pResMgr->LoadResfromList( L"test" );
+		m_pResMgr->LoadRes( L"test" );
 
-		m_pResMgr->CreateList( L"tex" , respath , L"bmp;tga;jpg;" , 1 );
-		m_pResMgr->LoadResfromList( L"tex" );
+		m_pResMgr->CreateList( L"tex" , respath , L"" , 1 );
+		m_pResMgr->LoadRes( L"tex" );
 
-		//m_pResMgr->ReleaseResfromList( L"test" );
+		//m_pResMgr->ReleaseRes( L"test" );
 		m_pResMgr->Release();
 	}
 }

@@ -5,7 +5,7 @@
 
 namespace util
 {
-	namespace conversion_string
+	namespace string
 	{
 		enum eCodePage{
 			Japan = 932,		// ÀÏº»¾î

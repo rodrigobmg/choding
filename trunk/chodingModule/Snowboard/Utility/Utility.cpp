@@ -2,7 +2,7 @@
 
 namespace util
 {
-	namespace conversion_string
+	namespace string
 	{
 		//---------------------------------------------------------------------------------------------
 		// MBCS -> UNICODE

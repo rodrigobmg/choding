@@ -78,9 +78,9 @@ public:
 									const TCHAR* token , 
 									const bool brecursive 
 									);
-	void				ReleaseResfromList( const TCHAR* alias );
-	void				ReleaseResList( const TCHAR* alias );
-	HRESULT				LoadResfromList( const TCHAR* alias );
+	void				ReleaseRes( const TCHAR* alias );
+	void				ReleaseList( const TCHAR* alias );
+	HRESULT				LoadRes( const TCHAR* alias );
 	
 
 	virtual void		Clear();

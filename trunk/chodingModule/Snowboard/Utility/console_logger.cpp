@@ -2,7 +2,7 @@
 #include "console_logger.h"
 #include <tchar.h>
 
-namespace a2
+namespace util
 {
 	namespace PRIVATE
 	{
@@ -51,13 +51,13 @@ namespace a2
 
 	void ConsoleLogger::Clear()
 	{
-		SCOPE_LOCK(lock_);
+//		SCOPE_LOCK(lock_);
 		vClear();
 	}
 
 	void ConsoleLogger::WriteString( std::wstring const & msg )
 	{
-		SCOPE_LOCK(lock_);
+//		SCOPE_LOCK(lock_);
 		vWriteMsg(msg.c_str(), (uint32_t)msg.length());
 	}
 
@@ -76,7 +76,7 @@ namespace a2
 
 		if(writen < BUFF_SIZE)
 		{
-			SCOPE_LOCK(lock_);
+//			SCOPE_LOCK(lock_);
 			vWriteMsg(buff, writen);
 		}
 		else
@@ -89,7 +89,7 @@ namespace a2
 			const color_t RESTORE_FG_COLR = foreground_color_;
 			const color_t RESTORE_BG_COLR = background_color_;
 
-			SCOPE_LOCK(lock_);
+//			SCOPE_LOCK(lock_);
 			vUpdateColr(HI_RED, BLACK);
 			vWriteMsg(ERR_MSG, ERR_MSG_LEN);
 			vUpdateColr(RESTORE_FG_COLR, RESTORE_BG_COLR);
@@ -99,7 +99,7 @@ namespace a2
 
 	void ConsoleLogger::SetColor( color_t fg_color, color_t bg_color )
 	{
-		SCOPE_LOCK(lock_);
+//		SCOPE_LOCK(lock_);
 		vUpdateColr(fg_color, bg_color);
 	}
 
@@ -176,7 +176,7 @@ namespace a2
 			wmemset ((wchar_t*)str, L' ', LEN);
 
 			DWORD writen = 0 ;
-			VERIFY(WriteConsole( handle_, str, LEN, &writen, NULL ));
+	//		VERIFY(WriteConsole( handle_, str, LEN, &writen, NULL ));
 			ASSERT(LEN == writen);
 
 			_freea(str);
@@ -185,7 +185,7 @@ namespace a2
 
 	void ConsoleLogger::SetTitle( wchar_t const * title )
 	{
-		SCOPE_LOCK(lock_);
+//		SCOPE_LOCK(lock_);
 		vSetTitle(title);
 	}
 
@@ -207,4 +207,5 @@ namespace a2
 			len = strlen(msg);
 		vWriteMsg(msg, len);
 	}
-}//namespace a2
+
+}

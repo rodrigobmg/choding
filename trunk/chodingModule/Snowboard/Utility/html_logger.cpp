@@ -1,9 +1,8 @@
 
 #include "html_logger.h"
-#include <tchar.h>
-#include "common_util.h"
+#include "../Framework/Snowboard_stdafx.h"
 
-namespace a2
+namespace util
 {
 
 	HTML_Logger::HTML_Logger(wchar_t const * fname)
@@ -12,14 +11,14 @@ namespace a2
 		, buff_(NULL)
 	{
 		if (fname) {
-			SCOPE_LOCK(lock_);
+			//SCOPE_LOCK(lock_);
 			vInit(fname);
 		}
 	}
 
 	HTML_Logger::~HTML_Logger()
 	{
-		SCOPE_LOCK(lock_);
+		//SCOPE_LOCK(lock_);
 		vFlush();
 		vClose();
 	}
@@ -29,7 +28,7 @@ namespace a2
 		if (0xffffffff == len)
 			len = wcslen(msg);
 
-		SCOPE_LOCK( lock_ );
+	//	SCOPE_LOCK( lock_ );
 		vWrite (msg, len);
 		vWrite(L"<br>\n", 5);
 	}
@@ -39,7 +38,7 @@ namespace a2
 		if (0xffffffff == len)
 			len = strlen(msg);
 
-		SCOPE_LOCK( lock_ );
+//		SCOPE_LOCK( lock_ );
 		if (vCnvtMB2W(msg, len)) {
 			vWrite (buff_, len);
 			vWrite(L"<br>\n", 5);
@@ -48,7 +47,7 @@ namespace a2
 
 	void HTML_Logger::LogString( wstring const & str )
 	{
-		SCOPE_LOCK( lock_ );
+	//	SCOPE_LOCK( lock_ );
 		vWrite(str.c_str(), str.length());
 		vWrite(L"<br>\n", 5);
 	}
@@ -69,7 +68,7 @@ namespace a2
 		{
 			wcscpy_s(buff+length, 6, L"<br>\n");
 
-			SCOPE_LOCK( lock_ );
+		//	SCOPE_LOCK( lock_ );
 			vWrite(buff,length+5);
 		}
 	}
@@ -81,13 +80,13 @@ namespace a2
 		ASSERT(-1 != writen);
 
 		if (-1 != writen) {
-			SCOPE_LOCK( lock_ );
+		//	SCOPE_LOCK( lock_ );
 			vWrite(buff,writen);
 		}
 	}
 	void HTML_Logger::EndBlock()
 	{
-		SCOPE_LOCK( lock_ );
+	//	SCOPE_LOCK( lock_ );
 		vWrite(L"</ul><br>\n",10);
 	}
 
@@ -102,13 +101,13 @@ namespace a2
 		ASSERT(-1 != writen);
 
 		if (-1 != writen) {
-			SCOPE_LOCK( lock_ );
+	//		SCOPE_LOCK( lock_ );
 			vWrite(buff,writen);
 		}
 	}
 	void HTML_Logger::EndFont()
 	{
-		SCOPE_LOCK( lock_ );
+	//	SCOPE_LOCK( lock_ );
 		vWrite(L"</font>\n",8);
 	}
 
@@ -148,7 +147,7 @@ namespace a2
 
 	bool HTML_Logger::Init( wchar_t const * fname )
 	{
-		SCOPE_LOCK(lock_);
+	//	SCOPE_LOCK(lock_);
 		return vInit(fname);
 	}
 

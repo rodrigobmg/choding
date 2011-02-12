@@ -1,9 +1,10 @@
 #pragma once
 
-#include "lock.h"
-#include "singleton.h"
+#include "Singleton.h"
+#include "../Framework/Snowboard_stdafx.h"
+#include <wtypes.h>
 
-namespace a2
+namespace util
 {
 	namespace eConsolColor
 	{
@@ -32,9 +33,9 @@ namespace a2
 			NUM			,
 		};
 	}
-	class ConsoleLogger : public Singleton<ConsoleLogger> 
+	class ConsoleLogger : public CSingleton<ConsoleLogger> 
 	{
-		friend class storage_t;
+	//	friend class storage_t;
 		typedef eConsolColor::Enum	color_t;
 
 		HANDLE						handle_;
@@ -43,7 +44,7 @@ namespace a2
 		color_t						background_color_;
 		long __declspec(align(4))	depth_;
 
-		Lock						lock_;
+		//Lock						lock_;
 
 		ConsoleLogger(wchar_t const* title=L"dbg_consol");
 	public:
@@ -76,11 +77,11 @@ namespace a2
 	{
 		ConsoleLogBlock(LPCWSTR block_name)
 		{
-			::a2::ConsoleLogger::getInstance().StartBlock(block_name);
+			::util::ConsoleLogger::getInstance().StartBlock(block_name);
 		}
 		~ConsoleLogBlock()
 		{
-			::a2::ConsoleLogger::getInstance().EndBlock();
+			::util::ConsoleLogger::getInstance().EndBlock();
 		}
 	};
 }//namespace a2

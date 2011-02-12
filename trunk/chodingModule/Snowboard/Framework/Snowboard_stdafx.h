@@ -34,5 +34,6 @@
 #define SAFE_DELETE_ARRAY(v) { if(v) { delete[] v; v = NULL; } }
 #define SAFE_RELEASE(v) {if(v){v->Release(); } }
 
+#define ASSERT( exp )	assert( exp )
 using namespace std;
 typedef basic_string<TCHAR> tstring;

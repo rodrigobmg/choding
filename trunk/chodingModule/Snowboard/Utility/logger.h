@@ -128,31 +128,30 @@
 
 #endif //defined(_LOGGER_ON_)
 
-#include "a2_type.h"
-#include "singleton.h"
+#include "Singleton.h"
 #include "html_logger.h"
 #include "console_logger.h"
 
-namespace a2
+namespace util
 {
 	class ConsoleLogger;
 	class HTML_Logger;
 
-	class Logger : public Singleton<Logger>
+	class Logger : public CSingleton<Logger>
 	{
 
-		USING_SINGLETON(Logger);
+		//USING_SINGLETON(Logger);
 
-		typedef std::wstring wstring;
+		//typedef std::wstring wstring;
 
 	public:
 
 		struct Block {
 			Block (wchar_t const * block_name) { 
-				a2::Logger::getInstance().StartBlock(block_name); 
+				util::Logger::getInstance().StartBlock(block_name); 
 			}
 			~Block () {
-				a2::Logger::getInstance().EndBlock();
+				util::Logger::getInstance().EndBlock();
 			}
 		};
 

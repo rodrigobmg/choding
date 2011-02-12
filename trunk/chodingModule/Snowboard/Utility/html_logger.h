@@ -1,8 +1,8 @@
 #pragma once
 
-#include "lock.h"
+#include "../Framework/Snowboard_stdafx.h"
 
-namespace a2
+namespace util
 {
 	namespace eTextColor
 	{
@@ -24,13 +24,13 @@ namespace a2
 	///< gpg4 1.2
 	class HTML_Logger
 	{
-		typedef std::wstring		wstring;
+		//typedef std::wstring		wstring;
 		static const int BUFF_SIZE_STEP = 1024;
 
 		FILE *		fp_;
 		size_t		buffSize_;
 		wchar_t*	buff_;
-		Lock		lock_;
+		//Lock		lock_;
 	public:
 		explicit HTML_Logger(wchar_t const * fname = NULL);
 		~HTML_Logger();
@@ -60,7 +60,7 @@ namespace a2
 	};
 
 	namespace PRIVATE{HTML_Logger & GlobalLogger();};
-	struct LogBlock : noncopyable
+	struct LogBlock 
 	{
 		explicit LogBlock(wchar_t const * block_name=L"block")
 		{
@@ -71,4 +71,4 @@ namespace a2
 			PRIVATE::GlobalLogger().EndBlock();
 		};
 	};
-}//namespace a2
+}//namespace util

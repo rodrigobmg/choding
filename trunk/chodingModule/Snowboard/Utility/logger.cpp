@@ -1,6 +1,6 @@
 
 #include "logger.h"
-#include "common_util.h"
+#include "../Framework/Snowboard_stdafx.h"
 
 #include <tchar.h>
 #pragma warning(push)
@@ -8,8 +8,9 @@
 #include <mmsystem.h>
 #pragma warning(pop)
 #include <Windows.h>
+#include "logger.h"
 
-namespace a2
+namespace util
 {
 	Logger::Logger()
 		: pConsole_(NULL)
@@ -362,4 +363,4 @@ namespace a2
 		if(pHTML_)
 			pHTML_->SetFont(L"Courier", 2, eTextColor::ELC_YELLOW);
 	}
-}//namespace a2
+}//namespace util

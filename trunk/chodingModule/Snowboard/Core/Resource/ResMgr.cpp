@@ -46,7 +46,7 @@ HRESULT CResMrg::Release()
 	return S_OK;
 }
 
-void CResMrg::ReleaseResfromList( const TCHAR* alias )
+void CResMrg::ReleaseRes( const TCHAR* alias )
 {
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
@@ -62,7 +62,7 @@ void CResMrg::ReleaseResfromList( const TCHAR* alias )
 	}
 }
 
-void CResMrg::ReleaseResList( const TCHAR* alias )
+void CResMrg::ReleaseList( const TCHAR* alias )
 {
 	RES_ALL_FILELIST_MAP::iterator itList = m_mapAllFilelist.find( alias );
 	if ( itList != m_mapAllFilelist.end() )
@@ -200,7 +200,7 @@ void CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* 
 	}
 }
 
-HRESULT CResMrg::LoadResfromList( const TCHAR* alias )
+HRESULT CResMrg::LoadRes( const TCHAR* alias )
 {
 	RES_ALL_FILELIST_MAP::iterator itAlllist = m_mapAllFilelist.find( alias );
 	if ( itAlllist == m_mapAllFilelist.end() )
