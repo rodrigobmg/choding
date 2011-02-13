@@ -73,7 +73,7 @@ public:
 
 	CBaseRes*			Get( const TCHAR* alias , const TCHAR* filename );
 
-	void				CreateList( const TCHAR* alias , 
+	bool				CreateList( const TCHAR* alias , 
 									const TCHAR* path , 
 									const TCHAR* token , 
 									const bool brecursive 

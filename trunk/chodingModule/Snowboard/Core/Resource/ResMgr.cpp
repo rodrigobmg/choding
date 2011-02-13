@@ -178,25 +178,32 @@ void CResMrg::makeToken( const TCHAR* token , std::list<tstring>& tokenlist , co
 	tokenlist.sort();
 }
 
-void CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* token , const bool brecursive )
+bool CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* token , const bool brecursive )
 {	
 	RES_ALL_FILELIST_MAP::iterator it = m_mapAllFilelist.find( path );
 	if ( it == m_mapAllFilelist.end() )
 	{
 		std::list<tstring> tokenlist;
 		makeToken( token , tokenlist , L";" );
+		if ( tokenlist.empty() )
+		{
+			ASSERT( !"토큰리스트에 값이 하나도 없다." );
+			return false;
+		}
+
 		RES_STRUCT resStruct;
 		loadResforDir( path , resStruct.filelist , tokenlist , brecursive );
 		if ( !resStruct.filelist.empty() )
 		{
 			resStruct.filelist.sort();
 			m_mapAllFilelist.insert( pair< const TCHAR* , RES_STRUCT >( alias , resStruct ) );
-		}		
+			return true;
+		}
 	}
 	else
 	{
 		assert( 0 && " 중복 삽입 " );
-		return;
+		return false;
 	}
 }
 
@@ -209,7 +216,7 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
 		return S_FALSE;
 	}
 
-	RES_STRUCT stRes = itAlllist->second;
+	RES_STRUCT& stRes = itAlllist->second;
 
 	if ( stRes.bLoaded == true )
 	{

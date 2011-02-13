@@ -75,11 +75,15 @@ void CSnowboard::TestFunc()
 
 	if ( m_pResMgr )
 	{
-		m_pResMgr->CreateList( L"test" , respath , L"bmp;tga;jpg;" , 1 );
+		if ( m_pResMgr->CreateList( L"test" , respath , L"bmp;tga;jpg;" , 1 ) )
+			m_pResMgr->LoadRes( L"test" );
+
+		// 중복 로드 에러 체크 그냥 무시~~
 		m_pResMgr->LoadRes( L"test" );
 
-		m_pResMgr->CreateList( L"tex" , respath , L"" , 1 );
-		m_pResMgr->LoadRes( L"tex" );
+		// 에러 체크용 경고창은 그냥 넘겨 주세요.
+		if ( m_pResMgr->CreateList( L"tex" , respath , L"" , 1 ) )
+			m_pResMgr->LoadRes( L"tex" );
 
 		//m_pResMgr->ReleaseRes( L"test" );
 		m_pResMgr->Release();
