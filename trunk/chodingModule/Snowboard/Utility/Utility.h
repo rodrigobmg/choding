@@ -60,7 +60,7 @@ namespace functor
 		}
 		template<typename KEY, typename VALUE> 
 		void operator() (std::pair<const KEY, VALUE>& t){
-			if(t.second){ t.second.Update(); }
+			if(t.second){ t.second->Update(); }
 		}
 	};
 
@@ -70,7 +70,7 @@ namespace functor
 		}
 		template<typename KEY, typename VALUE> 
 		void operator() (std::pair<const KEY, VALUE>& t){
-			if(t.second){ t.second.Release(); }
+			if(t.second){ t.second->Release(); }
 		}
 	};
 

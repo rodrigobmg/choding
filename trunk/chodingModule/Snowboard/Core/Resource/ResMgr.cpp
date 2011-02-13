@@ -32,7 +32,7 @@ HRESULT CResMrg::Release()
 	RES_CONTAINER::iterator itAll = m_mapRes.begin();
 	for ( ; itAll != m_mapRes.end() ;  )
 	{
-		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );
+		for_each( itAll->second.begin() , itAll->second.end() , functor::release() );
 		m_mapRes.erase( itAll++ );
 	}
 

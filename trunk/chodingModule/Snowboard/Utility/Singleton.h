@@ -1,4 +1,6 @@
+
 #pragma once
+#include <assert.h>
 
 template < typename T > 
 class CSingleton
@@ -25,7 +27,7 @@ public:
 		ms_Singleton = new T;
 	}
 
-	static void DestroySingleton()
+	static void ReleaseSingleton()
 	{
 		delete ms_Singleton;
 		ms_Singleton = NULL;
@@ -44,5 +46,3 @@ public:
 
 template<typename T> 
 T* CSingleton< T >::ms_Singleton = 0;
-
-#endif
