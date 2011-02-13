@@ -79,6 +79,7 @@ void CSnowboard::TestFunc()
 			m_pResMgr->LoadRes( L"test" );
 
 		// 중복 로드 에러 체크 그냥 무시~~
+		m_pResMgr->ReleaseRes( L"test" );
 		m_pResMgr->LoadRes( L"test" );
 
 		// 에러 체크용 경고창은 그냥 넘겨 주세요.
@@ -86,6 +87,6 @@ void CSnowboard::TestFunc()
 			m_pResMgr->LoadRes( L"tex" );
 
 		//m_pResMgr->ReleaseRes( L"test" );
-		m_pResMgr->Release();
+		//m_pResMgr->Release();
 	}
 }
