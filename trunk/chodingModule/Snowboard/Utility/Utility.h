@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include "../Framework/Snowboard_stdafx.h"
-
 namespace util
 {
 	namespace string
@@ -36,6 +34,18 @@ namespace util
 		std::string make_string(const char * fmt, ...);
 		bool str2bool (wchar_t const * s);
 	}// end of namespace string
+
+	///! from boost::noncopyable
+	class noncopyable
+	{
+	protected:
+		noncopyable() {}
+		~noncopyable() {}
+	private:  // emphasize the following members are private
+		noncopyable( const noncopyable& );
+		const noncopyable& operator=( const noncopyable& );
+	};
+
 }// end of namespace util
 
 namespace functor

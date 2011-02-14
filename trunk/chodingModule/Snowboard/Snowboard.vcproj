@@ -253,31 +253,15 @@
 			Name="Utility"
 			>
 			<File
-				RelativePath=".\Utility\console_logger.cpp"
+				RelativePath=".\Utility\lock.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Utility\console_logger.h"
+				RelativePath=".\Utility\lock.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Utility\html_logger.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Utility\html_logger.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Utility\logger.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Utility\logger.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Utility\Singleton.h"
+				RelativePath=".\Utility\singleton.h"
 				>
 			</File>
 			<File
@@ -288,6 +272,42 @@
 				RelativePath=".\Utility\Utility.h"
 				>
 			</File>
+			<Filter
+				Name="Log"
+				>
+				<File
+					RelativePath=".\Utility\Log\console_logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\console_logger.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\html_logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\html_logger.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\logger.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\output_logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\output_logger.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

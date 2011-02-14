@@ -128,7 +128,7 @@
 
 #endif //defined(_LOGGER_ON_)
 
-#include "Singleton.h"
+#include "../singleton.h"
 #include "html_logger.h"
 #include "console_logger.h"
 
@@ -137,16 +137,13 @@ namespace util
 	class ConsoleLogger;
 	class HTML_Logger;
 
-	class Logger : public CSingleton<Logger>
+	class Logger : public Singleton<Logger>
 	{		
-		//USING_SINGLETON(Logger);
+		USING_SINGLETON(Logger);
 
-		//typedef std::wstring wstring;
+		typedef std::wstring wstring;
 
 	public:
-
-		Logger();
-		~Logger();
 
 		struct Block {
 			Block (wchar_t const * block_name) { 

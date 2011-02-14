@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../Framework/Snowboard_stdafx.h"
 
 namespace util
@@ -24,7 +23,7 @@ namespace util
 	///< gpg4 1.2
 	class HTML_Logger
 	{
-		//typedef std::wstring		wstring;
+		typedef std::wstring		wstring;
 		static const int BUFF_SIZE_STEP = 1024;
 
 		FILE *		fp_;

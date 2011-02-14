@@ -11,6 +11,8 @@
 #include <Strsafe.h>
 
 #include "../Utility/Utility.h"
+#include "../Utility/Log/logger.h"
+
 
 #define CORE_RENDERER		L"RendererCore"
 #define CORE_CAMERA			L"CameraCore"
@@ -34,6 +36,26 @@
 #define SAFE_RELEASE(v) {if(v){v->Release(); } }
 
 #define ASSERT( exp )	assert( exp )
+
+#define __SLASH(x)	/##x
+#define __DOUBLE_SLASH	__SLASH(/)
+
+#if defined(DEBUG) || defined(_DEBUG)
+#	define D_LINE	
+#	define R_LINE	__DOUBLE_SLASH
+#else 
+#	define D_LINE	__DOUBLE_SLASH
+#	define R_LINE	
+#endif	//_DEBUG
+
+#if defined(_SHIPPING)
+#	define DEV_LINE	__DOUBLE_SLASH
+#	define SVC_LINE	
+#else
+#	define DEV_LINE	
+#	define SVC_LINE	__DOUBLE_SLASH
+#endif //_SHIPPING
+
 
 #define ADD_FLAGS( var, flags )		( (var) |=  (flags) )
 #define REM_FLAGS( var, flags )		( (var) &= ~(flags) )

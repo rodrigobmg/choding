@@ -1,4 +1,3 @@
-
 #include "html_logger.h"
 #include "../Framework/Snowboard_stdafx.h"
 
@@ -26,7 +25,7 @@ namespace util
 	void HTML_Logger::LogMsg( wchar_t const * msg, uint32_t len/*=0xffffffff*/ )
 	{
 		if (0xffffffff == len)
-			len = wcslen(msg);
+			len = static_cast<uint32_t>( wcslen(msg) );
 
 	//	SCOPE_LOCK( lock_ );
 		vWrite (msg, len);
@@ -36,7 +35,7 @@ namespace util
 	void HTML_Logger::LogMsg( char const * msg, uint32_t len/*=0xffffffff*/ )
 	{
 		if (0xffffffff == len)
-			len = strlen(msg);
+			len = static_cast<uint32_t>( strlen(msg) );
 
 //		SCOPE_LOCK( lock_ );
 		if (vCnvtMB2W(msg, len)) {

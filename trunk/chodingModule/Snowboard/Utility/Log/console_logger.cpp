@@ -1,6 +1,4 @@
-
 #include "console_logger.h"
-#include <tchar.h>
 
 namespace util
 {
@@ -84,7 +82,7 @@ namespace util
 			using namespace eConsolColor;
 
 			const wchar_t * const ERR_MSG = L"increase local BUFF_SIZE!";
-			const uint32_t ERR_MSG_LEN = wcsnlen_s(ERR_MSG, 128);
+			const uint32_t ERR_MSG_LEN = static_cast<uint32_t>( wcsnlen_s(ERR_MSG, 128) );
 
 			const color_t RESTORE_FG_COLR = foreground_color_;
 			const color_t RESTORE_BG_COLR = background_color_;
@@ -156,7 +154,7 @@ namespace util
 
 	void ConsoleLogger::StartBlock(wchar_t const * block_name)
 	{
-		vWriteMsg(block_name, wcslen(block_name));
+		vWriteMsg(block_name, static_cast<uint32_t>( wcslen(block_name)) );
 		vWriteMsg(L"\n", 1U);
 
 		InterlockedIncrement(&depth_);
@@ -198,13 +196,13 @@ namespace util
 	void ConsoleLogger::WriteMsg( wchar_t const * msg, uint32_t len/*=0xffffffff*/ )
 	{
 		if(0xffffffff == len)
-			len = wcslen(msg);
+			len = static_cast<uint32_t>( wcslen(msg) );
 		vWriteMsg(msg, len);
 	}
 	void ConsoleLogger::WriteMsg( char const * msg, uint32_t len/*=0xffffffff*/ )
 	{
 		if(0xffffffff == len)
-			len = strlen(msg);
+			len = static_cast<uint32_t>( strlen(msg) );
 		vWriteMsg(msg, len);
 	}
 

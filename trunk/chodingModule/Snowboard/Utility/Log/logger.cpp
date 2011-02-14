@@ -1,7 +1,5 @@
 #include "logger.h"
 
-#include "../Framework/Snowboard_stdafx.h"
-
 #include <tchar.h>
 #pragma warning(push)
 #pragma warning(disable: 4201)
