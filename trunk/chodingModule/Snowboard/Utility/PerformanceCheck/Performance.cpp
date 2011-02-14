@@ -1,5 +1,6 @@
 #include "Performance.h"
-//#include <winbase.h>
+#include <Windows.h>
+#include <winbase.h>
 
 CPerformance::CPerformance( void )
 {
@@ -24,7 +25,7 @@ void CPerformance::Begin( const TCHAR* name )
 		if ( it->second.bValid == true )
 		{			
 			PROFILE_SAMPLE& sample = it->second;
-			unsigned long ulCurTick = 0U;//GetTickCount();
+			unsigned long ulCurTick = GetTickCount();
 			unsigned long ulTick	= ulCurTick - sample.ulTick;
 
 			sample.ulCount++;
@@ -40,7 +41,7 @@ void CPerformance::Begin( const TCHAR* name )
 	}
 	else
 	{
-		unsigned long ulTick = 0U;//GetTickCount();
+		unsigned long ulTick = GetTickCount();
 		PROFILE_SAMPLE sample;
 		sample.ulCount++;
 		sample.ulMax = ulTick;
