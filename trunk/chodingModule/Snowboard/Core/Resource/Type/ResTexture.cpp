@@ -8,7 +8,7 @@ CResTexture::CResTexture()
 
 CResTexture::~CResTexture()
 {
-
+	//Release();
 }
 
 void CResTexture::Clear()

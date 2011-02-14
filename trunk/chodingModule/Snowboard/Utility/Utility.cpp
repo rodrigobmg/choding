@@ -84,5 +84,94 @@ namespace util
 			assert(wcslen(ws) < 128 && "_alloca 를 사용하므로 너무 큰 놈은 지양하자");
 			return wc2mb(std::wstring(ws), codepage);
 		}
+
+		std::wstring make_string(wchar_t const * fmt, ...)
+		{
+			const int BUFF_SIZE(2048);
+			wchar_t buff[BUFF_SIZE];
+
+			int writen = 0;
+			va_list	ap;
+			va_start(ap, fmt);
+
+			writen	= vswprintf_s(buff, fmt, ap);
+
+			va_end(ap);
+
+			if(writen < BUFF_SIZE)
+				return std::wstring(buff);
+
+			return std::wstring(L"writen >! BUFF_SIZE, increase BUFF_SIZE");
+		};
+
+		std::string make_string(const char * fmt, ...)
+		{
+			const int BUFF_SIZE(2048);
+			char buff[BUFF_SIZE];
+
+			int writen = 0;
+			va_list	ap;
+			va_start(ap, fmt);
+
+			writen	= vsprintf_s(buff, fmt, ap);
+
+			va_end(ap);
+
+			if(writen < BUFF_SIZE)
+				return std::string(buff);
+
+			return std::string("writen >! BUFF_SIZE, increase BUFF_SIZE");
+		}	
+
+		std::wstring GetLastErrorString( wchar_t const * file/*=L"where"*/, uint32_t line/*=0xffff*/ )
+		{
+			DWORD errcode = ::GetLastError();
+
+			uint32_t const BUFF_SIZE(2048);
+			wchar_t buff[BUFF_SIZE];
+
+			DWORD ret = ::FormatMessage(
+				FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE
+				, NULL
+				, errcode
+				, 0U
+				, buff
+				, BUFF_SIZE
+				, NULL);
+			if(ret != 0)
+			{
+				return make_string(L"errcode : 0x%08x(PROCESS), %s @ %s(%d)\n", errcode, buff, file, line);
+			}
+
+			ret = ::FormatMessage(
+				FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM
+				, NULL
+				, errcode
+				, 0U
+				, buff
+				, BUFF_SIZE
+				, NULL);
+			if(ret != 0)
+			{
+				return make_string(L"errcode : 0x%08x(SYSTEM), %s @ %s(%d)\n", errcode, buff, file, line);
+			}
+
+			return make_string(L"errcode : 0x%08x, error string is not found! @ %s(%d)\n", errcode, file, line);
+		}
+
+		bool str2bool (wchar_t const * s) 
+		{
+			wchar_t *end;
+
+			if ((_wcsicmp(s, L"true") == 0) ||
+				(_wcsicmp(s, L"yes") == 0) ||
+				(_wcsicmp(s, L"on") == 0) ||
+				(wcstol(s, &end, 10) == 1)) {
+					return true;
+			}
+			else {
+				return false;
+			}
+		}
 	}
 }

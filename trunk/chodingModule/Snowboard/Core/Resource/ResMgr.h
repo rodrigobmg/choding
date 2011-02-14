@@ -4,6 +4,7 @@
 #include "Type/ResBaseType.h"
 #include <map>
 #include <list>
+#include <HASH_MAP>
 
 
 // 모든 리소스 파일네임은 소문자로 취급한다.!!!!!!!!!!!!!!!!

@@ -71,7 +71,7 @@ void CSnowboard::TestFunc()
 	TCHAR curpath[ MAX_PATH ];
 	GetCurrentDirectory( MAX_PATH, curpath );
 	TCHAR respath[MAX_PATH];
-	wsprintf( respath , L"%s\\%s" , curpath , L"Resource" );
+	_stprintf_s( respath , L"%s\\%s" , curpath , L"Resource" );
 
 	if ( m_pResMgr )
 	{
@@ -82,9 +82,17 @@ void CSnowboard::TestFunc()
 		m_pResMgr->ReleaseRes( L"test" );
 		m_pResMgr->LoadRes( L"test" );
 
+		/*
+		CResTexture* pTex = dynamic_cast< CResTexture*>( m_pResMgr->Get( L"test" , L"banana.bmp" ) );
+				if ( pTex )
+					pTex->IncRefCount();*/
+		
+
 		// 에러 체크용 경고창은 그냥 넘겨 주세요.
+		/*
 		if ( m_pResMgr->CreateList( L"tex" , respath , L"" , 1 ) )
-			m_pResMgr->LoadRes( L"tex" );
+					m_pResMgr->LoadRes( L"tex" );*/
+		
 
 		//m_pResMgr->ReleaseRes( L"test" );
 		//m_pResMgr->Release();

@@ -30,6 +30,11 @@ namespace util
 		std::string wc2mb( std::wstring const & ws, eCodePage codepage = DefaultCodePage );
 		std::string wc2mb( wchar_t const * ws, eCodePage codepage = DefaultCodePage );
 
+		std::wstring GetLastErrorString(wchar_t const * file=L"where", uint32_t line=0xffff);
+
+		std::wstring make_string(const wchar_t * fmt, ...);
+		std::string make_string(const char * fmt, ...);
+		bool str2bool (wchar_t const * s);
 	}// end of namespace string
 }// end of namespace util
 

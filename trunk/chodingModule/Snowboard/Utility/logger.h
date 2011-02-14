@@ -138,13 +138,15 @@ namespace util
 	class HTML_Logger;
 
 	class Logger : public CSingleton<Logger>
-	{
-
+	{		
 		//USING_SINGLETON(Logger);
 
 		//typedef std::wstring wstring;
 
 	public:
+
+		Logger();
+		~Logger();
 
 		struct Block {
 			Block (wchar_t const * block_name) { 
@@ -227,5 +229,6 @@ namespace util
 		void vColorCYAN		();
 		void vColorMAGENTA	();
 		void vColorYELLOW	();
+		
 	};
 }//namespace a2

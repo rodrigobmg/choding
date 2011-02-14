@@ -7,7 +7,6 @@
 #include <assert.h>
 #include <d3d9.h>
 #include <tchar.h>
-#include <HASH_MAP>
 #include <String>
 #include <Strsafe.h>
 
@@ -35,5 +34,10 @@
 #define SAFE_RELEASE(v) {if(v){v->Release(); } }
 
 #define ASSERT( exp )	assert( exp )
+
+#define ADD_FLAGS( var, flags )		( (var) |=  (flags) )
+#define REM_FLAGS( var, flags )		( (var) &= ~(flags) )
+#define CHK_FLAGS( var, flags )		( (var) &   (flags) )
+
 using namespace std;
 typedef basic_string<TCHAR> tstring;

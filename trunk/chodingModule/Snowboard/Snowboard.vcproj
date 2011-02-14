@@ -253,6 +253,30 @@
 			Name="Utility"
 			>
 			<File
+				RelativePath=".\Utility\console_logger.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\console_logger.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\html_logger.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\html_logger.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\logger.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility\logger.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Utility\Singleton.h"
 				>
 			</File>

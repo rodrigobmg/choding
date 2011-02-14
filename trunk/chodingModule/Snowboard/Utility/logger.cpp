@@ -1,5 +1,5 @@
-
 #include "logger.h"
+
 #include "../Framework/Snowboard_stdafx.h"
 
 #include <tchar.h>
@@ -8,7 +8,7 @@
 #include <mmsystem.h>
 #pragma warning(pop)
 #include <Windows.h>
-#include "logger.h"
+#include <memory>
 
 namespace util
 {
@@ -93,13 +93,13 @@ namespace util
 	void Logger::LogMsg(wchar_t const * str, uint32_t len)
 	{
 		if(0xffffffff == len)
-			len = wcslen(str);
+			len = static_cast<uint32_t>( wcslen(str) );
 		vLog (str, len);
 	}
 	void Logger::LogMsg(char const * str, uint32_t len)
 	{
 		if(0xffffffff == len)
-			len = strlen(str);
+			len = static_cast<uint32_t>( strlen(str) );
 		vLog (str, len);
 	}
 
@@ -162,7 +162,7 @@ namespace util
 	{
 		if(!str.empty())
 		{
-			vLog(str.c_str(), str.length());
+			vLog(str.c_str(), static_cast<uint32_t>( str.length() ) );
 			if(L'\n' != *str.rbegin())
 				vLog(L"\n", 1);
 		}

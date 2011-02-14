@@ -32,7 +32,7 @@ HRESULT CResMrg::Release()
 	RES_CONTAINER::iterator itAll = m_mapRes.begin();
 	for ( ; itAll != m_mapRes.end() ;  )
 	{
-		for_each( itAll->second.begin() , itAll->second.end() , functor::release() );
+		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );
 		m_mapRes.erase( itAll++ );
 	}
 
@@ -124,7 +124,7 @@ bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::l
 			{
 				TCHAR curpath[MAX_PATH];
 				ZeroMemory( curpath , sizeof( curpath ) );
-				wsprintf( curpath , L"%s\\%s" , dirpath , fd.cFileName );
+				_stprintf_s( curpath , L"%s\\%s" , dirpath , fd.cFileName );
 
 				loadResforDir( curpath , filelist , tokenlist, bRecursive );
 			}
@@ -137,7 +137,7 @@ bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::l
 			{
 				TCHAR curpath[MAX_PATH];
 				ZeroMemory( curpath , sizeof( curpath ) );
-				wsprintf( curpath , L"%s\\%s" , dirpath , fd.cFileName );
+				_stprintf_s( curpath , L"%s\\%s" , dirpath , fd.cFileName );
 				tstring wstr( curpath );
 				for_each( wstr.begin() , wstr.end() , functor::ToLower() );
 				
@@ -205,6 +205,8 @@ bool CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* 
 		assert( 0 && " Áßº¹ »ðÀÔ " );
 		return false;
 	}
+
+	return false;
 }
 
 HRESULT CResMrg::LoadRes( const TCHAR* alias )
