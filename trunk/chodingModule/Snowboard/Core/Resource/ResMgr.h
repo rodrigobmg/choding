@@ -2,9 +2,11 @@
 
 #include "../Base/CoreBase.h"
 #include "Type/ResBaseType.h"
+#include "Type/ResTexture.h"
 #include <map>
 #include <list>
 #include <HASH_MAP>
+
 
 
 // 모든 리소스 파일네임은 소문자로 취급한다.!!!!!!!!!!!!!!!!
@@ -17,7 +19,7 @@ private:
 		TEX = 0,
 	};
 
-	typedef stdext::hash_map< tstring , CBaseRes* >			HASHMAPRes;
+	typedef stdext::hash_map< tstring , CBaseRes* >				HASHMAPRes;
 	typedef stdext::hash_map< tstring , CBaseRes* >::iterator	HASHMAPRes_ITERATOR;	
 
 	typedef std::list<tstring>	FILE_LIST;
@@ -34,9 +36,12 @@ private:
 			filelist.clear();
 		}
 	};	
-	typedef std::map< const TCHAR* , RES_STRUCT >	RES_ALL_FILELIST_MAP;	
-	
+	typedef std::map< const TCHAR* , RES_STRUCT >	RES_ALL_FILELIST_MAP;		
 	typedef std::map< const TCHAR* , HASHMAPRes >	RES_CONTAINER;			
+
+	//테스트용
+// 	typedef stdext::hash_map< tstring , CResTexture >	test_HASHMAPRes;
+// 	typedef std::map< const TCHAR* , test_HASHMAPRes >	test_RES_CONTAINER;			
 
 
 	RES_CONTAINER			m_mapRes;

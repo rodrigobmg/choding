@@ -29,6 +29,16 @@ HRESULT CResMrg::Create( LPDIRECT3DDEVICE9 device )
 
 HRESULT CResMrg::Release()
 {
+// 	test_RES_CONTAINER test_map;
+// 	CResTexture* pres = dynamic_cast<CResTexture*>( Get( L"test" , L"banana.bmp" ) );
+// 	test_map[L"test"].insert( make_pair( tstring(L"testpath") , *pres ) );
+// 
+// 	test_RES_CONTAINER::iterator it = test_map.begin();
+// 	for ( ; it != test_map.end() ; )
+// 	{
+// 		test_map.erase( it++ );
+// 	}
+
 	RES_CONTAINER::iterator itAll = m_mapRes.begin();
 	for ( ; itAll != m_mapRes.end() ;  )
 	{
@@ -40,7 +50,7 @@ HRESULT CResMrg::Release()
 	for ( ; itlist != m_mapAllFilelist.end() ; )
 	{
 		m_mapAllFilelist.erase( itlist++ );
-	}
+	}	
 	
 	Clear();
 	return S_OK;
@@ -269,7 +279,27 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 		return false;
 	}
 
-	m_mapRes[alias].insert( make_pair( filename , pres ) );
+	RES_CONTAINER::iterator itResAll = m_mapRes.find( alias );
+	if ( itResAll != m_mapRes.end() )
+	{
+		HASHMAPRes_ITERATOR itRes = itResAll->second.find( filename );
+		if ( itRes == itResAll->second.end() )
+		{
+			itResAll->second.insert( make_pair( filename , pres ) );
+		}
+		else
+		{
+			ASSERT( !"리소스 중복 저장" );
+		}
+	}
+	else
+	{
+		HASHMAPRes hmapRes;
+		hmapRes.insert( make_pair( filename , pres ) );
+		m_mapRes.insert( pair< const TCHAR* , HASHMAPRes >( alias , hmapRes ) );
+	}
+
+	//m_mapRes[alias].insert( make_pair( filename , pres ) );
 
 	return true;
 }
