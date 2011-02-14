@@ -68,9 +68,9 @@ void CSnowboard::DestroyModule()
 
 void CSnowboard::TestFunc()
 {
-	util::Logger::CreateSingleton();
+//	util::Logger::CreateSingleton();
 	//util::ConsoleLogger::CreateSingleton();
-	util::Logger::getInstance().Init(NULL , NULL , NULL , NULL );
+	//util::Logger::getInstance().Init(NULL , NULL , NULL , NULL );
 
 	TCHAR curpath[ MAX_PATH ];
 	GetCurrentDirectory( MAX_PATH, curpath );

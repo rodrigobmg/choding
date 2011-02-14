@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "../Framework/Snowboard_stdafx.h"
+
 namespace util
 {
 	namespace string
@@ -45,7 +47,6 @@ namespace util
 		noncopyable( const noncopyable& );
 		const noncopyable& operator=( const noncopyable& );
 	};
-
 }// end of namespace util
 
 namespace functor

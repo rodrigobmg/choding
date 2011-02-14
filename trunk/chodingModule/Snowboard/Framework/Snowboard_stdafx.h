@@ -11,7 +11,7 @@
 #include <Strsafe.h>
 
 #include "../Utility/Utility.h"
-#include "../Utility/Log/logger.h"
+//#include "../Utility/Log/logger.h"
 
 
 #define CORE_RENDERER		L"RendererCore"
