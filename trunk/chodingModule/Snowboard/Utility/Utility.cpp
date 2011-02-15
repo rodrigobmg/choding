@@ -159,14 +159,14 @@ namespace util
 			return make_string(L"errcode : 0x%08x, error string is not found! @ %s(%d)\n", errcode, file, line);
 		}
 
-		bool str2bool (wchar_t const * s) 
+		bool str2bool (TCHAR const * s) 
 		{
 			wchar_t *end;
 
-			if ((_wcsicmp(s, L"true") == 0) ||
-				(_wcsicmp(s, L"yes") == 0) ||
-				(_wcsicmp(s, L"on") == 0) ||
-				(wcstol(s, &end, 10) == 1)) {
+			if ((_tcscmp(s, L"true") == 0) ||
+				(_tcscmp(s, L"yes") == 0) ||
+				(_tcscmp(s, L"on") == 0) ||
+				(_tcstol(s, &end, 10) == 1)) {
 					return true;
 			}
 			else {

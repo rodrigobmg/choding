@@ -1,8 +1,6 @@
-#include "StdAfx.h"
 #include "lock.h"
-#include "common_macro.h"
 
-namespace a2
+namespace util
 {
 	Lock::Lock()
 		D_LINE : count_(0)

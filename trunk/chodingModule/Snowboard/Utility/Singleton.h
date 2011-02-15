@@ -1,5 +1,5 @@
 #pragma once
-//#include "lock.h"
+#include "lock.h"
 #include "../Framework/Snowboard_stdafx.h"
 #include <list>
 
@@ -46,7 +46,7 @@ namespace util
 		static T * pInstance_;
 
 		static void create(){
-		//	SCOPE_LOCK(PRIVATE::lock_for_process_singleton());
+//			SCOPE_LOCK(PRIVATE::lock_for_process_singleton());
 			if(!pInstance_)
 			{
 				T * tmp(new T);
@@ -56,7 +56,7 @@ namespace util
 		}
 		static void destroy()
 		{
-	//		SCOPE_LOCK(PRIVATE::lock_for_process_singleton());
+		//	SCOPE_LOCK(PRIVATE::lock_for_process_singleton());
 			SAFE_DELETE(pInstance_);
 		}
 

@@ -74,7 +74,7 @@ namespace util
 			GetPrivateProfileString(L"Options", L"ReportFile", L".\\audition2_log.html"
 				, buffer, BSIZE, OPTIONFILE);
 			if (wcslen(buffer) == 0) {
-				wcsncpy_s(buffer, BSIZE, L".\\audition2_log.html", _TRUNCATE);
+				wcsncpy_s(buffer, BSIZE, L".\\choding_log.html", _TRUNCATE);
 			}
 
 			OutputDebugString(util::string::make_string(L"Logger : htlm_fname = %s\n", buffer).c_str());

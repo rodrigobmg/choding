@@ -1,10 +1,9 @@
 #pragma once
 
-#include "a2_type.h"
-#include "common_macro.h"
 #include <Windows.h>
+#include "Utility.h"
 
-namespace a2
+namespace util
 {
 	class Lock
 	{
