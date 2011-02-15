@@ -1,8 +1,9 @@
 #include "output_logger.h"
+#include "../../Framework/Snowboard_type.h"
 #include <Windows.h>
 #include <stdio.h>
 
-namespace a2
+namespace util
 {
 	static uint32_t const BUFF_SIZE(2048);
 	void ToOutput(wchar_t const* msg)

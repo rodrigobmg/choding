@@ -12,8 +12,8 @@
 
 #endif //_OUTPUT_ON_
 
-#include "a2_type.h"
-#include "common_macro.h"
+//#include "a2_type.h"
+//#include "common_macro.h"
 
 namespace a2
 {

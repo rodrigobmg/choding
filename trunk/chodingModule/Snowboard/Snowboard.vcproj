@@ -253,6 +253,10 @@
 			Name="Utility"
 			>
 			<File
+				RelativePath=".\Utility\Singleton.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Utility\Utility.cpp"
 				>
 			</File>
@@ -263,6 +267,38 @@
 			<Filter
 				Name="Log"
 				>
+				<File
+					RelativePath=".\Utility\Log\console_logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\console_logger.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\html_logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\html_logger.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\logger.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\output_logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\Log\output_logger.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Performance"

@@ -29,13 +29,22 @@
 
 
 
-#define _LOGGER_ON_
+
 
 #define SAFE_DELETE(v) {if(v){delete v; v = NULL;}}
 #define SAFE_DELETE_ARRAY(v) { if(v) { delete[] v; v = NULL; } }
 #define SAFE_RELEASE(v) {if(v){v->Release(); } }
 
 #define ASSERT( exp )	assert( exp )
+
+#define STRING2(x)	#x
+#define STRING(x)	STRING2(x)
+
+#define WSTRING2(x)	L#x
+#define WSTRING(x)	WSTRING2(x)
+
+#define FILE_LINEW __FILEW__ L"(" WSTRING(__LINE__) L"): "
+#define FILE_LINEA __FILE__ "(" STRING(__LINE__) "): "
 
 #define __SLASH(x)	/##x
 #define __DOUBLE_SLASH	__SLASH(/)

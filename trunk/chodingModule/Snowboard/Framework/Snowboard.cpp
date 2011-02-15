@@ -4,6 +4,8 @@
 #include "../Core/Renderer/RendererDX9.h"
 #include "../Core/Resource/Type/ResTexture.h"
 
+#include "../Utility/Log/logger.h"
+
 CSnowboard::CSnowboard()
 {
 	Clear();
@@ -68,10 +70,8 @@ void CSnowboard::DestroyModule()
 
 void CSnowboard::TestFunc()
 {
-//	util::Logger::CreateSingleton();
-	//util::ConsoleLogger::CreateSingleton();
-	//util::Logger::getInstance().Init(NULL , NULL , NULL , NULL );
-
+	util::Logger::getInstance().Init(NULL , NULL , NULL , NULL );
+	LOG_WARNING_F( L"%s", L"logger init" );
 	TCHAR curpath[ MAX_PATH ];
 	GetCurrentDirectory( MAX_PATH, curpath );
 	TCHAR respath[MAX_PATH];

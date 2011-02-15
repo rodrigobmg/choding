@@ -1,23 +1,26 @@
 #pragma once
+#include "../../Framework/Snowboard_stdafx.h"
+
+#define _LOGGER_ON_
 
 #if defined(_LOGGER_ON_)
 
 #define LOG_INIT(fptrWarning, fptrError)					\
-	a2::Logger::getInstance().Init(fptrWarning, fptrError)
+	util::Logger::getInstance().Init(fptrWarning, fptrError)
 
 #define LOG_BLOCK(block_name)								\
-	a2::Logger::Block MAKE_NAME(block)(block_name); MAKE_NAME(block)
+	util::Logger::Block MAKE_NAME(block)(block_name); MAKE_NAME(block)
 
-#define LOG_INFO(str)			a2::Logger::getInstance().LogMsg(str)
+#define LOG_INFO(str)			util::Logger::getInstance().LogMsg(str)
 
 
 #define LOG_ERROR(str)										\
 	do														\
 	{														\
-		a2::Logger & g_logger = a2::Logger::getInstance();	\
+		util::Logger & g_logger = util::Logger::getInstance();	\
 		g_logger.SetForError(FILE_LINEW);					\
 		g_logger.LogMsg(str);								\
-		g_logger.LogString( ::a2::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
+		g_logger.LogString( ::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
 		g_logger.SetForLog();								\
 	__pragma(warning(disable:4127))							\
 	}while(0)												\
@@ -26,10 +29,10 @@
 #define LOG_WARNING(str)									\
 	do														\
 	{														\
-		a2::Logger & g_logger = a2::Logger::getInstance();	\
+		util::Logger & g_logger = util::Logger::getInstance();	\
 		g_logger.SetForWarning(FILE_LINEW);					\
 		g_logger.LogMsg(str);								\
-		g_logger.LogString( ::a2::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
+		g_logger.LogString( ::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
 		g_logger.SetForLog();								\
 	__pragma(warning(disable:4127))							\
 	}while(0)												\
@@ -41,10 +44,10 @@
 #define LOG_ERROR_F(fmt, ...)								\
 	do														\
 	{														\
-		a2::Logger & g_logger = a2::Logger::getInstance();	\
+		util::Logger & g_logger = util::Logger::getInstance();	\
 		g_logger.SetForError(FILE_LINEW);					\
 		g_logger.LogF(fmt, __VA_ARGS__);					\
-		g_logger.LogString( ::a2::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
+		g_logger.LogString( ::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
 		g_logger.SetForLog();								\
 	__pragma(warning(disable:4127))							\
 	}while(0)												\
@@ -53,10 +56,10 @@
 #define LOG_WARNING_F(fmt, ...)								\
 	do														\
 	{														\
-		a2::Logger & g_logger = a2::Logger::getInstance();	\
+		util::Logger & g_logger = util::Logger::getInstance();	\
 		g_logger.SetForWarning(FILE_LINEW);					\
 		g_logger.LogF(fmt, __VA_ARGS__);					\
-		g_logger.LogString( ::a2::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
+		g_logger.LogString( ::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
 		g_logger.SetForLog();								\
 	__pragma(warning(disable:4127))							\
 	}while(0)												\
@@ -65,7 +68,7 @@
 #define LOG_COLOR(COLOR, str)								\
 	do														\
 	{														\
-		a2::Logger & g_logger = a2::Logger::getInstance();	\
+		util::Logger & g_logger = util::Logger::getInstance();	\
 		g_logger.SetColorTo##COLOR();						\
 		g_logger.LogMsg(str);								\
 		g_logger.SetColorToBLACK();							\
@@ -228,4 +231,4 @@ namespace util
 		void vColorYELLOW	();
 		
 	};
-}//namespace a2
+}//namespace util
