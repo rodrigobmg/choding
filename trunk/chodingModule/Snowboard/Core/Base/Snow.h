@@ -9,7 +9,7 @@ public:
 	virtual ~CSnow();
 
 	void			DecRefCount();
-	void			IncRefCount()						{ ++m_iRefCount; }
+	void			IncRefCount()						{ InterlockedIncrement((LONG*)&m_iRefCount); /*++m_iRefCount;*/ }
 	int32_t			GetRefCount()						{ return m_iRefCount; }	
 
 	void			SetName(const tstring& strName )	{ m_strName = strName; }

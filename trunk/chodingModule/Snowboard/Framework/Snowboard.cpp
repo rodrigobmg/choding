@@ -86,7 +86,7 @@ void CSnowboard::TestFunc()
 		if ( m_pResMgr->CreateList( L"test" , respath , L"bmp;tga;jpg;" , 1 ) )
 		{
 			BEGIN_PERFORMANCE( L"check_res_time" );
-			for ( size_t t = 0 ; t < 1000 ; t++)
+//			for ( size_t t = 0 ; t < 1000 ; t++)
 			{
 				BEGIN_PERFORMANCE( L"load" );
 				m_pResMgr->LoadRes( L"test" );

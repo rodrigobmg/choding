@@ -8,7 +8,7 @@ CSnow::CSnow()
 }
 
 CSnow::~CSnow()
-{
+{	
 	DecRefCount();
 	if ( m_iRefCount != 0 )
 		assert( 0 && "해제할때 0 이어야함" );
@@ -16,7 +16,8 @@ CSnow::~CSnow()
 
 void CSnow::DecRefCount()
 {
-	--m_iRefCount; 
+	/*--m_iRefCount; */
+	InterlockedDecrement((LONG*)&m_iRefCount);
 	if ( m_iRefCount < 0 )
 		assert( 0 && "왜 0보다 작나요? " );
 }
