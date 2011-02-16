@@ -59,15 +59,4 @@ namespace util
 	};
 
 	namespace PRIVATE{HTML_Logger & GlobalLogger();};
-	struct LogBlock 
-	{
-		explicit LogBlock(wchar_t const * block_name=L"block")
-		{
-			PRIVATE::GlobalLogger().StartBlock(block_name);
-		};
-		~LogBlock()
-		{
-			PRIVATE::GlobalLogger().EndBlock();
-		};
-	};
 }//namespace util

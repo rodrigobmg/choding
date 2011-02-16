@@ -70,6 +70,7 @@ void CSnowboard::DestroyModule()
 
 void CSnowboard::TestFunc()
 {
+	util::Logger::createSingleton();
 	util::Logger::getInstance().Init(NULL , NULL , NULL , NULL );
 	LOG_WARNING_F( L"%s", L"logger init" );
 	TCHAR curpath[ MAX_PATH ];

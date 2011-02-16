@@ -49,13 +49,11 @@ namespace util
 
 	void ConsoleLogger::Clear()
 	{
-//		SCOPE_LOCK(lock_);
 		vClear();
 	}
 
 	void ConsoleLogger::WriteString( std::wstring const & msg )
 	{
-//		SCOPE_LOCK(lock_);
 		vWriteMsg(msg.c_str(), (uint32_t)msg.length());
 	}
 
@@ -74,7 +72,6 @@ namespace util
 
 		if(writen < BUFF_SIZE)
 		{
-//			SCOPE_LOCK(lock_);
 			vWriteMsg(buff, writen);
 		}
 		else
@@ -87,7 +84,6 @@ namespace util
 			const color_t RESTORE_FG_COLR = foreground_color_;
 			const color_t RESTORE_BG_COLR = background_color_;
 
-//			SCOPE_LOCK(lock_);
 			vUpdateColr(HI_RED, BLACK);
 			vWriteMsg(ERR_MSG, ERR_MSG_LEN);
 			vUpdateColr(RESTORE_FG_COLR, RESTORE_BG_COLR);
@@ -97,7 +93,6 @@ namespace util
 
 	void ConsoleLogger::SetColor( color_t fg_color, color_t bg_color )
 	{
-//		SCOPE_LOCK(lock_);
 		vUpdateColr(fg_color, bg_color);
 	}
 
@@ -183,7 +178,6 @@ namespace util
 
 	void ConsoleLogger::SetTitle( wchar_t const * title )
 	{
-//		SCOPE_LOCK(lock_);
 		vSetTitle(title);
 	}
 
@@ -205,5 +199,4 @@ namespace util
 			len = static_cast<uint32_t>( strlen(msg) );
 		vWriteMsg(msg, len);
 	}
-
 }

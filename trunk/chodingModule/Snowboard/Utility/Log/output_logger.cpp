@@ -51,4 +51,4 @@ namespace util
 		}
 		::OutputDebugStringA(buff);
 	}
-}//namespace a2
+}//namespace util

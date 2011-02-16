@@ -1,115 +1,48 @@
-#pragma once
-#include "lock.h"
-#include "../Framework/Snowboard_stdafx.h"
-#include <list>
+#ifndef _SNOWBOARD_UTILITY_SINGLETON_
+#define _SNOWBOARD_UTILITY_SINGLETON_
 
-namespace util
+
+template < typename T > 
+class singleton 
 {
-	namespace PRIVATE
+	static T* ms_singleton;
+
+public:
+	singleton()
 	{
-	//	Lock & lock_for_process_singleton();
+		assert( !ms_singleton && L"하나만 맹거주세요~~" );
+		ms_singleton = 0; 
+	}
 
-
-		class TStorageCleaner
-		{
-			typedef void (*functr_t)(void);
-			typedef std::list<functr_t>	container_t;
-
-			__declspec (thread) static container_t * pDestroyers_;
-
-		public:
-			static void onBeginThreadProc()
-			{
-				ASSERT(!pDestroyers_);
-				pDestroyers_ = new container_t;
-			}
-			static void onExitThreadProc()
-			{
-				ASSERT(pDestroyers_);
-				typedef container_t::iterator iterator;
-				for(iterator itr=pDestroyers_->begin(); itr!=pDestroyers_->end(); ++itr)
-					(*itr)();
-				pDestroyers_->clear();
-				SAFE_DELETE(pDestroyers_);
-			}
-			static void addDestoryer(functr_t f)
-			{
-				ASSERT(pDestroyers_);
-				pDestroyers_->push_back(f);
-			}
-		};
-	}//namespace PRIVATE
-
-	template<class T, template <class> class Storage >	class Singleton;
-	template<class T> class PStorage
+	virtual ~singleton()
 	{
-		static T * pInstance_;
+		assert( ms_singleton && L"이미 없는데 왜 또 없앨려고 하나용~~"); 
+		ms_singleton = 0; 
+	}
 
-		static void create(){
-//			SCOPE_LOCK(PRIVATE::lock_for_process_singleton());
-			if(!pInstance_)
-			{
-				T * tmp(new T);
-				pInstance_ = tmp;
-				atexit(destroy);
-			}
-		}
-		static void destroy()
-		{
-		//	SCOPE_LOCK(PRIVATE::lock_for_process_singleton());
-			SAFE_DELETE(pInstance_);
-		}
-
-		template<class T, template <class> class Storage >
-		friend class Singleton;
-	};
-	template<class T> T* PStorage<T>::pInstance_ = NULL;
-
-	template<class T> class TStorage
+	static void createSingleton()
 	{
-		__declspec(thread) static T *pInstance_;
+		ms_singleton = new T;
+	}
 
-		static void create()
-		{
-			ASSERT(!pInstance_);
-			pInstance_ = new T;
-			PRIVATE::TStorageCleaner::addDestoryer(destroy);
-		}
-
-		static void destroy()
-		{
-			SAFE_DELETE(pInstance_);
-		}
-
-		template<class T, template <class> class Storage >
-		friend class Singleton;
-	};
-	template <class T> T* TStorage<T>::pInstance_ = NULL;
-
-	template<class T, template <class> class Storage = PStorage >
-	class Singleton
+	static void destroySingleton()
 	{
-	protected:
-		typedef Storage<T>	storage_t;
+		delete ms_singleton;
+		ms_singleton = NULL;
+	}
 
-	public:
-		static T& getInstance()
-		{
-			if(!storage_t::pInstance_)
-			{
-				storage_t::create();
-			}
-			return *storage_t::pInstance_;
-		}
-	};
+	static T& getInstance()
+	{
+		assert( ms_singleton );
+		return *ms_singleton;
+	}
+	static T* getInstancePtr()
+	{
+		return ms_singleton;
+	}
+};
 
-}//namespace util
+template<typename T> 
+T* singleton< T >::ms_singleton = 0;
 
-#define USING_SINGLETON(_class) \
-	private:					\
-	friend class storage_t;		\
-	_class();					\
-	~_class()
-
-#define ON_BEGIN_THREAD	::util::PRIVATE::TStorageCleaner::onBeginThreadProc
-#define ON_EXIT_THREAD	::util::PRIVATE::TStorageCleaner::onExitThreadProc
+#endif // _SNOWBOARD_UTILITY_SINGLETON_

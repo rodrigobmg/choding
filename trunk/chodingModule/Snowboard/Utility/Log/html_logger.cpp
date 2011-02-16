@@ -10,14 +10,12 @@ namespace util
 		, buff_(NULL)
 	{
 		if (fname) {
-			//SCOPE_LOCK(lock_);
 			vInit(fname);
 		}
 	}
 
 	HTML_Logger::~HTML_Logger()
 	{
-		//SCOPE_LOCK(lock_);
 		vFlush();
 		vClose();
 	}
@@ -27,7 +25,6 @@ namespace util
 		if (0xffffffff == len)
 			len = static_cast<uint32_t>( wcslen(msg) );
 
-	//	SCOPE_LOCK( lock_ );
 		vWrite (msg, len);
 		vWrite(L"<br>\n", 5);
 	}
@@ -37,7 +34,6 @@ namespace util
 		if (0xffffffff == len)
 			len = static_cast<uint32_t>( strlen(msg) );
 
-//		SCOPE_LOCK( lock_ );
 		if (vCnvtMB2W(msg, len)) {
 			vWrite (buff_, len);
 			vWrite(L"<br>\n", 5);
@@ -46,7 +42,6 @@ namespace util
 
 	void HTML_Logger::LogString( wstring const & str )
 	{
-	//	SCOPE_LOCK( lock_ );
 		vWrite(str.c_str(), str.length());
 		vWrite(L"<br>\n", 5);
 	}
@@ -67,7 +62,6 @@ namespace util
 		{
 			wcscpy_s(buff+length, 6, L"<br>\n");
 
-		//	SCOPE_LOCK( lock_ );
 			vWrite(buff,length+5);
 		}
 	}
@@ -79,13 +73,11 @@ namespace util
 		ASSERT(-1 != writen);
 
 		if (-1 != writen) {
-		//	SCOPE_LOCK( lock_ );
 			vWrite(buff,writen);
 		}
 	}
 	void HTML_Logger::EndBlock()
 	{
-	//	SCOPE_LOCK( lock_ );
 		vWrite(L"</ul><br>\n",10);
 	}
 
@@ -100,13 +92,11 @@ namespace util
 		ASSERT(-1 != writen);
 
 		if (-1 != writen) {
-	//		SCOPE_LOCK( lock_ );
 			vWrite(buff,writen);
 		}
 	}
 	void HTML_Logger::EndFont()
 	{
-	//	SCOPE_LOCK( lock_ );
 		vWrite(L"</font>\n",8);
 	}
 
@@ -146,7 +136,6 @@ namespace util
 
 	bool HTML_Logger::Init( wchar_t const * fname )
 	{
-	//	SCOPE_LOCK(lock_);
 		return vInit(fname);
 	}
 
@@ -190,4 +179,4 @@ namespace util
 			return html_logger;
 		};		
 	}
-}//namespace a2
+}//namespace util

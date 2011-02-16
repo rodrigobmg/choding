@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../singleton.h"
 #include "../../Framework/Snowboard_stdafx.h"
 
 namespace util
@@ -32,9 +31,8 @@ namespace util
 			NUM			,
 		};
 	}
-	class ConsoleLogger : public Singleton<ConsoleLogger> 
+	class ConsoleLogger
 	{
-		friend class storage_t;
 		typedef eConsolColor::Enum	color_t;
 
 		HANDLE						handle_;
@@ -42,12 +40,10 @@ namespace util
 		color_t						foreground_color_;
 		color_t						background_color_;
 		long __declspec(align(4))	depth_;
-
-		//Lock						lock_;
 		
-		ConsoleLogger(wchar_t const* title=L"dbg_consol");
 	public:
-		
+
+		ConsoleLogger(wchar_t const* title=L"dbg_consol");
 		~ConsoleLogger(void);
 
 		void Clear();
@@ -72,17 +68,6 @@ namespace util
 		void vWriteDepth();
 		void vClear();
 		void vSetTitle(wchar_t const* title);
-	};
-	struct ConsoleLogBlock
-	{
-		ConsoleLogBlock(LPCWSTR block_name)
-		{
-			::util::ConsoleLogger::getInstance().StartBlock(block_name);
-		}
-		~ConsoleLogBlock()
-		{
-			::util::ConsoleLogger::getInstance().EndBlock();
-		}
 	};
 }//namespace util
 

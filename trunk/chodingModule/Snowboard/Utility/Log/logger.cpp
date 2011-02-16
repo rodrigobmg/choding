@@ -215,7 +215,7 @@ namespace util
 		}
 
 		if (CHK_FLAGS (flag_, FLAG_CONSOLE)) {
-			pConsole_ = &(ConsoleLogger::getInstance ());
+			pConsole_ = new ConsoleLogger;
 			if(fname)
 				pConsole_->SetTitle(fname);
 		}

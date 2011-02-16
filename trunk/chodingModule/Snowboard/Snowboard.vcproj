@@ -253,7 +253,7 @@
 			Name="Utility"
 			>
 			<File
-				RelativePath=".\Utility\Singleton.h"
+				RelativePath=".\Utility\singleton.h"
 				>
 			</File>
 			<File

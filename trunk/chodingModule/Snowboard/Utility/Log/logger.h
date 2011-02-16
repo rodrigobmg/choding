@@ -140,22 +140,14 @@ namespace util
 	class ConsoleLogger;
 	class HTML_Logger;
 
-	class Logger : public Singleton<Logger>
+	class Logger : public singleton< Logger >
 	{		
-		USING_SINGLETON(Logger);
-
 		typedef std::wstring wstring;
 
 	public:
 
-		struct Block {
-			Block (wchar_t const * block_name) { 
-				util::Logger::getInstance().StartBlock(block_name); 
-			}
-			~Block () {
-				util::Logger::getInstance().EndBlock();
-			}
-		};
+		Logger();
+		~Logger();
 
 		typedef void (*output_fptr)(wchar_t const * str);
 		typedef void (*output_fptrA)(char const * str);
@@ -196,8 +188,8 @@ namespace util
 		static const uint32_t	INNER_FLAG_WARNING	= 0x00020000;
 		static const uint32_t	INNER_FLAG_ERROR	= 0x00010000;
 
-		ConsoleLogger *	pConsole_;
-		HTML_Logger *	pHTML_;
+		ConsoleLogger*	pConsole_;
+		HTML_Logger*	pHTML_;
 		output_fptr		fptrWarningOnScreen_;
 		output_fptr		fptrErrorOnScreen_;
 		output_fptrA	fptrWarningOnScreenA_;
