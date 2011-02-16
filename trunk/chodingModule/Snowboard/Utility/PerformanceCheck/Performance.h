@@ -1,47 +1,54 @@
 #pragma once
 
-//#include "../../Framework/Snowboard_stdafx.h"
-
-#include <hash_map>
+#include <map>
 #include <tchar.h>
+#include "../Utility.h"
 
-class CPerformance
+namespace util 
 {
-private:
-	
-	typedef struct PROFILE_SAMPLE
+	namespace Performance
 	{
-		bool			bValid;
-		unsigned long	ulTick;
-		unsigned long	ulFirstTick;
-		unsigned long	ulMin;
-		unsigned long	ulAvg;
-		unsigned long	ulMax;
-		unsigned long	ulCount;
-		PROFILE_SAMPLE()
+		typedef struct PROFILE_SAMPLE
 		{
-			bValid = true;
-			ulTick = 0U;
-			ulMin  = 0U;
-			ulAvg  = 0U;
-			ulMax  = 0U;
-			ulCount= 0U;
-			ulFirstTick=0U;
-		}
-	};
+			unsigned long	ulEndTick;
+			unsigned long	ulFirstTick;
+			unsigned long	ulMin;
+			unsigned long	ulAvg;
+			unsigned long	ulMax;
+			unsigned long	ulCount;
+			unsigned long	ulTotalDeltaTick;
+			PROFILE_SAMPLE()
+			{
+				ulEndTick= 0U;
+				ulMin  = 0U;
+				ulAvg  = 0U;
+				ulMax  = 0U;
+				ulCount= 0U;
+				ulFirstTick=0U;
+				ulTotalDeltaTick = 0U;
+			}
+		}stPROFILE_SAMPLE;
 
-	typedef stdext::hash_map< const TCHAR* , PROFILE_SAMPLE >	PROFILE_CONTAINOER;
-	PROFILE_CONTAINOER		m_ProfileContainer;
+		typedef std::map< const TCHAR* , stPROFILE_SAMPLE >			PROFILE_CONTAINOER;
+		typedef std::pair< const TCHAR* , stPROFILE_SAMPLE >		PAIR;
+		
+		
 
-	void					clear();
+		void				clear();
 
-public:
-	CPerformance(void);
-	~CPerformance(void);
-	
-	void				Begin( const TCHAR* name );
-	void				End( const TCHAR* name );
+		void				Begin( const TCHAR* name );
+		void				End( const TCHAR* name );
 
-	void				OutputAllData();
-	
-};
+		void				OutputAllData();
+		void				OutputData( const TCHAR* profilename , // input
+										 stPROFILE_SAMPLE& outputsample
+										);
+		
+	}
+}	
+
+
+#define BEGIN_PERFORMANCE( exp )		util::Performance::Begin( exp )
+#define END_PERFORMANCE( exp )			util::Performance::End( exp )	
+#define OUTPUT_PERFORMANCE( p1 , p2 )	util::Performance::OutputData( p1 , p2 )
+#define SAMPLE_PERFORMANCE				util::Performance::stPROFILE_SAMPLE

@@ -1,6 +1,8 @@
+
 #ifndef _SNOWBOARD_UTILITY_SINGLETON_
 #define _SNOWBOARD_UTILITY_SINGLETON_
 
+#include <assert.h>
 
 template < typename T > 
 class singleton 

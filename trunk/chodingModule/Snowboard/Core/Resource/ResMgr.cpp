@@ -278,6 +278,7 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 		if ( itRes == itResAll->second.end() )
 		{
 			itResAll->second.insert( make_pair( filename , pres ) );
+			//itResAll->second.insert( pair<tstring , CBaseRes* >( filename , pres ) );
 		}
 		else
 		{

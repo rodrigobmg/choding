@@ -210,22 +210,6 @@
 			<Filter
 				Name="ResourceManager"
 				>
-				<File
-					RelativePath=".\Framework\ResourceManager\ResManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Framework\ResourceManager\ResManager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Framework\ResourceManager\ResourceManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Framework\ResourceManager\ResourceManager.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="BaseObject"
