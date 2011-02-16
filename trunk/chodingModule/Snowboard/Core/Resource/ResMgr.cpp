@@ -29,16 +29,6 @@ HRESULT CResMrg::Create( LPDIRECT3DDEVICE9 device )
 
 HRESULT CResMrg::Release()
 {
-// 	test_RES_CONTAINER test_map;
-// 	CResTexture* pres = dynamic_cast<CResTexture*>( Get( L"test" , L"banana.bmp" ) );
-// 	test_map[L"test"].insert( make_pair( tstring(L"testpath") , *pres ) );
-// 
-// 	test_RES_CONTAINER::iterator it = test_map.begin();
-// 	for ( ; it != test_map.end() ; )
-// 	{
-// 		test_map.erase( it++ );
-// 	}
-
 	RES_CONTAINER::iterator itAll = m_mapRes.begin();
 	for ( ; itAll != m_mapRes.end() ;  )
 	{
@@ -105,7 +95,10 @@ CBaseRes* CResMrg::isExist( const TCHAR* alias , const TCHAR* filename )
 
 CBaseRes* CResMrg::Get( const TCHAR* alias , const TCHAR* filename )
 {
-	return isExist( alias ,filename );
+	CBaseRes* p = isExist( alias ,filename );
+	if ( p != NULL )
+		p->IncRefCount();
+	return p;
 }
 
 bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::list<tstring>& tokenlist , bool bRecursive )
@@ -260,8 +253,7 @@ bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , tstring& filep
 		if ( ptex == NULL )
 			return S_FALSE;
 		
-		bool bresult = true;
-		bresult = stackdata( alias , filepath.c_str() , ptex );		
+		bool bresult = stackdata( alias , filepath.c_str() , ptex );		
 		return bresult;
 	}
 
@@ -298,8 +290,6 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 		hmapRes.insert( make_pair( filename , pres ) );
 		m_mapRes.insert( pair< const TCHAR* , HASHMAPRes >( alias , hmapRes ) );
 	}
-
-	//m_mapRes[alias].insert( make_pair( filename , pres ) );
 
 	return true;
 }

@@ -8,7 +8,8 @@ CResTexture::CResTexture()
 
 CResTexture::~CResTexture()
 {
-	//Release();
+	if ( m_pTexture )
+		m_pTexture->Release();
 }
 
 void CResTexture::Clear()
@@ -18,13 +19,5 @@ void CResTexture::Clear()
 
 HRESULT CResTexture::Create()
 {
-	return S_OK;
-}
-
-HRESULT CResTexture::Release()
-{
-	if ( m_pTexture )
-		m_pTexture->Release();
-
 	return S_OK;
 }

@@ -47,7 +47,7 @@ bool	CSnowboard::InitCamera()
 
 bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 {
-	m_pResMgr = dynamic_cast< CResMrg* >( CCoreFactory::CreateCore( CORE_RESOURCE ) );
+	m_pResMgr = static_cast< CResMrg* >( CCoreFactory::CreateCore( CORE_RESOURCE ) );
 	m_pResMgr->Create( device );
 	return TRUE;
 }
@@ -66,8 +66,6 @@ void CSnowboard::DestroyModule()
 		m_pResMgr->Release();
 }
 
-
-
 void CSnowboard::TestFunc()
 {
 	util::Logger::createSingleton();
@@ -83,23 +81,10 @@ void CSnowboard::TestFunc()
 		if ( m_pResMgr->CreateList( L"test" , respath , L"bmp;tga;jpg;" , 1 ) )
 			m_pResMgr->LoadRes( L"test" );
 
-		// 중복 로드 에러 체크 그냥 무시~~
+		CResTexture* p = static_cast< CResTexture*>( m_pResMgr->Get( L"test" , L"banana.bmp" ) );
+		//할당을 받으면 꼭 릴리즈해서 반환을 한다.
+		p->Release();
+
 		m_pResMgr->ReleaseRes( L"test" );
-		m_pResMgr->LoadRes( L"test" );
-
-		/*
-		CResTexture* pTex = dynamic_cast< CResTexture*>( m_pResMgr->Get( L"test" , L"banana.bmp" ) );
-				if ( pTex )
-					pTex->IncRefCount();*/
-		
-
-		// 에러 체크용 경고창은 그냥 넘겨 주세요.
-		/*
-		if ( m_pResMgr->CreateList( L"tex" , respath , L"" , 1 ) )
-					m_pResMgr->LoadRes( L"tex" );*/
-		
-
-		//m_pResMgr->ReleaseRes( L"test" );
-		//m_pResMgr->Release();
 	}
 }

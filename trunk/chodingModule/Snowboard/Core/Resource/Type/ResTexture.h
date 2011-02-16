@@ -21,6 +21,4 @@ public:
 
 	virtual void		Clear();
 	virtual HRESULT		Create();
-	virtual HRESULT		Release();
-
 };

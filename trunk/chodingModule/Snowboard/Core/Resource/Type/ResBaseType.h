@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Base/CoreBase.h"
+#include "../../Base/Snow.h"
 
-class CBaseRes : public CCoreBase{
+class CBaseRes : public CSnow{
 
 private:
 
@@ -16,6 +16,6 @@ public:
 
 	virtual void	Clear() = 0;
 	virtual HRESULT	Create() = 0;
-	virtual HRESULT	Release() = 0;
+	virtual HRESULT	Release(){ DecRefCount(); return S_OK; }
 	
 };

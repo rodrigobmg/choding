@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="Framework\"
+				AdditionalIncludeDirectories="D:\choding\chodingModule\Snowboard\Core;Framework\;Utility\;Resource\;Camera\;Core\"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
