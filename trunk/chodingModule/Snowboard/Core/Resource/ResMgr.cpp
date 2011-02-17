@@ -242,7 +242,7 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
 #pragma omp parallel for
 	for ( int index = 0 ; index < size ; ++index )
 	{
-		LOG_ERROR_F( "Thread ID() = %d , Index = %d " , omp_get_thread_num() , index );
+		//LOG_ERROR_F( "Thread ID() = %d , Index = %d " , omp_get_thread_num() , index );
 
 		if ( bSuccess == S_FALSE )
 			continue;
@@ -272,6 +272,28 @@ bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , tstring& filep
 		
 		bool bresult = stackdata( alias , filepath.c_str() , ptex );		
 		
+		return bresult;
+	}
+	else if( !_tcscmp( ext , L"tga" ) )
+	{
+		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath.c_str() ) );
+		if ( ptex == NULL )
+			return S_FALSE;
+
+
+		bool bresult = stackdata( alias , filepath.c_str() , ptex );		
+
+		return bresult;
+	}
+	else if( !_tcscmp( ext , L"jpg" ) )
+	{
+		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath.c_str() ) );
+		if ( ptex == NULL )
+			return S_FALSE;
+
+
+		bool bresult = stackdata( alias , filepath.c_str() , ptex );		
+
 		return bresult;
 	}
 

@@ -76,19 +76,30 @@ void CSnowboard::TestFunc()
 	TCHAR curpath[ MAX_PATH ];
 	GetCurrentDirectory( MAX_PATH, curpath );
 	TCHAR respath[MAX_PATH];
-	_stprintf_s( respath , L"%s\\%s" , curpath , L"Resource" );
+	_stprintf_s( respath , L"%s\\%s" , L"D:\\Project\\Client\\Trunk\\WorkGroup\\Client" , L"Application" );
 
 	if ( m_pResMgr )
 	{		
-
+		SAMPLE_PERFORMANCE loadsample;
+		SAMPLE_PERFORMANCE ressample;
+		BEGIN_PERFORMANCE( L"list" );
 		if ( m_pResMgr->CreateList( L"test" , respath , L"bmp;tga;jpg;" , 1 ) )
 		{
+			END_PERFORMANCE( L"list" );
+			BEGIN_PERFORMANCE(L"res" );
 			m_pResMgr->LoadRes( L"test" );
-			m_pResMgr->ReleaseRes( L"test" );
+			END_PERFORMANCE(L"res" );
+			//m_pResMgr->ReleaseRes( L"test" );
 		}
+
+		OUTPUT_PERFORMANCE( L"list" , loadsample );
+		OUTPUT_PERFORMANCE( L"res" , ressample );
+		LOG_ERROR_F( "list avg tick = %d" , loadsample.ulAvg );
+		LOG_ERROR_F( "res  avg tick = %d" , ressample.ulAvg );
 
 		CResTexture* p = static_cast< CResTexture*>( m_pResMgr->Get( L"test" , L"banana.bmp" ) );
 		//할당을 받으면 꼭 릴리즈해서 반환을 한다.
-		p->Release();		
+		if ( p )
+			p->Release();		
 	}
 }
