@@ -4,8 +4,6 @@
 
 class CBaseRes : public CSnow{
 
-private:
-
 public:
 	CBaseRes()
 	{
@@ -16,6 +14,6 @@ public:
 
 	virtual void	Clear() = 0;
 	virtual HRESULT	Create() = 0;
-	virtual HRESULT	Release(){ DecRefCount(); return S_OK; }
+	virtual HRESULT	Release() = 0;
 	
 };

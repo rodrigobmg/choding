@@ -21,8 +21,8 @@ private:
 
  	typedef stdext::hash_map< tstring , CBaseRes* >				HASHMAPRes;
  	typedef stdext::hash_map< tstring , CBaseRes* >::iterator	HASHMAPRes_ITERATOR;	
-// 	typedef std::map< tstring , CBaseRes* >				HASHMAPRes;
-// 	typedef std::map< tstring , CBaseRes* >::iterator	HASHMAPRes_ITERATOR;	
+
+	CRITICAL_SECTION		m_oCriticalSection;
 
 	typedef std::list<tstring>	FILE_LIST;
 	typedef struct RES_STRUCT{
@@ -40,10 +40,6 @@ private:
 	};	
 	typedef std::map< const TCHAR* , RES_STRUCT >	RES_ALL_FILELIST_MAP;		
 	typedef std::map< const TCHAR* , HASHMAPRes >	RES_CONTAINER;			
-
-	//테스트용
-// 	typedef stdext::hash_map< tstring , CResTexture >	test_HASHMAPRes;
-// 	typedef std::map< const TCHAR* , test_HASHMAPRes >	test_RES_CONTAINER;			
 
 
 	RES_CONTAINER			m_mapRes;

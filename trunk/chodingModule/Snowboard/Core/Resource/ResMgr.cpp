@@ -2,6 +2,7 @@
 
 #include "Type/ResTexture.h"
 #include <algorithm>
+#include <omp.h>
 
 CResMrg::CResMrg()
 {
@@ -22,6 +23,8 @@ void CResMrg::Clear()
 
 HRESULT CResMrg::Create( LPDIRECT3DDEVICE9 device )
 {
+	::InitializeCriticalSection(&this->m_oCriticalSection);
+
 	Clear();
 	m_pDevice = device;
 	return S_OK;
@@ -51,7 +54,7 @@ void CResMrg::ReleaseRes( const TCHAR* alias )
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
 	{
-		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );		
+		for_each( itAll->second.begin() , itAll->second.end() , functor::release() );		
 		m_mapRes.erase( itAll );
 	}	
 
@@ -233,16 +236,28 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
 	FILE_LIST filelist = stRes.filelist;
 	FILE_LIST::iterator it = filelist.begin();
 	tstring ext;
-	for ( ; it != filelist.end() ; ++it )
+	
+	bool	bSuccess  = S_OK;
+#pragma omp parallel
 	{
-		size_t poscomma = it->rfind( L"." );
-		ext				= it->substr( poscomma + 1 , it->length() );
-		if ( !loadFactory( alias , ext.c_str() , (*it) ) )
-			return S_FALSE;
+		for ( ; it != filelist.end() ; ++it )
+		{
+			if ( bSuccess == S_FALSE )
+				break;
+
+			size_t poscomma = it->rfind( L"." );
+			ext				= it->substr( poscomma + 1 , it->length() );
+			if ( !loadFactory( alias , ext.c_str() , (*it) ) )
+			{
+				bSuccess = S_FALSE;
+				break;
+			}
+		}
 	}
 
-	stRes.bLoaded = true;
-	return S_OK;
+	stRes.bLoaded = bSuccess;
+
+	return bSuccess;
 }
 
 bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , tstring& filepath )
@@ -271,6 +286,8 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 		return false;
 	}
 
+	::EnterCriticalSection(&this->m_oCriticalSection);
+	
 	RES_CONTAINER::iterator itResAll = m_mapRes.find( alias );
 	if ( itResAll != m_mapRes.end() )
 	{
@@ -278,7 +295,6 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 		if ( itRes == itResAll->second.end() )
 		{
 			itResAll->second.insert( make_pair( filename , pres ) );
-			//itResAll->second.insert( pair<tstring , CBaseRes* >( filename , pres ) );
 		}
 		else
 		{
@@ -291,6 +307,8 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 		hmapRes.insert( make_pair( filename , pres ) );
 		m_mapRes.insert( pair< const TCHAR* , HASHMAPRes >( alias , hmapRes ) );
 	}
+
+	::LeaveCriticalSection(&this->m_oCriticalSection);
 
 	return true;
 }
