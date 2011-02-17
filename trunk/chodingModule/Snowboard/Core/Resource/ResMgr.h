@@ -56,7 +56,7 @@ private:
 	
 	bool				loadFactory( const TCHAR* alias, 
 										const TCHAR* ext ,
-										tstring& filename 
+										const TCHAR* filename 
 										);
 
 	CBaseRes*			loadTexture( const TCHAR* filename );
@@ -74,6 +74,7 @@ private:
 public:
 	CResMrg();
 	virtual ~CResMrg();
+
 
 	CBaseRes*			Get( const TCHAR* alias , const TCHAR* filename );
 

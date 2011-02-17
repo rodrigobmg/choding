@@ -5,6 +5,13 @@
 #include <omp.h>
 #include "Log/logger.h"
 
+#include "tbb/task_scheduler_init.h"
+#include "tbb/tick_count.h"
+#include <tbb/partitioner.h>
+#include <tbb/parallel_reduce.h>
+#include <tbb/parallel_for.h>
+#include <tbb/blocked_range.h>
+
 CResMrg::CResMrg()
 {
 	SetName( OBJECT_RES_MGR );
@@ -239,63 +246,103 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
 	tstring ext;
 	int size = static_cast< int>( filelist.size() );
 	bool	bSuccess  = S_OK;
-#pragma omp parallel for
-	for ( int index = 0 ; index < size ; ++index )
-	{
-		//LOG_ERROR_F( "Thread ID() = %d , Index = %d " , omp_get_thread_num() , index );
+	
 
-		if ( bSuccess == S_FALSE )
-			continue;
-		
-		size_t poscomma = filelist[index].rfind( L"." );
-		ext				= filelist[index].substr( poscomma + 1 , filelist[index].length() );
-		if ( !loadFactory( alias , ext.c_str() , filelist[index] ) )
-		{
-			bSuccess = S_FALSE;
-			continue;
-		}
-	}
+// 	struct resFunctor{
+// 
+// 		bool bSuccess;
+// 		FILE_LIST ffilelist;
+// 		const TCHAR* alias;
+// 		CResMrg* pthis;
+// 
+// 		void operator()( const tbb::blocked_range<size_t>& r ) const
+// 		{
+// 			for ( size_t i = r.begin() ; i != r.end() ; ++i )
+// 			{
+// 				if ( bSuccess == S_FALSE )
+// 					continue;
+// 
+// 				size_t poscomma = ffilelist[i].rfind( L"." );
+// 				tstring ext		= ffilelist[i].substr( poscomma + 1 , ffilelist[i].length() );
+// 				if ( !pthis->loadFactory( alias , ext.c_str() , ffilelist[i].c_str() ) )
+// 				{
+// 				//	bSuccess = S_FALSE;
+// 					continue;
+// 				}
+// 			}			
+// 		}
+// 
+// 		resFunctor( CResMrg* p , FILE_LIST& rfilelist , const TCHAR* palias , bool bflag ){
+// 			ffilelist = rfilelist;
+// 			bSuccess = bflag;
+// 			alias = palias;
+// 			CResMrg* pthis = p;
+// 		};
+// 
+// 	};
+// 	tbb::task_scheduler_init();
+// 	tbb::parallel_for( tbb::blocked_range< size_t >( 0, filelist.size() ), resFunctor( this , filelist , alias , bSuccess ) , tbb::auto_partitioner() );
+
+
+#pragma omp parallel for
+  	for ( int index = 0 ; index < size ; ++index )
+  	{ 
+  		if ( bSuccess == S_FALSE )
+  			continue;
+  		
+  		size_t poscomma = filelist[index].rfind( L"." );
+  		ext				= filelist[index].substr( poscomma + 1 , filelist[index].length() );
+  		if ( !loadFactory( alias , ext.c_str() , filelist[index].c_str() ) )
+  		{
+  			bSuccess = S_FALSE;
+  			continue;
+  		}
+  	}
 
 	stRes.bLoaded = bSuccess;
 
 	return bSuccess;
 }
 
-bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , tstring& filepath )
+bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* filepath )
 {
+	//::EnterCriticalSection(&this->m_oCriticalSection);
+
 	if ( !_tcscmp( ext , L"bmp" ) )
 	{
-		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath.c_str() ) );
+		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath ) );
 		if ( ptex == NULL )
 			return S_FALSE;
 	
 		
-		bool bresult = stackdata( alias , filepath.c_str() , ptex );		
+		bool bresult = stackdata( alias , filepath , ptex );		
 		
 		return bresult;
 	}
 	else if( !_tcscmp( ext , L"tga" ) )
 	{
-		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath.c_str() ) );
+		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath ) );
 		if ( ptex == NULL )
 			return S_FALSE;
 
 
-		bool bresult = stackdata( alias , filepath.c_str() , ptex );		
+		bool bresult = stackdata( alias , filepath , ptex );		
 
 		return bresult;
 	}
 	else if( !_tcscmp( ext , L"jpg" ) )
 	{
-		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath.c_str() ) );
+		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath ) );
 		if ( ptex == NULL )
 			return S_FALSE;
 
 
-		bool bresult = stackdata( alias , filepath.c_str() , ptex );		
+		bool bresult = stackdata( alias , filepath , ptex );		
 
 		return bresult;
 	}
+
+	//::LeaveCriticalSection(&this->m_oCriticalSection);
 
 	return false;
 }
@@ -309,8 +356,7 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 	{
 		assert( 0 && "키값 중복이 있어서는 안된다." );
 		return false;
-	}	
-	::EnterCriticalSection(&this->m_oCriticalSection);
+	}		
 	RES_CONTAINER::iterator itResAll = m_mapRes.find( alias );
 	if ( itResAll != m_mapRes.end() )
 	{
@@ -330,7 +376,6 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 		hmapRes.insert( make_pair( filename , pres ) );
 		m_mapRes.insert( pair< const TCHAR* , HASHMAPRes >( alias , hmapRes ) );
 	}	
-	::LeaveCriticalSection(&this->m_oCriticalSection);
 	return true;
 }
 

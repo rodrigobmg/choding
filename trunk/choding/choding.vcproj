@@ -40,11 +40,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../chodingModule\Lib;Main/;./"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="&quot;C:\Program Files\tbb30_018oss\include&quot;;../../chodingModule\Lib;Main/;./"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;TBB_USE_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				OpenMP="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough=""
 				WarningLevel="3"
@@ -62,10 +63,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3dx9d.lib d3d9.lib winmm.lib"
+				AdditionalDependencies="d3dx9d.lib d3d9.lib winmm.lib tbb_debug.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_D.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../chodingModule/Lib"
+				AdditionalLibraryDirectories="&quot;C:\Program Files\tbb30_018oss\lib\ia32\vc8&quot;;../chodingModule/Lib"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -121,7 +122,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../chodingModule\Lib;Main/;./"
+				AdditionalIncludeDirectories="&quot;C:\Program Files\tbb30_018oss\include&quot;;../../chodingModule\Lib;Main/;./"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="2"
@@ -142,9 +143,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3dx9d.lib d3d9.lib winmm.lib"
+				AdditionalDependencies="d3dx9d.lib d3d9.lib winmm.lib tbb.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../chodingModule/Lib"
+				AdditionalLibraryDirectories="&quot;C:\Program Files\tbb30_018oss\lib\ia32\vc8&quot;;../chodingModule/Lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
