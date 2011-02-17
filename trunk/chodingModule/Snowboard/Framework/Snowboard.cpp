@@ -80,27 +80,11 @@ void CSnowboard::TestFunc()
 
 	if ( m_pResMgr )
 	{		
-		SAMPLE_PERFORMANCE sample;
-		SAMPLE_PERFORMANCE sample1;
-		SAMPLE_PERFORMANCE sample2;
+
 		if ( m_pResMgr->CreateList( L"test" , respath , L"bmp;tga;jpg;" , 1 ) )
 		{
-			BEGIN_PERFORMANCE( L"check_res_time" );
-//			for ( size_t t = 0 ; t < 1000 ; t++)
-			{
-				BEGIN_PERFORMANCE( L"load" );
-				m_pResMgr->LoadRes( L"test" );
-
-				BEGIN_PERFORMANCE( L"release" );
-				m_pResMgr->ReleaseRes( L"test" );
-			}			
-			END_PERFORMANCE( L"check_res_time" );			
-			END_PERFORMANCE( L"load" );			
-			END_PERFORMANCE( L"release" );			
-
-			OUTPUT_PERFORMANCE( L"check_res_time" , sample );
-			OUTPUT_PERFORMANCE( L"load" , sample1 );
-			OUTPUT_PERFORMANCE( L"release" , sample2 );
+			m_pResMgr->LoadRes( L"test" );
+			m_pResMgr->ReleaseRes( L"test" );
 		}
 
 		CResTexture* p = static_cast< CResTexture*>( m_pResMgr->Get( L"test" , L"banana.bmp" ) );

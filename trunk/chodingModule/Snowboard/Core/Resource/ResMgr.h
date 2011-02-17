@@ -24,7 +24,7 @@ private:
 
 	CRITICAL_SECTION		m_oCriticalSection;
 
-	typedef std::list<tstring>	FILE_LIST;
+	typedef std::vector<tstring>	FILE_LIST;
 	typedef struct RES_STRUCT{
 		bool bLoaded;
 		FILE_LIST filelist;
@@ -49,7 +49,7 @@ private:
 
 	CBaseRes*			isExist( const TCHAR* alias , const TCHAR* filename );
 	bool				loadResforDir( const TCHAR* dirpath ,
-										std::list<tstring>& filename, 
+										std::vector<tstring>& filename, 
 										std::list<tstring>& tokenlist , 
 										bool bRecursive 
 										);

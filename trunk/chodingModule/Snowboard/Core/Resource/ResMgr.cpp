@@ -3,6 +3,7 @@
 #include "Type/ResTexture.h"
 #include <algorithm>
 #include <omp.h>
+#include "Log/logger.h"
 
 CResMrg::CResMrg()
 {
@@ -201,7 +202,7 @@ bool CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* 
 		loadResforDir( path , resStruct.filelist , tokenlist , brecursive );
 		if ( !resStruct.filelist.empty() )
 		{
-			resStruct.filelist.sort();
+			//resStruct.filelist.sort();
 			m_mapAllFilelist.insert( pair< const TCHAR* , RES_STRUCT >( alias , resStruct ) );
 			return true;
 		}
@@ -236,22 +237,22 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
 	FILE_LIST filelist = stRes.filelist;
 	FILE_LIST::iterator it = filelist.begin();
 	tstring ext;
-	
+	int size = static_cast< int>( filelist.size() );
 	bool	bSuccess  = S_OK;
-#pragma omp parallel
+#pragma omp parallel for
+	for ( int index = 0 ; index < size ; ++index )
 	{
-		for ( ; it != filelist.end() ; ++it )
-		{
-			if ( bSuccess == S_FALSE )
-				break;
+		LOG_ERROR_F( "Thread ID() = %d , Index = %d " , omp_get_thread_num() , index );
 
-			size_t poscomma = it->rfind( L"." );
-			ext				= it->substr( poscomma + 1 , it->length() );
-			if ( !loadFactory( alias , ext.c_str() , (*it) ) )
-			{
-				bSuccess = S_FALSE;
-				break;
-			}
+		if ( bSuccess == S_FALSE )
+			continue;
+		
+		size_t poscomma = filelist[index].rfind( L"." );
+		ext				= filelist[index].substr( poscomma + 1 , filelist[index].length() );
+		if ( !loadFactory( alias , ext.c_str() , filelist[index] ) )
+		{
+			bSuccess = S_FALSE;
+			continue;
 		}
 	}
 
@@ -267,8 +268,10 @@ bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , tstring& filep
 		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath.c_str() ) );
 		if ( ptex == NULL )
 			return S_FALSE;
+	
 		
 		bool bresult = stackdata( alias , filepath.c_str() , ptex );		
+		
 		return bresult;
 	}
 
@@ -284,10 +287,8 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 	{
 		assert( 0 && "키값 중복이 있어서는 안된다." );
 		return false;
-	}
-
+	}	
 	::EnterCriticalSection(&this->m_oCriticalSection);
-	
 	RES_CONTAINER::iterator itResAll = m_mapRes.find( alias );
 	if ( itResAll != m_mapRes.end() )
 	{
@@ -306,10 +307,8 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 		HASHMAPRes hmapRes;
 		hmapRes.insert( make_pair( filename , pres ) );
 		m_mapRes.insert( pair< const TCHAR* , HASHMAPRes >( alias , hmapRes ) );
-	}
-
+	}	
 	::LeaveCriticalSection(&this->m_oCriticalSection);
-
 	return true;
 }
 
