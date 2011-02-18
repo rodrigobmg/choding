@@ -285,6 +285,8 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
 
 
 //#pragma omp parallel for
+
+	LOG_ERROR_F(" res load start " );
   	for ( int index = 0 ; index < size ; ++index )
   	{ 
   		if ( bSuccess == S_FALSE )
@@ -298,7 +300,7 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
   			continue;
   		}
   	}
-
+	LOG_ERROR_F(" res load finish " );
 	stRes.bLoaded = bSuccess;
 
 	return bSuccess;

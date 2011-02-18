@@ -24,29 +24,38 @@ BGThread::~BGThread()
 
 void BGThread::Run()
 {
-	if ( m_ThreadQueue.empty() )
+	if ( m_ThreadFunctorQueue.empty() )
 		return;
 
-	WORK_TOKEN wt = m_ThreadQueue.front();
-	if( wt.pIntance != NULL && wt.pFunc != NULL )
+	TFunctor* pFunctor = m_ThreadFunctorQueue.front();
+	if ( pFunctor )
 	{
-		(wt.pIntance->*wt.pFunc)();
-		m_ThreadQueue.pop();
-
+		(*pFunctor)( L"test" );
 		// 작업이 끝난후 큐에 작업이 있다면 이벤트한번더~
-		if ( !m_ThreadQueue.empty() )
+		if ( !m_ThreadFunctorQueue.empty() )
 			::SetEvent( m_hEvent );
 	}
 }
 
-void BGThread::Push( /*CSnow* pInstance , void (CSnow::*pf)()*/ )
+void BGThread::Push( CSnow* pInstance , void (CSnow::*pf)() )
 {
 	if ( m_ThreadQueue.size() < MAX_SIZE )
 	{
 		WORK_TOKEN wt;
-		wt.pIntance = 0;
-		wt.pFunc	= 0;
+		wt.pIntance = pInstance;
+		wt.pFunc	= pf;
 		m_ThreadQueue.push( wt );
+		::SetEvent( m_hEvent );
+	}
+	else
+		assert( 0 && "너무 많이 등록함" );
+}
+
+void BGThread::Push( TFunctor* tFunctor )
+{
+	if ( m_ThreadFunctorQueue.size() < MAX_SIZE )
+	{
+		m_ThreadFunctorQueue.push( tFunctor );
 		::SetEvent( m_hEvent );
 	}
 	else

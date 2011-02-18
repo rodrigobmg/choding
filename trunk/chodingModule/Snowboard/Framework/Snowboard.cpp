@@ -91,10 +91,10 @@ void CSnowboard::TestFunc()
 		{
 			END_PERFORMANCE( L"list" );
 			BEGIN_PERFORMANCE(L"res" );
-			pThread->Push( /*m_pResMgr , &CResMrg::Clear*/ ) ;
-			//m_pResMgr->LoadRes( L"test" );
+			TSpecificFunctor<CResMrg> funcLoad( m_pResMgr , &CResMrg::LoadRes );
+			pThread->Push( &funcLoad );
+
 			END_PERFORMANCE(L"res" );
-			//m_pResMgr->ReleaseRes( L"test" );
 		}
 
 		OUTPUT_PERFORMANCE( L"list" , loadsample );

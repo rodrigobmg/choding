@@ -6,27 +6,22 @@
 class TFunctor
 {
 public:
-	virtual void operator()( const TCHAR* name ) = 0;
-	virtual void Call( const TCHAR* name ) = 0;
+	virtual HRESULT operator()( const TCHAR* name ) = 0;
+	virtual HRESULT Call( const TCHAR* name ) = 0;
 };
 
 template< class T >
 class TSpecificFunctor : public TFunctor
 {
 private:
-	void( T::*fpt)(const TCHAR*);
+	HRESULT (T::*fpt)(const TCHAR*);
 	T*	ptObject;
 
 public:
-	TSpecificFunctor( T* _ptObject , void(T::*_fpt)(const TCHAR*) )
+	TSpecificFunctor( T* _ptObject , void(T::*_fpt)(const TCHAR* ) )
 	{
 		ptObject = _ptObject;
 		fpt = _fpt;
-	}
-
-	virtual void operator()( const TCHAR* name )
-	{
-		(*ptObject->*fpt)(name); 
 	}
 
 	virtual  HRESULT operator()( const TCHAR* name )
@@ -34,9 +29,9 @@ public:
 		return (*ptObject->*fpt)(name); 
 	}
 
-	virtual void Call( const TCHAR* name )
+	virtual HRESULT Call( const TCHAR* name )
 	{
-		(*ptObject->*fpt)(name);
+		return (*ptObject->*fpt)(name);
 	}
 };
 
@@ -52,7 +47,8 @@ class BGThread : public SnowThread
 		void (CSnow::*pFunc)();
 	};
 
-	std::queue< WORK_TOKEN >	m_ThreadQueue;
+	std::queue< WORK_TOKEN > m_ThreadQueue;
+	std::queue< TFunctor* >	m_ThreadFunctorQueue;
 //
 // Initialize & Destroy Methods
 public:
@@ -68,7 +64,8 @@ public:
 // Member Functions
 public:
 
-	void	Push( /*CSnow* ins , void (CSnow::*pf)()*/ );
+	void	Push( CSnow* ins , void (CSnow::*pf)() );
+	void	Push( TFunctor* tFunctor );
 	virtual void Run();
 
 };
