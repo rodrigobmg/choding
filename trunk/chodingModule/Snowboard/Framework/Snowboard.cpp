@@ -80,19 +80,19 @@ void CSnowboard::TestFunc()
 	TCHAR curpath[ MAX_PATH ];
 	GetCurrentDirectory( MAX_PATH, curpath );
 	TCHAR respath[MAX_PATH];
-	_stprintf_s( respath , L"%s\\%s" , L"D:\\Project\\Client\\Trunk\\WorkGroup\\Client" , L"Application" );
+	_stprintf_s( respath , L"%s\\%s" ,curpath , L"Resource" );
 
 	if ( m_pResMgr )
 	{		
 		SAMPLE_PERFORMANCE loadsample;
 		SAMPLE_PERFORMANCE ressample;
 		BEGIN_PERFORMANCE( L"list" );
-		if ( m_pResMgr->CreateList( L"test" , respath , L"tga;dds;" , 1 ) )
+		if ( m_pResMgr->CreateList( L"test" , respath , L"tga;dds;bmp" , 1 ) )
 		{
 			END_PERFORMANCE( L"list" );
 			BEGIN_PERFORMANCE(L"res" );
-			TSpecificFunctor<CResMrg> funcLoad( m_pResMgr , &CResMrg::LoadRes );
-			pThread->Push( &funcLoad );
+//			TSpecificFunctor<CResMrg> funcLoad( m_pResMgr , &CResMrg::LoadRes );
+//			pThread->Push( funcLoad );
 
 			END_PERFORMANCE(L"res" );
 		}

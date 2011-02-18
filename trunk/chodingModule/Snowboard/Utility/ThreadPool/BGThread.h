@@ -18,7 +18,7 @@ private:
 	T*	ptObject;
 
 public:
-	TSpecificFunctor( T* _ptObject , void(T::*_fpt)(const TCHAR* ) )
+	TSpecificFunctor( T* _ptObject , HRESULT (T::*_fpt)(const TCHAR* ) )
 	{
 		ptObject = _ptObject;
 		fpt = _fpt;
@@ -48,7 +48,8 @@ class BGThread : public SnowThread
 	};
 
 	std::queue< WORK_TOKEN > m_ThreadQueue;
-	std::queue< TFunctor* >	m_ThreadFunctorQueue;
+
+//	std::queue< TFunctor >	m_ThreadFunctorQueue;
 //
 // Initialize & Destroy Methods
 public:
@@ -65,7 +66,8 @@ public:
 public:
 
 	void	Push( CSnow* ins , void (CSnow::*pf)() );
-	void	Push( TFunctor* tFunctor );
+	/*template< typename T >*/
+//	void	Push( TSpecificFunctor<T>* tFunctor );
 	virtual void Run();
 
 };

@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3dx9d.lib d3d9.lib winmm.lib tbb_debug.lib"
+				AdditionalDependencies="d3dx9d.lib d3d9.lib winmm.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_D.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;C:\Program Files\tbb30_018oss\lib\ia32\vc8&quot;;../chodingModule/Lib"
