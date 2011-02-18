@@ -9,25 +9,11 @@
 #include <tchar.h>
 #include <String>
 #include <Strsafe.h>
+#include <vector>
+#include <queue>
 
 #include "../Utility/Utility.h"
 //#include "../Utility/Log/logger.h"
-
-
-#define CORE_RENDERER		L"RendererCore"
-#define CORE_CAMERA			L"CameraCore"
-#define CORE_RESOURCE		L"ResourceCore"
-
-#define OBJECT_BASE			L"Base"
-#define OBJECT_BASE_CORE	L"CoreBase"
-#define OBJECT_RENDERBASE	L"RenderBase"
-#define OBJECT_RENDERERDX9	L"RendererDX9"
-#define OBJECT_COREMGR		L"CoreMgr"
-#define OBJECT_RES_BASE		L"ResBase"
-#define OBJECT_RES_TEXTURE	L"ResTypeTexture"
-#define OBJECT_RES_MGR		L"ResMgr"
-
-
 
 
 

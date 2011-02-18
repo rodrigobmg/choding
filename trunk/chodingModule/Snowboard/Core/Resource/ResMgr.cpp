@@ -284,7 +284,7 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
 // 	tbb::parallel_for( tbb::blocked_range< size_t >( 0, filelist.size() ), resFunctor( this , filelist , alias , bSuccess ) , tbb::auto_partitioner() );
 
 
-#pragma omp parallel for
+//#pragma omp parallel for
   	for ( int index = 0 ; index < size ; ++index )
   	{ 
   		if ( bSuccess == S_FALSE )

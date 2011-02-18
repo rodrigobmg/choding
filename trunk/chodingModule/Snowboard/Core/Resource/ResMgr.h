@@ -25,6 +25,7 @@ private:
 	CRITICAL_SECTION		m_oCriticalSection;
 
 	typedef std::vector<tstring>	FILE_LIST;
+
 	typedef struct RES_STRUCT{
 		bool bLoaded;
 		FILE_LIST filelist;
@@ -38,8 +39,10 @@ private:
 			filelist.clear();
 		}
 	};	
-	typedef std::map< const TCHAR* , RES_STRUCT >	RES_ALL_FILELIST_MAP;		
-	typedef std::map< const TCHAR* , HASHMAPRes >	RES_CONTAINER;			
+
+
+	typedef std::map< tstring , RES_STRUCT >	RES_ALL_FILELIST_MAP;		
+	typedef std::map< tstring , HASHMAPRes >	RES_CONTAINER;			
 
 
 	RES_CONTAINER			m_mapRes;

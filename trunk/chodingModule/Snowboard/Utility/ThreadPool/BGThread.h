@@ -3,6 +3,42 @@
 
 #include "../../Framework/Snowboard_stdafx.h"
 #include "SnowThread.h"
+class TFunctor
+{
+public:
+	virtual void operator()( const TCHAR* name ) = 0;
+	virtual void Call( const TCHAR* name ) = 0;
+};
+
+template< class T >
+class TSpecificFunctor : public TFunctor
+{
+private:
+	void( T::*fpt)(const TCHAR*);
+	T*	ptObject;
+
+public:
+	TSpecificFunctor( T* _ptObject , void(T::*_fpt)(const TCHAR*) )
+	{
+		ptObject = _ptObject;
+		fpt = _fpt;
+	}
+
+	virtual void operator()( const TCHAR* name )
+	{
+		(*ptObject->*fpt)(name); 
+	}
+
+	virtual  HRESULT operator()( const TCHAR* name )
+	{
+		return (*ptObject->*fpt)(name); 
+	}
+
+	virtual void Call( const TCHAR* name )
+	{
+		(*ptObject->*fpt)(name);
+	}
+};
 
 class BGThread : public SnowThread
 {
@@ -32,7 +68,7 @@ public:
 // Member Functions
 public:
 
-	void	Push( CSnow* pInstance , void (CSnow::*pFunc)() );
+	void	Push( /*CSnow* ins , void (CSnow::*pf)()*/ );
 	virtual void Run();
 
 };

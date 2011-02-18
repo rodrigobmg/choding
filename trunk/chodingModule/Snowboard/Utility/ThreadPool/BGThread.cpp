@@ -32,20 +32,23 @@ void BGThread::Run()
 	{
 		(wt.pIntance->*wt.pFunc)();
 		m_ThreadQueue.pop();
+
+		// 작업이 끝난후 큐에 작업이 있다면 이벤트한번더~
+		if ( !m_ThreadQueue.empty() )
+			::SetEvent( m_hEvent );
 	}
 }
 
-void BGThread::Push( CSnow* pInstance , void (CSnow::*pf)() )
+void BGThread::Push( /*CSnow* pInstance , void (CSnow::*pf)()*/ )
 {
-	this->EnterLock();
 	if ( m_ThreadQueue.size() < MAX_SIZE )
 	{
 		WORK_TOKEN wt;
-		wt.pIntance = pInstance;
-		wt.pFunc	= pf;
+		wt.pIntance = 0;
+		wt.pFunc	= 0;
 		m_ThreadQueue.push( wt );
+		::SetEvent( m_hEvent );
 	}
 	else
 		assert( 0 && "너무 많이 등록함" );
-	this->LeaveLock();
 }

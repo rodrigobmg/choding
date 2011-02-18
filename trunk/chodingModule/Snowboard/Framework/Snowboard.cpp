@@ -6,6 +6,7 @@
 
 #include "../Utility/Log/logger.h"
 #include "../Utility/PerformanceCheck/Performance.h"
+#include "ThreadPool/ThreadPool.h"
 
 CSnowboard::CSnowboard()
 {
@@ -72,6 +73,9 @@ void CSnowboard::TestFunc()
 	util::Logger::createSingleton();
 	util::Logger::getInstance().Init(NULL , NULL , NULL , NULL );
 
+	BGThread* pThread = BGThread::New();
+	pThread->CreateAndRunThread();
+
 	LOG_WARNING_F( L"%s", L"logger init" );
 	TCHAR curpath[ MAX_PATH ];
 	GetCurrentDirectory( MAX_PATH, curpath );
@@ -83,11 +87,12 @@ void CSnowboard::TestFunc()
 		SAMPLE_PERFORMANCE loadsample;
 		SAMPLE_PERFORMANCE ressample;
 		BEGIN_PERFORMANCE( L"list" );
-		if ( m_pResMgr->CreateList( L"test" , respath , L"bmp;tga;jpg;" , 1 ) )
+		if ( m_pResMgr->CreateList( L"test" , respath , L"tga;dds;" , 1 ) )
 		{
 			END_PERFORMANCE( L"list" );
 			BEGIN_PERFORMANCE(L"res" );
-			m_pResMgr->LoadRes( L"test" );
+			pThread->Push( /*m_pResMgr , &CResMrg::Clear*/ ) ;
+			//m_pResMgr->LoadRes( L"test" );
 			END_PERFORMANCE(L"res" );
 			//m_pResMgr->ReleaseRes( L"test" );
 		}

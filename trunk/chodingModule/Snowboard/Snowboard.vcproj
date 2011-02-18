@@ -47,7 +47,7 @@
 				RuntimeLibrary="3"
 				OpenMP="true"
 				UsePrecompiledHeader="0"
-				WarningLevel="3"
+				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 			/>
@@ -317,6 +317,38 @@
 			<Filter
 				Name="ThreadPool"
 				>
+				<File
+					RelativePath=".\Utility\ThreadPool\BGThread.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\ThreadPool\BGThread.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\ThreadPool\SnowThread.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\ThreadPool\SnowThread.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\ThreadPool\SyncCriticalSection.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\ThreadPool\SyncCriticalSection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\ThreadPool\Synchronize.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utility\ThreadPool\Synchronize.h"
+					>
+				</File>
 				<File
 					RelativePath=".\Utility\ThreadPool\ThreadPool.cpp"
 					>
