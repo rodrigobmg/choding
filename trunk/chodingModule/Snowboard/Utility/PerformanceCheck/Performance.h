@@ -29,8 +29,8 @@ namespace util
 			}
 		}stPROFILE_SAMPLE;
 
-		typedef std::map< const TCHAR* , stPROFILE_SAMPLE >			PROFILE_CONTAINOER;
-		typedef std::pair< const TCHAR* , stPROFILE_SAMPLE >		PAIR;
+		typedef std::map< tstring , stPROFILE_SAMPLE >			PROFILE_CONTAINOER;
+		typedef std::pair< tstring , stPROFILE_SAMPLE >		PAIR;
 		
 		
 

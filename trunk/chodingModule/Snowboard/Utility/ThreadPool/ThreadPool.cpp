@@ -3,15 +3,10 @@
 
 ThreadPool::ThreadPool()
 {
-
+	m_BgThread = BGThread::New();
 }
 
 ThreadPool::~ThreadPool()
 {
 
-}
-
-ThreadPool* ThreadPool::New()
-{
-	return new ThreadPool;
 }
