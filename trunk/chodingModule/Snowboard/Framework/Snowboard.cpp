@@ -87,11 +87,11 @@ void CSnowboard::TestFunc()
 		SAMPLE_PERFORMANCE loadsample;
 		SAMPLE_PERFORMANCE ressample;
 		BEGIN_PERFORMANCE( L"list" );
-		if ( m_pResMgr->CreateList( L"test" , respath , L"tga;dds;bmp" , 1 ) )
+		if ( m_pResMgr->CreateList( L"test" , respath , L"tga;bmp" , 1 ) )
 		{
 			END_PERFORMANCE( L"list" );
 			BEGIN_PERFORMANCE(L"res" );
-			pThread->Push<  const TCHAR* , CResMrg >( m_pResMgr , L"test"  , &CResMrg::LoadRes );
+			pThread->Push<  const TCHAR* >( m_pResMgr , L"test"  , &CResMrg::LoadRes );
 
 			END_PERFORMANCE(L"res" );
 		}
