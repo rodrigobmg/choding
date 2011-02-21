@@ -3,6 +3,7 @@
 
 #include "../../Framework/Snowboard_stdafx.h"
 #include "SnowThread.h"
+/*
 class TFunctor
 {
 public:
@@ -33,42 +34,99 @@ public:
 	{
 		return (*ptObject->*fpt)(name);
 	}
+};*/
+
+
+class IWORK_TOKEN
+{
+	friend class BGThread;
+
+public:
+	IWORK_TOKEN(){};
+	virtual ~IWORK_TOKEN(){};
+	virtual void Execute() = 0;
 };
+
+template< class _OWNER , class _PARAMETER >
+class WORK_TOKEN : public IWORK_TOKEN
+{	
+	friend class BGThread;
+
+public:
+
+	_OWNER* pthis;
+	typedef HRESULT ( _OWNER::*PFUNC)( _PARAMETER );	
+	PFUNC			pf;
+	_PARAMETER		parameter;
+
+
+	WORK_TOKEN( _OWNER* _pthis , _PARAMETER _para  , PFUNC fp )
+		:pthis( _pthis ) , pf(fp) , parameter( _para )
+	{
+	};
+
+	void Execute()
+	{
+		(pthis->*pf)( parameter );
+	}
+};
+
 
 class BGThread : public SnowThread
 {
+	
+public:
+
+	template< class _PARAMETER , class _OWNER , class _FP >
+	void	Push( _OWNER* pthis , _PARAMETER para , _FP fp )
+	{
+		if ( m_ThreadQueue.size() > MAX_SIZE )
+		{
+			assert( 0 && "MAX ÃÊ°ú" );
+			return;
+		}
+
+		//m_ThreadQueue[0] = new WORK_TOKEN< _OWNER , _PARAMETER >( pthis , para , fp );
+		IWORK_TOKEN* pWorkToken = new WORK_TOKEN< _OWNER , _PARAMETER >( pthis , para , fp );
+		m_ThreadQueue.push( pWorkToken );
+		::SetEvent( m_hEvent );
+	}
+
+	virtual void Run()
+	{
+ 		//m_ThreadQueue[0]->Execute();
+		IWORK_TOKEN* pWorkToken = m_ThreadQueue.front();
+		pWorkToken->Execute();
+		SAFE_DELETE( pWorkToken );
+		m_ThreadQueue.pop();
+		if ( !m_ThreadQueue.empty() )
+			::SetEvent( m_hEvent );
+	}
+
 
 	enum{
 		MAX_SIZE = 10,
 	};
-	typedef struct WORK_TOKEN
-	{
-		CSnow*				pIntance;
-		void (CSnow::*pFunc)();
-	};
 
-	std::queue< WORK_TOKEN > m_ThreadQueue;
+	//IWORK_TOKEN**	m_ThreadQueue;
+	std::queue< IWORK_TOKEN* > m_ThreadQueue;
 
-//	std::queue< TFunctor >	m_ThreadFunctorQueue;
-//
-// Initialize & Destroy Methods
+
 public:
-	static BGThread *New();
+	static BGThread *New()
+	{
+		return new BGThread;
+	}
 
-	BGThread();
-	virtual ~BGThread(); 
+	BGThread()
+	{
+		SetName( OBJECT_BGTHREAD );
+		//m_ThreadQueue = new IWORK_TOKEN*[MAX_SIZE];
+	}
+
+	virtual ~BGThread(){}; 
 	BGThread(const BGThread&) {} 
 	void operator=(const BGThread&) {} 
-
-
-//
-// Member Functions
-public:
-
-	void	Push( CSnow* ins , void (CSnow::*pf)() );
-	/*template< typename T >*/
-//	void	Push( TSpecificFunctor<T>* tFunctor );
-	virtual void Run();
 
 };
 

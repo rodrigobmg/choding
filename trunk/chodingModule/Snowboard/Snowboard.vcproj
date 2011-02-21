@@ -318,10 +318,6 @@
 				Name="ThreadPool"
 				>
 				<File
-					RelativePath=".\Utility\ThreadPool\BGThread.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\Utility\ThreadPool\BGThread.h"
 					>
 				</File>
