@@ -65,7 +65,7 @@ void CResMrg::ReleaseRes( const TCHAR* alias )
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
 	{
-		for_each( itAll->second.begin() , itAll->second.end() , functor::release() );		
+		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );		
 		m_mapRes.erase( itAll );
 	}	
 
