@@ -241,7 +241,9 @@ bool SnowThread::ProcessThread()
 		{
 			if(!this->GetRunProcess())
 			{
+				SetRunProcess( TRUE );
 				this->Run();
+				SetRunProcess( FALSE );
 			}
 		}
 		break;

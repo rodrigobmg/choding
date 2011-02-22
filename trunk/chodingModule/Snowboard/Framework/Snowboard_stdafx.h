@@ -11,6 +11,7 @@
 #include <Strsafe.h>
 #include <vector>
 #include <queue>
+#include <list>
 
 #include "../Utility/Utility.h"
 //#include "../Utility/Log/logger.h"

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <omp.h>
 #include "Log/logger.h"
+#include "PerformanceCheck/Performance.h"
 
 /*
 #include "tbb/task_scheduler_init.h"
@@ -288,21 +289,29 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
 
 //#pragma omp parallel for
 
-	LOG_ERROR_F(" res load start " );
+	SAMPLE_PERFORMANCE sample;
+
+	LOG_WARNING_F(" res load start " );
   	for ( int index = 0 ; index < size ; ++index )
   	{ 
+		BEGIN_PERFORMANCE( L"load test" );
+
   		if ( bSuccess == S_FALSE )
-  			continue;
+  			break;
   		
   		size_t poscomma = filelist[index].rfind( L"." );
   		ext				= filelist[index].substr( poscomma + 1 , filelist[index].length() );
   		if ( !loadFactory( alias , ext.c_str() , filelist[index].c_str() ) )
   		{
   			bSuccess = S_FALSE;
-  			continue;
+  			break;
   		}
   	}
-	LOG_ERROR_F(" res load finish " );
+	END_PERFORMANCE( L"load test" );
+	OUTPUT_PERFORMANCE( L"load test" , sample );
+	LOG_WARNING_F(" res load finish avg tick = %d , max tick = %d , min tick = %d , total tick = %d count = %d",
+				sample.ulAvg , sample.ulMax , sample.ulMin , sample.ulTotalDeltaTick , sample.ulCount );
+
 	stRes.bLoaded = bSuccess;
 
 	return bSuccess;
@@ -335,6 +344,17 @@ bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* f
 		return bresult;
 	}
 	else if( !_tcscmp( ext , L"jpg" ) )
+	{
+		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath ) );
+		if ( ptex == NULL )
+			return S_FALSE;
+
+
+		bool bresult = stackdata( alias , filepath , ptex );		
+
+		return bresult;
+	}
+	else if( !_tcscmp( ext , L"dds" ) )
 	{
 		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath ) );
 		if ( ptex == NULL )

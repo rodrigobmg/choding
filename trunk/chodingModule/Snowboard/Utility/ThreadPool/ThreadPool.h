@@ -4,7 +4,7 @@
 #include "../../Framework/Snowboard_stdafx.h"
 #include "../singleton.h"
 #include "BGThread.h"
-#include "SnowThread.h"
+
 
 class ThreadPool : public singleton< ThreadPool >
 {
@@ -13,25 +13,24 @@ private:
 	enum{
 		DEFAULT_CAPACITY = 10,
 	};
-	
-	BGThread*					m_BgThread;
 
-	std::vector< SnowThread* >	m_ThreadPool;
+	typedef std::list< BGThread* >		THREAD_CONTAINER;
+	THREAD_CONTAINER					m_ThreadPool;
+
+	BGThread*							m_BgThread;
 
 public:
 	ThreadPool();
 	virtual ~ThreadPool();
-	ThreadPool(const ThreadPool&) {} 
-	void operator=(const ThreadPool&) {} 
 
-	BGThread*	GetBGThread()	{ return m_BgThread; }
+	BGThread*		GetBGThread();
+	void			SetBGThreadMaxCapacity( BYTE value );
+	BYTE			GetBGThreadMaxCapacity();
 
-// 	void		Push();
-// 	void		Pop();
-// 
-// 	void		SetCapacity();
-// 	size_t		GetCapacity();
+	void			Create( int count  );
+	void			Clear();
+
+	BGThread*		GetIdleThread();
 };
-
 
 #endif

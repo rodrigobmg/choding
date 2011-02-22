@@ -36,57 +36,51 @@ public:
 	}
 };*/
 
-
-class IWORK_TOKEN
-{
-	friend class BGThread;
-
-public:
-	IWORK_TOKEN(){};
-	virtual ~IWORK_TOKEN(){};
-	virtual void Execute() = 0;
-};
-
-template< class _OWNER , class _PARAMETER >
-class WORK_TOKEN : public IWORK_TOKEN
-{	
-	friend class BGThread;
-
-public:
-
-	_OWNER* pthis;
-	typedef HRESULT ( _OWNER::*PFUNC)( _PARAMETER );	
-	PFUNC			pf;
-	_PARAMETER		parameter;
-
-
-	WORK_TOKEN( _OWNER* _pthis , _PARAMETER _para  , PFUNC fp )
-		:pthis( _pthis ) , pf(fp) , parameter( _para )
-	{
-	};
-
-	void Execute()
-	{
-		(pthis->*pf)( parameter );
-	}
-};
-
-
 class BGThread : public SnowThread
 {
+	class IWORK_TOKEN
+	{
+
+	public:
+		IWORK_TOKEN(){};
+		virtual ~IWORK_TOKEN(){};
+		virtual void Execute() = 0;
+	};
+
+	template< class _OWNER , class _PARAMETER >
+	class WORK_TOKEN : public IWORK_TOKEN
+	{	
+
+	public:
+
+		_OWNER* pthis;
+		typedef HRESULT ( _OWNER::*PFUNC)( _PARAMETER );	
+		PFUNC			pf;
+		_PARAMETER		parameter;
+
+
+		WORK_TOKEN( _OWNER* _pthis , _PARAMETER _para  , PFUNC fp )
+			:pthis( _pthis ) , pf(fp) , parameter( _para )
+		{
+		};
+
+		void Execute()
+		{
+			(pthis->*pf)( parameter );
+		}
+	};
 	
 public:
 
 	template< class _PARAMETER , class _OWNER , class _FP >
 	void	Push( _OWNER* pthis , _PARAMETER para , _FP fp )
 	{
-		if ( m_ThreadQueue.size() > MAX_SIZE )
+		if ( m_ThreadQueue.size() > m_byMaxcapacity )
 		{
 			assert( 0 && "MAX ÃÊ°ú" );
 			return;
 		}
 
-		//m_ThreadQueue[0] = new WORK_TOKEN< _OWNER , _PARAMETER >( pthis , para , fp );
 		IWORK_TOKEN* pWorkToken = new WORK_TOKEN< _OWNER , _PARAMETER >( pthis , para , fp );
 		m_ThreadQueue.push( pWorkToken );
 		::SetEvent( m_hEvent );
@@ -94,7 +88,6 @@ public:
 
 	virtual void Run()
 	{
- 		//m_ThreadQueue[0]->Execute();
 		IWORK_TOKEN* pWorkToken = m_ThreadQueue.front();
 		pWorkToken->Execute();
 		SAFE_DELETE( pWorkToken );
@@ -103,13 +96,11 @@ public:
 			::SetEvent( m_hEvent );
 	}
 
+	void		SetMaxcapacity( BYTE byValue )	{ m_byMaxcapacity = byValue; }
+	BYTE		GetMaxcapacity()				{ return m_byMaxcapacity;	}
 
-	enum{
-		MAX_SIZE = 10,
-	};
-
-	//IWORK_TOKEN**	m_ThreadQueue;
 	std::queue< IWORK_TOKEN* > m_ThreadQueue;
+	BYTE		m_byMaxcapacity;
 
 
 public:
@@ -121,12 +112,10 @@ public:
 	BGThread()
 	{
 		SetName( OBJECT_BGTHREAD );
-		//m_ThreadQueue = new IWORK_TOKEN*[MAX_SIZE];
+		SetMaxcapacity( 1 );
 	}
 
 	virtual ~BGThread(){}; 
-	BGThread(const BGThread&) {} 
-	void operator=(const BGThread&) {} 
 
 };
 

@@ -6,6 +6,7 @@
 
 #include "../Utility/Log/logger.h"
 #include "../Utility/PerformanceCheck/Performance.h"
+
 #include "ThreadPool/ThreadPool.h"
 
 CSnowboard::CSnowboard()
@@ -73,33 +74,28 @@ void CSnowboard::TestFunc()
 	util::Logger::createSingleton();
 	util::Logger::getInstance().Init(NULL , NULL , NULL , NULL );
 
-	BGThread* pThread = BGThread::New();
-	pThread->CreateAndRunThread();
+	ThreadPool::createSingleton();
+	ThreadPool::getInstance().Create( 10 );
+
 
 	LOG_WARNING_F( L"%s", L"logger init" );
 	TCHAR curpath[ MAX_PATH ];
 	GetCurrentDirectory( MAX_PATH, curpath );
 	TCHAR respath[MAX_PATH];
-	_stprintf_s( respath , L"%s\\%s" ,curpath , L"Resource" );
+	_stprintf_s( respath , L"%s\\%s" , L"D:\\Project\\Client\\Trunk\\WorkGroup\\Client\\Application" , L"" );
 
 	if ( m_pResMgr )
 	{		
 		SAMPLE_PERFORMANCE loadsample;
-		SAMPLE_PERFORMANCE ressample;
 		BEGIN_PERFORMANCE( L"list" );
-		if ( m_pResMgr->CreateList( L"test" , respath , L"tga;bmp" , 1 ) )
+		if ( m_pResMgr->CreateList( L"test" , respath , L"tga;bmp;dds" , 1 ) )
 		{
 			END_PERFORMANCE( L"list" );
-			BEGIN_PERFORMANCE(L"res" );
-			pThread->Push<  const TCHAR* >( m_pResMgr , L"test"  , &CResMrg::LoadRes );
-
-			END_PERFORMANCE(L"res" );
+			ThreadPool::getInstance().GetBGThread()->Push< const TCHAR* >( m_pResMgr , L"test"  , &CResMrg::LoadRes );
 		}
 
 		OUTPUT_PERFORMANCE( L"list" , loadsample );
-		OUTPUT_PERFORMANCE( L"res" , ressample );
 		LOG_ERROR_F( "list avg tick = %d" , loadsample.ulAvg );
-		LOG_ERROR_F( "res  avg tick = %d" , ressample.ulAvg );
 
 		CResTexture* p = static_cast< CResTexture*>( m_pResMgr->Get( L"test" , L"banana.bmp" ) );
 		//할당을 받으면 꼭 릴리즈해서 반환을 한다.

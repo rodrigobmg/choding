@@ -40,9 +40,6 @@ public:
 
 	SnowThread();
 	virtual ~SnowThread(); 
-	SnowThread(const SnowThread&) {} 
-	void operator=(const SnowThread&) {} 
-
 
 	//
 	// Member Functions
