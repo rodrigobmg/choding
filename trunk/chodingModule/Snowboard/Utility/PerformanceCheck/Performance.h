@@ -47,8 +47,18 @@ namespace util
 	}
 }	
 
+#ifdef _SHIPPING
 
+#define BEGIN_PERFORMANCE( exp )		__DOUBLE_SLASH
+#define END_PERFORMANCE( exp )			__DOUBLE_SLASH
+#define OUTPUT_PERFORMANCE( p1 , p2 )	__DOUBLE_SLASH
+#define SAMPLE_PERFORMANCE				__DOUBLE_SLASH
+
+#else
+	
 #define BEGIN_PERFORMANCE( exp )		util::Performance::Begin( exp )
 #define END_PERFORMANCE( exp )			util::Performance::End( exp )	
 #define OUTPUT_PERFORMANCE( p1 , p2 )	util::Performance::OutputData( p1 , p2 )
 #define SAMPLE_PERFORMANCE				util::Performance::stPROFILE_SAMPLE
+
+#endif
