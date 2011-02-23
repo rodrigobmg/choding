@@ -370,6 +370,14 @@
 				Name="SceneNode"
 				>
 				<File
+					RelativePath=".\Core\SceneNode\ChildMeshNode.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\SceneNode\ChildMeshNode.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Core\SceneNode\MeshNode.cpp"
 					>
 				</File>

@@ -7,7 +7,6 @@ MeshNode::MeshNode()
 
 MeshNode::~MeshNode()
 {
-	DecRefCount();
 }
 
 

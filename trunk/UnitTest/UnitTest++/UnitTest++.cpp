@@ -7,6 +7,7 @@
 #pragma  comment ( lib , "../../chodingModule/Lib/Snowboard_D.lib")
 #include "../../chodingModule/Snowboard/Core/SceneNode/SceneNode.h"
 #include "../../chodingModule/Snowboard/Core/SceneNode/MeshNode.h"
+#include "../../chodingModule/Snowboard/Core/SceneNode/ChildMeshNode.h"
 
 
 TEST( SceneNodeTest )
@@ -18,9 +19,14 @@ TEST( SceneNodeTest )
 // 		pNode->AttachChild( pChildNode );
 // 	}
 	MeshNode* pMesh = new MeshNode;
+	ChildMeshNode* pChildMesh = new ChildMeshNode;
 	pNode->AttachChild( pMesh );
-	pNode->DetachChild( pMesh );
+	SceneNode* pTemp = pNode->GetAt( 0 );
+	pTemp->AttachChild( pChildMesh );
+
 	pNode->Update( 0.0f );
+
+	pNode->RemoveAllChild();
 	CHECK( TRUE );
 }
 

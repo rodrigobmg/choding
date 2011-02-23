@@ -5,10 +5,14 @@
 
 class SceneNode : public CSnow{
 		
+protected:
 	SceneNode*							m_pParentNode;
 
 	typedef	 std::list< SceneNode* >	CHILDLIST;
 	CHILDLIST							m_listChildNode;
+
+	virtual HRESULT vUpdate( float fElapsedtime );	
+
 
 public:
 	SceneNode();
@@ -18,8 +22,7 @@ public:
 	SceneNode*		GetParent();
 	void			SetParent( SceneNode* pNode );
 	SceneNode*		GetAt( unsigned int index );
-
-	virtual HRESULT vUpdate( float fElapsedtime );	
+	
 	virtual HRESULT AttachChild( SceneNode* pNode );
 	virtual HRESULT DetachChild( SceneNode* pNode );
 	virtual HRESULT	RemoveAllChild();

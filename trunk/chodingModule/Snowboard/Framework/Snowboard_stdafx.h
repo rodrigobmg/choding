@@ -44,6 +44,7 @@ typedef unsigned __int64	uint64_t;
 
 #define OBJECT_SCENENODE_BASE	L"SceneNodeBase"
 #define OBJECT_SCENENODE_MESH	L"Mesh"
+#define OBJECT_SCENENODE_CHILDMESH	L"ChildMesh"
 
 
 #include "Snowboard_macro.h"

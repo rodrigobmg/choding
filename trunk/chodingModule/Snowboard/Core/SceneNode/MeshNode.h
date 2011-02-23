@@ -5,11 +5,15 @@
 
 class MeshNode : public SceneNode{		
 
+protected:
+	
+	virtual HRESULT vUpdate( float fElapsedtime );	
+
 public:
 	MeshNode();
 	virtual ~MeshNode();
 
-	virtual HRESULT vUpdate( float fElapsedtime );	
+	
 };
 
 #endif

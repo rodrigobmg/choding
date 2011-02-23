@@ -13,8 +13,20 @@ SceneNode::~SceneNode()
 
 HRESULT SceneNode::RemoveAllChild()
 {
+// 	if ( !m_listChildNode.empty() )
+// 		for_each( m_listChildNode.begin() , m_listChildNode.end() , functor::removeallchild() );
+
 	if ( !m_listChildNode.empty() )
-		for_each( m_listChildNode.begin() , m_listChildNode.end() , functor::removeallchild() );
+	{
+		CHILDLIST::iterator it = m_listChildNode.begin();
+		for( ; it != m_listChildNode.end() ;  )
+		{
+			(*it)->RemoveAllChild();
+			SAFE_DELETE( (*it) );
+			m_listChildNode.erase( it++ );
+		}
+	}
+	
 
 	return TRUE;
 }
