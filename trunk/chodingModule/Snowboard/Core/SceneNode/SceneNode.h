@@ -23,9 +23,9 @@ public:
 	void			SetParent( SceneNode* pNode );
 	SceneNode*		GetAt( unsigned int index );
 	
-	virtual HRESULT AttachChild( SceneNode* pNode );
-	virtual HRESULT DetachChild( SceneNode* pNode );
-	virtual HRESULT	RemoveAllChild();
+	HRESULT			AttachChild( SceneNode* pNode );
+	HRESULT			DetachChild( SceneNode* pNode );
+	HRESULT			RemoveAllChild();
 
 };
 
