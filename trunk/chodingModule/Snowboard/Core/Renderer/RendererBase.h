@@ -4,15 +4,10 @@
 
 class CRendererBase : public CCoreBase{
 
-private:
-	
-	virtual void begin() = 0;
-	virtual void end() = 0;
-	virtual void render() = 0;
-
 public:
-	CRendererBase();
+	CRendererBase(){ SetName( OBJECT_RENDERBASE ); }
 	virtual ~CRendererBase();
 	
-	virtual void UpdateFrame() = 0;	
+	virtual void Render() = 0;	
+
 };

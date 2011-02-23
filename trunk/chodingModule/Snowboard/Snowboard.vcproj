@@ -294,10 +294,6 @@
 				RelativePath=".\Framework\Snowboard_stdafx.h"
 				>
 			</File>
-			<File
-				RelativePath=".\Framework\Snowboard_type.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Core"
@@ -333,10 +329,6 @@
 			<Filter
 				Name="Renderer"
 				>
-				<File
-					RelativePath=".\Core\Renderer\RendererBase.cpp"
-					>
-				</File>
 				<File
 					RelativePath=".\Core\Renderer\RendererBase.h"
 					>
@@ -381,6 +373,18 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="SceneNode"
+				>
+				<File
+					RelativePath=".\Core\SceneNode\SceneNode.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\SceneNode\SceneNode.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

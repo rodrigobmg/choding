@@ -21,7 +21,7 @@ CSnowboard::~CSnowboard()
 
 void CSnowboard::Clear()
 {
-	m_pRendererDX9	= NULL;
+	m_pRendererBase	= NULL;
 	m_pResMgr		= NULL;
 }
 
@@ -29,7 +29,7 @@ bool CSnowboard::InitModule( HWND hWnd )
 {
 	InitRenderer( hWnd );
 	InitCamera();
-	InitResource( m_pRendererDX9->GetDevice() );
+	InitResource( m_pRendererBase->GetDevice() );
 
 	TestFunc();
 
@@ -38,8 +38,8 @@ bool CSnowboard::InitModule( HWND hWnd )
 
 bool	CSnowboard::InitRenderer( HWND hWnd )
 {
-	m_pRendererDX9 = dynamic_cast< CRendererDX9* >( CCoreFactory::CreateCore( CORE_RENDERER ) );
-	m_pRendererDX9->Create( hWnd );
+	m_pRendererBase = dynamic_cast< CRendererDX9* >( CCoreFactory::CreateCore( CORE_RENDERER ) );
+	m_pRendererBase->Create( hWnd );
 	return TRUE;
 }
 
@@ -57,14 +57,14 @@ bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 
 void CSnowboard::Update()
 {
-	if ( m_pRendererDX9 )
-		m_pRendererDX9->UpdateFrame();
+	if ( m_pRendererBase )
+		m_pRendererBase->UpdateFrame();
 }
 
 void CSnowboard::DestroyModule()
 {
-	if ( m_pRendererDX9 )
-		m_pRendererDX9->Release();
+	if ( m_pRendererBase )
+		m_pRendererBase->Release();
 	if ( m_pResMgr )
 		m_pResMgr->Release();
 }

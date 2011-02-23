@@ -1,5 +1,5 @@
 #pragma once
-#include "../Framework/Snowboard_stdafx.h"
+#include "../../Framework/Snowboard_stdafx.h"
 
 namespace util
 {

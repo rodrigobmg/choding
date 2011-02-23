@@ -26,6 +26,6 @@ public:
 	void		TestFunc();
 private:
 	
-	CRendererDX9*	m_pRendererDX9;
+	CRendererBase*	m_pRendererBase;
 	CResMrg*		m_pResMgr;
 };
