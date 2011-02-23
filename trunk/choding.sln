@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sun", "chodingModule\Sun\Su
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snowboard", "chodingModule\Snowboard\Snowboard.vcproj", "{4532E540-0FED-4A93-BB17-03F7214E661B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest++", "UnitTest++\UnitTest++.vcproj", "{27279922-AAFA-483D-AE0D-C2C0E1AA25A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -36,6 +38,12 @@ Global
 		{4532E540-0FED-4A93-BB17-03F7214E661B}.Release|Win32.Build.0 = Release|Win32
 		{4532E540-0FED-4A93-BB17-03F7214E661B}.Shipping|Win32.ActiveCfg = Shipping|Win32
 		{4532E540-0FED-4A93-BB17-03F7214E661B}.Shipping|Win32.Build.0 = Shipping|Win32
+		{27279922-AAFA-483D-AE0D-C2C0E1AA25A9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{27279922-AAFA-483D-AE0D-C2C0E1AA25A9}.Debug|Win32.Build.0 = Debug|Win32
+		{27279922-AAFA-483D-AE0D-C2C0E1AA25A9}.Release|Win32.ActiveCfg = Release|Win32
+		{27279922-AAFA-483D-AE0D-C2C0E1AA25A9}.Release|Win32.Build.0 = Release|Win32
+		{27279922-AAFA-483D-AE0D-C2C0E1AA25A9}.Shipping|Win32.ActiveCfg = Release|Win32
+		{27279922-AAFA-483D-AE0D-C2C0E1AA25A9}.Shipping|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
