@@ -42,6 +42,8 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_THREADPOOL	L"ThreadPool"
 #define OBJECT_BGTHREAD		L"BGThread"
 
+#define OBJECT_SCENENODE_BASE	L"SceneNodeBase"
+#define OBJECT_SCENENODE_MESH	L"Mesh"
 
 
 #include "Snowboard_macro.h"

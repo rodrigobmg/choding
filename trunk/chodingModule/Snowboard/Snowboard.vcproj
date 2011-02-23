@@ -310,14 +310,6 @@
 				Name="Base"
 				>
 				<File
-					RelativePath=".\Core\Base\CoreBase.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Base\CoreBase.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Core\Base\Snow.cpp"
 					>
 				</File>
@@ -377,6 +369,14 @@
 			<Filter
 				Name="SceneNode"
 				>
+				<File
+					RelativePath=".\Core\SceneNode\MeshNode.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\SceneNode\MeshNode.h"
+					>
+				</File>
 				<File
 					RelativePath=".\Core\SceneNode\SceneNode.cpp"
 					>

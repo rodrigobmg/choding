@@ -68,7 +68,7 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 		return 0;
 	}
 
-	//ShowWindow( hWnd , SW_SHOWDEFAULT );
+	ShowWindow( hWnd , SW_SHOWDEFAULT );
 	UpdateWindow( hWnd );
 	MSG msg;
 	ZeroMemory( &msg , sizeof( msg ) );

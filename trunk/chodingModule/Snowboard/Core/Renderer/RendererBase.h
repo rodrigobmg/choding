@@ -1,13 +1,15 @@
 #pragma once
 
-#include "../Base/CoreBase.h"
+#include "../SceneNode/SceneNode.h"
 
-class CRendererBase : public CCoreBase{
+class CSnow;
+
+class CRendererBase : public CSnow{
 
 public:
 	CRendererBase(){ SetName( OBJECT_RENDERBASE ); }
-	virtual ~CRendererBase();
+	virtual ~CRendererBase(){};
 	
-	virtual void Render() = 0;	
+	virtual void Render( SceneNode* pNode ) = 0;	
 
 };

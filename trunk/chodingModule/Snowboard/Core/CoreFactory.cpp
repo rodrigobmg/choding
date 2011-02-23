@@ -9,10 +9,9 @@ CCoreFactory::CCoreFactory()
 
 CCoreFactory::~CCoreFactory()
 {
-
 }
 
-CCoreBase*	CCoreFactory::CreateCore( const tstring& coretype )
+CSnow*	CCoreFactory::CreateCore( const tstring& coretype )
 {
 	if ( coretype == CORE_RESOURCE )
 	{

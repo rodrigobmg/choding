@@ -26,6 +26,8 @@ public:
 	void		TestFunc();
 private:
 	
-	CRendererBase*	m_pRendererBase;
+	CRendererDX9*	m_pRenderer;
 	CResMrg*		m_pResMgr;
+
+	SceneNode*		m_pRootNode;
 };

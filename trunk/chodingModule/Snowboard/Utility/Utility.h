@@ -111,7 +111,7 @@ namespace functor
 	};
 
 	struct update{
-		template<typename T> void operator() (T*& t){
+		template<typename T> void operator()(T*& t){
 			if(t){ t->Update(); }
 		}
 		template<typename KEY, typename VALUE> 
@@ -127,6 +127,16 @@ namespace functor
 		template<typename KEY, typename VALUE> 
 		void operator() (std::pair<const KEY, VALUE>& t){
 			if(t.second){ t.second->Release(); }
+		}
+	};
+
+	struct removeallchild{
+		template<typename T> void operator() (T*& t){
+			if(t){ t->RemoveAllChild(); }
+		}
+		template<typename KEY, typename VALUE> 
+		void operator() (std::pair<const KEY, VALUE>& t){
+			if(t.second){ t.second->RemoveAllChild(); }
 		}
 	};
 

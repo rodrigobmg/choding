@@ -2,21 +2,15 @@
 
 #include "RendererBase.h"
 
+class SceneNode;
+
 class CRendererDX9 : public CRendererBase{
 
 private:
-
-	typedef struct CUSTOMVERTEX{
-		float x,y,z,rhw;
-		DWORD color;
-	};
 	
-	LPDIRECT3D9             m_pD3D;      // = NULL; // Used to create the D3DDevice
-	LPDIRECT3DDEVICE9       m_pd3dDevice;// = NULL; // Our rendering device
+ 	LPDIRECT3D9             m_pD3D;      // = NULL; // Used to create the D3DDevice
+ 	LPDIRECT3DDEVICE9       m_pd3dDevice;// = NULL; // Our rendering device
 
-	LPDIRECT3DVERTEXBUFFER9 m_pVertexBuffer;
-
-	HRESULT					initvb();
 
 public:
 
@@ -27,9 +21,7 @@ public:
 	virtual HRESULT			Create( HWND hWnd );
 	virtual HRESULT			Release();
 
-	virtual void			UpdateFrame();
-
-
+	virtual void			Render( SceneNode* pNode );
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
 
 };

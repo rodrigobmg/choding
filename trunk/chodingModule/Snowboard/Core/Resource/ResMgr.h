@@ -1,6 +1,6 @@
-#pragma once
+#ifndef _SNOWBOARD_RESMGR_
+#define _SNOWBOARD_RESMGR_
 
-#include "../Base/CoreBase.h"
 #include "Type/ResBaseType.h"
 #include "Type/ResTexture.h"
 #include <map>
@@ -8,10 +8,11 @@
 #include <HASH_MAP>
 
 
+class CSnow;
 
 // 모든 리소스 파일네임은 소문자로 취급한다.!!!!!!!!!!!!!!!!
 
-class CResMrg : public CCoreBase{
+class CResMrg : public CSnow{
 
 private:
 
@@ -97,3 +98,5 @@ public:
 
 
 };
+
+#endif

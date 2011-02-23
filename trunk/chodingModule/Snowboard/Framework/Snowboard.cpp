@@ -10,6 +10,7 @@
 #include "ThreadPool/ThreadPool.h"
 
 CSnowboard::CSnowboard()
+:m_pRootNode(NULL)
 {
 	Clear();
 }
@@ -21,15 +22,16 @@ CSnowboard::~CSnowboard()
 
 void CSnowboard::Clear()
 {
-	m_pRendererBase	= NULL;
+	m_pRenderer		= NULL;
 	m_pResMgr		= NULL;
+	SAFE_DELETE( m_pRootNode );
 }
 
 bool CSnowboard::InitModule( HWND hWnd )
 {
 	InitRenderer( hWnd );
 	InitCamera();
-	InitResource( m_pRendererBase->GetDevice() );
+	InitResource( m_pRenderer->GetDevice() );
 
 	TestFunc();
 
@@ -38,8 +40,11 @@ bool CSnowboard::InitModule( HWND hWnd )
 
 bool	CSnowboard::InitRenderer( HWND hWnd )
 {
-	m_pRendererBase = dynamic_cast< CRendererDX9* >( CCoreFactory::CreateCore( CORE_RENDERER ) );
-	m_pRendererBase->Create( hWnd );
+	m_pRenderer = dynamic_cast< CRendererDX9* >( CCoreFactory::CreateCore( CORE_RENDERER ) );
+	m_pRenderer->Create( hWnd );
+
+	m_pRootNode	= new SceneNode;
+
 	return TRUE;
 }
 
@@ -57,14 +62,14 @@ bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 
 void CSnowboard::Update()
 {
-	if ( m_pRendererBase )
-		m_pRendererBase->UpdateFrame();
+	if ( m_pRenderer )
+		m_pRenderer->Render( m_pRootNode );
 }
 
 void CSnowboard::DestroyModule()
 {
-	if ( m_pRendererBase )
-		m_pRendererBase->Release();
+	if ( m_pRenderer )
+		m_pRenderer->Release();
 	if ( m_pResMgr )
 		m_pResMgr->Release();
 }
