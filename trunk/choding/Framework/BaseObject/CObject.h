@@ -34,6 +34,7 @@ private:
 
 
 	int32_t m_iRefCount;
+
 };
 
 #endif

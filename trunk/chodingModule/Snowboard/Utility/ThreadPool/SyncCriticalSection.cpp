@@ -21,6 +21,7 @@ SyncCriticalSection::SyncCriticalSection()
 SyncCriticalSection::~SyncCriticalSection()
 {
 	this->LeaveLock();
+	::DeleteCriticalSection( &m_oCriticalSection );
 }
 
 

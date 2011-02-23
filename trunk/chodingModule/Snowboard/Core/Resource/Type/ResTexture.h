@@ -3,6 +3,9 @@
 #include "ResBaseType.h"
 
 class CResTexture : public CBaseRes{
+	
+public:
+	DeclareBoostPool
 
 private:
 
@@ -22,4 +25,5 @@ public:
 	virtual void		Clear();
 	virtual HRESULT		Create();
 	virtual HRESULT		Release();
+		
 };

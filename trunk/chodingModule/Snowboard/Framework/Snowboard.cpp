@@ -91,7 +91,7 @@ void CSnowboard::TestFunc()
 		if ( m_pResMgr->CreateList( L"test" , respath , L"tga;bmp;dds" , 1 ) )
 		{
 			END_PERFORMANCE( L"list" );
-			ThreadPool::getInstance().GetBGThread()->Push< const TCHAR* >( m_pResMgr , L"test"  , &CResMrg::LoadRes );
+			ThreadPool::getInstance().GetIdleThread()->Push< const TCHAR* >( m_pResMgr , L"test"  , &CResMrg::LoadRes );
 		}
 
 		OUTPUT_PERFORMANCE( L"list" , loadsample );

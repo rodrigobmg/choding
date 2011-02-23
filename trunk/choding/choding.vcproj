@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\tbb30_018oss\include&quot;;../../chodingModule\Lib;Main/;./"
+				AdditionalIncludeDirectories="../../chodingModule\Lib;Main/;./"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;TBB_USE_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -66,7 +66,7 @@
 				AdditionalDependencies="d3dx9d.lib d3d9.lib winmm.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_D.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;C:\Program Files\tbb30_018oss\lib\ia32\vc8&quot;;../chodingModule/Lib"
+				AdditionalLibraryDirectories="../chodingModule/Lib"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="2"

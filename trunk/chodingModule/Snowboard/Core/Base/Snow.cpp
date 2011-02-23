@@ -20,4 +20,5 @@ void CSnow::DecRefCount()
 	InterlockedDecrement((LONG*)&m_iRefCount);
 	if ( m_iRefCount < 0 )
 		assert( 0 && "왜 0보다 작나요? " );
+
 }

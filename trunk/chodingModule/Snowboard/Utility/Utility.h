@@ -47,6 +47,46 @@ namespace util
 		noncopyable( const noncopyable& );
 		const noncopyable& operator=( const noncopyable& );
 	};
+
+	// 오토 락커
+	class CSLocker
+	{
+	private:
+		CSLocker( const CSLocker& );
+		CSLocker& operator=( const CSLocker& );
+	public:
+		CSLocker( CRITICAL_SECTION* pcs ) : pcs_( pcs )
+		{
+			EnterCriticalSection( pcs_ );
+		}
+		~CSLocker()
+		{
+			LeaveCriticalSection( pcs_ );
+		}
+	private:
+		CRITICAL_SECTION* pcs_;
+	};
+
+	template< typename Locker , typename Lock , typename Target >
+	class AutoLockAccesser
+	{
+	public:
+		AutoLockAccesser( Lock* plock , Target& target )
+			: locker_( plock ) , target_( target )
+		{
+		}
+		Target& operator*()
+		{
+			return target_;
+		}
+		Target* operator->()
+		{
+			return &target_;
+		}
+	private:
+		Target& target_;
+		Locker locker_;
+	};
 }// end of namespace util
 
 namespace functor

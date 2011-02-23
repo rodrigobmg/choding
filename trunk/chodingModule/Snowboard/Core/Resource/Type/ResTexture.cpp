@@ -1,5 +1,7 @@
 #include "ResTexture.h"
 
+ImplementBoostPool( CResTexture )
+
 CResTexture::CResTexture()
 {
 	SetName( OBJECT_RES_TEXTURE );
