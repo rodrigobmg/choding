@@ -29,4 +29,6 @@ public:
 		
 };
 
+typedef boost::shared_ptr< GdsResTexture >	GdsResTexturePtr;
+
 #endif

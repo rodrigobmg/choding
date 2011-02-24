@@ -10,7 +10,7 @@ public:
 	GdsRendererBase(){ SetName( OBJECT_RENDERBASE ); }
 	virtual ~GdsRendererBase(){};
 	
-	virtual void Render( GdsNode* pNode ) = 0;	
+	virtual void Render( GdsNodePtr pNode ) = 0;	
 
 };
 

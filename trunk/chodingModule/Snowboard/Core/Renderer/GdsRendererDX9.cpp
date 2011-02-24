@@ -55,7 +55,7 @@ HRESULT GdsRendererDX9::Create( HWND hWnd )
 	return S_OK;
 }
 
-void GdsRendererDX9::Render( GdsNode* pNode )
+void GdsRendererDX9::Render( GdsNodePtr pNode )
 {
 	if ( pNode )
 		pNode->Update( 0.0f );

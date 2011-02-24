@@ -15,7 +15,7 @@ GdsObject*	GdsCoreFactory::CreateCore( const tstring& coretype )
 {
 	if ( coretype == CORE_RESOURCE )
 	{
-		return new GdsResMrg;	
+		return new GdsResMgr;	
 	}
 	else if ( coretype == CORE_RENDERER )
 	{

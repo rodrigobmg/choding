@@ -1,18 +1,18 @@
-#include "SnowThread.h"
-#include "SyncCriticalSection.h"
+#include "GdsThread.h"
+#include "GdsSyncCriticalSection.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // Initialize & Destroy Methods
 
 // DS:: Create an instance of this class.
-SnowThread *SnowThread::New()
+GdsThread *GdsThread::New()
 {
 	// Create it here.
-	return new SnowThread;
+	return new GdsThread;
 }
 
 // DS:: Constructor.
-SnowThread::SnowThread()
+GdsThread::GdsThread()
 {
 	SetName( OBJECT_THREAD );
 
@@ -31,7 +31,7 @@ SnowThread::SnowThread()
 }
 
 // DS:: Destructor.
-SnowThread::~SnowThread()
+GdsThread::~GdsThread()
 {
 	SAFE_DELETE(this->m_pSyncObject);
 	this->ExitThread();
@@ -50,7 +50,7 @@ SnowThread::~SnowThread()
 
 // DS:: Create and run thread.
 //		CreateEvent() -> CreateThread() -> ResumeThread().
-BOOL SnowThread::CreateAndRunThread()
+BOOL GdsThread::CreateAndRunThread()
 {
 	// Create event.
 	if(!this->CreateEvent())
@@ -86,8 +86,8 @@ BOOL SnowThread::CreateAndRunThread()
 	return TRUE;
 }
 
-// DS:: Starts execution of a SnowThread object.
-BOOL SnowThread::CreateThread(DWORD dwCreateFlags, UINT nStackSize, 
+// DS:: Starts execution of a GdsThread object.
+BOOL GdsThread::CreateThread(DWORD dwCreateFlags, UINT nStackSize, 
 							  LPSECURITY_ATTRIBUTES lpSecurityAttrs)
 {
 	// The ExitThread function ends a thread.
@@ -109,7 +109,7 @@ BOOL SnowThread::CreateThread(DWORD dwCreateFlags, UINT nStackSize,
 }
 
 // DS:: The CreateEvent function creates a named or unnamed event object. 
-BOOL SnowThread::CreateEvent(LPSECURITY_ATTRIBUTES lpEventAttributes,
+BOOL GdsThread::CreateEvent(LPSECURITY_ATTRIBUTES lpEventAttributes,
 							 BOOL bManualReset, BOOL bInitialState,
 							 LPCTSTR lpName)
 {
@@ -129,7 +129,7 @@ BOOL SnowThread::CreateEvent(LPSECURITY_ATTRIBUTES lpEventAttributes,
 }
 
 // DS:: Destroy thread.
-void SnowThread::DestroyThread()
+void GdsThread::DestroyThread()
 {
 	SAFE_DELETE(this->m_pSyncObject);
 	this->ExitThread();
@@ -143,7 +143,7 @@ void SnowThread::DestroyThread()
 }
 
 // DS:: The ExitThread function ends a thread.
-void SnowThread::ExitThread()
+void GdsThread::ExitThread()
 {
 	if(!this->m_hThread)		return;
 
@@ -166,12 +166,12 @@ void SnowThread::ExitThread()
 		::TerminateThread(this->m_hThread, dwExitCode);
 	}
 	char strMsg[512];
-	::sprintf(strMsg, "SnowThread::ExitThread()-3 EXIT:%d - ERROR:%d", dwExitCode, ::GetLastError());
+	::sprintf(strMsg, "GdsThread::ExitThread()-3 EXIT:%d - ERROR:%d", dwExitCode, ::GetLastError());
 	kOutputMsg01(strMsg);
 
 	::WaitForSingleObject(this->m_hThread, INFINITE);
 
-	//kOutputMsg01("SnowThread::ExitThread()-4");
+	//kOutputMsg01("GdsThread::ExitThread()-4");
 
 #endif
 	::CloseHandle(this->m_hThread);
@@ -179,7 +179,7 @@ void SnowThread::ExitThread()
 }
 
 // DS:: Sets the priority of the current thread.
-BOOL SnowThread::SetThreadPriority(int nPriority)
+BOOL GdsThread::SetThreadPriority(int nPriority)
 {
 	if(!this->m_hThread)
 		return false;
@@ -191,7 +191,7 @@ BOOL SnowThread::SetThreadPriority(int nPriority)
 }
 
 // DS:: Decrements a thread¡¯s suspend count.
-DWORD SnowThread::ResumeThread()
+DWORD GdsThread::ResumeThread()
 {
 	if(!this->m_hThread)
 		return 0xFFFFFFFF;
@@ -200,7 +200,7 @@ DWORD SnowThread::ResumeThread()
 }
 
 // DS:: Increments a thread¡¯s suspend count.
-DWORD SnowThread::SuspendThread()
+DWORD GdsThread::SuspendThread()
 {
 	if(!this->m_hThread)
 		return 0xFFFFFFFF;
@@ -209,7 +209,7 @@ DWORD SnowThread::SuspendThread()
 }
 
 // DS:: Window process thread.
-bool SnowThread::WinProcessThread()
+bool GdsThread::WinProcessThread()
 {
 	this->SetThreadDone(FALSE);
 	for( ;; )
@@ -226,7 +226,7 @@ bool SnowThread::WinProcessThread()
 }
 
 // DS:: Process thread.
-bool SnowThread::ProcessThread()
+bool GdsThread::ProcessThread()
 {
 	DWORD dwObject = WAIT_FAILED;
 	if(this->m_hEvent)
@@ -255,43 +255,43 @@ bool SnowThread::ProcessThread()
 
 // DS:: Controlling function for threads with a message pump. 
 //		Override to customize the default message loop.
-void SnowThread::Run()
+void GdsThread::Run()
 {
 	// Will be overriden by subclass.
 }
 
 // Override to perform thread instance initialization.
-BOOL SnowThread::InitInstance()
+BOOL GdsThread::InitInstance()
 {
 	// Create synchronization object.
 	SAFE_DELETE(this->m_pSyncObject);
-	this->m_pSyncObject = SyncCriticalSection::New();
+	this->m_pSyncObject = GdsSyncCriticalSection::New();
 	this->m_pSyncObject->CreateSynchronize();
 
 	return TRUE;
 }
 
 // Override to clean up when your thread terminates.
-void SnowThread::ExitInstance()
+void GdsThread::ExitInstance()
 {
 }
 
 // DS:: Enter lock.
-void SnowThread::EnterLock()
+void GdsThread::EnterLock()
 {
 	if(this->m_pSyncObject)
 		this->m_pSyncObject->EnterLock();
 }
 
 // DS:: Leave lock.
-void SnowThread::LeaveLock()
+void GdsThread::LeaveLock()
 {
 	if(this->m_pSyncObject)
 		this->m_pSyncObject->LeaveLock();
 }
 
 // DS:: Wating blocking event.
-void SnowThread::WaitingBlockingEvent(HANDLE *pEvent, DWORD dwTimeOut)
+void GdsThread::WaitingBlockingEvent(HANDLE *pEvent, DWORD dwTimeOut)
 {
 	if(!pEvent)
 		return;
@@ -308,13 +308,13 @@ void SnowThread::WaitingBlockingEvent(HANDLE *pEvent, DWORD dwTimeOut)
 		case WAIT_OBJECT_0 :
 			return;
 		case WAIT_ABANDONED :
-			//kOutputMsg01("SnowThread()...Abandoned...");
+			//kOutputMsg01("GdsThread()...Abandoned...");
 			return;
 		case WAIT_TIMEOUT :
-			//kOutputMsg01("SnowThread()...Time out...");
+			//kOutputMsg01("GdsThread()...Time out...");
 			break;
 		default :
-			//kOutputMsg01("SnowThread()...Unknown...");
+			//kOutputMsg01("GdsThread()...Unknown...");
 			break;
 		}
 		::Sleep(1);

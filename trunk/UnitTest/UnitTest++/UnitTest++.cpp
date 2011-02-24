@@ -2,27 +2,14 @@
 #include "stdafx.h"
 #include "inc/UnitTest++.h"
 #pragma comment ( lib , "lib/UnitTest++.vsnet2005.lib" )
-
-#include "../../chodingModule/Snowboard/Framework/Snowboard_stdafx.h"
 #pragma  comment ( lib , "../../chodingModule/Lib/Snowboard_D.lib")
-#include "../../chodingModule/Snowboard/Core/SceneNode/SceneNode.h"
-#include "../../chodingModule/Snowboard/Core/SceneNode/MeshNode.h"
-#include "../../chodingModule/Snowboard/Core/SceneNode/ChildMeshNode.h"
+
+#include "../../chodingModule/Snowboard/Core/SceneNode/GdsNode.h"
 
 
-TEST( SceneNodeTest )
+TEST( shared_ptr_test )
 {
-	SceneNode* pNode = new SceneNode;
-// 	for( size_t t = 0 ; t < 1 ; ++t )
-// 	{
-// 		MeshNode* pChildNode = new MeshNode;
-// 		pNode->AttachChild( pChildNode );
-// 	}
-	MeshNode* pMesh = new MeshNode;
-	ChildMeshNode* pChildMesh = new ChildMeshNode;
-	pNode->AttachChild( pMesh );
-	SceneNode* pTemp = pNode->GetAt( 0 );
-	pTemp->AttachChild( pChildMesh );
+	GdsNodePtr pNode = new GdsNodePtr;
 
 	pNode->Update( 0.0f );
 

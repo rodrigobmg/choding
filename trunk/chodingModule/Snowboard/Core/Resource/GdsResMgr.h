@@ -12,7 +12,7 @@ class GdsObject;
 
 // 모든 리소스 파일네임은 소문자로 취급한다.!!!!!!!!!!!!!!!!
 
-class GdsResMrg : public GdsObject{
+class GdsResMgr : public GdsObject{
 
 private:
 
@@ -20,8 +20,8 @@ private:
 		TEX = 0,
 	};
 
- 	typedef stdext::hash_map< tstring , GdsBaseRes* >				HASHMAPRes;
- 	typedef stdext::hash_map< tstring , GdsBaseRes* >::iterator	HASHMAPRes_ITERATOR;	
+ 	typedef stdext::hash_map< tstring , GdsBaseRes* >	HASHMAPRes;
+ 	typedef HASHMAPRes::iterator						HASHMAPRes_ITERATOR;	
 
 	typedef std::vector<tstring>	FILE_LIST;
 
@@ -49,7 +49,7 @@ private:
 
 	LPDIRECT3DDEVICE9	m_pDevice;
 
-	GdsBaseRes*			isExist( const TCHAR* alias , const TCHAR* filename );
+	GdsBaseRes*		isExist( const TCHAR* alias , const TCHAR* filename );
 	bool				loadResforDir( const TCHAR* dirpath ,
 										std::vector<tstring>& filename, 
 										std::list<tstring>& tokenlist , 
@@ -61,7 +61,7 @@ private:
 										const TCHAR* filename 
 										);
 
-	GdsBaseRes*			loadTexture( const TCHAR* filename );
+	GdsBaseRes*		loadTexture( const TCHAR* filename );
 	bool				stackdata( const TCHAR* alias , 
 									const TCHAR* path , 
 									GdsBaseRes* pres 
@@ -74,11 +74,11 @@ private:
 
 
 public:
-	GdsResMrg();
-	virtual ~GdsResMrg();
+	GdsResMgr();
+	virtual ~GdsResMgr();
 
 
-	GdsBaseRes*			Get( const TCHAR* alias , const TCHAR* filename );
+	GdsBaseRes*		Get( const TCHAR* alias , const TCHAR* filename );
 
 	bool				CreateList( const TCHAR* alias , 
 									const TCHAR* path , 
@@ -96,5 +96,7 @@ public:
 
 
 };
+
+typedef	boost::shared_ptr< GdsResMgr >	GdsResMgrPtr;
 
 #endif

@@ -16,4 +16,6 @@ public:
 	
 };
 
+typedef boost::shared_ptr< GdsChildMeshNode >	GdsChildMeshNodePtr;
+
 #endif

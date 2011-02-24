@@ -1,24 +1,24 @@
-#include "SyncCriticalSection.h"
+#include "GdsSyncCriticalSection.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
 // Initialize & Destroy Methods
 
 // DS:: Create an instance of this class.
-SyncCriticalSection *SyncCriticalSection::New()
+GdsSyncCriticalSection *GdsSyncCriticalSection::New()
 {
 	// Create it here.
-	return new SyncCriticalSection;
+	return new GdsSyncCriticalSection;
 }
 
 // DS:: Constructor.
-SyncCriticalSection::SyncCriticalSection()
+GdsSyncCriticalSection::GdsSyncCriticalSection()
 {
 	SetName( OBJECT_CRITICALSECTION );
 }
 
 // DS:: Destructor.
-SyncCriticalSection::~SyncCriticalSection()
+GdsSyncCriticalSection::~GdsSyncCriticalSection()
 {
 	this->LeaveLock();
 	::DeleteCriticalSection( &m_oCriticalSection );
@@ -29,7 +29,7 @@ SyncCriticalSection::~SyncCriticalSection()
 // Member functions.
 
 // DS:: Create synchroinzition object.
-bool SyncCriticalSection::CreateSynchronize()
+bool GdsSyncCriticalSection::CreateSynchronize()
 {
 	::InitializeCriticalSection(&this->m_oCriticalSection);
 
@@ -37,13 +37,13 @@ bool SyncCriticalSection::CreateSynchronize()
 }
 
 // DS:: Enter lock.
-void SyncCriticalSection::EnterLock()
+void GdsSyncCriticalSection::EnterLock()
 {
 	::EnterCriticalSection(&this->m_oCriticalSection);
 }
 
 // DS:: Leave lock.
-void SyncCriticalSection::LeaveLock()
+void GdsSyncCriticalSection::LeaveLock()
 {
 	::LeaveCriticalSection(&this->m_oCriticalSection);
 }

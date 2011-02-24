@@ -22,4 +22,6 @@ private:
 	tstring		m_strName;
 };
 
+typedef boost::shared_ptr< GdsObject >	GdsObjectPtr;
+
 #endif

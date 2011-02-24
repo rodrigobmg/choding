@@ -55,7 +55,6 @@ private: \
 	static boost::pool<> bpool; \
 
 
-using namespace std;
-typedef basic_string<TCHAR> tstring;
+typedef std::basic_string<TCHAR> tstring;
 
 #endif

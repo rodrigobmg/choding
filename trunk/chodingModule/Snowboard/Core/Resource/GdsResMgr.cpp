@@ -15,31 +15,31 @@
 #include <tbb/blocked_range.h>
 */
 
-GdsResMrg::GdsResMrg()
+GdsResMgr::GdsResMgr()
 {
 	SetName( OBJECT_RES_MGR );
 	Clear();
 }
 
-GdsResMrg::~GdsResMrg()
+GdsResMgr::~GdsResMgr()
 {
 
 }
 
-void GdsResMrg::Clear()
+void GdsResMgr::Clear()
 {
 	m_mapRes.clear();
 	m_mapAllFilelist.clear();
 }
 
-HRESULT GdsResMrg::Create( LPDIRECT3DDEVICE9 device )
+HRESULT GdsResMgr::Create( LPDIRECT3DDEVICE9 device )
 {
 	Clear();
 	m_pDevice = device;
 	return S_OK;
 }
 
-HRESULT GdsResMrg::Release()
+HRESULT GdsResMgr::Release()
 {
 	RES_CONTAINER::iterator itAll = m_mapRes.begin();
 	for ( ; itAll != m_mapRes.end() ;  )
@@ -58,7 +58,7 @@ HRESULT GdsResMrg::Release()
 	return S_OK;
 }
 
-void GdsResMrg::ReleaseRes( const TCHAR* alias )
+void GdsResMgr::ReleaseRes( const TCHAR* alias )
 {
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
@@ -74,7 +74,7 @@ void GdsResMrg::ReleaseRes( const TCHAR* alias )
 	}
 }
 
-void GdsResMrg::ReleaseList( const TCHAR* alias )
+void GdsResMgr::ReleaseList( const TCHAR* alias )
 {
 	RES_ALL_FILELIST_MAP::iterator itList = m_mapAllFilelist.find( alias );
 	if ( itList != m_mapAllFilelist.end() )
@@ -91,7 +91,7 @@ void GdsResMrg::ReleaseList( const TCHAR* alias )
 	}
 }
 
-GdsBaseRes* GdsResMrg::isExist( const TCHAR* alias , const TCHAR* filename )
+GdsBaseRes* GdsResMgr::isExist( const TCHAR* alias , const TCHAR* filename )
 {
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
@@ -105,7 +105,7 @@ GdsBaseRes* GdsResMrg::isExist( const TCHAR* alias , const TCHAR* filename )
 }
 
 
-GdsBaseRes* GdsResMrg::Get( const TCHAR* alias , const TCHAR* filename )
+GdsBaseRes*	GdsResMgr::Get( const TCHAR* alias , const TCHAR* filename )
 {
 	GdsBaseRes* p = isExist( alias ,filename );
 	if ( p != NULL )
@@ -113,7 +113,7 @@ GdsBaseRes* GdsResMrg::Get( const TCHAR* alias , const TCHAR* filename )
 	return p;
 }
 
-bool	GdsResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::list<tstring>& tokenlist , bool bRecursive )
+bool	GdsResMgr::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::list<tstring>& tokenlist , bool bRecursive )
 {
 	if ( dirpath == NULL )
 		return false;
@@ -172,7 +172,7 @@ bool	GdsResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std:
 }
 
 
-void GdsResMrg::makeToken( const TCHAR* token , std::list<tstring>& tokenlist , const TCHAR* delimiters )
+void GdsResMgr::makeToken( const TCHAR* token , std::list<tstring>& tokenlist , const TCHAR* delimiters )
 {
 	tstring tstrtoken(token);
 	// 맨 첫 글자가 구분자인 경우 무시
@@ -193,7 +193,7 @@ void GdsResMrg::makeToken( const TCHAR* token , std::list<tstring>& tokenlist , 
 	tokenlist.sort();
 }
 
-bool GdsResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* token , const bool brecursive )
+bool GdsResMgr::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* token , const bool brecursive )
 {	
 	RES_ALL_FILELIST_MAP::iterator it = m_mapAllFilelist.find( path );
 	if ( it == m_mapAllFilelist.end() )
@@ -211,7 +211,7 @@ bool GdsResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR
 		if ( !resStruct.filelist.empty() )
 		{
 			//resStruct.filelist.sort();
-			m_mapAllFilelist.insert( pair< const TCHAR* , RES_STRUCT >( alias , resStruct ) );
+			m_mapAllFilelist.insert( std::pair< const TCHAR* , RES_STRUCT >( alias , resStruct ) );
 			return true;
 		}
 	}
@@ -224,7 +224,7 @@ bool GdsResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR
 	return false;
 }
 
-HRESULT GdsResMrg::LoadRes( const TCHAR* alias )
+HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 {
 	RES_ALL_FILELIST_MAP::iterator itAlllist = m_mapAllFilelist.find( alias );
 	if ( itAlllist == m_mapAllFilelist.end() )
@@ -254,7 +254,7 @@ HRESULT GdsResMrg::LoadRes( const TCHAR* alias )
 // 		bool bSuccess;
 // 		FILE_LIST ffilelist;
 // 		const TCHAR* alias;
-// 		GdsResMrg* pthis;
+// 		GdsResMgr* pthis;
 // 
 // 		void operator()( const tbb::blocked_range<size_t>& r ) const
 // 		{
@@ -273,11 +273,11 @@ HRESULT GdsResMrg::LoadRes( const TCHAR* alias )
 // 			}			
 // 		}
 // 
-// 		resFunctor( GdsResMrg* p , FILE_LIST& rfilelist , const TCHAR* palias , bool bflag ){
+// 		resFunctor( GdsResMgr* p , FILE_LIST& rfilelist , const TCHAR* palias , bool bflag ){
 // 			ffilelist = rfilelist;
 // 			bSuccess = bflag;
 // 			alias = palias;
-// 			GdsResMrg* pthis = p;
+// 			GdsResMgr* pthis = p;
 // 		};
 // 
 // 	};
@@ -315,7 +315,7 @@ HRESULT GdsResMrg::LoadRes( const TCHAR* alias )
 	return bSuccess;
 }
 
-bool GdsResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* filepath )
+bool GdsResMgr::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* filepath )
 {
 	//::EnterCriticalSection(&this->m_oCriticalSection);
 
@@ -369,7 +369,7 @@ bool GdsResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR*
 	return false;
 }
 
-bool GdsResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , GdsBaseRes* pres )
+bool GdsResMgr::stackdata( const TCHAR* alias , const TCHAR* filepath , GdsBaseRes* pres )
 {
 	tstring wstrpath(filepath);
 	size_t poscomma  = wstrpath.rfind( L"\\" );
@@ -396,12 +396,12 @@ bool GdsResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , GdsBaseR
 	{
 		HASHMAPRes hmapRes;
 		hmapRes.insert( make_pair( filename , pres ) );
-		m_mapRes.insert( pair< const TCHAR* , HASHMAPRes >( alias , hmapRes ) );
+		m_mapRes.insert( std::pair< const TCHAR* , HASHMAPRes >( alias , hmapRes ) );
 	}	
 	return true;
 }
 
-GdsBaseRes* GdsResMrg::loadTexture( const TCHAR* filepath )
+GdsBaseRes* GdsResMgr::loadTexture( const TCHAR* filepath )
 {
 	GdsResTexture* pRes = new GdsResTexture;
 	if ( pRes == NULL )

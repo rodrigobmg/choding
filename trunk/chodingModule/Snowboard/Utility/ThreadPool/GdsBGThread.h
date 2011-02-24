@@ -2,7 +2,7 @@
 #define __SNOWBOARD_UTILITY_BGTHREAD_H__
 
 #include "../../Framework/Snowboard_stdafx.h"
-#include "SnowThread.h"
+#include "GdsThread.h"
 /*
 class TFunctor
 {
@@ -36,7 +36,7 @@ public:
 	}
 };*/
 
-class BGThread : public SnowThread
+class GdsBGThread : public GdsThread
 {
 	class IWORK_TOKEN
 	{
@@ -104,20 +104,21 @@ public:
 
 
 public:
-	static BGThread *New()
+	static GdsBGThread *New()
 	{
-		return new BGThread;
+		return new GdsBGThread;
 	}
 
-	BGThread()
+	GdsBGThread()
 	{
 		SetName( OBJECT_BGTHREAD );
 		SetMaxcapacity( 1 );
 	}
 
-	virtual ~BGThread(){}; 
+	virtual ~GdsBGThread(){}; 
 
 };
 
+typedef boost::shared_ptr< GdsBGThread >	GdsBGThreadPtr;
 
 #endif	// __SNOWBOARD_UTILITY_SYNC_H__

@@ -3,27 +3,27 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "Synchronize.h"
+#include "GdsSynchronize.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
 // Initialize & Destroy Methods
 
 // DS:: Create an instance of this class.
-Synchronize *Synchronize::New()
+GdsSynchronize *GdsSynchronize::New()
 {
 	// Create it here.
-	return new Synchronize;
+	return new GdsSynchronize;
 }
 
 // DS:: Constructor.
-Synchronize::Synchronize()
+GdsSynchronize::GdsSynchronize()
 {
 	SetName( OBJECT_SYNCCHRONIZE );
 }
 
 // DS:: Destructor.
-Synchronize::~Synchronize()
+GdsSynchronize::~GdsSynchronize()
 {
 }
 
@@ -32,7 +32,7 @@ Synchronize::~Synchronize()
 // Member functions.
 
 // DS:: Syncronize object locking.
-void Synchronize::Lock(Synchronize *pSyncObj)
+void GdsSynchronize::Lock(GdsSynchronize* pSyncObj)
 {
 	if(!pSyncObj)
 		return;
@@ -40,7 +40,7 @@ void Synchronize::Lock(Synchronize *pSyncObj)
 }
 
 // DS:: Syncronize object unlocking.
-void Synchronize::UnLock(Synchronize *pSyncObj)
+void GdsSynchronize::UnLock(GdsSynchronize* pSyncObj)
 {
 	if(!pSyncObj)
 		return;

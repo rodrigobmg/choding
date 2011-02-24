@@ -3,10 +3,10 @@
 
 #include "../../Framework/Snowboard_stdafx.h"
 
-#include "Synchronize.h"
+#include "GdsSynchronize.h"
 
 
-class SyncCriticalSection : public Synchronize
+class GdsSyncCriticalSection : public GdsSynchronize
 {
 	//
 	// Member Variables
@@ -17,12 +17,12 @@ protected:
 	//
 	// Initialize & Destroy Methods
 public:
-	static SyncCriticalSection *New();
+	static GdsSyncCriticalSection *New();
 
-	SyncCriticalSection();
-	virtual ~SyncCriticalSection(); 
-	SyncCriticalSection(const SyncCriticalSection&) {} 
-	void operator=(const SyncCriticalSection&) {} 
+	GdsSyncCriticalSection();
+	virtual ~GdsSyncCriticalSection(); 
+	GdsSyncCriticalSection(const GdsSyncCriticalSection&) {} 
+	void operator=(const GdsSyncCriticalSection&) {} 
 
 
 	//
@@ -38,6 +38,6 @@ public:
 
 };
 
-
+typedef boost::shared_ptr< GdsSyncCriticalSection > GdsSyncCriticalSectionPtr;
 
 #endif

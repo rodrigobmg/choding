@@ -462,75 +462,39 @@
 				Name="ThreadPool"
 				>
 				<File
-					RelativePath=".\Utility\ThreadPool\BGThread.h"
+					RelativePath=".\Utility\ThreadPool\GdsBGThread.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\SnowThread.cpp"
+					RelativePath=".\Utility\ThreadPool\GdsSyncCriticalSection.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\SnowThread.h"
+					RelativePath=".\Utility\ThreadPool\GdsSyncCriticalSection.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\SyncCriticalSection.cpp"
+					RelativePath=".\Utility\ThreadPool\GdsSynchronize.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\SyncCriticalSection.h"
+					RelativePath=".\Utility\ThreadPool\GdsSynchronize.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\Synchronize.cpp"
+					RelativePath=".\Utility\ThreadPool\GdsThread.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\Synchronize.h"
+					RelativePath=".\Utility\ThreadPool\GdsThread.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\ThreadPool.cpp"
+					RelativePath=".\Utility\ThreadPool\GdsThreadPool.cpp"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Shipping|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="UnitTest_Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\ThreadPool.h"
+					RelativePath=".\Utility\ThreadPool\GdsThreadPool.h"
 					>
 				</File>
 			</Filter>

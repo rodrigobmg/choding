@@ -13,6 +13,7 @@
 #include <list>
 
 #include <boost/pool/pool.hpp>
+#include <boost/shared_ptr.hpp>
 
 typedef char				int8_t;
 typedef short				int16_t;
@@ -38,7 +39,7 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_RES_TEXTURE	L"ResTypeTexture"
 #define OBJECT_RES_MGR		L"ResMgr"
 
-#define OBJECT_SYNCCHRONIZE	L"Synchronize"
+#define OBJECT_SYNCCHRONIZE	L"GdsSynchronize"
 #define OBJECT_CRITICALSECTION	L"CriticalSection"
 #define OBJECT_THREAD		L"SnowThread"
 #define OBJECT_THREADPOOL	L"ThreadPool"
@@ -47,7 +48,6 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_NODE_BASE	L"GdsNodeBase"
 #define OBJECT_NODE_MESH	L"Mesh"
 #define OBJECT_NODE_CHILDMESH	L"ChildMesh"
-
 
 #include "Snowboard_macro.h"
 #include "../Utility/Utility.h"

@@ -27,10 +27,9 @@ public:
 	void		TestFunc();
 private:
 	
-	GdsRendererDX9*	m_pRenderer;
-	GdsResMrg*		m_pResMgr;
-
-	GdsNode*		m_pRootNode;
+	GdsRendererDX9Ptr	m_pRenderer;
+	GdsResMgrPtr		m_pResMgr;
+	GdsNodePtr			m_pRootNode;
 };
 
 #endif

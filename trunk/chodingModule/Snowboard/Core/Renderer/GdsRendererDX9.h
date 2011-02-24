@@ -22,9 +22,11 @@ public:
 	virtual HRESULT			Create( HWND hWnd );
 	virtual HRESULT			Release();
 
-	virtual void			Render( GdsNode* pNode );
+	virtual void			Render( GdsNodePtr pNode );
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
 
 };
+
+typedef boost::shared_ptr< GdsRendererDX9 > GdsRendererDX9Ptr;
 
 #endif

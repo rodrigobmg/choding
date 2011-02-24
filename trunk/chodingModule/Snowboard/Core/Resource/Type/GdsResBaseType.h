@@ -19,4 +19,6 @@ public:
 	
 };
 
+typedef boost::shared_ptr< GdsBaseRes >		GdsBaseResPtr;
+
 #endif

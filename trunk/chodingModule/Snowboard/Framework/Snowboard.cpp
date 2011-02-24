@@ -7,10 +7,9 @@
 #include "../Utility/Log/logger.h"
 #include "../Utility/PerformanceCheck/Performance.h"
 
-#include "ThreadPool/ThreadPool.h"
+#include "ThreadPool/GdsThreadPool.h"
 
 CSnowboard::CSnowboard()
-:m_pRootNode(NULL)
 {
 	Clear();
 }
@@ -22,9 +21,6 @@ CSnowboard::~CSnowboard()
 
 void CSnowboard::Clear()
 {
-	m_pRenderer		= NULL;
-	m_pResMgr		= NULL;
-	SAFE_DELETE( m_pRootNode );
 }
 
 bool CSnowboard::InitModule( HWND hWnd )
@@ -40,10 +36,11 @@ bool CSnowboard::InitModule( HWND hWnd )
 
 bool	CSnowboard::InitRenderer( HWND hWnd )
 {
-	m_pRenderer = dynamic_cast< GdsRendererDX9* >( GdsCoreFactory::CreateCore( CORE_RENDERER ) );
+	//m_pRenderer = dynamic_cast< GdsRendererDX9* >( GdsCoreFactory::CreateCore( CORE_RENDERER ) );
+	m_pRenderer = GdsRendererDX9Ptr( dynamic_cast< GdsRendererDX9* >( GdsCoreFactory::CreateCore( CORE_RENDERER ) ) );
 	m_pRenderer->Create( hWnd );
 
-	m_pRootNode	= new GdsNode;
+	m_pRootNode	= GdsNodePtr( new GdsNode );
 
 	return TRUE;
 }
@@ -55,7 +52,8 @@ bool	CSnowboard::InitCamera()
 
 bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 {
-	m_pResMgr = static_cast< GdsResMrg* >( GdsCoreFactory::CreateCore( CORE_RESOURCE ) );
+//	m_pResMgr = static_cast< GdsResMgr* >( GdsCoreFactory::CreateCore( CORE_RESOURCE ) );
+	m_pResMgr = GdsResMgrPtr( static_cast< GdsResMgr* >( GdsCoreFactory::CreateCore( CORE_RESOURCE ) ) );
 	m_pResMgr->Create( device );
 	return TRUE;
 }
@@ -79,8 +77,8 @@ void CSnowboard::TestFunc()
 	util::Logger::createSingleton();
 	util::Logger::getInstance().Init(NULL , NULL , NULL , NULL );
 
-	ThreadPool::createSingleton();
-	ThreadPool::getInstance().Create( 10 );
+	GdsThreadPool::createSingleton();
+	GdsThreadPool::getInstance().Create( 10 );
 
 
 	LOG_WARNING_F( L"%s", L"logger init" );
@@ -96,7 +94,7 @@ void CSnowboard::TestFunc()
 		if ( m_pResMgr->CreateList( L"test" , respath , L"tga;bmp;dds" , 1 ) )
 		{
 			END_PERFORMANCE( L"list" );
-			ThreadPool::getInstance().GetIdleThread()->Push< const TCHAR* >( m_pResMgr , L"test"  , &GdsResMrg::LoadRes );
+			GdsThreadPool::getInstance().GetIdleThread()->Push< const TCHAR* >( (GdsResMgr*&)m_pResMgr , L"test"  , &GdsResMgr::LoadRes );
 		}
 
 		OUTPUT_PERFORMANCE( L"list" , loadsample );

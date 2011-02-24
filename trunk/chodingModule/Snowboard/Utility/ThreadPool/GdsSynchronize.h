@@ -13,17 +13,17 @@
 /////////////////////////////////////////////////////////////////////////////
 // class kSynchronize
 
-class Synchronize : public GdsObject
+class GdsSynchronize : public GdsObject
 {
 //
 // Initialize & Destroy Methods
 public:
-	static Synchronize *New();
+	static GdsSynchronize *New();
 
-	Synchronize();
-	virtual ~Synchronize(); 
-	Synchronize(const Synchronize&) {} 
-	void operator=(const Synchronize&) {} 
+	GdsSynchronize();
+	virtual ~GdsSynchronize(); 
+	GdsSynchronize(const GdsSynchronize&) {} 
+	void operator=(const GdsSynchronize&) {} 
 
 
 //
@@ -38,9 +38,10 @@ public:
 	virtual void LeaveLock()			{};
 
 	// Syncronize object locking and unlocking.
-	static void Lock(Synchronize *pSyncObj);
-	static void UnLock(Synchronize *pSyncObj);
+	static void Lock(GdsSynchronize* pSyncObj);
+	static void UnLock(GdsSynchronize* pSyncObj);
 };
 
+typedef boost::shared_ptr< GdsSynchronize >	GdsSynchronizePtr;
 
 #endif	// __SNOWBOARD_UTILITY_SYNC_H__
