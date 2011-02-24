@@ -3,11 +3,11 @@
 
 #include "../../Framework/Snowboard_stdafx.h"
 
-class CSnow
+class GdsObject
 {
 public:
-	CSnow();
-	virtual ~CSnow();
+	GdsObject();
+	virtual ~GdsObject();
 
 	void			DecRefCount();
 	void			IncRefCount()						{ InterlockedIncrement((LONG*)&m_iRefCount); /*++m_iRefCount;*/ }

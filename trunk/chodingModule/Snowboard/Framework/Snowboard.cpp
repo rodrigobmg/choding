@@ -1,8 +1,8 @@
 #include "Snowboard.h"
 
-#include "../Core/CoreFactory.h"
-#include "../Core/Renderer/RendererDX9.h"
-#include "../Core/Resource/Type/ResTexture.h"
+#include "../Core/GdsCoreFactory.h"
+#include "../Core/Renderer/GdsRendererDX9.h"
+#include "../Core/Resource/Type/GdsResTexture.h"
 
 #include "../Utility/Log/logger.h"
 #include "../Utility/PerformanceCheck/Performance.h"
@@ -40,10 +40,10 @@ bool CSnowboard::InitModule( HWND hWnd )
 
 bool	CSnowboard::InitRenderer( HWND hWnd )
 {
-	m_pRenderer = dynamic_cast< CRendererDX9* >( CCoreFactory::CreateCore( CORE_RENDERER ) );
+	m_pRenderer = dynamic_cast< GdsRendererDX9* >( GdsCoreFactory::CreateCore( CORE_RENDERER ) );
 	m_pRenderer->Create( hWnd );
 
-	m_pRootNode	= new SceneNode;
+	m_pRootNode	= new GdsNode;
 
 	return TRUE;
 }
@@ -55,7 +55,7 @@ bool	CSnowboard::InitCamera()
 
 bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 {
-	m_pResMgr = static_cast< CResMrg* >( CCoreFactory::CreateCore( CORE_RESOURCE ) );
+	m_pResMgr = static_cast< GdsResMrg* >( GdsCoreFactory::CreateCore( CORE_RESOURCE ) );
 	m_pResMgr->Create( device );
 	return TRUE;
 }
@@ -96,13 +96,13 @@ void CSnowboard::TestFunc()
 		if ( m_pResMgr->CreateList( L"test" , respath , L"tga;bmp;dds" , 1 ) )
 		{
 			END_PERFORMANCE( L"list" );
-			ThreadPool::getInstance().GetIdleThread()->Push< const TCHAR* >( m_pResMgr , L"test"  , &CResMrg::LoadRes );
+			ThreadPool::getInstance().GetIdleThread()->Push< const TCHAR* >( m_pResMgr , L"test"  , &GdsResMrg::LoadRes );
 		}
 
 		OUTPUT_PERFORMANCE( L"list" , loadsample );
 		LOG_ERROR_F( "list avg tick = %d" , loadsample.ulAvg );
 
-		CResTexture* p = static_cast< CResTexture*>( m_pResMgr->Get( L"test" , L"banana.bmp" ) );
+		GdsResTexture* p = static_cast< GdsResTexture*>( m_pResMgr->Get( L"test" , L"banana.bmp" ) );
 		//할당을 받으면 꼭 릴리즈해서 반환을 한다.
 		if ( p )
 			p->Release();		

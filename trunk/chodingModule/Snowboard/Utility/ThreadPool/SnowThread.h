@@ -2,10 +2,10 @@
 #define __SNOWBOARD_UTILITY_SNOWTHREAD__
 
 #include "../../Framework/Snowboard_stdafx.h"
-#include "../../Core/Base/Snow.h"
+#include "../../Core/Base/GdsObject.h"
 #include "Synchronize.h"
 
-class SnowThread : public CSnow
+class SnowThread : public GdsObject
 {	
 protected:
 	// Handle to the current thread.

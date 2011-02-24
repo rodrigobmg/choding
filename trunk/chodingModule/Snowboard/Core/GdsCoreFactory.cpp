@@ -1,25 +1,25 @@
-#include "CoreFactory.h"
+#include "GdsCoreFactory.h"
 
-#include "Renderer/RendererDX9.h"
-#include "Resource/ResMgr.h"
+#include "Renderer/GdsRendererDX9.h"
+#include "Resource/GdsResMgr.h"
 
-CCoreFactory::CCoreFactory()
+GdsCoreFactory::GdsCoreFactory()
 {
 }
 
-CCoreFactory::~CCoreFactory()
+GdsCoreFactory::~GdsCoreFactory()
 {
 }
 
-CSnow*	CCoreFactory::CreateCore( const tstring& coretype )
+GdsObject*	GdsCoreFactory::CreateCore( const tstring& coretype )
 {
 	if ( coretype == CORE_RESOURCE )
 	{
-		return new CResMrg;	
+		return new GdsResMrg;	
 	}
 	else if ( coretype == CORE_RENDERER )
 	{
-		return new CRendererDX9;
+		return new GdsRendererDX9;
 	}
 	else if ( coretype == CORE_CAMERA )
 	{

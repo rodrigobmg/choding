@@ -1,10 +1,11 @@
-#pragma once
+#ifndef _GDS_H_MAIN_
+#define _GDS_H_MAIN_
 
 #include "Snowboard_stdafx.h"
 
-#include "../Core/CoreFactory.h"
-#include "../Core/Renderer/RendererDX9.h"
-#include "../Core/Resource/ResMgr.h"
+#include "../Core/GdsCoreFactory.h"
+#include "../Core/Renderer/GdsRendererDX9.h"
+#include "../Core/Resource/GdsResMgr.h"
 
 class CSnowboard
 {
@@ -26,8 +27,10 @@ public:
 	void		TestFunc();
 private:
 	
-	CRendererDX9*	m_pRenderer;
-	CResMrg*		m_pResMgr;
+	GdsRendererDX9*	m_pRenderer;
+	GdsResMrg*		m_pResMgr;
 
-	SceneNode*		m_pRootNode;
+	GdsNode*		m_pRootNode;
 };
+
+#endif

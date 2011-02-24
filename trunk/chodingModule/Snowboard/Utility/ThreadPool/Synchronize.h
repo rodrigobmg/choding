@@ -7,13 +7,13 @@
 #define __SNOWBOARD_UTILITY_SYNC_H__
 
 #include "../../Framework/Snowboard_stdafx.h"
-#include "../../Core/Base/Snow.h"
+#include "../../Core/Base/GdsObject.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
 // class kSynchronize
 
-class Synchronize : public CSnow
+class Synchronize : public GdsObject
 {
 //
 // Initialize & Destroy Methods

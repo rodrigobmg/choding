@@ -1,17 +1,17 @@
-#include "SceneNode.h"
+#include "GdsNode.h"
 
-SceneNode::SceneNode():
+GdsNode::GdsNode():
 m_pParentNode(NULL)
 {
-	SetName( OBJECT_SCENENODE_BASE );
+	SetName( OBJECT_NODE_BASE );
 }
 
-SceneNode::~SceneNode()
+GdsNode::~GdsNode()
 {
 	DecRefCount();
 }
 
-HRESULT SceneNode::RemoveAllChild()
+HRESULT GdsNode::RemoveAllChild()
 {
 // 	if ( !m_listChildNode.empty() )
 // 		for_each( m_listChildNode.begin() , m_listChildNode.end() , functor::removeallchild() );
@@ -31,7 +31,7 @@ HRESULT SceneNode::RemoveAllChild()
 	return TRUE;
 }
 
-HRESULT SceneNode::Update( float fElapsedtime )
+HRESULT GdsNode::Update( float fElapsedtime )
 {
 	vUpdate( fElapsedtime );
 	if ( !m_listChildNode.empty() )
@@ -46,18 +46,18 @@ HRESULT SceneNode::Update( float fElapsedtime )
 }
 
 
-void SceneNode::SetParent( SceneNode* pNode )
+void GdsNode::SetParent( GdsNode* pNode )
 {
 	m_pParentNode = pNode;
 }
 
-SceneNode*	SceneNode::GetParent()
+GdsNode*	GdsNode::GetParent()
 {
 	return m_pParentNode;
 }
 
 // 0부터 시작함
-SceneNode*	SceneNode::GetAt( unsigned int index )
+GdsNode*	GdsNode::GetAt( unsigned int index )
 {
 	if ( m_listChildNode.empty() )
 		return NULL;
@@ -79,7 +79,7 @@ SceneNode*	SceneNode::GetAt( unsigned int index )
 }
 
 
-HRESULT SceneNode::AttachChild( SceneNode* pNode )
+HRESULT GdsNode::AttachChild( GdsNode* pNode )
 {
 	if ( this == pNode )
 		return S_FALSE;
@@ -92,7 +92,7 @@ HRESULT SceneNode::AttachChild( SceneNode* pNode )
 	return S_OK;
 }
 
-HRESULT SceneNode::DetachChild( SceneNode* pNode )
+HRESULT GdsNode::DetachChild( GdsNode* pNode )
 {
 	if ( this == pNode )
 		return S_FALSE;
@@ -111,7 +111,7 @@ HRESULT SceneNode::DetachChild( SceneNode* pNode )
 	return S_OK;
 }
 
-HRESULT SceneNode::vUpdate( float fElapsedtime )
+HRESULT GdsNode::vUpdate( float fElapsedtime )
 {
 	++fElapsedtime;
 	//Do something

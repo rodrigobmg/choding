@@ -299,22 +299,22 @@
 			Name="Core"
 			>
 			<File
-				RelativePath=".\Core\CoreFactory.cpp"
+				RelativePath=".\Core\GdsCoreFactory.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Core\CoreFactory.h"
+				RelativePath=".\Core\GdsCoreFactory.h"
 				>
 			</File>
 			<Filter
 				Name="Base"
 				>
 				<File
-					RelativePath=".\Core\Base\Snow.cpp"
+					RelativePath=".\Core\Base\GdsObject.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Core\Base\Snow.h"
+					RelativePath=".\Core\Base\GdsObject.h"
 					>
 				</File>
 			</Filter>
@@ -322,15 +322,15 @@
 				Name="Renderer"
 				>
 				<File
-					RelativePath=".\Core\Renderer\RendererBase.h"
+					RelativePath=".\Core\Renderer\GdsRendererBase.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Core\Renderer\RendererDX9.cpp"
+					RelativePath=".\Core\Renderer\GdsRendererDX9.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Core\Renderer\RendererDX9.h"
+					RelativePath=".\Core\Renderer\GdsRendererDX9.h"
 					>
 				</File>
 			</Filter>
@@ -342,26 +342,26 @@
 				Name="Resource"
 				>
 				<File
-					RelativePath=".\Core\Resource\ResMgr.cpp"
+					RelativePath=".\Core\Resource\GdsResMgr.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Core\Resource\ResMgr.h"
+					RelativePath=".\Core\Resource\GdsResMgr.h"
 					>
 				</File>
 				<Filter
 					Name="Type"
 					>
 					<File
-						RelativePath=".\Core\Resource\Type\ResBaseType.h"
+						RelativePath=".\Core\Resource\Type\GdsResBaseType.h"
 						>
 					</File>
 					<File
-						RelativePath=".\Core\Resource\Type\ResTexture.cpp"
+						RelativePath=".\Core\Resource\Type\GdsResTexture.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Core\Resource\Type\ResTexture.h"
+						RelativePath=".\Core\Resource\Type\GdsResTexture.h"
 						>
 					</File>
 				</Filter>
@@ -370,27 +370,27 @@
 				Name="SceneNode"
 				>
 				<File
-					RelativePath=".\Core\SceneNode\ChildMeshNode.cpp"
+					RelativePath=".\Core\SceneNode\GdsChildMeshNode.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Core\SceneNode\ChildMeshNode.h"
+					RelativePath=".\Core\SceneNode\GdsChildMeshNode.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Core\SceneNode\MeshNode.cpp"
+					RelativePath=".\Core\SceneNode\GdsMeshNode.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Core\SceneNode\MeshNode.h"
+					RelativePath=".\Core\SceneNode\GdsMeshNode.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Core\SceneNode\SceneNode.cpp"
+					RelativePath=".\Core\SceneNode\GdsNode.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Core\SceneNode\SceneNode.h"
+					RelativePath=".\Core\SceneNode\GdsNode.h"
 					>
 				</File>
 			</Filter>

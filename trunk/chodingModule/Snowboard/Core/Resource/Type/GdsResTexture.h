@@ -1,8 +1,9 @@
-#pragma once
+#ifndef _GDS_H_RESTEXTURE_
+#define _GDS_H_RESTEXTURE_
 
-#include "ResBaseType.h"
+#include "GdsResBaseType.h"
 
-class CResTexture : public CBaseRes{
+class GdsResTexture : public GdsBaseRes{
 	
 public:
 	DeclareBoostPool
@@ -12,9 +13,9 @@ private:
 	LPDIRECT3DTEXTURE9			m_pTexture;
 
 public:
-	CResTexture();
-	virtual ~CResTexture();
-	CResTexture& operator=(const CResTexture& rhs)
+	GdsResTexture();
+	virtual ~GdsResTexture();
+	GdsResTexture& operator=(const GdsResTexture& rhs)
 	{
 		m_pTexture = rhs.m_pTexture;
 	}
@@ -27,3 +28,5 @@ public:
 	virtual HRESULT		Release();
 		
 };
+
+#endif

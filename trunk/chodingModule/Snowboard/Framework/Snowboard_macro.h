@@ -1,4 +1,5 @@
-#pragma once 
+#ifndef _GDS_H_MACRO_
+#define _GDS_H_MACRO_
 
 #define SAFE_DELETE(v) {if(v){delete v; v = NULL;}}
 #define SAFE_DELETE_ARRAY(v) { if(v) { delete[] v; v = NULL; } }
@@ -56,3 +57,5 @@ private: \
 
 using namespace std;
 typedef basic_string<TCHAR> tstring;
+
+#endif

@@ -1,17 +1,17 @@
 #ifndef _SNOWBOARD_SCENENODE_MESH_
 #define _SNOWBOARD_SCENENODE_MESH_
 
-#include "SceneNode.h"
+#include "GdsNode.h"
 
-class MeshNode : public SceneNode{		
+class GdsMeshNode : public GdsNode{		
 
 protected:
 	
 	virtual HRESULT vUpdate( float fElapsedtime );	
 
 public:
-	MeshNode();
-	virtual ~MeshNode();
+	GdsMeshNode();
+	virtual ~GdsMeshNode();
 
 	
 };

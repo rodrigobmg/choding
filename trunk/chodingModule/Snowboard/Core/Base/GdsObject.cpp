@@ -1,20 +1,20 @@
-#include "Snow.h"
+#include "GdsObject.h"
 
-CSnow::CSnow()
+GdsObject::GdsObject()
 {
 	m_iRefCount = 0;
 	SetName( OBJECT_BASE );
 	IncRefCount();	
 }
 
-CSnow::~CSnow()
+GdsObject::~GdsObject()
 {	
 	DecRefCount();
 	if ( m_iRefCount != 0 )
 		assert( 0 && "해제할때 0 이어야함" );
 }
 
-void CSnow::DecRefCount()
+void GdsObject::DecRefCount()
 {
 	/*--m_iRefCount; */
 	InterlockedDecrement((LONG*)&m_iRefCount);

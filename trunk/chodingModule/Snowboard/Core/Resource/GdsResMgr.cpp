@@ -1,6 +1,6 @@
-#include "ResMgr.h"
+#include "GdsResMgr.h"
 
-#include "Type/ResTexture.h"
+#include "Type/GdsResTexture.h"
 #include <algorithm>
 #include <omp.h>
 #include "Log/logger.h"
@@ -15,33 +15,31 @@
 #include <tbb/blocked_range.h>
 */
 
-CResMrg::CResMrg()
+GdsResMrg::GdsResMrg()
 {
 	SetName( OBJECT_RES_MGR );
 	Clear();
 }
 
-CResMrg::~CResMrg()
+GdsResMrg::~GdsResMrg()
 {
 
 }
 
-void CResMrg::Clear()
+void GdsResMrg::Clear()
 {
 	m_mapRes.clear();
 	m_mapAllFilelist.clear();
 }
 
-HRESULT CResMrg::Create( LPDIRECT3DDEVICE9 device )
+HRESULT GdsResMrg::Create( LPDIRECT3DDEVICE9 device )
 {
-	::InitializeCriticalSection(&this->m_oCriticalSection);
-
 	Clear();
 	m_pDevice = device;
 	return S_OK;
 }
 
-HRESULT CResMrg::Release()
+HRESULT GdsResMrg::Release()
 {
 	RES_CONTAINER::iterator itAll = m_mapRes.begin();
 	for ( ; itAll != m_mapRes.end() ;  )
@@ -60,7 +58,7 @@ HRESULT CResMrg::Release()
 	return S_OK;
 }
 
-void CResMrg::ReleaseRes( const TCHAR* alias )
+void GdsResMrg::ReleaseRes( const TCHAR* alias )
 {
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
@@ -76,7 +74,7 @@ void CResMrg::ReleaseRes( const TCHAR* alias )
 	}
 }
 
-void CResMrg::ReleaseList( const TCHAR* alias )
+void GdsResMrg::ReleaseList( const TCHAR* alias )
 {
 	RES_ALL_FILELIST_MAP::iterator itList = m_mapAllFilelist.find( alias );
 	if ( itList != m_mapAllFilelist.end() )
@@ -93,7 +91,7 @@ void CResMrg::ReleaseList( const TCHAR* alias )
 	}
 }
 
-CBaseRes* CResMrg::isExist( const TCHAR* alias , const TCHAR* filename )
+GdsBaseRes* GdsResMrg::isExist( const TCHAR* alias , const TCHAR* filename )
 {
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
@@ -107,15 +105,15 @@ CBaseRes* CResMrg::isExist( const TCHAR* alias , const TCHAR* filename )
 }
 
 
-CBaseRes* CResMrg::Get( const TCHAR* alias , const TCHAR* filename )
+GdsBaseRes* GdsResMrg::Get( const TCHAR* alias , const TCHAR* filename )
 {
-	CBaseRes* p = isExist( alias ,filename );
+	GdsBaseRes* p = isExist( alias ,filename );
 	if ( p != NULL )
 		p->IncRefCount();
 	return p;
 }
 
-bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::list<tstring>& tokenlist , bool bRecursive )
+bool	GdsResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::list<tstring>& tokenlist , bool bRecursive )
 {
 	if ( dirpath == NULL )
 		return false;
@@ -174,7 +172,7 @@ bool	CResMrg::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::l
 }
 
 
-void CResMrg::makeToken( const TCHAR* token , std::list<tstring>& tokenlist , const TCHAR* delimiters )
+void GdsResMrg::makeToken( const TCHAR* token , std::list<tstring>& tokenlist , const TCHAR* delimiters )
 {
 	tstring tstrtoken(token);
 	// 맨 첫 글자가 구분자인 경우 무시
@@ -195,7 +193,7 @@ void CResMrg::makeToken( const TCHAR* token , std::list<tstring>& tokenlist , co
 	tokenlist.sort();
 }
 
-bool CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* token , const bool brecursive )
+bool GdsResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* token , const bool brecursive )
 {	
 	RES_ALL_FILELIST_MAP::iterator it = m_mapAllFilelist.find( path );
 	if ( it == m_mapAllFilelist.end() )
@@ -226,7 +224,7 @@ bool CResMrg::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* 
 	return false;
 }
 
-HRESULT CResMrg::LoadRes( const TCHAR* alias )
+HRESULT GdsResMrg::LoadRes( const TCHAR* alias )
 {
 	RES_ALL_FILELIST_MAP::iterator itAlllist = m_mapAllFilelist.find( alias );
 	if ( itAlllist == m_mapAllFilelist.end() )
@@ -256,7 +254,7 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
 // 		bool bSuccess;
 // 		FILE_LIST ffilelist;
 // 		const TCHAR* alias;
-// 		CResMrg* pthis;
+// 		GdsResMrg* pthis;
 // 
 // 		void operator()( const tbb::blocked_range<size_t>& r ) const
 // 		{
@@ -275,11 +273,11 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
 // 			}			
 // 		}
 // 
-// 		resFunctor( CResMrg* p , FILE_LIST& rfilelist , const TCHAR* palias , bool bflag ){
+// 		resFunctor( GdsResMrg* p , FILE_LIST& rfilelist , const TCHAR* palias , bool bflag ){
 // 			ffilelist = rfilelist;
 // 			bSuccess = bflag;
 // 			alias = palias;
-// 			CResMrg* pthis = p;
+// 			GdsResMrg* pthis = p;
 // 		};
 // 
 // 	};
@@ -317,13 +315,13 @@ HRESULT CResMrg::LoadRes( const TCHAR* alias )
 	return bSuccess;
 }
 
-bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* filepath )
+bool GdsResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* filepath )
 {
 	//::EnterCriticalSection(&this->m_oCriticalSection);
 
 	if ( !_tcscmp( ext , L"bmp" ) )
 	{
-		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath ) );
+		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( loadTexture( filepath ) );
 		if ( ptex == NULL )
 			return S_FALSE;
 	
@@ -334,7 +332,7 @@ bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* f
 	}
 	else if( !_tcscmp( ext , L"tga" ) )
 	{
-		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath ) );
+		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( loadTexture( filepath ) );
 		if ( ptex == NULL )
 			return S_FALSE;
 
@@ -345,7 +343,7 @@ bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* f
 	}
 	else if( !_tcscmp( ext , L"jpg" ) )
 	{
-		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath ) );
+		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( loadTexture( filepath ) );
 		if ( ptex == NULL )
 			return S_FALSE;
 
@@ -356,7 +354,7 @@ bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* f
 	}
 	else if( !_tcscmp( ext , L"dds" ) )
 	{
-		CResTexture* ptex =  dynamic_cast<CResTexture*>( loadTexture( filepath ) );
+		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( loadTexture( filepath ) );
 		if ( ptex == NULL )
 			return S_FALSE;
 
@@ -371,7 +369,7 @@ bool CResMrg::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* f
 	return false;
 }
 
-bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* pres )
+bool GdsResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , GdsBaseRes* pres )
 {
 	tstring wstrpath(filepath);
 	size_t poscomma  = wstrpath.rfind( L"\\" );
@@ -403,9 +401,9 @@ bool CResMrg::stackdata( const TCHAR* alias , const TCHAR* filepath , CBaseRes* 
 	return true;
 }
 
-CBaseRes* CResMrg::loadTexture( const TCHAR* filepath )
+GdsBaseRes* GdsResMrg::loadTexture( const TCHAR* filepath )
 {
-	CResTexture* pRes = new CResTexture;
+	GdsResTexture* pRes = new GdsResTexture;
 	if ( pRes == NULL )
 		return NULL;
 

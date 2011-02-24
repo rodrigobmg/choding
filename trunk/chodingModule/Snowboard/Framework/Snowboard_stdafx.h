@@ -1,4 +1,6 @@
-#pragma once 
+#ifndef _GDS_H_STDAFX_
+#define _GDS_H_STDAFX_
+
 #include <Windows.h>
 #include <d3dx9.h>
 #include <assert.h>
@@ -42,12 +44,13 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_THREADPOOL	L"ThreadPool"
 #define OBJECT_BGTHREAD		L"BGThread"
 
-#define OBJECT_SCENENODE_BASE	L"SceneNodeBase"
-#define OBJECT_SCENENODE_MESH	L"Mesh"
-#define OBJECT_SCENENODE_CHILDMESH	L"ChildMesh"
+#define OBJECT_NODE_BASE	L"GdsNodeBase"
+#define OBJECT_NODE_MESH	L"Mesh"
+#define OBJECT_NODE_CHILDMESH	L"ChildMesh"
 
 
 #include "Snowboard_macro.h"
 #include "../Utility/Utility.h"
 
 
+#endif

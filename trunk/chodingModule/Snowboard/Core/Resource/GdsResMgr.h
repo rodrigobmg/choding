@@ -1,18 +1,18 @@
 #ifndef _SNOWBOARD_RESMGR_
 #define _SNOWBOARD_RESMGR_
 
-#include "Type/ResBaseType.h"
-#include "Type/ResTexture.h"
+#include "Type/GdsResBaseType.h"
+#include "Type/GdsResTexture.h"
 #include <map>
 #include <list>
 #include <HASH_MAP>
 
 
-class CSnow;
+class GdsObject;
 
 // 모든 리소스 파일네임은 소문자로 취급한다.!!!!!!!!!!!!!!!!
 
-class CResMrg : public CSnow{
+class GdsResMrg : public GdsObject{
 
 private:
 
@@ -20,10 +20,8 @@ private:
 		TEX = 0,
 	};
 
- 	typedef stdext::hash_map< tstring , CBaseRes* >				HASHMAPRes;
- 	typedef stdext::hash_map< tstring , CBaseRes* >::iterator	HASHMAPRes_ITERATOR;	
-
-	CRITICAL_SECTION		m_oCriticalSection;
+ 	typedef stdext::hash_map< tstring , GdsBaseRes* >				HASHMAPRes;
+ 	typedef stdext::hash_map< tstring , GdsBaseRes* >::iterator	HASHMAPRes_ITERATOR;	
 
 	typedef std::vector<tstring>	FILE_LIST;
 
@@ -51,7 +49,7 @@ private:
 
 	LPDIRECT3DDEVICE9	m_pDevice;
 
-	CBaseRes*			isExist( const TCHAR* alias , const TCHAR* filename );
+	GdsBaseRes*			isExist( const TCHAR* alias , const TCHAR* filename );
 	bool				loadResforDir( const TCHAR* dirpath ,
 										std::vector<tstring>& filename, 
 										std::list<tstring>& tokenlist , 
@@ -63,10 +61,10 @@ private:
 										const TCHAR* filename 
 										);
 
-	CBaseRes*			loadTexture( const TCHAR* filename );
+	GdsBaseRes*			loadTexture( const TCHAR* filename );
 	bool				stackdata( const TCHAR* alias , 
 									const TCHAR* path , 
-									CBaseRes* pres 
+									GdsBaseRes* pres 
 									);
 	
 	void				makeToken( const TCHAR* token , 
@@ -76,11 +74,11 @@ private:
 
 
 public:
-	CResMrg();
-	virtual ~CResMrg();
+	GdsResMrg();
+	virtual ~GdsResMrg();
 
 
-	CBaseRes*			Get( const TCHAR* alias , const TCHAR* filename );
+	GdsBaseRes*			Get( const TCHAR* alias , const TCHAR* filename );
 
 	bool				CreateList( const TCHAR* alias , 
 									const TCHAR* path , 
