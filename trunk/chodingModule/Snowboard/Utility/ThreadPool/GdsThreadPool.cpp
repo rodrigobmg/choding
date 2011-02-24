@@ -15,10 +15,10 @@ GdsThreadPool::~GdsThreadPool()
 void GdsThreadPool::Clear()
 {
 	THREAD_CONTAINER::iterator it = m_GdsThreadPool.begin();
-	for ( ; it != m_GdsThreadPool.end() ; ++it )
-	{
-		SAFE_DELETE( (*it) );
-	}
+ 	for ( ; it != m_GdsThreadPool.end() ; ++it )
+ 	{
+ 		SAFE_DELETE( (*it) );
+ 	}
 	m_GdsThreadPool.clear();
 
 	SAFE_DELETE( m_GdsBGThread );
@@ -45,6 +45,7 @@ void GdsThreadPool::Create( int count )
 	for ( size_t t = 0 ; t < (size_t)count ; ++t )
 	{
 		GdsBGThread* p = new GdsBGThread;
+		//GdsBGThreadPtr p = GdsBGThreadPtr( new GdsBGThread );
 		p->CreateAndRunThread();
 		m_GdsThreadPool.push_back( p );
 	}	

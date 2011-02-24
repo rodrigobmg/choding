@@ -59,4 +59,6 @@ void GdsRendererDX9::Render( GdsNodePtr pNode )
 {
 	if ( pNode )
 		pNode->Update( 0.0f );
+	else
+		assert( 0 );
 }

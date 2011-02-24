@@ -8,7 +8,6 @@ m_pParentNode(NULL)
 
 GdsNode::~GdsNode()
 {
-	DecRefCount();
 }
 
 HRESULT GdsNode::RemoveAllChild()

@@ -1,14 +1,10 @@
 #ifndef _SNOWBOARD_RESMGR_
 #define _SNOWBOARD_RESMGR_
 
-#include "Type/GdsResBaseType.h"
-#include "Type/GdsResTexture.h"
 #include <map>
 #include <list>
 #include <HASH_MAP>
-
-
-class GdsObject;
+#include "Type\GdsResBaseType.h"
 
 // 모든 리소스 파일네임은 소문자로 취급한다.!!!!!!!!!!!!!!!!
 

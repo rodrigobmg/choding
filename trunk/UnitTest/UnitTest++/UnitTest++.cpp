@@ -9,8 +9,13 @@
 
 TEST( shared_ptr_test )
 {
-	GdsNodePtr pNode = new GdsNodePtr;
-
+	GdsNodePtr pNode;
+//	GdsNode* pNode;
+	{
+//		pNode = new GdsNode;
+		pNode = GdsNodePtr( new GdsNode );
+	}	
+	
 	pNode->Update( 0.0f );
 
 	pNode->RemoveAllChild();
