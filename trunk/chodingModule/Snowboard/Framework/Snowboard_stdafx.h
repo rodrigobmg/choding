@@ -53,4 +53,46 @@ typedef unsigned __int64	uint64_t;
 #include "../Utility/Utility.h"
 
 
+//메모리 릭 탐지
+//#define _CRTDBG_MAP_ALLOC
+
+#ifdef _CRTDBG_MAP_ALLOC
+
+	#define ImplementBoostPool(class) //boost::pool<> class::bpool(sizeof(class));
+	#define DeclareBoostPool //\
+
+	#include <crtdbg.h>
+	#define new new(_NORMAL_BLOCK , __FILE__ , __LINE__ )
+	static class MemoryLeakCheck
+	{
+	public:
+		MemoryLeakCheck()
+		{
+			_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+		}
+		~MemoryLeakCheck()
+		{
+			_ASSERTE( _CrtCheckMemory() );
+		}
+	} MemoryLeak;
+
+#else
+	
+	// 부스트풀 메모리
+	#define ImplementBoostPool(class) boost::pool<> class::bpool(sizeof(class));
+	#define DeclareBoostPool \
+		void* operator new(size_t s) \
+	{ \
+		return bpool.malloc(); \
+	} \
+		void operator delete(void *p) \
+	{ \
+		bpool.free(p); \
+	} \
+	private: \
+		static boost::pool<> bpool; \
+
+
+#endif
+
 #endif

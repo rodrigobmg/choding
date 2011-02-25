@@ -143,22 +143,5 @@ namespace functor
 	struct ToLower{ 
 		void operator() (TCHAR& c) const { c = static_cast<TCHAR>(tolower(c)); }
 	};
-
-	//메모리 릭 탐지
-	#include <crtdbg.h>
-	#define new new(_NORMAL_BLOCK , __FILE__ , __LINE__ )
-	static class MemoryLeakCheck
-	{
-	public:
-		MemoryLeakCheck()
-		{
-			_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-		}
-		~MemoryLeakCheck()
-		{
-			_ASSERTE( _CrtCheckMemory() );
-		}
-	} MemoryLeak;
-
 }// end of namespace functor
 

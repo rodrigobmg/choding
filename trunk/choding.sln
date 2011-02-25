@@ -3,8 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "choding", "choding\choding.vcproj", "{73F5138D-F518-49EA-81A1-40AB0DA84E9E}"
 	ProjectSection(ProjectDependencies) = postProject
-		{4532E540-0FED-4A93-BB17-03F7214E661B} = {4532E540-0FED-4A93-BB17-03F7214E661B}
 		{C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F} = {C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F}
+		{4532E540-0FED-4A93-BB17-03F7214E661B} = {4532E540-0FED-4A93-BB17-03F7214E661B}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sun", "chodingModule\Sun\Sun.vcproj", "{C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F}"
@@ -12,6 +12,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snowboard", "chodingModule\Snowboard\Snowboard.vcproj", "{4532E540-0FED-4A93-BB17-03F7214E661B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest++", "UnitTest\UnitTest++\UnitTest++.vcproj", "{70CAEB2D-FF74-43F7-9917-890ED5496B45}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4532E540-0FED-4A93-BB17-03F7214E661B} = {4532E540-0FED-4A93-BB17-03F7214E661B}
+		{C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F} = {C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

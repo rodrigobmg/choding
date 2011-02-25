@@ -39,28 +39,6 @@
 #define REM_FLAGS( var, flags )		( (var) &= ~(flags) )
 #define CHK_FLAGS( var, flags )		( (var) &   (flags) )
 
-#define _CRTDBG_MAP_ALLOC
-/*
-
-// 부스트풀 메모리
-#define ImplementBoostPool(class) boost::pool<> class::bpool(sizeof(class));
-#define DeclareBoostPool \
-	void* operator new(size_t s) \
-{ \
-	return bpool.malloc(); \
-} \
-	void operator delete(void *p) \
-{ \
-	bpool.free(p); \
-} \
-private: \
-	static boost::pool<> bpool; \
-*/
-
-#define ImplementBoostPool(class) //boost::pool<> class::bpool(sizeof(class));
-#define DeclareBoostPool //\
-
-
 typedef std::basic_string<TCHAR> tstring;
 
 #endif
