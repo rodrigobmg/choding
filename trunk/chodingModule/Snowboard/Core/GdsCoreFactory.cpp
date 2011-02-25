@@ -11,24 +11,23 @@ GdsCoreFactory::~GdsCoreFactory()
 {
 }
 
-GdsObject*	GdsCoreFactory::CreateCore( const tstring& coretype )
+GdsObjectPtr	GdsCoreFactory::CreateCore( const tstring& coretype )
 {
 	if ( coretype == CORE_RESOURCE )
 	{
-		return new GdsResMgr;	
+		return GdsResMgrPtr( new GdsResMgr );	
 	}
 	else if ( coretype == CORE_RENDERER )
 	{
-		return new GdsRendererDX9;
+		return GdsRendererDX9Ptr( new GdsRendererDX9 );
 	}
 	else if ( coretype == CORE_CAMERA )
 	{
-		//return new CCama
-		return NULL;
+		return GdsObjectPtr( (GdsObject*)NULL );
 	}
 	else
 	{
 		assert( 0 && "정의되지 않은 코어는 생성될수 없습니다." );
-		return NULL;
+		return GdsObjectPtr( (GdsObject*)NULL );
 	}
 }

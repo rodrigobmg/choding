@@ -6,7 +6,7 @@
 class GdsResTexture : public GdsResBase{
 	
 public:
-	DeclareBoostPool
+	DeclareBoostPool	
 
 private:
 

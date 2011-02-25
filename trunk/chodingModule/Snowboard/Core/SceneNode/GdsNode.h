@@ -5,7 +5,8 @@
 
 class GdsNode : public GdsObject{
 		
-protected:
+protected:	
+
 	GdsNode*							m_pParentNode;
 
 	typedef	 std::list< GdsNode* >	CHILDLIST;

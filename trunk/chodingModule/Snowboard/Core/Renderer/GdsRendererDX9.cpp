@@ -20,6 +20,7 @@ GdsRendererDX9::~GdsRendererDX9()
 HRESULT GdsRendererDX9::Release()
 {
 	SAFE_RELEASE(m_pD3D);
+	SAFE_RELEASE(m_pd3dDevice);
 	return S_OK;
 }
 

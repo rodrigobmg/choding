@@ -3,7 +3,7 @@
 
 #define SAFE_DELETE(v) {if(v){delete v; v = NULL;}}
 #define SAFE_DELETE_ARRAY(v) { if(v) { delete[] v; v = NULL; } }
-#define SAFE_RELEASE(v) {if(v){v->Release(); } }
+#define SAFE_RELEASE(v) {if(v){v->Release(); v = NULL;} }
 
 #define ASSERT( exp )	assert( exp )
 
@@ -39,6 +39,8 @@
 #define REM_FLAGS( var, flags )		( (var) &= ~(flags) )
 #define CHK_FLAGS( var, flags )		( (var) &   (flags) )
 
+#define _CRTDBG_MAP_ALLOC
+/*
 
 // 부스트풀 메모리
 #define ImplementBoostPool(class) boost::pool<> class::bpool(sizeof(class));
@@ -53,6 +55,10 @@
 } \
 private: \
 	static boost::pool<> bpool; \
+*/
+
+#define ImplementBoostPool(class) //boost::pool<> class::bpool(sizeof(class));
+#define DeclareBoostPool //\
 
 
 typedef std::basic_string<TCHAR> tstring;

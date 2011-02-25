@@ -23,7 +23,7 @@ GdsResMgr::GdsResMgr()
 
 GdsResMgr::~GdsResMgr()
 {
-
+	Release();
 }
 
 void GdsResMgr::Clear()
@@ -47,7 +47,7 @@ HRESULT GdsResMgr::Release()
 // 		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );
 // 		m_mapRes.erase( itAll++ );
 // 	}
-	m_mapRes.clear();
+//	m_mapRes.clear();
 
 	RES_ALL_FILELIST_MAP::iterator itlist = m_mapAllFilelist.begin();
 	for ( ; itlist != m_mapAllFilelist.end() ; )
@@ -319,8 +319,6 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 
 bool GdsResMgr::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* filepath )
 {
-	//::EnterCriticalSection(&this->m_oCriticalSection);
-
 	if ( !_tcscmp( ext , L"bmp" ) )
 	{
 		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( loadTexture( filepath ) );

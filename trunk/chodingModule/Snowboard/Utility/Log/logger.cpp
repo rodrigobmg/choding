@@ -24,6 +24,7 @@ namespace util
 	Logger::~Logger()
 	{
 		SAFE_DELETE(pHTML_);
+		SAFE_DELETE(pConsole_);
 	}
 
 	void Logger::Init( output_fptr fptrWarningOnScreen

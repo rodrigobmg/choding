@@ -10,7 +10,7 @@
 TEST( shared_ptr_test )
 {
 	//GdsNodePtr pNode = boost::shared_ptr< GdsNode >( (GdsNode*)NULL );
-	GdsResTexturePtr ptex = GdsResTexturePtr( new GdsResBase );
+	GdsResTexturePtr ptex = GdsResTexturePtr( new GdsResTexture );
 	//GdsResBasePtr pbase = GdsResBasePtr( new GdsResTexture );
 	CHECK( TRUE );
 }

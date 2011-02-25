@@ -10,7 +10,7 @@ public:
 	GdsCoreFactory();
 	virtual ~GdsCoreFactory();
 
-	static GdsObject*	CreateCore( const tstring& coretype );
+	static GdsObjectPtr	CreateCore( const tstring& coretype );
 };
 
 #endif

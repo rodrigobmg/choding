@@ -4,10 +4,12 @@ GdsNode::GdsNode():
 m_pParentNode(NULL)
 {
 	SetName( OBJECT_NODE_BASE );
+	m_listChildNode.clear();
 }
 
 GdsNode::~GdsNode()
 {
+	RemoveAllChild();
 }
 
 HRESULT GdsNode::RemoveAllChild()

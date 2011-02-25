@@ -115,7 +115,15 @@ public:
 		SetMaxcapacity( 1 );
 	}
 
-	virtual ~GdsBGThread(){}; 
+	virtual ~GdsBGThread()
+	{
+		while( !m_ThreadQueue.empty() )
+		{
+			IWORK_TOKEN* ptoken = m_ThreadQueue.front();
+			SAFE_DELETE( ptoken );
+			m_ThreadQueue.pop();
+		}
+	}; 
 
 };
 
