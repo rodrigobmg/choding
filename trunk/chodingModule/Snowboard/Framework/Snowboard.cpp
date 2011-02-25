@@ -92,11 +92,14 @@ void CSnowboard::TestFunc()
 		if ( m_pResMgr->CreateList( L"test" , respath , L"tga;bmp;dds" , 1 ) )
 		{
 			END_PERFORMANCE( L"list" );
-			//GdsThreadPool::getInstance().GetIdleThread()->Push< const TCHAR* >( (GdsResMgr*&)m_pResMgr , L"test"  , &GdsResMgr::LoadRes );
+		//	GdsThreadPool::getInstance().GetIdleThread()->Push< const TCHAR* >( (GdsResMgr*&)m_pResMgr , L"test"  , &GdsResMgr::LoadRes );
 			m_pResMgr->LoadRes( L"test" );
 		}
 
 		GdsResTexturePtr p = boost::shared_dynamic_cast< GdsResTexture >( m_pResMgr->Get( L"test" , L"banana.bmp" ) );
+
+		if ( p )
+			LOG_WARNING_F( "load success" );
 
 		OUTPUT_PERFORMANCE( L"list" , loadsample );
 		LOG_ERROR_F( "list avg tick = %d" , loadsample.ulAvg );		

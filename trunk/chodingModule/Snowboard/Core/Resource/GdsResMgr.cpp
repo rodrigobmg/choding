@@ -109,7 +109,7 @@ GdsResBasePtr GdsResMgr::isExist( const TCHAR* alias , const TCHAR* filename )
 GdsResBasePtr	GdsResMgr::Get( const TCHAR* alias , const TCHAR* filename )
 {
 	GdsResBasePtr p = isExist( alias ,filename );
-	if ( !p)
+	if ( p )
 		return p;
 
 	return GdsResBasePtr( (GdsResBase*)NULL );
