@@ -26,20 +26,17 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#include "stdafx.h"
 #include <iostream>
 
 #include "gtest/gtest.h"
-//#include "Snowboard_test.cpp"
 
-TEST( CSnowboard, IsPrime)
+#include "Snowboard_test.hpp"
+
+
+int main(int argc, char **argv)
 {
-	EXPECT_TRUE(true);
-}
+	std::cout << "Running main() from gtest_main.cc\n";
 
-int main(int argc, char **argv) {
-  std::cout << "Running main() from gtest_main.cc\n";
-
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+	testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }
