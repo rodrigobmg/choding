@@ -3,15 +3,15 @@
 
 #include "../../Base/GdsObject.h"
 
-class GdsBaseRes : public GdsObject{
+class GdsResBase : public GdsObject{
 
 public:
-	GdsBaseRes()
+	GdsResBase()
 	{
 		SetName( OBJECT_RES_BASE );
 	}
 
-	virtual ~GdsBaseRes(){};
+	virtual ~GdsResBase(){};
 
 	virtual void	Clear() = 0;
 	virtual HRESULT	Create() = 0;
@@ -19,6 +19,6 @@ public:
 	
 };
 
-typedef boost::shared_ptr< GdsBaseRes >		GdsBaseResPtr;
+typedef boost::shared_ptr< GdsResBase >		GdsResBasePtr;
 
 #endif

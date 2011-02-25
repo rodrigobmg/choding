@@ -41,12 +41,13 @@ HRESULT GdsResMgr::Create( LPDIRECT3DDEVICE9 device )
 
 HRESULT GdsResMgr::Release()
 {
-	RES_CONTAINER::iterator itAll = m_mapRes.begin();
-	for ( ; itAll != m_mapRes.end() ;  )
-	{
-		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );
-		m_mapRes.erase( itAll++ );
-	}
+//	RES_CONTAINER::iterator itAll = m_mapRes.begin();
+// 	for ( ; itAll != m_mapRes.end() ;  )
+// 	{
+// 		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );
+// 		m_mapRes.erase( itAll++ );
+// 	}
+	m_mapRes.clear();
 
 	RES_ALL_FILELIST_MAP::iterator itlist = m_mapAllFilelist.begin();
 	for ( ; itlist != m_mapAllFilelist.end() ; )
@@ -63,7 +64,7 @@ void GdsResMgr::ReleaseRes( const TCHAR* alias )
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
 	{
-		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );		
+	//	for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );		
 		m_mapRes.erase( itAll );
 	}	
 
@@ -91,7 +92,7 @@ void GdsResMgr::ReleaseList( const TCHAR* alias )
 	}
 }
 
-GdsBaseRes* GdsResMgr::isExist( const TCHAR* alias , const TCHAR* filename )
+GdsResBasePtr GdsResMgr::isExist( const TCHAR* alias , const TCHAR* filename )
 {
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
@@ -101,16 +102,17 @@ GdsBaseRes* GdsResMgr::isExist( const TCHAR* alias , const TCHAR* filename )
 			return it->second;
 	}
 
-	return NULL;
+	return GdsResBasePtr( (GdsResBase*)NULL );
 }
 
 
-GdsBaseRes*	GdsResMgr::Get( const TCHAR* alias , const TCHAR* filename )
+GdsResBasePtr	GdsResMgr::Get( const TCHAR* alias , const TCHAR* filename )
 {
-	GdsBaseRes* p = isExist( alias ,filename );
-	if ( p != NULL )
-		p->IncRefCount();
-	return p;
+	GdsResBasePtr p = isExist( alias ,filename );
+	if ( !p)
+		return p;
+
+	return GdsResBasePtr( (GdsResBase*)NULL );
 }
 
 bool	GdsResMgr::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::list<tstring>& tokenlist , bool bRecursive )
@@ -364,12 +366,10 @@ bool GdsResMgr::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR*
 		return bresult;
 	}
 
-	//::LeaveCriticalSection(&this->m_oCriticalSection);
-
 	return false;
 }
 
-bool GdsResMgr::stackdata( const TCHAR* alias , const TCHAR* filepath , GdsBaseRes* pres )
+bool GdsResMgr::stackdata( const TCHAR* alias , const TCHAR* filepath , GdsResBase* pres )
 {
 	tstring wstrpath(filepath);
 	size_t poscomma  = wstrpath.rfind( L"\\" );
@@ -401,7 +401,7 @@ bool GdsResMgr::stackdata( const TCHAR* alias , const TCHAR* filepath , GdsBaseR
 	return true;
 }
 
-GdsBaseRes* GdsResMgr::loadTexture( const TCHAR* filepath )
+GdsResBase* GdsResMgr::loadTexture( const TCHAR* filepath )
 {
 	GdsResTexture* pRes = new GdsResTexture;
 	if ( pRes == NULL )

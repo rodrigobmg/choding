@@ -16,7 +16,7 @@ private:
 		TEX = 0,
 	};
 
- 	typedef stdext::hash_map< tstring , GdsBaseRes* >	HASHMAPRes;
+ 	typedef stdext::hash_map< tstring , GdsResBasePtr >	HASHMAPRes;
  	typedef HASHMAPRes::iterator						HASHMAPRes_ITERATOR;	
 
 	typedef std::vector<tstring>	FILE_LIST;
@@ -45,7 +45,7 @@ private:
 
 	LPDIRECT3DDEVICE9	m_pDevice;
 
-	GdsBaseRes*		isExist( const TCHAR* alias , const TCHAR* filename );
+	GdsResBasePtr			isExist( const TCHAR* alias , const TCHAR* filename );
 	bool				loadResforDir( const TCHAR* dirpath ,
 										std::vector<tstring>& filename, 
 										std::list<tstring>& tokenlist , 
@@ -57,10 +57,10 @@ private:
 										const TCHAR* filename 
 										);
 
-	GdsBaseRes*		loadTexture( const TCHAR* filename );
+	GdsResBase*			loadTexture( const TCHAR* filename );
 	bool				stackdata( const TCHAR* alias , 
 									const TCHAR* path , 
-									GdsBaseRes* pres 
+									GdsResBase* pres 
 									);
 	
 	void				makeToken( const TCHAR* token , 
@@ -74,7 +74,7 @@ public:
 	virtual ~GdsResMgr();
 
 
-	GdsBaseRes*		Get( const TCHAR* alias , const TCHAR* filename );
+	GdsResBasePtr		Get( const TCHAR* alias , const TCHAR* filename );
 
 	bool				CreateList( const TCHAR* alias , 
 									const TCHAR* path , 

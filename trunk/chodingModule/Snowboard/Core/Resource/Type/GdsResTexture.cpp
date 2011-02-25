@@ -26,7 +26,6 @@ HRESULT GdsResTexture::Create()
 
 HRESULT GdsResTexture::Release()
 {	
-
 	DecRefCount();
 	return S_OK;
 }

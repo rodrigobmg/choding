@@ -3,7 +3,7 @@
 
 #include "GdsResBaseType.h"
 
-class GdsResTexture : public GdsBaseRes{
+class GdsResTexture : public GdsResBase{
 	
 public:
 	DeclareBoostPool

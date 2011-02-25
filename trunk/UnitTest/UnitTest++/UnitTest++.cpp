@@ -4,21 +4,14 @@
 #pragma comment ( lib , "lib/UnitTest++.vsnet2005.lib" )
 #pragma  comment ( lib , "../../chodingModule/Lib/Snowboard_D.lib")
 
-#include "../../chodingModule/Snowboard/Core/SceneNode/GdsNode.h"
+#include "../../chodingModule/Snowboard/Core/Resource/Type/GdsResTexture.h"
 
 
 TEST( shared_ptr_test )
 {
-	GdsNodePtr pNode;
-//	GdsNode* pNode;
-	{
-//		pNode = new GdsNode;
-		pNode = GdsNodePtr( new GdsNode );
-	}	
-	
-	pNode->Update( 0.0f );
-
-	pNode->RemoveAllChild();
+	//GdsNodePtr pNode = boost::shared_ptr< GdsNode >( (GdsNode*)NULL );
+	GdsResTexturePtr ptex = GdsResTexturePtr( new GdsResBase );
+	//GdsResBasePtr pbase = GdsResBasePtr( new GdsResTexture );
 	CHECK( TRUE );
 }
 
