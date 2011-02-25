@@ -14,7 +14,6 @@ protected:
 
 	virtual HRESULT vUpdate( float fElapsedtime );	
 
-
 public:
 	GdsNode();
 	virtual ~GdsNode();
