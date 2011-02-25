@@ -1,5 +1,5 @@
 #include "output_logger.h"
-#include "../../Framework/Snowboard_type.h"
+#include "../../Framework/Snowboard_stdafx.h"
 #include <Windows.h>
 #include <stdio.h>
 

@@ -3,38 +3,6 @@
 
 #include "../../Framework/Snowboard_stdafx.h"
 #include "GdsThread.h"
-/*
-class TFunctor
-{
-public:
-	virtual HRESULT operator()( const TCHAR* name ) = 0;
-	virtual HRESULT Call( const TCHAR* name ) = 0;
-};
-
-template< class T >
-class TSpecificFunctor : public TFunctor
-{
-private:
-	HRESULT (T::*fpt)(const TCHAR*);
-	T*	ptObject;
-
-public:
-	TSpecificFunctor( T* _ptObject , HRESULT (T::*_fpt)(const TCHAR* ) )
-	{
-		ptObject = _ptObject;
-		fpt = _fpt;
-	}
-
-	virtual  HRESULT operator()( const TCHAR* name )
-	{
-		return (*ptObject->*fpt)(name); 
-	}
-
-	virtual HRESULT Call( const TCHAR* name )
-	{
-		return (*ptObject->*fpt)(name);
-	}
-};*/
 
 class GdsBGThread : public GdsThread
 {
