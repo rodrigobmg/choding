@@ -92,7 +92,7 @@ void GdsResMgr::ReleaseList( const TCHAR* alias )
 	}
 }
 
-GdsResBasePtr GdsResMgr::isExist( const TCHAR* alias , const TCHAR* filename )
+GdsResBasePtr GdsResMgr::vIsExist( const TCHAR* alias , const TCHAR* filename )
 {
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
@@ -108,14 +108,14 @@ GdsResBasePtr GdsResMgr::isExist( const TCHAR* alias , const TCHAR* filename )
 
 GdsResBasePtr	GdsResMgr::Get( const TCHAR* alias , const TCHAR* filename )
 {
-	GdsResBasePtr p = isExist( alias ,filename );
+	GdsResBasePtr p = vIsExist( alias ,filename );
 	if ( p )
 		return p;
 
 	return GdsResBasePtr( (GdsResBase*)NULL );
 }
 
-bool	GdsResMgr::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::list<tstring>& tokenlist , bool bRecursive )
+bool	GdsResMgr::vLoadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::list<tstring>& tokenlist , bool bRecursive )
 {
 	if ( dirpath == NULL )
 		return false;
@@ -143,7 +143,7 @@ bool	GdsResMgr::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std:
 				ZeroMemory( curpath , sizeof( curpath ) );
 				_stprintf_s( curpath , L"%s\\%s" , dirpath , fd.cFileName );
 
-				loadResforDir( curpath , filelist , tokenlist, bRecursive );
+				vLoadResforDir( curpath , filelist , tokenlist, bRecursive );
 			}
 		}
 		else if ( fd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY )
@@ -174,7 +174,7 @@ bool	GdsResMgr::loadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std:
 }
 
 
-void GdsResMgr::makeToken( const TCHAR* token , std::list<tstring>& tokenlist , const TCHAR* delimiters )
+void GdsResMgr::vMakeToken( const TCHAR* token , std::list<tstring>& tokenlist , const TCHAR* delimiters )
 {
 	tstring tstrtoken(token);
 	// 맨 첫 글자가 구분자인 경우 무시
@@ -201,7 +201,7 @@ bool GdsResMgr::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR
 	if ( it == m_mapAllFilelist.end() )
 	{
 		std::list<tstring> tokenlist;
-		makeToken( token , tokenlist , L";" );
+		vMakeToken( token , tokenlist , L";" );
 		if ( tokenlist.empty() )
 		{
 			ASSERT( !"토큰리스트에 값이 하나도 없다." );
@@ -209,7 +209,7 @@ bool GdsResMgr::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR
 		}
 
 		RES_STRUCT resStruct;
-		loadResforDir( path , resStruct.filelist , tokenlist , brecursive );
+		vLoadResforDir( path , resStruct.filelist , tokenlist , brecursive );
 		if ( !resStruct.filelist.empty() )
 		{
 			//resStruct.filelist.sort();
@@ -267,7 +267,7 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 // 
 // 				size_t poscomma = ffilelist[i].rfind( L"." );
 // 				tstring ext		= ffilelist[i].substr( poscomma + 1 , ffilelist[i].length() );
-// 				if ( !pthis->loadFactory( alias , ext.c_str() , ffilelist[i].c_str() ) )
+// 				if ( !pthis->vLoadFactory( alias , ext.c_str() , ffilelist[i].c_str() ) )
 // 				{
 // 				//	bSuccess = S_FALSE;
 // 					continue;
@@ -301,7 +301,7 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
   		
   		size_t poscomma = filelist[index].rfind( L"." );
   		ext				= filelist[index].substr( poscomma + 1 , filelist[index].length() );
-  		if ( !loadFactory( alias , ext.c_str() , filelist[index].c_str() ) )
+  		if ( !vLoadFactory( alias , ext.c_str() , filelist[index].c_str() ) )
   		{
   			bSuccess = S_FALSE;
   			break;
@@ -317,49 +317,49 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 	return bSuccess;
 }
 
-bool GdsResMgr::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* filepath )
+bool GdsResMgr::vLoadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* filepath )
 {
 	if ( !_tcscmp( ext , L"bmp" ) )
 	{
-		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( loadTexture( filepath ) );
+		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( vLoadTexture( filepath ) );
 		if ( ptex == NULL )
 			return S_FALSE;
 	
 		
-		bool bresult = stackdata( alias , filepath , ptex );		
+		bool bresult = vStackdata( alias , filepath , ptex );		
 		
 		return bresult;
 	}
 	else if( !_tcscmp( ext , L"tga" ) )
 	{
-		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( loadTexture( filepath ) );
+		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( vLoadTexture( filepath ) );
 		if ( ptex == NULL )
 			return S_FALSE;
 
 
-		bool bresult = stackdata( alias , filepath , ptex );		
+		bool bresult = vStackdata( alias , filepath , ptex );		
 
 		return bresult;
 	}
 	else if( !_tcscmp( ext , L"jpg" ) )
 	{
-		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( loadTexture( filepath ) );
+		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( vLoadTexture( filepath ) );
 		if ( ptex == NULL )
 			return S_FALSE;
 
 
-		bool bresult = stackdata( alias , filepath , ptex );		
+		bool bresult = vStackdata( alias , filepath , ptex );		
 
 		return bresult;
 	}
 	else if( !_tcscmp( ext , L"dds" ) )
 	{
-		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( loadTexture( filepath ) );
+		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( vLoadTexture( filepath ) );
 		if ( ptex == NULL )
-			return S_FALSE;
+			return S_FALSE; 
 
 
-		bool bresult = stackdata( alias , filepath , ptex );		
+		bool bresult = vStackdata( alias , filepath , ptex );		
 
 		return bresult;
 	}
@@ -367,12 +367,12 @@ bool GdsResMgr::loadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR*
 	return false;
 }
 
-bool GdsResMgr::stackdata( const TCHAR* alias , const TCHAR* filepath , GdsResBase* pres )
+bool GdsResMgr::vStackdata( const TCHAR* alias , const TCHAR* filepath , GdsResBase* pres )
 {
 	tstring wstrpath(filepath);
 	size_t poscomma  = wstrpath.rfind( L"\\" );
 	tstring filename = wstrpath.substr( poscomma + 1 , wstrpath.length() );
-	if ( isExist( alias , filename.c_str() ) )
+	if ( vIsExist( alias , filename.c_str() ) )
 	{
 		assert( 0 && "키값 중복이 있어서는 안된다." );
 		return false;
@@ -399,7 +399,7 @@ bool GdsResMgr::stackdata( const TCHAR* alias , const TCHAR* filepath , GdsResBa
 	return true;
 }
 
-GdsResBase* GdsResMgr::loadTexture( const TCHAR* filepath )
+GdsResBase* GdsResMgr::vLoadTexture( const TCHAR* filepath )
 {
 	GdsResTexture* pRes = new GdsResTexture;
 	if ( pRes == NULL )

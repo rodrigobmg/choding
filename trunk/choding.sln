@@ -3,8 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "choding", "choding\choding.vcproj", "{73F5138D-F518-49EA-81A1-40AB0DA84E9E}"
 	ProjectSection(ProjectDependencies) = postProject
-		{C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F} = {C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F}
 		{4532E540-0FED-4A93-BB17-03F7214E661B} = {4532E540-0FED-4A93-BB17-03F7214E661B}
+		{C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F} = {C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sun", "chodingModule\Sun\Sun.vcproj", "{C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F}"
@@ -12,6 +12,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snowboard", "chodingModule\Snowboard\Snowboard.vcproj", "{4532E540-0FED-4A93-BB17-03F7214E661B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Unittest", "UnitTest\Unittest\Unittest.vcproj", "{7EC726BF-657A-4F2D-BA24-7EB5F418C11B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{73F5138D-F518-49EA-81A1-40AB0DA84E9E} = {73F5138D-F518-49EA-81A1-40AB0DA84E9E}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtest", "chodingModule\gtest-1.6.0\msvc\gtest.vcproj", "{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +49,12 @@ Global
 		{7EC726BF-657A-4F2D-BA24-7EB5F418C11B}.Release|Win32.Build.0 = Release|Win32
 		{7EC726BF-657A-4F2D-BA24-7EB5F418C11B}.Shipping|Win32.ActiveCfg = Release|Win32
 		{7EC726BF-657A-4F2D-BA24-7EB5F418C11B}.Shipping|Win32.Build.0 = Release|Win32
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Debug|Win32.Build.0 = Debug|Win32
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Release|Win32.ActiveCfg = Release|Win32
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Release|Win32.Build.0 = Release|Win32
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Shipping|Win32.ActiveCfg = Release|Win32
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Shipping|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

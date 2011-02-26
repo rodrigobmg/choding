@@ -114,7 +114,19 @@ HRESULT GdsNode::DetachChild( GdsNode* pNode )
 
 HRESULT GdsNode::vUpdate( float fElapsedtime )
 {
-	++fElapsedtime;
 	//Do something
+	vInitGeometry();
+	vRender();
+
 	return S_OK;
+}
+
+void GdsNode::vInitGeometry()
+{
+
+}
+
+void GdsNode::vRender()
+{
+
 }

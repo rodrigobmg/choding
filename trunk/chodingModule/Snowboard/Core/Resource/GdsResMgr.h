@@ -45,25 +45,25 @@ private:
 
 	LPDIRECT3DDEVICE9	m_pDevice;
 
-	GdsResBasePtr			isExist( const TCHAR* alias , const TCHAR* filename );
-	bool				loadResforDir( const TCHAR* dirpath ,
+	GdsResBasePtr		vIsExist( const TCHAR* alias , const TCHAR* filename );
+	bool				vLoadResforDir( const TCHAR* dirpath ,
 										std::vector<tstring>& filename, 
 										std::list<tstring>& tokenlist , 
 										bool bRecursive 
 										);
 	
-	bool				loadFactory( const TCHAR* alias, 
+	bool				vLoadFactory( const TCHAR* alias, 
 										const TCHAR* ext ,
 										const TCHAR* filename 
 										);
 
-	GdsResBase*			loadTexture( const TCHAR* filename );
-	bool				stackdata( const TCHAR* alias , 
+	GdsResBase*			vLoadTexture( const TCHAR* filename );
+	bool				vStackdata( const TCHAR* alias , 
 									const TCHAR* path , 
 									GdsResBase* pres 
 									);
 	
-	void				makeToken( const TCHAR* token , 
+	void				vMakeToken( const TCHAR* token , 
 									std::list<tstring>& tokenlist , 
 									const TCHAR* delimiters 
 									);
