@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;E:\Project\choding\chodingModule\gtest-1.6.0\include&quot;"
+				AdditionalIncludeDirectories="&quot;../..\chodingModule\gtest-1.6.0\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="gtestd.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="E:\Project\choding\chodingModule\Lib;&quot;E:\Project\choding\chodingModule\gtest-1.6.0\msvc\choding\Debug&quot;"
+				AdditionalLibraryDirectories="../..\chodingModule\Lib;&quot;../..\chodingModule\gtest-1.6.0\msvc\choding\Debug&quot;"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="1"
