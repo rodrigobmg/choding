@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "choding", "choding\choding.
 		{C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F} = {C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sun", "chodingModule\Sun\Sun.vcproj", "{C2C62CF9-7AB1-47BA-BB5C-C8475B41D18F}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snowboard", "chodingModule\Snowboard\Snowboard.vcproj", "{4532E540-0FED-4A93-BB17-03F7214E661B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Unittest", "UnitTest\Unittest\Unittest.vcproj", "{7EC726BF-657A-4F2D-BA24-7EB5F418C11B}"
