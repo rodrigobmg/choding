@@ -122,7 +122,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\tbb30_018oss\include&quot;;../../chodingModule\Lib;Main/;./"
+				AdditionalIncludeDirectories="../../chodingModule\Lib;&quot;E:\Project\choding\chodingModule\gtest-1.6.0\include&quot;;Main/;./"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="2"
