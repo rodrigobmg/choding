@@ -370,14 +370,6 @@
 				Name="SceneNode"
 				>
 				<File
-					RelativePath=".\Core\SceneNode\GdsChildMeshNode.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\SceneNode\GdsChildMeshNode.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Core\SceneNode\GdsMeshNode.cpp"
 					>
 				</File>

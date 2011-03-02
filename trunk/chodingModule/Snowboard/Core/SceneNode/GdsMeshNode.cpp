@@ -10,12 +10,12 @@ GdsMeshNode::~GdsMeshNode()
 {
 }
 
-
-HRESULT GdsMeshNode::vUpdate( float fElapsedtime )
+void GdsMeshNode::vInitGeometry()
 {
-	TCHAR szlog[256] = {0,};
-	_stprintf_s( szlog , L"%s" , L"I`m GdsMeshNode" );
-	++fElapsedtime;
-	//Do something
-	return S_OK;
+
+}
+
+void GdsMeshNode::vRender()
+{
+
 }

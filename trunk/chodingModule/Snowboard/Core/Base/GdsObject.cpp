@@ -11,7 +11,7 @@ GdsObject::~GdsObject()
 {	
 	DecRefCount();
 	if ( m_iRefCount != 0 )
-		assert( 0 && "해제할때 0 이어야함" );
+		assert( 0 && L"해제할때 0 이어야함" );
 }
 
 void GdsObject::DecRefCount()
@@ -19,6 +19,6 @@ void GdsObject::DecRefCount()
 	/*--m_iRefCount; */
 	InterlockedDecrement((LONG*)&m_iRefCount);
 	if ( m_iRefCount < 0 )
-		assert( 0 && "왜 0보다 작나요? " );
+		assert( 0 && L"왜 0보다 작나요? " );
 
 }

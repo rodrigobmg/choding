@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="gtestd.lib Snowboard_D.lib"
+				AdditionalDependencies="gtestd.lib Snowboard_D.lib d3dx9d.lib d3d9.lib winmm.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../..\chodingModule\Lib;&quot;../..\chodingModule\gtest-1.6.0\msvc\choding\Debug&quot;"
 				IgnoreAllDefaultLibraries="false"
@@ -184,6 +184,10 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath=".\GdsResMgr_test.hpp"
+				>
+			</File>
 			<File
 				RelativePath=".\gtest_main.cc"
 				>

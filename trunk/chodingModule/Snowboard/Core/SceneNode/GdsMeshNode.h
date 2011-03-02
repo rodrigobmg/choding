@@ -6,8 +6,9 @@
 class GdsMeshNode : public GdsNode{		
 
 protected:
-	
-	virtual HRESULT vUpdate( float fElapsedtime );	
+
+	virtual	void	vInitGeometry();
+	virtual void	vRender();
 
 public:
 	GdsMeshNode();

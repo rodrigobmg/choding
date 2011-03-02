@@ -1,44 +1,50 @@
 #ifndef _UNITTEST_H_
 #define _UNITTEST_H_
 #include "..\..\chodingModule\Snowboard\Core\SceneNode\GdsNode.h"
+#include "..\..\chodingModule\Snowboard\Core\SceneNode\GdsMeshNode.h"
 
-namespace ChodingTestGdsNode
+class NodeTest : public ::testing::Test
 {
-	class NodeTest : public ::testing::Test
+public:
+	NodeTest()
 	{
-	public:
-		NodeTest()
-		{
 
-		}
+	}
 
-		virtual ~NodeTest()
-		{
-			
-		}
+	virtual ~NodeTest()
+	{
+		
+	}
 
-		virtual void SetUp()
-		{
-			//생성자
-		}
+	virtual void SetUp()
+	{
+		//생성자
+	}
 
-		virtual void TearDown()
-		{
-			//소멸자
-		}
+	virtual void TearDown()
+	{
+		//소멸자
+	}
 
-		virtual void TestBody()
-		{
-			//테스트코드 ㅋㅋ
-		}
-	};
-}
+	virtual void TestBody()
+	{
+		//테스트코드 ㅋㅋ
+	}
+};
 
 
-TEST( NodeTest,  Constructer )
+TEST_F( NodeTest,  Constructer )
 {
-	ChodingTestGdsNode::NodeTest test;
-	ASSERT_TRUE( &test );
+	NodeTest test;
+	GdsMeshNodePtr pMesh = GdsMeshNodePtr( new GdsMeshNode );
+	//GdsMeshNode*	pMesh = new GdsMeshNode;
+	GdsNodePtr	   pNode = GdsNodePtr( new GdsNode );
+
+	pNode->AttachChild( pMesh.get() );
+	pNode->Update( 0.f );
+	
+	pNode->DetachChild( pMesh.get() );
+	ASSERT_TRUE( pNode );
 }
 
 #endif	

@@ -32,21 +32,6 @@ HRESULT GdsNode::RemoveAllChild()
 	return TRUE;
 }
 
-HRESULT GdsNode::Update( float fElapsedtime )
-{
-	vUpdate( fElapsedtime );
-	if ( !m_listChildNode.empty() )
-	{
-		for( CHILDLIST::iterator it = m_listChildNode.begin() ; it != m_listChildNode.end() ; ++it )
-		{
-			(*it)->Update(fElapsedtime);
-		}
-	}
-
-	return TRUE;
-}
-
-
 void GdsNode::SetParent( GdsNode* pNode )
 {
 	m_pParentNode = pNode;
@@ -75,7 +60,7 @@ GdsNode*	GdsNode::GetAt( unsigned int index )
  		++t;
  	}
 
-	assert( 0 && "못찾는건 말이 안된다. 차일드 리스트의 마지막 자식노드를 찾는중에 그 마지막 노드가 루프도중에 지워진거다;; ");
+	assert( 0 && L"못찾는건 말이 안된다. 차일드 리스트의 마지막 자식노드를 찾는중에 그 마지막 노드가 루프도중에 지워진거다;; ");
 	return NULL;
 }
 
@@ -112,13 +97,20 @@ HRESULT GdsNode::DetachChild( GdsNode* pNode )
 	return S_OK;
 }
 
-HRESULT GdsNode::vUpdate( float fElapsedtime )
+HRESULT GdsNode::Update( float fElapsedtime )
 {
-	//Do something
 	vInitGeometry();
 	vRender();
 
-	return S_OK;
+	if ( !m_listChildNode.empty() )
+	{
+		for( CHILDLIST::iterator it = m_listChildNode.begin() ; it != m_listChildNode.end() ; ++it )
+		{
+			(*it)->Update(fElapsedtime);
+		}
+	}
+
+	return TRUE;
 }
 
 void GdsNode::vInitGeometry()

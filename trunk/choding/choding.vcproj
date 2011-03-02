@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3dx9d.lib d3d9.lib winmm.lib gtestd.lib"
+				AdditionalDependencies="d3dx9d.lib d3d9.lib winmm.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_D.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;../chodingModule\gtest-1.6.0\msvc\choding\Debug&quot;;../chodingModule/Lib"

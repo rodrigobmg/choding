@@ -12,9 +12,8 @@ protected:
 	typedef	 std::list< GdsNode* >	CHILDLIST;
 	CHILDLIST							m_listChildNode;
 
-	virtual HRESULT vUpdate( float fElapsedtime );
-	void			vInitGeometry();
-	void			vRender();
+	virtual	void	vInitGeometry();
+	virtual void	vRender();
 
 public:
 	GdsNode();
