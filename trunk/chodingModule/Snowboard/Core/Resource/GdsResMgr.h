@@ -73,14 +73,25 @@ public:
 	GdsResMgr();
 	virtual ~GdsResMgr();
 
+	typedef	struct LOADLIST_WORK_TOKEN
+	{
+		tstring alias;
+		tstring path;
+		tstring token;
+		bool		 recursive;
+		LOADLIST_WORK_TOKEN( const TCHAR* alias_ , const TCHAR* path_ , const TCHAR* token_ , const bool brecursive_ )
+		{
+			alias = alias_;
+			path  = path_;
+			token = token_;
+			recursive = brecursive_;
+		}
+	};
+
 
 	GdsResBasePtr		Get( const TCHAR* alias , const TCHAR* filename );
 
-	bool				CreateList( const TCHAR* alias , 
-									const TCHAR* path , 
-									const TCHAR* token , 
-									const bool brecursive 
-									);
+	bool				CreateList( LOADLIST_WORK_TOKEN& work_token );
 	void				ReleaseRes( const TCHAR* alias );
 	void				ReleaseList( const TCHAR* alias );
 	HRESULT				LoadRes( const TCHAR* alias );

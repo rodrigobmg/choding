@@ -41,38 +41,22 @@ HRESULT GdsResMgr::Create( LPDIRECT3DDEVICE9 device )
 
 HRESULT GdsResMgr::Release()
 {
-//	RES_CONTAINER::iterator itAll = m_mapRes.begin();
-// 	for ( ; itAll != m_mapRes.end() ;  )
-// 	{
-// 		for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );
-// 		m_mapRes.erase( itAll++ );
-// 	}
-//	m_mapRes.clear();
-
-	RES_ALL_FILELIST_MAP::iterator itlist = m_mapAllFilelist.begin();
-	for ( ; itlist != m_mapAllFilelist.end() ; )
-	{
-		m_mapAllFilelist.erase( itlist++ );
-	}	
-	
 	Clear();
 	return S_OK;
 }
 
 void GdsResMgr::ReleaseRes( const TCHAR* alias )
 {
+	
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
-	{
-	//	for_each( itAll->second.begin() , itAll->second.end() , functor::deleter() );		
 		m_mapRes.erase( itAll );
-	}	
 
+	
 	RES_ALL_FILELIST_MAP::iterator itList = m_mapAllFilelist.find( alias );
 	if ( itList != m_mapAllFilelist.end() )
-	{
 		itList->second.bLoaded = false;
-	}
+
 }
 
 void GdsResMgr::ReleaseList( const TCHAR* alias )
@@ -195,13 +179,13 @@ void GdsResMgr::vMakeToken( const TCHAR* token , std::list<tstring>& tokenlist ,
 	tokenlist.sort();
 }
 
-bool GdsResMgr::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR* token , const bool brecursive )
-{	
-	RES_ALL_FILELIST_MAP::iterator it = m_mapAllFilelist.find( path );
+bool GdsResMgr::CreateList( LOADLIST_WORK_TOKEN& work_token )
+{		
+	RES_ALL_FILELIST_MAP::iterator it = m_mapAllFilelist.find( work_token.path );
 	if ( it == m_mapAllFilelist.end() )
 	{
 		std::list<tstring> tokenlist;
-		vMakeToken( token , tokenlist , L";" );
+		vMakeToken( work_token.token.c_str() , tokenlist , L";" );
 		if ( tokenlist.empty() )
 		{
 			ASSERT( !L"토큰리스트에 값이 하나도 없다." );
@@ -209,11 +193,11 @@ bool GdsResMgr::CreateList( const TCHAR* alias , const TCHAR* path , const TCHAR
 		}
 
 		RES_STRUCT resStruct;
-		vLoadResforDir( path , resStruct.filelist , tokenlist , brecursive );
+		vLoadResforDir( work_token.path.c_str() , resStruct.filelist , tokenlist , work_token.recursive );
 		if ( !resStruct.filelist.empty() )
 		{
 			//resStruct.filelist.sort();
-			m_mapAllFilelist.insert( std::pair< const TCHAR* , RES_STRUCT >( alias , resStruct ) );
+			m_mapAllFilelist.insert( std::pair< const TCHAR* , RES_STRUCT >( work_token.alias.c_str() , resStruct ) );
 			return true;
 		}
 	}

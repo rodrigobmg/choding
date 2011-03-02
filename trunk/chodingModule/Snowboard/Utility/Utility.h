@@ -87,6 +87,45 @@ namespace util
 		Target& target_;
 		Locker locker_;
 	};
+
+	template< typename Locker , typename Lock , typename Target >
+	AutoLockAccesser<Locker , Lock , Target> AutoLock( Lock* lock , Target& target )
+	{
+		return AutoLockAccesser<Locker , lock , target>( lock , target );
+	}
+/*
+	// Step 1. 임계영역 객체를 스택에 올린다.
+	CRITICAL_SECTION cs;        
+	// Step 2. 임계영역 객체를 초기화 한다.
+	InitializeCriticalSection( &cs );   
+	// case 1. 함수 형태 접근
+	(*AutoLock<CSLocker>(&cs, f))( 1 );
+	(*AutoLock<CSLocker>(&cs, f))( 2 );
+	// case 2. 객체 형태 접근
+	OBJ obj;
+	AutoLock<CSLocker>( &cs, obj )->set( 1, 2, 3 );
+
+	int a, b, c;
+	boost::tie(a, b, c) = AutoLock<CSLocker>( &cs, obj )->get();
+
+	std::cout << 
+		AutoLock<CSLocker>( &cs, boost::tie( a, b, c ) )->get<2>() << "\n";
+
+	// case 3. 변수 접근 형태
+	*AutoLock<CSLocker>( &cs, a ) = 3;
+	*AutoLock<CSLocker>( &cs, b ) = 4;
+	*AutoLock<CSLocker>( &cs, c ) = 5;
+
+	// case 4. vector 접근 형태
+	std::vector<int> vec;
+	AutoLock<CSLocker>( &cs, vec )->push_back( 3 );
+	AutoLock<CSLocker>( &cs, vec )->back();
+
+
+	// Step 5. 임계영역 객체를 삭제한다.
+	DeleteCriticalSection( &cs );
+*/
+
 }// end of namespace util
 
 namespace functor
