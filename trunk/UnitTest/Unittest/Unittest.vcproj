@@ -97,7 +97,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -139,7 +139,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="gtest.lib Snowboard_D.lib d3dx9d.lib d3d9.lib winmm.lib"
+				AdditionalDependencies="gtest.lib Snowboard.lib d3dx9d.lib d3d9.lib winmm.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../..\chodingModule\Lib;&quot;../..\chodingModule\gtest-1.6.0\msvc\choding\Release&quot;"
 				IgnoreAllDefaultLibraries="false"
