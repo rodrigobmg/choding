@@ -145,7 +145,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="d3dx9d.lib d3d9.lib winmm.lib gtest.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;E:\Project\choding\chodingModule\gtest-1.6.0\msvc\choding\Release&quot;;../chodingModule/Lib"
+				AdditionalLibraryDirectories="&quot;..\chodingModule\gtest-1.6.0\msvc\choding\Release&quot;;../chodingModule/Lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"

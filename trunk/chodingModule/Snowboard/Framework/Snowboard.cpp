@@ -81,27 +81,21 @@ void CSnowboard::DestroyModule()
 }
 
 void CSnowboard::TestFunc()
-{	LOG_WARNING_F( L"%s", L"logger init" );
+{	
+	LOG_WARNING_F( L"%s", L"logger init" );
 	TCHAR curpath[ MAX_PATH ];
 	GetCurrentDirectory( MAX_PATH, curpath );
 	TCHAR respath[MAX_PATH];
-	_stprintf_s( respath , L"%s\\%s" , curpath , L"Resource" );
+	_stprintf_s( respath , L"D:\\Project\\Client\\Trunk\\WorkGroup\\Client\\Application" , curpath , L"" );
 
 	if ( m_pResMgr )
-	{	
-
-		SAMPLE_PERFORMANCE loadsample;
-		BEGIN_PERFORMANCE( L"list" );
-		GdsThreadPool::getInstance().GetBGThread()->Push< GdsResMgr::LOADLIST_WORK_TOKEN >(
-														(GdsResMgr*&)m_pResMgr ,
-														GdsResMgr::LOADLIST_WORK_TOKEN( L"test" , respath , L"tga;bmp;dds" , true ) , 
-														&GdsResMgr::CreateList );
+	{	 
+  		GdsThreadPool::getInstance().GetBGThread()->Push< GdsResMgr::LOADLIST_WORK_TOKEN >(
+  														m_pResMgr.get() ,
+  														GdsResMgr::LOADLIST_WORK_TOKEN( L"test" , respath , L"tga;bmp;dds" , true ) , 
+  														&GdsResMgr::CreateList );
 		
-		END_PERFORMANCE( L"list" );
-		GdsThreadPool::getInstance().GetBGThread()->Push< const TCHAR* >( (GdsResMgr*&)m_pResMgr , L"test"  , &GdsResMgr::LoadRes );
-
-		OUTPUT_PERFORMANCE( L"list" , loadsample );
-		LOG_ERROR_F( "list avg tick = %d" , loadsample.ulAvg );		
+		GdsThreadPool::getInstance().GetBGThread()->Push< const TCHAR* >( m_pResMgr.get() , L"test"  , &GdsResMgr::LoadRes );
 		
 	}
 }

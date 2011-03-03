@@ -179,7 +179,7 @@ void GdsResMgr::vMakeToken( const TCHAR* token , std::list<tstring>& tokenlist ,
 	tokenlist.sort();
 }
 
-bool GdsResMgr::CreateList( LOADLIST_WORK_TOKEN& work_token )
+HRESULT GdsResMgr::CreateList( LOADLIST_WORK_TOKEN work_token )
 {		
 	RES_ALL_FILELIST_MAP::iterator it = m_mapAllFilelist.find( work_token.path );
 	if ( it == m_mapAllFilelist.end() )
@@ -192,12 +192,18 @@ bool GdsResMgr::CreateList( LOADLIST_WORK_TOKEN& work_token )
 			return false;
 		}
 
+		SAMPLE_PERFORMANCE sample;
+		BEGIN_PERFORMANCE( L"CreateList" );
+
 		RES_STRUCT resStruct;
 		vLoadResforDir( work_token.path.c_str() , resStruct.filelist , tokenlist , work_token.recursive );
 		if ( !resStruct.filelist.empty() )
 		{
 			//resStruct.filelist.sort();
 			m_mapAllFilelist.insert( std::pair< const TCHAR* , RES_STRUCT >( work_token.alias.c_str() , resStruct ) );
+			END_PERFORMANCE( L"CreateList" );
+			OUTPUT_PERFORMANCE( L"CreateList" , sample );
+			LOG_WARNING_F( " [CreateList] Avg = %d , DeltaTick = %d , Count = %d " , sample.ulAvg , sample.ulTotalDeltaTick , sample.ulCount );
 			return true;
 		}
 	}
@@ -234,125 +240,83 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 	int size = static_cast< int>( filelist.size() );
 	bool	bSuccess  = S_OK;
 	
-
-// 	struct resFunctor{
-// 
-// 		bool bSuccess;
-// 		FILE_LIST ffilelist;
-// 		const TCHAR* alias;
-// 		GdsResMgr* pthis;
-// 
-// 		void operator()( const tbb::blocked_range<size_t>& r ) const
-// 		{
-// 			for ( size_t i = r.begin() ; i != r.end() ; ++i )
-// 			{
-// 				if ( bSuccess == S_FALSE )
-// 					continue;
-// 
-// 				size_t poscomma = ffilelist[i].rfind( L"." );
-// 				tstring ext		= ffilelist[i].substr( poscomma + 1 , ffilelist[i].length() );
-// 				if ( !pthis->vLoadFactory( alias , ext.c_str() , ffilelist[i].c_str() ) )
-// 				{
-// 				//	bSuccess = S_FALSE;
-// 					continue;
-// 				}
-// 			}			
-// 		}
-// 
-// 		resFunctor( GdsResMgr* p , FILE_LIST& rfilelist , const TCHAR* palias , bool bflag ){
-// 			ffilelist = rfilelist;
-// 			bSuccess = bflag;
-// 			alias = palias;
-// 			GdsResMgr* pthis = p;
-// 		};
-// 
-// 	};
-// 	tbb::task_scheduler_init();
-// 	tbb::parallel_for( tbb::blocked_range< size_t >( 0, filelist.size() ), resFunctor( this , filelist , alias , bSuccess ) , tbb::auto_partitioner() );
-
-
 //#pragma omp parallel for
 
 	SAMPLE_PERFORMANCE sample;
 
-	LOG_WARNING_F(" res load start " );
   	for ( int index = 0 ; index < size ; ++index )
   	{ 
-		BEGIN_PERFORMANCE( L"load test" );
+		BEGIN_PERFORMANCE( L"LoadRes" );
 
   		if ( bSuccess == S_FALSE )
   			break;
   		
   		size_t poscomma = filelist[index].rfind( L"." );
   		ext				= filelist[index].substr( poscomma + 1 , filelist[index].length() );
-  		if ( !vLoadFactory( alias , ext.c_str() , filelist[index].c_str() ) )
+		GdsResBasePtr pRes = vResourceFactory( ext.c_str() , filelist[index].c_str() );
+  		if ( pRes == NULL )
   		{
   			bSuccess = S_FALSE;
   			break;
   		}
+		
+		bool bret = vStackdata_to_Container( alias , filelist[index].c_str() , pRes );
+		if ( bret == false )
+		{
+			bSuccess = S_FALSE;
+			break;
+		}
   	}
-	END_PERFORMANCE( L"load test" );
-	OUTPUT_PERFORMANCE( L"load test" , sample );
-	LOG_WARNING_F(" res load finish avg tick = %d , max tick = %d , min tick = %d , total tick = %d count = %d",
-				sample.ulAvg , sample.ulMax , sample.ulMin , sample.ulTotalDeltaTick , sample.ulCount );
 
+	// 데이타 로드 무결성 위반 데이타 롤백
+	if ( bSuccess == S_FALSE )
+	{
+		RES_CONTAINER::iterator it = m_mapRes.find( alias );
+		if ( it != m_mapRes.end() ) 
+		{
+			m_mapRes.erase( it );
+		}
+	}
+
+	END_PERFORMANCE( L"LoadRes" );
+	OUTPUT_PERFORMANCE( L"LoadRes" , sample );
+	LOG_WARNING_F(" [LoadRes] Avg = %d , DeltaTick = %d , Count = %d", sample.ulAvg , sample.ulTotalDeltaTick , sample.ulCount );
 	stRes.bLoaded = bSuccess;
-
 	return bSuccess;
 }
 
-bool GdsResMgr::vLoadFactory( const TCHAR* alias, const TCHAR* ext , const TCHAR* filepath )
+GdsResBasePtr GdsResMgr::vResourceFactory( const TCHAR* ext , const TCHAR* filepath )
 {
 	if ( !_tcscmp( ext , L"bmp" ) )
 	{
-		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( vLoadTexture( filepath ) );
-		if ( ptex == NULL )
-			return S_FALSE;
-	
-		
-		bool bresult = vStackdata( alias , filepath , ptex );		
-		
-		return bresult;
+		GdsResTexturePtr ptex =  vLoadTexture( filepath );
+		return	ptex;	
 	}
 	else if( !_tcscmp( ext , L"tga" ) )
 	{
-		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( vLoadTexture( filepath ) );
-		if ( ptex == NULL )
-			return S_FALSE;
-
-
-		bool bresult = vStackdata( alias , filepath , ptex );		
-
-		return bresult;
+		GdsResTexturePtr ptex =  vLoadTexture( filepath );
+		return ptex;
 	}
 	else if( !_tcscmp( ext , L"jpg" ) )
 	{
-		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( vLoadTexture( filepath ) );
-		if ( ptex == NULL )
-			return S_FALSE;
-
-
-		bool bresult = vStackdata( alias , filepath , ptex );		
-
-		return bresult;
+		GdsResTexturePtr	ptex = vLoadTexture( filepath );
+		return ptex;
 	}
 	else if( !_tcscmp( ext , L"dds" ) )
 	{
-		GdsResTexture* ptex =  dynamic_cast<GdsResTexture*>( vLoadTexture( filepath ) );
-		if ( ptex == NULL )
-			return S_FALSE; 
-
-
-		bool bresult = vStackdata( alias , filepath , ptex );		
-
-		return bresult;
+		GdsResTexturePtr	ptex = vLoadTexture( filepath );
+		return ptex;
 	}
 
-	return false;
+	return GdsResBasePtr( (GdsResBase*)NULL);
 }
 
-bool GdsResMgr::vStackdata( const TCHAR* alias , const TCHAR* filepath , GdsResBase* pres )
+bool GdsResMgr::vStackdata_to_Container( const TCHAR* alias , const TCHAR* filepath , GdsResBasePtr pres )
 {
+	if ( pres == NULL )
+		return false;
+
+
 	tstring wstrpath(filepath);
 	size_t poscomma  = wstrpath.rfind( L"\\" );
 	tstring filename = wstrpath.substr( poscomma + 1 , wstrpath.length() );
@@ -383,23 +347,23 @@ bool GdsResMgr::vStackdata( const TCHAR* alias , const TCHAR* filepath , GdsResB
 	return true;
 }
 
-GdsResBase* GdsResMgr::vLoadTexture( const TCHAR* filepath )
+GdsResTexturePtr GdsResMgr::vLoadTexture( const TCHAR* filepath )
 {
-	GdsResTexture* pRes = new GdsResTexture;
+	GdsResTexturePtr pRes = GdsResTexturePtr( new GdsResTexture);
 	if ( pRes == NULL )
-		return NULL;
+		return GdsResTexturePtr( (GdsResTexture*)NULL );
 
 	if ( m_pDevice == NULL )
-		return NULL;
+		return GdsResTexturePtr( (GdsResTexture*)NULL );
 
 	if ( !_tcscmp( filepath , L"" ) )
-		return NULL;
+		return GdsResTexturePtr( (GdsResTexture*)NULL );
 
 	if ( SUCCEEDED( D3DXCreateTextureFromFile( m_pDevice , filepath , pRes->GetPtr() ) ) )
 	{
 		return pRes;
 	}
 
-	return NULL;
+	return GdsResTexturePtr( (GdsResTexture*)NULL );
 }
 

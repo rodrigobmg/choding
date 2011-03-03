@@ -54,7 +54,7 @@ typedef unsigned __int64	uint64_t;
 
 
 //메모리 릭 탐지
-//#define _CRTDBG_MAP_ALLOC
+#define _CRTDBG_MAP_ALLOC
 
 #ifdef _CRTDBG_MAP_ALLOC
 

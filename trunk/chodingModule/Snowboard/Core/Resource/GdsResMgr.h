@@ -5,6 +5,7 @@
 #include <list>
 #include <HASH_MAP>
 #include "Type\GdsResBaseType.h"
+#include "Type\GdsResTexture.h"
 
 // 모든 리소스 파일네임은 소문자로 취급한다.!!!!!!!!!!!!!!!!
 
@@ -52,21 +53,23 @@ private:
 										bool bRecursive 
 										);
 	
-	bool				vLoadFactory( const TCHAR* alias, 
-										const TCHAR* ext ,
-										const TCHAR* filename 
+	GdsResBasePtr		vResourceFactory( const TCHAR* ext ,
+										  const TCHAR* filename 
 										);
 
-	GdsResBase*			vLoadTexture( const TCHAR* filename );
-	bool				vStackdata( const TCHAR* alias , 
-									const TCHAR* path , 
-									GdsResBase* pres 
-									);
-	
+	bool				vStackdata_to_Container( const TCHAR* alias , 
+												const TCHAR* path , 
+												GdsResBasePtr pres 
+												);
+
 	void				vMakeToken( const TCHAR* token , 
 									std::list<tstring>& tokenlist , 
 									const TCHAR* delimiters 
 									);
+
+
+
+	GdsResTexturePtr	vLoadTexture( const TCHAR* filename );
 
 
 public:
@@ -79,6 +82,7 @@ public:
 		tstring path;
 		tstring token;
 		bool		 recursive;
+		LOADLIST_WORK_TOKEN(){ recursive = false; }
 		LOADLIST_WORK_TOKEN( const TCHAR* alias_ , const TCHAR* path_ , const TCHAR* token_ , const bool brecursive_ )
 		{
 			alias = alias_;
@@ -91,7 +95,8 @@ public:
 
 	GdsResBasePtr		Get( const TCHAR* alias , const TCHAR* filename );
 
-	bool				CreateList( LOADLIST_WORK_TOKEN& work_token );
+	// 쓰레드로 작업할거라서 참조포인터를 쓰지 않았습니다.~~~ 복사해서 넘겨줍니다.~~
+	HRESULT				CreateList( LOADLIST_WORK_TOKEN work_token );
 	void				ReleaseRes( const TCHAR* alias );
 	void				ReleaseList( const TCHAR* alias );
 	HRESULT				LoadRes( const TCHAR* alias );

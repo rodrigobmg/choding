@@ -15,7 +15,7 @@ class GdsBGThread : public GdsThread
 		virtual void Execute() = 0;
 	};
 
-	template< class _OWNER , class _PARAMETER >
+	template< class _PARAMETER , class _OWNER >
 	class WORK_TOKEN : public IWORK_TOKEN
 	{	
 
@@ -49,7 +49,7 @@ public:
 			return;
 		}
 
-		IWORK_TOKEN* pWorkToken = new WORK_TOKEN< _OWNER , _PARAMETER >( pthis , para , fp );
+		IWORK_TOKEN* pWorkToken = new WORK_TOKEN< _PARAMETER , _OWNER >( pthis , para , fp );
 		m_ThreadQueue.push( pWorkToken );
 		::SetEvent( m_hEvent );
 	}
