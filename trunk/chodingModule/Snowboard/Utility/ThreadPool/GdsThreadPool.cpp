@@ -1,6 +1,5 @@
 #include "GdsThreadPool.h"
 
-
 GdsThreadPool::GdsThreadPool()
 : m_GdsBGThread(NULL)
 {
@@ -17,10 +16,13 @@ void GdsThreadPool::Clear()
 	THREAD_CONTAINER::iterator it = m_GdsThreadPool.begin();
  	for ( ; it != m_GdsThreadPool.end() ; ++it )
  	{
+		(*it)->SuspendThread();
  		SAFE_DELETE( (*it) );
  	}
 	m_GdsThreadPool.clear();
 
+	if ( m_GdsBGThread )
+		m_GdsBGThread->SuspendThread();
 	SAFE_DELETE( m_GdsBGThread );
 }
 

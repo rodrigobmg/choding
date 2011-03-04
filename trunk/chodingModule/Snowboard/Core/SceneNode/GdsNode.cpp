@@ -3,7 +3,7 @@
 GdsNode::GdsNode():
 m_pParentNode(NULL)
 {
-	SetName( OBJECT_NODE_BASE );
+	SetName( OBJECT_NODE );
 	m_listChildNode.clear();
 }
 
@@ -14,9 +14,6 @@ GdsNode::~GdsNode()
 
 HRESULT GdsNode::RemoveAllChild()
 {
-// 	if ( !m_listChildNode.empty() )
-// 		for_each( m_listChildNode.begin() , m_listChildNode.end() , functor::removeallchild() );
-
 	if ( !m_listChildNode.empty() )
 	{
 		CHILDLIST::iterator it = m_listChildNode.begin();
@@ -27,8 +24,6 @@ HRESULT GdsNode::RemoveAllChild()
 			m_listChildNode.erase( it++ );
 		}
 	}
-	
-
 	return TRUE;
 }
 

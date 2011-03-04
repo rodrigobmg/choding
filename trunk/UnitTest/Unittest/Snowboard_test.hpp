@@ -36,15 +36,20 @@ public:
 TEST_F( NodeTest,  Constructer )
 {
 	NodeTest test;
-	GdsMeshNodePtr pMesh = GdsMeshNodePtr( new GdsMeshNode );
-	//GdsMeshNode*	pMesh = new GdsMeshNode;
+	
+	GdsMeshNode*	pMesh1 = new GdsMeshNode;
 	GdsNodePtr	   pNode = GdsNodePtr( new GdsNode );
 
-	pNode->AttachChild( pMesh.get() );
+	for ( size_t i = 0 ; i < 10 ; ++i )
+	{
+		GdsMeshNodePtr pMesh = GdsMeshNodePtr( new GdsMeshNode );
+		pNode->AttachChild( pMesh.get() );	
+	}
+	
 	pNode->Update( 0.f );
 	
-	pNode->DetachChild( pMesh.get() );
-	ASSERT_TRUE( pNode );
+	//pNode->DetachChild( pMesh.get() );
+	//ASSERT_TRUE( pNode );
 }
 
 #endif	

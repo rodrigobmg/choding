@@ -59,6 +59,7 @@ public:
 		IWORK_TOKEN* pWorkToken = m_ThreadQueue.front();
 		pWorkToken->Execute();
 		SAFE_DELETE( pWorkToken );
+		
 		m_ThreadQueue.pop();
 		if ( !m_ThreadQueue.empty() )
 			::SetEvent( m_hEvent );
@@ -89,7 +90,9 @@ public:
 		{
 			IWORK_TOKEN* ptoken = m_ThreadQueue.front();
 			SAFE_DELETE( ptoken );
+			EnterLock();
 			m_ThreadQueue.pop();
+			LeaveLock();
 		}
 	}; 
 

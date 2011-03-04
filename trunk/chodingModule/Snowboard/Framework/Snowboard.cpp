@@ -29,7 +29,7 @@ bool CSnowboard::InitModule( HWND hWnd )
 	util::Logger::getInstance().Init(NULL , NULL , NULL , NULL );
 
 	GdsThreadPool::createSingleton();
-	GdsThreadPool::getInstance().Create( 10 );
+	GdsThreadPool::getInstance().Create( 0 );
 
 
 	InitRenderer( hWnd );
@@ -71,13 +71,13 @@ void CSnowboard::Update()
 
 void CSnowboard::DestroyModule()
 {
+	util::Logger::destroySingleton();
+	GdsThreadPool::destroySingleton();
+
 	if ( m_pRenderer )
 		m_pRenderer->Release();
 	if ( m_pResMgr )
-		m_pResMgr->Release();
-
-	util::Logger::destroySingleton();
-	GdsThreadPool::destroySingleton();
+		m_pResMgr->Release();	
 }
 
 void CSnowboard::TestFunc()

@@ -45,7 +45,8 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_THREADPOOL	L"ThreadPool"
 #define OBJECT_BGTHREAD		L"BGThread"
 
-#define OBJECT_NODE_BASE	L"GdsNodeBase"
+#define OBJECT_AVOBJECT		L"GdsAVObject"
+#define OBJECT_NODE			L"GdsNode"
 #define OBJECT_NODE_MESH	L"Mesh"
 #define OBJECT_NODE_CHILDMESH	L"ChildMesh"
 

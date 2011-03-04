@@ -33,15 +33,7 @@ GdsThread::GdsThread()
 // DS:: Destructor.
 GdsThread::~GdsThread()
 {
-	SAFE_DELETE(this->m_pSyncObject);
-	this->ExitThread();
-
-	if(this->m_hEvent)
-	{
-		::SetEvent(this->m_hEvent);
-		::CloseHandle(this->m_hEvent);
-		this->m_hEvent = NULL;
-	}
+	DestroyThread();
 }
 
 
@@ -151,29 +143,19 @@ void GdsThread::ExitThread()
 	if(this->m_hEvent)
 		::SetEvent(this->m_hEvent);
 
-#if 1
-	DWORD	dwExitCode;
-	while(::GetExitCodeThread(this->m_hThread, &dwExitCode) == TRUE &&
-		dwExitCode == STILL_ACTIVE)
-	{
-		::WaitForSingleObject(this->m_hThread, 50);
-	}  // polling code(bad)
-#else
+ 	DWORD	dwExitCode;
+	int count = 0;
+ 	while(::GetExitCodeThread(this->m_hThread, &dwExitCode) == TRUE &&
+  	dwExitCode == STILL_ACTIVE && ( count < 10 ) )
+   	{
+		++count;
+   		::WaitForSingleObject( this->m_hThread, 50 );
+   	} 
+ 	
+	//::TerminateThread(m_hThread , 0 );
 
-	DWORD	dwExitCode;
-	if(::GetExitCodeThread(this->m_hThread, &dwExitCode))
-	{
-		::TerminateThread(this->m_hThread, dwExitCode);
-	}
-	char strMsg[512];
-	::sprintf(strMsg, "GdsThread::ExitThread()-3 EXIT:%d - ERROR:%d", dwExitCode, ::GetLastError());
-	kOutputMsg01(strMsg);
+//	::WaitForSingleObject(this->m_hThread, INFINITE);
 
-	::WaitForSingleObject(this->m_hThread, INFINITE);
-
-	//kOutputMsg01("GdsThread::ExitThread()-4");
-
-#endif
 	::CloseHandle(this->m_hThread);
 	this->m_hThread = NULL;
 }
