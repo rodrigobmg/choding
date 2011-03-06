@@ -86,14 +86,14 @@ public:
 
 	virtual ~GdsBGThread()
 	{
+		EnterLock();
 		while( !m_ThreadQueue.empty() )
 		{
 			IWORK_TOKEN* ptoken = m_ThreadQueue.front();
-			SAFE_DELETE( ptoken );
-			EnterLock();
+			SAFE_DELETE( ptoken );			
 			m_ThreadQueue.pop();
-			LeaveLock();
 		}
+		LeaveLock();
 	}; 
 
 };

@@ -86,7 +86,7 @@ void CSnowboard::TestFunc()
 	TCHAR curpath[ MAX_PATH ];
 	GetCurrentDirectory( MAX_PATH, curpath );
 	TCHAR respath[MAX_PATH];
-	_stprintf_s( respath , L"D:\\Project\\Client\\Trunk\\WorkGroup\\Client\\Application" , curpath , L"" );
+	_stprintf_s( respath , L"%s\\%s" , curpath , L"Resource");
 
 	if ( m_pResMgr )
 	{	 

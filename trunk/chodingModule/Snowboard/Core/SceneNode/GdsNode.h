@@ -14,6 +14,7 @@ protected:
 
 	virtual	void	vInitGeometry();
 	virtual void	vRender();
+	virtual void	vClear();
 
 public:
 	GdsNode();

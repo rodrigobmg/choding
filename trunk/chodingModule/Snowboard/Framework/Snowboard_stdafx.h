@@ -49,6 +49,7 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_NODE			L"GdsNode"
 #define OBJECT_NODE_MESH	L"Mesh"
 #define OBJECT_NODE_CHILDMESH	L"ChildMesh"
+#define OBJECT_NODE_CAMERA	L"Camera"
 
 #include "Snowboard_macro.h"
 #include "../Utility/Utility.h"
