@@ -1,14 +1,14 @@
 #ifndef _SNOWBOARD_SCENENODE_CAMERANODE_
 #define _SNOWBOARD_SCENENODE_CAMERANODE_
 
-#include "GdsMeshNode.h"
+#include "GdsNode.h"
 
-class GdsCameraNode : public GdsMeshNode{		
+class GdsCameraNode : public GdsNode{		
 
 protected:
 	
-	virtual HRESULT vInitGeometry( float fElapsedtime );	
-	virtual HRESULT vRender();
+	virtual void	vInitGeometry();	
+	virtual void	vRender();
 	virtual	void	vClear();
 
 	D3DXVECTOR3		vEyePt;

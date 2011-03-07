@@ -2,18 +2,19 @@
 #ifndef _UNITTEST_GDSRESMGR_H_
 #define _UNITTEST_GDSRESMGR_H_
 
-#include "..\..\chodingModule\Snowboard\Core\Resource\GdsResMgr.h"
 #include "..\..\chodingModule\Snowboard\Utility\Utility.h"
+#include "..\..\chodingModule\Snowboard\Core\Camera\GdsCameraManagerDX9.h"
 
-class GdsResMgrTest : public ::testing::Test
+
+class GdsCameraManagerDX9Test : public ::testing::Test
 {
 public:
-	GdsResMgrTest()
+	GdsCameraManagerDX9Test()
 	{
-
+		cammgr = GdsCameraManagerDX9Ptr( new GdsCameraManagerDX9 );
 	}
 
-	virtual ~GdsResMgrTest()
+	virtual ~GdsCameraManagerDX9Test()
 	{
 		
 	}
@@ -21,7 +22,6 @@ public:
 	virtual void SetUp()
 	{
 		//생성자
-		pResMgr = GdsResMgrPtr( new GdsResMgr );
 	}
 
 	virtual void TearDown()
@@ -32,18 +32,22 @@ public:
 	virtual void TestBody()
 	{
 		//테스트코드 ㅋㅋ
-		EXPECT_EQ( S_FALSE , pResMgr->LoadRes( L"test" ) );
+		GdsCameraNodePtr camnode	= GdsCameraNodePtr( new GdsCameraNode );
+		cammgr->Attach( camnode );
+		int index = 0;	
+		cammgr->SetCam( index );
+		cammgr->Update( 0.0f );
+		cammgr->Detach( index );
 	}
 
-	GdsResMgrPtr	pResMgr;
+	GdsCameraManagerDX9Ptr	cammgr;
 };
 
 
-TEST_F( GdsResMgrTest,  Load )
+TEST_F( GdsCameraManagerDX9Test ,  Module )
 {
-	//GdsResMgrTest resTest;
-	GdsResMgrPtr pResMgr = GdsResMgrPtr( new GdsResMgr );
-	//ASSERT_TRUE( pResMgr->LoadRes( L"test" ) );
+	GdsCameraManagerDX9Test test;
+	test.TestBody();
 }
 
 #endif	

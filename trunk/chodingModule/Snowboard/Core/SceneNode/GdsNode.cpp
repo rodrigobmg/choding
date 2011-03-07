@@ -67,7 +67,7 @@ HRESULT GdsNode::AttachChild( GdsNode* pNode )
 
 	pNode->SetParent( this );
 	
-	pNode->IncRefCount();
+	//pNode->IncRefCount();
 
 	m_listChildNode.push_back( pNode );
 	return S_OK;
@@ -83,7 +83,7 @@ HRESULT GdsNode::DetachChild( GdsNode* pNode )
 	{
 		if ( (*it) == pNode )
 		{
-			(*it)->DecRefCount();
+		//	(*it)->DecRefCount();
 			m_listChildNode.erase( it );
 			break;
 		}
@@ -114,6 +114,11 @@ void GdsNode::vInitGeometry()
 }
 
 void GdsNode::vRender()
+{
+
+}
+
+void GdsNode::vClear()
 {
 
 }

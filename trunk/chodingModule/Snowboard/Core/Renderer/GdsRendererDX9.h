@@ -10,7 +10,7 @@ class GdsRendererDX9 : public GdsRendererBase{
 private:
 	
  	LPDIRECT3D9             m_pD3D;      // = NULL; // Used to create the D3DDevice
- 	static LPDIRECT3DDEVICE9       m_pd3dDevice;// = NULL; // Our rendering device
+ 	LPDIRECT3DDEVICE9       m_pd3dDevice;// = NULL; // Our rendering device
 
 
 public:
@@ -23,7 +23,7 @@ public:
 	virtual HRESULT			Release();
 
 	virtual void			Render( GdsNodePtr pNode );
-	static LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
+	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
 
 };
 

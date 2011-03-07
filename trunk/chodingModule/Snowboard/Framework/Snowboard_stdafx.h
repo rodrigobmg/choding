@@ -27,7 +27,7 @@ typedef unsigned __int64	uint64_t;
 
 
 #define CORE_RENDERER		L"RendererCore"
-#define CORE_CAMERA			L"CameraCore"
+#define OBJECT_CAMERA_BASE	L"CameaCoreBase"
 #define CORE_RESOURCE		L"ResourceCore"
 
 #define OBJECT_BASE			L"Base"
@@ -38,6 +38,7 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_RES_BASE		L"ResBase"
 #define OBJECT_RES_TEXTURE	L"ResTypeTexture"
 #define OBJECT_RES_MGR		L"ResMgr"
+#define OBJECT_CAMMGR_DX9	L"CamMgrDx9"
 
 #define OBJECT_SYNCCHRONIZE	L"GdsSynchronize"
 #define OBJECT_CRITICALSECTION	L"CriticalSection"
@@ -49,7 +50,9 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_NODE			L"GdsNode"
 #define OBJECT_NODE_MESH	L"Mesh"
 #define OBJECT_NODE_CHILDMESH	L"ChildMesh"
-#define OBJECT_NODE_CAMERA	L"Camera"
+#define OBJECT_NODE_CAMERA	L"CameraNode"
+
+
 
 #include "Snowboard_macro.h"
 #include "../Utility/Utility.h"

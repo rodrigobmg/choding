@@ -1,4 +1,5 @@
 #include "GdsCameraNode.h"
+#include "Renderer\GdsRendererDX9.h"
 
 GdsCameraNode::GdsCameraNode()
 {
@@ -15,15 +16,14 @@ void GdsCameraNode::vClear()
 {
 }
 
-HRESULT GdsCameraNode::vRender()
+void GdsCameraNode::vRender()
 {
 
 }
 
-HRESULT GdsCameraNode::vInitGeometry( float fElapsedtime )
+void GdsCameraNode::vInitGeometry()
 {
 	D3DXMatrixLookAtLH( &matView , &vEyePt , &vLookatPt , &vUpVec );
-	GdsRendererDX9::GetDevice()->SetTransform( D3DTS_VIEW , &matView );
 }
 
 void GdsCameraNode::SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR3& up )
@@ -31,5 +31,5 @@ void GdsCameraNode::SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVE
 	vEyePt = eye;
 	vLookatPt = lookat;
 	vUpVec	= up;
-	D3DXMatrixLookAtLH( &matView , eye , lookat , up );
+	D3DXMatrixLookAtLH( &matView , &vEyePt , &vLookatPt , &vUpVec );
 }

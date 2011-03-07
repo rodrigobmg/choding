@@ -2,6 +2,7 @@
 
 #include "Renderer/GdsRendererDX9.h"
 #include "Resource/GdsResMgr.h"
+#include "Camera/GdsCameraManagerDX9.h"
 
 GdsCoreFactory::GdsCoreFactory()
 {
@@ -21,9 +22,9 @@ GdsObjectPtr	GdsCoreFactory::CreateCore( const tstring& coretype )
 	{
 		return GdsRendererDX9Ptr( new GdsRendererDX9 );
 	}
-	else if ( coretype == CORE_CAMERA )
+	else if ( coretype == OBJECT_CAMMGR_DX9 )
 	{
-		return GdsObjectPtr( (GdsObject*)NULL );
+		return GdsCameraManagerDX9Ptr( new GdsCameraManagerDX9 );
 	}
 	else
 	{

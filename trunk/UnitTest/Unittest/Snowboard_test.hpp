@@ -8,17 +8,19 @@ class NodeTest : public ::testing::Test
 public:
 	NodeTest()
 	{
-
+		SetUp();
+		TestBody();
 	}
 
 	virtual ~NodeTest()
 	{
-		
+		TearDown();
 	}
 
 	virtual void SetUp()
 	{
 		//생성자
+		pNode = GdsNodePtr( new GdsNode );
 	}
 
 	virtual void TearDown()
@@ -28,28 +30,20 @@ public:
 
 	virtual void TestBody()
 	{
-		//테스트코드 ㅋㅋ
+		for ( size_t i = 0 ; i < 2 ; ++i )
+		{
+			GdsMeshNodePtr pMesh = GdsMeshNodePtr( new GdsMeshNode );
+			pNode->AttachChild( pMesh.get() );	
+		}
+		pNode->Update( 0.f );
 	}
+
+	GdsNodePtr	   pNode;
 };
 
-
-TEST_F( NodeTest,  Constructer )
-{
+TEST_F( NodeTest,  TestBody )
+{		
 	NodeTest test;
-	
-	GdsMeshNode*	pMesh1 = new GdsMeshNode;
-	GdsNodePtr	   pNode = GdsNodePtr( new GdsNode );
-
-	for ( size_t i = 0 ; i < 10 ; ++i )
-	{
-		GdsMeshNodePtr pMesh = GdsMeshNodePtr( new GdsMeshNode );
-		pNode->AttachChild( pMesh.get() );	
-	}
-	
-	pNode->Update( 0.f );
-	
-	//pNode->DetachChild( pMesh.get() );
-	//ASSERT_TRUE( pNode );
 }
 
 #endif	

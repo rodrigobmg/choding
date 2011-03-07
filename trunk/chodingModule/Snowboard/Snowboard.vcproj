@@ -159,6 +159,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Framework\Snowboard_macro.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\Snowboard_stdafx.h"
 				>
 			</File>
@@ -172,10 +176,6 @@
 			</File>
 			<File
 				RelativePath=".\Core\GdsCoreFactory.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Framework\Snowboard_macro.h"
 				>
 			</File>
 			<Filter
@@ -209,6 +209,18 @@
 			<Filter
 				Name="Camera"
 				>
+				<File
+					RelativePath=".\Core\Camera\GdsCameraBase.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Camera\GdsCameraManagerDX9.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Camera\GdsCameraManagerDX9.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Resource"

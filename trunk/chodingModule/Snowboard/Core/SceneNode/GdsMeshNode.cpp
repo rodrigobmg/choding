@@ -19,3 +19,8 @@ void GdsMeshNode::vRender()
 {
 
 }
+
+void GdsMeshNode::vClear()
+{
+
+}
