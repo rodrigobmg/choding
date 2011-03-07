@@ -65,6 +65,7 @@ HRESULT GdsNode::AttachChild( GdsNodePtr pNode )
 		return S_FALSE;
 
 	pNode->SetParent( shared_ptr_this() );	
+	//pNode->SetParent( GdsNodePtr( (GdsNode*)this ) );	
 	
 	m_listChildNode.push_back( pNode );
 	return S_OK;

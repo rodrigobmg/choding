@@ -5,7 +5,8 @@
 
 class GdsNode;
 
-class GdsRendererDX9 : public GdsRendererBase{
+class GdsRendererDX9 : public GdsRendererBase
+{
 
 private:
 	

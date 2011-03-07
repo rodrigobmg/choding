@@ -1,6 +1,7 @@
 #include "GdsCameraManagerDX9.h"
 
-GdsCameraManagerDX9::GdsCameraManagerDX9( void )
+GdsCameraManagerDX9::GdsCameraManagerDX9( void ):
+m_pDevice( NULL )
 {
 	SetName( OBJECT_CAMMGR_DX9 );
 	vClear();
@@ -13,6 +14,7 @@ GdsCameraManagerDX9::~GdsCameraManagerDX9( void )
 
 void GdsCameraManagerDX9::vClear()
 {
+	SAFE_RELEASE( m_pDevice );
 	m_iCurCamIndex = -1;
 	m_camaraContainer.clear();
 }
@@ -27,7 +29,7 @@ void GdsCameraManagerDX9::Update( float fElapsedTime )
 
 void GdsCameraManagerDX9::SetCam( int index )
 {
-	size_t size = m_camaraContainer.size();
+	int32_t size = (int32_t)m_camaraContainer.size();
 
 	if ( index > size || index <= -1 )
 	{
@@ -57,5 +59,6 @@ void GdsCameraManagerDX9::Detach( int index )
 
 void GdsCameraManagerDX9::DetachAll()
 {
-	vClear();
+	m_iCurCamIndex = -1;
+	m_camaraContainer.clear();
 }

@@ -21,6 +21,7 @@ public:
 	virtual ~GdsCameraNode();
 
 	void			SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR3& up );
+	D3DXMATRIXA16&	GetViewMatrix() { return matView; }
 
 	
 };
