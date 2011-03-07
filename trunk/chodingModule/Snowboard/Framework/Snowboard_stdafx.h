@@ -14,6 +14,7 @@
 
 #include <boost/pool/pool.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 typedef char				int8_t;
 typedef short				int16_t;
@@ -47,6 +48,7 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_BGTHREAD		L"BGThread"
 
 #define OBJECT_AVOBJECT		L"GdsAVObject"
+#define OBJECT_NODE_BASE	L"GdsNodeBase"
 #define OBJECT_NODE			L"GdsNode"
 #define OBJECT_NODE_MESH	L"Mesh"
 #define OBJECT_NODE_CHILDMESH	L"ChildMesh"

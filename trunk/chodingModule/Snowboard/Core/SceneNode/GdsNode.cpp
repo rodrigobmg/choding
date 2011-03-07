@@ -1,7 +1,7 @@
 #include "GdsNode.h"
 
 GdsNode::GdsNode():
-m_pParentNode(NULL)
+m_pParentNode( GdsNodePtr( (GdsNode*)NULL) )
 {
 	SetName( OBJECT_NODE );
 	m_listChildNode.clear();
@@ -20,31 +20,30 @@ HRESULT GdsNode::RemoveAllChild()
 		for( ; it != m_listChildNode.end() ;  )
 		{
 			(*it)->RemoveAllChild();
-			SAFE_DELETE( (*it) );
 			m_listChildNode.erase( it++ );
 		}
 	}
 	return TRUE;
 }
 
-void GdsNode::SetParent( GdsNode* pNode )
+void GdsNode::SetParent( GdsNodePtr pNode )
 {
 	m_pParentNode = pNode;
 }
 
-GdsNode*	GdsNode::GetParent()
+GdsNodePtr	GdsNode::GetParent()
 {
 	return m_pParentNode;
 }
 
 // 0부터 시작함
-GdsNode*	GdsNode::GetAt( unsigned int index )
+GdsNodePtr	GdsNode::GetAt( unsigned int index )
 {
 	if ( m_listChildNode.empty() )
-		return NULL;
+		return GdsNodePtr( (GdsNode*)NULL );
 
 	if ( m_listChildNode.size() < index )
-		return NULL;
+		return GdsNodePtr( (GdsNode*)NULL );
 
  	CHILDLIST::iterator it = m_listChildNode.begin();
  	for ( size_t t = 0 ; it != m_listChildNode.end() ; ++it )
@@ -56,26 +55,24 @@ GdsNode*	GdsNode::GetAt( unsigned int index )
  	}
 
 	assert( 0 && L"못찾는건 말이 안된다. 차일드 리스트의 마지막 자식노드를 찾는중에 그 마지막 노드가 루프도중에 지워진거다;; ");
-	return NULL;
+	return GdsNodePtr( (GdsNode*)NULL );
 }
 
 
-HRESULT GdsNode::AttachChild( GdsNode* pNode )
+HRESULT GdsNode::AttachChild( GdsNodePtr pNode )
 {
-	if ( this == pNode )
+	if ( this == pNode.get() )
 		return S_FALSE;
 
-	pNode->SetParent( this );
+	pNode->SetParent( shared_ptr_this() );	
 	
-	//pNode->IncRefCount();
-
 	m_listChildNode.push_back( pNode );
 	return S_OK;
 }
 
-HRESULT GdsNode::DetachChild( GdsNode* pNode )
+HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 {
-	if ( this == pNode )
+	if ( this == pNode.get() )
 		return S_FALSE;
 
 	CHILDLIST::iterator it = m_listChildNode.begin();
@@ -83,7 +80,6 @@ HRESULT GdsNode::DetachChild( GdsNode* pNode )
 	{
 		if ( (*it) == pNode )
 		{
-		//	(*it)->DecRefCount();
 			m_listChildNode.erase( it );
 			break;
 		}

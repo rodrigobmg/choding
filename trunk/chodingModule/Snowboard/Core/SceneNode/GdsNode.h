@@ -1,15 +1,18 @@
 #ifndef _SNOWBOARD_SCENENODE_BASE_
 #define _SNOWBOARD_SCENENODE_BASE_
 
-#include "../Base/GdsObject.h"
+#include "../Base\GdsObject.h"
 
-class GdsNode : public GdsObject{
+class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
+{
 		
 protected:	
 
-	GdsNode*							m_pParentNode;
+	typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
 
-	typedef	 std::list< GdsNode* >	CHILDLIST;
+	GdsNodePtr							m_pParentNode;
+
+	typedef	 std::list< GdsNodePtr >	CHILDLIST;
 	CHILDLIST							m_listChildNode;
 
 	virtual	void	vInitGeometry();
@@ -20,13 +23,18 @@ public:
 	GdsNode();
 	virtual ~GdsNode();
 
+	boost::shared_ptr< GdsNode > shared_ptr_this()
+	{
+		return shared_from_this();
+	}
+
 	HRESULT			Update( float fElapsedtime );
-	GdsNode*		GetParent();
-	void			SetParent( GdsNode* pNode );
-	GdsNode*		GetAt( unsigned int index );
+	GdsNodePtr		GetParent();
+	void			SetParent( GdsNodePtr pNode );
+	GdsNodePtr		GetAt( unsigned int index );
 	
-	virtual HRESULT AttachChild( GdsNode* pNode );
-	virtual HRESULT DetachChild( GdsNode* pNode );
+	virtual HRESULT AttachChild( GdsNodePtr pNode );
+	virtual HRESULT DetachChild( GdsNodePtr pNode );
 	virtual HRESULT	RemoveAllChild();
 
 };

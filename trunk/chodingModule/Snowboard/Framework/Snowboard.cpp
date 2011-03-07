@@ -8,6 +8,8 @@
 #include "../Utility/PerformanceCheck/Performance.h"
 
 #include "ThreadPool/GdsThreadPool.h"
+#include "SceneNode/GdsMeshNode.h"
+#include "SceneNode/GdsNode.h"
 
 CSnowboard::CSnowboard()
 {
@@ -98,4 +100,13 @@ void CSnowboard::TestFunc()
 		GdsThreadPool::getInstance().GetBGThread()->Push< const TCHAR* >( m_pResMgr.get() , L"test"  , &GdsResMgr::LoadRes );
 		
 	}
+
+	GdsNodePtr pNode = GdsNodePtr( new GdsNode );
+	for ( size_t i = 0 ; i < 2 ; ++i )
+	{
+		GdsNodePtr pMesh = GdsNodePtr( new GdsMeshNode );
+		pNode->AttachChild( pMesh );	
+		pNode->DetachChild( pMesh );
+	}
+	pNode->Update( 0.f );
 }

@@ -8,19 +8,17 @@ class NodeTest : public ::testing::Test
 public:
 	NodeTest()
 	{
-		SetUp();
-		TestBody();
+		pNode = GdsNodePtr( new GdsNode );
 	}
 
 	virtual ~NodeTest()
 	{
-		TearDown();
 	}
 
 	virtual void SetUp()
 	{
 		//»ý¼ºÀÚ
-		pNode = GdsNodePtr( new GdsNode );
+
 	}
 
 	virtual void TearDown()
@@ -33,7 +31,8 @@ public:
 		for ( size_t i = 0 ; i < 2 ; ++i )
 		{
 			GdsMeshNodePtr pMesh = GdsMeshNodePtr( new GdsMeshNode );
-			pNode->AttachChild( pMesh.get() );	
+			pNode->AttachChild( pMesh );	
+			pNode->DetachChild( pMesh );
 		}
 		pNode->Update( 0.f );
 	}
@@ -44,6 +43,7 @@ public:
 TEST_F( NodeTest,  TestBody )
 {		
 	NodeTest test;
+	test.TestBody();
 }
 
 #endif	

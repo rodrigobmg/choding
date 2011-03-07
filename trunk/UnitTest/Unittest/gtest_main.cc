@@ -30,8 +30,10 @@
 
 #include "gtest/gtest.h"
 
-#include "Snowboard_test.hpp"
+
 #include "GdsResMgr_test.hpp"
+#include "Snowboard_test.hpp"
+
 
 int main(int argc, char **argv)
 {
