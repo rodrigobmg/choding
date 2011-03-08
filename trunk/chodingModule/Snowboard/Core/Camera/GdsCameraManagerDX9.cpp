@@ -19,12 +19,23 @@ void GdsCameraManagerDX9::vClear()
 	m_camaraContainer.clear();
 }
 
+HRESULT GdsCameraManagerDX9::Create( LPDIRECT3DDEVICE9 device )
+{
+	m_pDevice = device;
+	return S_OK;
+}
+
 void GdsCameraManagerDX9::Update( float fElapsedTime )
 {
 	if ( m_iCurCamIndex <= -1 )
 		return;
 	
-	m_camaraContainer[m_iCurCamIndex]->Update( fElapsedTime );
+	GdsCameraNodePtr pcam = m_camaraContainer[m_iCurCamIndex];
+	if ( pcam )
+		pcam->Update( fElapsedTime );
+
+	if ( m_pDevice )
+		m_pDevice->SetTransform( D3DTS_VIEW , &(pcam->GetViewMatrix()) );	
 }
 
 void GdsCameraManagerDX9::SetCam( int index )
@@ -62,3 +73,4 @@ void GdsCameraManagerDX9::DetachAll()
 	m_iCurCamIndex = -1;
 	m_camaraContainer.clear();
 }
+

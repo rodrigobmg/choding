@@ -2,7 +2,7 @@
 #define __SNOWBOARD_UTILITY_GDSTHREADPOOL__
 
 #include "../../Framework/Snowboard_stdafx.h"
-#include "../singleton.h"
+#include "../Singleton/singleton.h"
 #include "GdsBGThread.h"
 
 

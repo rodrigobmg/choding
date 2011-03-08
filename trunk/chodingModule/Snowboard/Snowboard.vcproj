@@ -342,43 +342,131 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="System"
+			>
 			<Filter
-				Name="ThreadPool"
+				Name="Thread"
 				>
 				<File
-					RelativePath=".\Utility\ThreadPool\GdsBGThread.h"
+					RelativePath=".\System\Thread\GdsBGThread.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\GdsSyncCriticalSection.cpp"
+					RelativePath=".\System\Thread\GdsSyncCriticalSection.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\System\Thread\GdsSyncCriticalSection.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\GdsSyncCriticalSection.h"
+					RelativePath=".\System\Thread\GdsSynchronize.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\System\Thread\GdsSynchronize.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\GdsSynchronize.cpp"
+					RelativePath=".\System\Thread\GdsThread.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\System\Thread\GdsThread.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\GdsSynchronize.h"
+					RelativePath=".\System\Thread\GdsThreadPool.cpp"
 					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\Utility\ThreadPool\GdsThread.cpp"
+					RelativePath=".\System\Thread\GdsThreadPool.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="Time"
+				>
+			</Filter>
+			<Filter
+				Name="Singleton"
+				>
 				<File
-					RelativePath=".\Utility\ThreadPool\GdsThread.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Utility\ThreadPool\GdsThreadPool.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Utility\ThreadPool\GdsThreadPool.h"
+					RelativePath=".\System\Singleton\Singleton.h"
 					>
 				</File>
 			</Filter>

@@ -30,6 +30,7 @@ typedef unsigned __int64	uint64_t;
 #define CORE_RENDERER		L"RendererCore"
 #define OBJECT_CAMERA_BASE	L"CameaCoreBase"
 #define CORE_RESOURCE		L"ResourceCore"
+#define CORE_CAMMGR_DX9		L"CamManagerDX9"
 
 #define OBJECT_BASE			L"Base"
 #define OBJECT_BASE_CORE	L"CoreBase"

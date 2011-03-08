@@ -22,6 +22,9 @@ public:
 	GdsCameraManagerDX9(void);
 	virtual ~GdsCameraManagerDX9(void);
 
+	virtual		HRESULT	Create( LPDIRECT3DDEVICE9 device );
+
+
 	virtual		void	SetCam( int32_t index );
 	virtual		void	Attach( GdsCameraNodePtr camnode );
 	virtual		void	Detach( int32_t index );

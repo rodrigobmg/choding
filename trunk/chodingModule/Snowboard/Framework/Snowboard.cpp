@@ -35,7 +35,7 @@ bool CSnowboard::InitModule( HWND hWnd )
 
 
 	InitRenderer( hWnd );
-	InitCamera();
+	InitCamera( m_pRenderer->GetDevice() );
 	InitResource( m_pRenderer->GetDevice() );
 
 	TestFunc();
@@ -53,8 +53,10 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 	return TRUE;
 }
 
-bool	CSnowboard::InitCamera()
+bool	CSnowboard::InitCamera( LPDIRECT3DDEVICE9 device )
 {
+	m_pCamMgr = boost::shared_dynamic_cast< GdsCameraManagerDX9 >( GdsCoreFactory::CreateCore( CORE_CAMMGR_DX9 ));
+	m_pCamMgr->Create( device );
 	return TRUE;
 }
 

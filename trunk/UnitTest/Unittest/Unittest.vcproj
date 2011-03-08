@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;../..\chodingModule\gtest-1.6.0\include&quot;"
+				AdditionalIncludeDirectories="testUnit;&quot;../..\chodingModule\gtest-1.6.0\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -185,23 +185,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\GdsResMgr_test.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\gtest_main.cc"
-				>
-			</File>
-			<File
-				RelativePath=".\Snowboard_test.hpp"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="헤더 파일"
+			Name="testUnit"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\testUnit\GdsResMgr_test.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\testUnit\Snowboard_test.hpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="리소스 파일"
@@ -209,10 +209,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

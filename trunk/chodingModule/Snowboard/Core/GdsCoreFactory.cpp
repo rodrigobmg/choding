@@ -22,7 +22,7 @@ GdsObjectPtr	GdsCoreFactory::CreateCore( const tstring& coretype )
 	{
 		return GdsRendererDX9Ptr( new GdsRendererDX9 );
 	}
-	else if ( coretype == OBJECT_CAMMGR_DX9 )
+	else if ( coretype == CORE_CAMMGR_DX9 )
 	{
 		return GdsCameraManagerDX9Ptr( new GdsCameraManagerDX9 );
 	}
