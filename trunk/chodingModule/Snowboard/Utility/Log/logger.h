@@ -131,7 +131,7 @@
 
 #endif //defined(_LOGGER_ON_)
 
-#include "../singleton.h"
+#include "../../System/Singleton/Singleton.h"
 #include "html_logger.h"
 #include "console_logger.h"
 

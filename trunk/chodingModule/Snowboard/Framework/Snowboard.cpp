@@ -7,13 +7,13 @@
 #include "../Utility/Log/logger.h"
 #include "../Utility/PerformanceCheck/Performance.h"
 
-#include "ThreadPool/GdsThreadPool.h"
+#include "../System/Thread/GdsThreadPool.h"
 #include "SceneNode/GdsMeshNode.h"
 #include "SceneNode/GdsNode.h"
 
 CSnowboard::CSnowboard()
 {
-	Clear();
+	Clear(); 
 }
 
 CSnowboard::~CSnowboard()
