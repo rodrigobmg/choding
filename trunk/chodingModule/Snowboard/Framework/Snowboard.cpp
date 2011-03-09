@@ -104,6 +104,8 @@ void CSnowboard::TestFunc()
   														&GdsResMgr::CreateList );
 		
 		GdsThreadPool::getInstance().GetBGThread()->Push< const TCHAR* >( m_pResMgr.get() , L"test"  , &GdsResMgr::LoadRes );
-		
+	
+		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"md2" , respath , L"md2" , true ) );
+		m_pResMgr->LoadRes( L"md2" );
 	}
 }

@@ -286,23 +286,6 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 	return bSuccess;
 }
 
-GdsResBasePtr GdsResMgr::vResourceFactory( const TCHAR* ext , const TCHAR* filepath )
-{
-	if ( !_tcscmp( ext , L"bmp" ) || !_tcscmp( ext , L"tga" ) || !_tcscmp( ext , L"jpg" ) || !_tcscmp( ext , L"dds" ) )
-	{
-		GdsResTexturePtr ptex = GdsResTexturePtr( new GdsResTexture );
-		ptex->LoadResource( filepath , m_pDevice );
-		return	ptex;	
-	}
-	else if ( !_tcscmp( ext , L"md2" ) )
-	{
-		GdsResMD2Ptr	pMd2 = GdsResMD2Ptr( new GdsResMD2 );
-		pMd2->LoadResource( filepath , m_pDevice );
-	}
-
-	return GdsResBasePtr( (GdsResBase*)NULL);
-}
-
 bool GdsResMgr::vStackdata_to_Container( const TCHAR* alias , const TCHAR* filepath , GdsResBasePtr pres )
 {
 	if ( pres == NULL )
@@ -337,4 +320,21 @@ bool GdsResMgr::vStackdata_to_Container( const TCHAR* alias , const TCHAR* filep
 		m_mapRes.insert( std::pair< const TCHAR* , HASHMAPRes >( alias , hmapRes ) );
 	}	
 	return true;
+}
+
+GdsResBasePtr GdsResMgr::vResourceFactory( const TCHAR* ext , const TCHAR* filepath )
+{
+	if ( !_tcscmp( ext , L"bmp" ) || !_tcscmp( ext , L"tga" ) || !_tcscmp( ext , L"jpg" ) || !_tcscmp( ext , L"dds" ) )
+	{
+		GdsResTexturePtr ptex = GdsResTexturePtr( new GdsResTexture );
+		ptex->LoadResource( filepath , m_pDevice );
+		return	ptex;	
+	}
+	else if ( !_tcscmp( ext , L"md2" ) )
+	{
+		GdsResMD2Ptr	pMd2 = GdsResMD2Ptr( new GdsResMD2 );
+		pMd2->LoadResource( filepath , m_pDevice );
+	}
+
+	return GdsResBasePtr( (GdsResBase*)NULL);
 }

@@ -1,5 +1,5 @@
 #include "GdsResMD2.h"
-#include "..\..\..\System\FileSystem\GdsFile.h"
+#include "../../../System/FileSystem/GdsFile.h"
 
 ImplementBoostPool( GdsResMD2 )
 
@@ -29,15 +29,15 @@ HRESULT GdsResMD2::Release()
 
 HRESULT GdsResMD2::LoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 {
-	GdsFile file( tstring( path ) );
+	GdsFile file( path ); 
 
 	MD2HEADER pMD2Header;
-	if ( file.read( sizeof( MD2HEADER ) , pMD2Header ) == false )
-		return S_FALSE;
+ 	if ( file.Read( sizeof( MD2HEADER ) , (BYTE*)&pMD2Header )  == false )
+ 		return S_FALSE;
 
 	BYTE* pMD2Data = new BYTE[pMD2Header.offsetEnd];
-	if( file.read( sizeof(BYTE)*( pMD2Header.offsetEnd - sizeof(MD2HEADER) , pMD2Data ) ) )
-		return S_FALSE;
+ 	if( file.Read( sizeof(BYTE)*( pMD2Header.offsetEnd - sizeof(MD2HEADER) ) , pMD2Data ) == false ) 
+ 		return S_FALSE;
 	
 	///////////////////삼각형 그리기 개수 설정/////////////////////////////////////
 	m_uPrimitive = pMD2Header.numTris;
