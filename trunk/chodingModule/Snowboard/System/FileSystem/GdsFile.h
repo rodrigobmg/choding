@@ -17,7 +17,7 @@ public:
 	virtual ~GdsFile();
 
 	void	Setpath( tstring path );
-	bool	Read( size_t readsize , BYTE* buffer );
+	bool	Read( size_t readsize , void* buffer );
 	void	Write( size_t writesize , BYTE* buffer );
 
 };

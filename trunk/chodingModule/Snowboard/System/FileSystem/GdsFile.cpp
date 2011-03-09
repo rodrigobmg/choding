@@ -23,7 +23,7 @@ void GdsFile::Setpath( tstring path )
 	_wfopen_s( &pfile_ , path.c_str() , L"rb" );
 }
 
-bool GdsFile::Read( size_t readsize ,BYTE* buffer )
+bool GdsFile::Read( size_t readsize ,void* buffer )
 {
 	if ( pfile_ == NULL )
 	{

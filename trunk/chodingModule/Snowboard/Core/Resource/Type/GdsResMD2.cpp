@@ -29,16 +29,16 @@ HRESULT GdsResMD2::Release()
 
 HRESULT GdsResMD2::LoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 {
-	GdsFile file( path ); 
+   	GdsFile file( path ); 
+   
+   	MD2HEADER pMD2Header;
+	if ( file.Read( sizeof( MD2HEADER ) , &pMD2Header )  == false )
+		return S_FALSE;
+   
+   	BYTE* pMD2Data = new BYTE[pMD2Header.offsetEnd];
+	if( file.Read( sizeof(BYTE)*( pMD2Header.offsetEnd - sizeof(MD2HEADER) ) , &pMD2Data[sizeof(MD2HEADER)] ) == false ) 
+		return S_FALSE;
 
-	MD2HEADER pMD2Header;
- 	if ( file.Read( sizeof( MD2HEADER ) , (BYTE*)&pMD2Header )  == false )
- 		return S_FALSE;
-
-	BYTE* pMD2Data = new BYTE[pMD2Header.offsetEnd];
- 	if( file.Read( sizeof(BYTE)*( pMD2Header.offsetEnd - sizeof(MD2HEADER) ) , pMD2Data ) == false ) 
- 		return S_FALSE;
-	
 	///////////////////삼각형 그리기 개수 설정/////////////////////////////////////
 	m_uPrimitive = pMD2Header.numTris;
 
