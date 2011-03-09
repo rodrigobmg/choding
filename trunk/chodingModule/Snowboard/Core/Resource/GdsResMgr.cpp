@@ -77,7 +77,7 @@ void GdsResMgr::ReleaseList( const TCHAR* alias )
 	}
 }
 
-GdsResBasePtr GdsResMgr::vIsExist( const TCHAR* alias , const TCHAR* filename )
+GdsResBasePtr GdsResMgr::exist( const TCHAR* alias , const TCHAR* filename )
 {
 	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
 	if ( itAll != m_mapRes.end() )
@@ -93,14 +93,14 @@ GdsResBasePtr GdsResMgr::vIsExist( const TCHAR* alias , const TCHAR* filename )
 
 GdsResBasePtr	GdsResMgr::Get( const TCHAR* alias , const TCHAR* filename )
 {
-	GdsResBasePtr p = vIsExist( alias ,filename );
+	GdsResBasePtr p = exist( alias ,filename );
 	if ( p )
 		return p;
 
 	return GdsResBasePtr( (GdsResBase*)NULL );
 }
 
-bool	GdsResMgr::vLoadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std::list<tstring>& tokenlist , bool bRecursive )
+bool	GdsResMgr::load_res_dir( const TCHAR* dirpath , FILE_LIST& filelist , std::list<tstring>& tokenlist , bool bRecursive )
 {
 	if ( dirpath == NULL )
 		return false;
@@ -128,7 +128,7 @@ bool	GdsResMgr::vLoadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std
 				ZeroMemory( curpath , sizeof( curpath ) );
 				_stprintf_s( curpath , L"%s\\%s" , dirpath , fd.cFileName );
 
-				vLoadResforDir( curpath , filelist , tokenlist, bRecursive );
+				load_res_dir( curpath , filelist , tokenlist, bRecursive );
 			}
 		}
 		else if ( fd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY )
@@ -159,7 +159,7 @@ bool	GdsResMgr::vLoadResforDir( const TCHAR* dirpath , FILE_LIST& filelist , std
 }
 
 
-void GdsResMgr::vMakeToken( const TCHAR* token , std::list<tstring>& tokenlist , const TCHAR* delimiters )
+void GdsResMgr::make_token( const TCHAR* token , std::list<tstring>& tokenlist , const TCHAR* delimiters )
 {
 	tstring tstrtoken(token);
 	// 맨 첫 글자가 구분자인 경우 무시
@@ -186,7 +186,7 @@ HRESULT GdsResMgr::CreateList( LOADLIST_WORK_TOKEN work_token )
 	if ( it == m_mapAllFilelist.end() )
 	{
 		std::list<tstring> tokenlist;
-		vMakeToken( work_token.token.c_str() , tokenlist , L";" );
+		make_token( work_token.token.c_str() , tokenlist , L";" );
 		if ( tokenlist.empty() )
 		{
 			ASSERT( !L"토큰리스트에 값이 하나도 없다." );
@@ -197,7 +197,7 @@ HRESULT GdsResMgr::CreateList( LOADLIST_WORK_TOKEN work_token )
 		BEGIN_PERFORMANCE( L"CreateList" );
 
 		RES_STRUCT resStruct;
-		vLoadResforDir( work_token.path.c_str() , resStruct.filelist , tokenlist , work_token.recursive );
+		load_res_dir( work_token.path.c_str() , resStruct.filelist , tokenlist , work_token.recursive );
 		if ( !resStruct.filelist.empty() )
 		{
 			//resStruct.filelist.sort();
@@ -254,14 +254,14 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
   		
   		size_t poscomma = filelist[index].rfind( L"." );
   		ext				= filelist[index].substr( poscomma + 1 , filelist[index].length() );
-		GdsResBasePtr pRes = vResourceFactory( ext.c_str() , filelist[index].c_str() );
+		GdsResBasePtr pRes = resourceFactory( ext.c_str() , filelist[index].c_str() );
   		if ( pRes == NULL )
   		{
   			bSuccess = S_FALSE;
   			break;
   		}
 		
-		bool bret = vStackdata_to_Container( alias , filelist[index].c_str() , pRes );
+		bool bret = stack_data_to_container( alias , filelist[index].c_str() , pRes );
 		if ( bret == false )
 		{
 			bSuccess = S_FALSE;
@@ -286,7 +286,7 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 	return bSuccess;
 }
 
-bool GdsResMgr::vStackdata_to_Container( const TCHAR* alias , const TCHAR* filepath , GdsResBasePtr pres )
+bool GdsResMgr::stack_data_to_container( const TCHAR* alias , const TCHAR* filepath , GdsResBasePtr pres )
 {
 	if ( pres == NULL )
 		return false;
@@ -295,7 +295,7 @@ bool GdsResMgr::vStackdata_to_Container( const TCHAR* alias , const TCHAR* filep
 	tstring wstrpath(filepath);
 	size_t poscomma  = wstrpath.rfind( L"\\" );
 	tstring filename = wstrpath.substr( poscomma + 1 , wstrpath.length() );
-	if ( vIsExist( alias , filename.c_str() ) )
+	if ( exist( alias , filename.c_str() ) )
 	{
 		assert( 0 && L"키값 중복이 있어서는 안된다." );
 		return false;
@@ -322,7 +322,7 @@ bool GdsResMgr::vStackdata_to_Container( const TCHAR* alias , const TCHAR* filep
 	return true;
 }
 
-GdsResBasePtr GdsResMgr::vResourceFactory( const TCHAR* ext , const TCHAR* filepath )
+GdsResBasePtr GdsResMgr::resourceFactory( const TCHAR* ext , const TCHAR* filepath )
 {
 	if ( !_tcscmp( ext , L"bmp" ) || !_tcscmp( ext , L"tga" ) || !_tcscmp( ext , L"jpg" ) || !_tcscmp( ext , L"dds" ) )
 	{
