@@ -20,7 +20,8 @@ public:
 
 	bool		InitModule( HWND hWnd );
 	void		DestroyModule();
-	void		Update();
+	
+	void		OnIdle();
 	HRESULT		MsgProc();
 
 	bool		InitRenderer( HWND hWnd );
@@ -29,13 +30,15 @@ public:
 
 	void		Clear();
 
+	bool		MeasureTime();
+
 	void		TestFunc();
 private:
 	
 	GdsCameraManagerDX9Ptr	m_pCamMgr;
 	GdsRendererDX9Ptr	m_pRenderer;
 	GdsResMgrPtr		m_pResMgr;
-	GdsNodePtr			m_pRootNode;
+	
 };
 
 #endif

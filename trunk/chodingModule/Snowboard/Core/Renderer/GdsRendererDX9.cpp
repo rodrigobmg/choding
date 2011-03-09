@@ -53,13 +53,20 @@ HRESULT GdsRendererDX9::Create( HWND hWnd )
 		return E_FAIL;
 	}
 
+	m_RootNode = GdsNodePtr( new GdsNode );
+
 	return S_OK;
 }
 
-void GdsRendererDX9::Render( GdsNodePtr pNode )
+void GdsRendererDX9::Update( float fAccumTime )
 {
-	if ( pNode )
-		pNode->Update( 0.0f );
+	if ( m_RootNode )
+		m_RootNode->Update( fAccumTime );
 	else
 		assert( 0 );
+}
+
+void GdsRendererDX9::Render( float fAccumTime )
+{
+	
 }

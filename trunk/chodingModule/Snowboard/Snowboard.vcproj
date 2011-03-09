@@ -461,12 +461,28 @@
 			<Filter
 				Name="Time"
 				>
+				<File
+					RelativePath=".\System\Time\GdsSystemTime.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Singleton"
 				>
 				<File
 					RelativePath=".\System\Singleton\Singleton.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="FileSystem"
+				>
+				<File
+					RelativePath=".\System\FileSystem\GdsFile.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\System\FileSystem\GdsFile.h"
 					>
 				</File>
 			</Filter>

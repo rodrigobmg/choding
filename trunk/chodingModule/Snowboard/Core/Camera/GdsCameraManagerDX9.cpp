@@ -14,7 +14,6 @@ GdsCameraManagerDX9::~GdsCameraManagerDX9( void )
 
 void GdsCameraManagerDX9::vClear()
 {
-	SAFE_RELEASE( m_pDevice );
 	m_iCurCamIndex = -1;
 	m_camaraContainer.clear();
 }

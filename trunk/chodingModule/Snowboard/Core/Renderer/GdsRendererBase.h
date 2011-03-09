@@ -9,9 +9,6 @@ class GdsRendererBase : public GdsObject{
 public:
 	GdsRendererBase(){ SetName( OBJECT_RENDERBASE ); }
 	virtual ~GdsRendererBase(){};
-	
-	virtual void Render( GdsNodePtr pNode ) = 0;	
-
 };
 
 #endif

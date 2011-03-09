@@ -39,10 +39,10 @@ LRESULT WINAPI MsgProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
 	return DefWindowProc( hWnd , msg , wParam , lParam );
 }
 
-bool Update()
+bool OnIdle()
 {
 	if ( g_pSnowboard )
-		g_pSnowboard->Update();
+		g_pSnowboard->OnIdle();
 
 	return true;
 }
@@ -80,7 +80,7 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 		}
 		else
 		{
-			if ( !Update() )
+			if ( !OnIdle() )
 				break;
 		}
 	}

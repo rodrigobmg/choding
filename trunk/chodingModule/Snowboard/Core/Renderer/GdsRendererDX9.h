@@ -12,8 +12,8 @@ private:
 	
  	LPDIRECT3D9             m_pD3D;      // = NULL; // Used to create the D3DDevice
  	LPDIRECT3DDEVICE9       m_pd3dDevice;// = NULL; // Our rendering device
-
-
+	GdsNodePtr				m_RootNode;
+	
 public:
 
 	GdsRendererDX9();
@@ -23,7 +23,12 @@ public:
 	virtual HRESULT			Create( HWND hWnd );
 	virtual HRESULT			Release();
 
-	virtual void			Render( GdsNodePtr pNode );
+	void					SetRootNode( GdsNodePtr node ){ m_RootNode = node; }
+	GdsNodePtr				GetRootNode() { return m_RootNode; }
+	
+	virtual void			Update( float fAccumTime );
+	virtual void			Render( float fAccumTime );
+
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
 
 };

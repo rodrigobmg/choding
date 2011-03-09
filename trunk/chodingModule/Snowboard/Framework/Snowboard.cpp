@@ -47,9 +47,7 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 {
 	m_pRenderer = boost::shared_dynamic_cast< GdsRendererDX9 >( GdsCoreFactory::CreateCore( CORE_RENDERER ) );
 	m_pRenderer->Create( hWnd );
-
-	m_pRootNode	= GdsNodePtr( new GdsNode );
-
+	
 	return TRUE;
 }
 
@@ -67,12 +65,6 @@ bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 	return TRUE;
 }
 
-void CSnowboard::Update()
-{
-	if ( m_pRenderer )
-		m_pRenderer->Render( m_pRootNode );
-}
-
 void CSnowboard::DestroyModule()
 {
 	util::Logger::destroySingleton();
@@ -83,6 +75,18 @@ void CSnowboard::DestroyModule()
 	if ( m_pResMgr )
 		m_pResMgr->Release();	
 }
+
+
+void CSnowboard::OnIdle()
+{
+	if ( m_pRenderer )
+		m_pRenderer->Update( 0.f );
+
+	if ( m_pRenderer )
+		m_pRenderer->Render( 0.f );
+
+}
+
 
 void CSnowboard::TestFunc()
 {	
@@ -102,13 +106,4 @@ void CSnowboard::TestFunc()
 		GdsThreadPool::getInstance().GetBGThread()->Push< const TCHAR* >( m_pResMgr.get() , L"test"  , &GdsResMgr::LoadRes );
 		
 	}
-
-	GdsNodePtr pNode = GdsNodePtr( new GdsNode );
-	for ( size_t i = 0 ; i < 2 ; ++i )
-	{
-		GdsNodePtr pMesh = GdsNodePtr( new GdsMeshNode );
-		pNode->AttachChild( pMesh );	
-		pNode->DetachChild( pMesh );
-	}
-	pNode->Update( 0.f );
 }

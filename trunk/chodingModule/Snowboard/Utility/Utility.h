@@ -93,7 +93,7 @@ namespace util
 	{
 		return AutoLockAccesser<Locker , lock , target>( lock , target );
 	}
-/*
+/*  사용법 usage
 	// Step 1. 임계영역 객체를 스택에 올린다.
 	CRITICAL_SECTION cs;        
 	// Step 2. 임계영역 객체를 초기화 한다.
