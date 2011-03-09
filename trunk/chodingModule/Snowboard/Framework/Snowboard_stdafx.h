@@ -40,6 +40,7 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_COREMGR		L"CoreMgr"
 #define OBJECT_RES_BASE		L"ResBase"
 #define OBJECT_RES_TEXTURE	L"ResTypeTexture"
+#define OBJECT_RES_MD2		L"ResTypeMD2"
 #define OBJECT_RES_MGR		L"ResMgr"
 #define OBJECT_CAMMGR_DX9	L"CamMgrDx9"
 

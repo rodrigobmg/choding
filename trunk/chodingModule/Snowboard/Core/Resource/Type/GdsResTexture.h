@@ -22,6 +22,7 @@ public:
 	virtual void		Clear();
 	virtual HRESULT		Create();
 	virtual HRESULT		Release();
+	virtual HRESULT		LoadResource( const TCHAR* path  , LPDIRECT3DDEVICE9 device );
 		
 };
 

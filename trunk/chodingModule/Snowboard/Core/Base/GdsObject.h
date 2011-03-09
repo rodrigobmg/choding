@@ -2,6 +2,7 @@
 #define _SNOWBOARD_SNOW_OBJECT__
 
 #include "../../Framework/Snowboard_stdafx.h"
+#include "../../Framework/Snowboard_macro.h"
 
 class GdsObject
 {

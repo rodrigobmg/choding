@@ -12,6 +12,8 @@ GdsResTexture::~GdsResTexture()
 {
 	if ( m_pTexture )
 		m_pTexture->Release();	
+	
+	Clear();
 }
 
 void GdsResTexture::Clear()
@@ -26,6 +28,21 @@ HRESULT GdsResTexture::Create()
 
 HRESULT GdsResTexture::Release()
 {	
-	DecRefCount();
 	return S_OK;
+}
+
+HRESULT GdsResTexture::LoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
+{
+	if ( device == NULL )
+		return S_FALSE;
+
+	if ( !_tcscmp( path , L"" ) )
+		return S_FALSE;
+
+	if ( SUCCEEDED( D3DXCreateTextureFromFile( device , path , &m_pTexture ) ) )
+	{
+		return S_OK;
+	}
+
+	return S_FALSE;
 }

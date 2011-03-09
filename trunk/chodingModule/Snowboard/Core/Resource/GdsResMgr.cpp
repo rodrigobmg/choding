@@ -5,6 +5,7 @@
 #include <omp.h>
 #include "Log/logger.h"
 #include "PerformanceCheck/Performance.h"
+#include "Type/GdsResMD2.h"
 
 /*
 #include "tbb/task_scheduler_init.h"
@@ -287,25 +288,16 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 
 GdsResBasePtr GdsResMgr::vResourceFactory( const TCHAR* ext , const TCHAR* filepath )
 {
-	if ( !_tcscmp( ext , L"bmp" ) )
+	if ( !_tcscmp( ext , L"bmp" ) || !_tcscmp( ext , L"tga" ) || !_tcscmp( ext , L"jpg" ) || !_tcscmp( ext , L"dds" ) )
 	{
-		GdsResTexturePtr ptex =  vLoadTexture( filepath );
+		GdsResTexturePtr ptex = GdsResTexturePtr( new GdsResTexture );
+		ptex->LoadResource( filepath , m_pDevice );
 		return	ptex;	
 	}
-	else if( !_tcscmp( ext , L"tga" ) )
+	else if ( !_tcscmp( ext , L"md2" ) )
 	{
-		GdsResTexturePtr ptex =  vLoadTexture( filepath );
-		return ptex;
-	}
-	else if( !_tcscmp( ext , L"jpg" ) )
-	{
-		GdsResTexturePtr	ptex = vLoadTexture( filepath );
-		return ptex;
-	}
-	else if( !_tcscmp( ext , L"dds" ) )
-	{
-		GdsResTexturePtr	ptex = vLoadTexture( filepath );
-		return ptex;
+		GdsResMD2Ptr	pMd2 = GdsResMD2Ptr( new GdsResMD2 );
+		pMd2->LoadResource( filepath , m_pDevice );
 	}
 
 	return GdsResBasePtr( (GdsResBase*)NULL);
@@ -346,24 +338,3 @@ bool GdsResMgr::vStackdata_to_Container( const TCHAR* alias , const TCHAR* filep
 	}	
 	return true;
 }
-
-GdsResTexturePtr GdsResMgr::vLoadTexture( const TCHAR* filepath )
-{
-	GdsResTexturePtr pRes = GdsResTexturePtr( new GdsResTexture);
-	if ( pRes == NULL )
-		return GdsResTexturePtr( (GdsResTexture*)NULL );
-
-	if ( m_pDevice == NULL )
-		return GdsResTexturePtr( (GdsResTexture*)NULL );
-
-	if ( !_tcscmp( filepath , L"" ) )
-		return GdsResTexturePtr( (GdsResTexture*)NULL );
-
-	if ( SUCCEEDED( D3DXCreateTextureFromFile( m_pDevice , filepath , pRes->GetPtr() ) ) )
-	{
-		return pRes;
-	}
-
-	return GdsResTexturePtr( (GdsResTexture*)NULL );
-}
-

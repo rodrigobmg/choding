@@ -16,7 +16,7 @@ public:
 	virtual void	Clear() = 0;
 	virtual HRESULT	Create() = 0;
 	virtual HRESULT	Release() = 0;
-	
+	virtual HRESULT LoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device ) = 0;
 };
 
 typedef boost::shared_ptr< GdsResBase >		GdsResBasePtr;

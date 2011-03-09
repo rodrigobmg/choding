@@ -67,11 +67,6 @@ private:
 									const TCHAR* delimiters 
 									);
 
-
-
-	GdsResTexturePtr	vLoadTexture( const TCHAR* filename );
-
-
 public:
 	GdsResMgr();
 	virtual ~GdsResMgr();

@@ -241,6 +241,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\Core\Resource\Type\GdsResMD2.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Resource\Type\GdsResMD2.h"
+						>
+					</File>
+					<File
 						RelativePath=".\Core\Resource\Type\GdsResTexture.cpp"
 						>
 					</File>
