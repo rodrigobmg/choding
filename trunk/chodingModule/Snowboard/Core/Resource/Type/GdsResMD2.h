@@ -7,7 +7,12 @@ class GdsResMD2 : public GdsResBase{
 	
 private:
 
-	int			m_uPrimitive;
+	LPDIRECT3DVERTEXBUFFER9		m_pVB;
+	LPDIRECT3DTEXTURE9			m_pTexture;
+	DWORD						m_dFVF;
+	UINT						m_uPrimitive;
+
+public:
 
 	typedef struct 
 	{
@@ -69,8 +74,6 @@ private:
 		};
 	};
 
-
-public:
 	DeclareBoostPool	
 
 public:

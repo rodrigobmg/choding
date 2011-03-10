@@ -89,6 +89,20 @@ HRESULT GdsResMD2::LoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 		}
 	}
 
+ 	if( FAILED( device->CreateVertexBuffer( Size * sizeof(MD2_VERTEX), 0, m_dFVF, D3DPOOL_DEFAULT, &m_pVB, NULL ) ) )
+ 	{
+		return E_FAIL; 
+	}
+ 
+ 	void *pVertices;
+ 	if( FAILED( m_pVB->Lock( 0, Size * sizeof(MD2_VERTEX), (void**)&pVertices, 0 ) ) )
+ 	{
+		return E_FAIL; 
+	}
+
+ 	memcpy( pVertices, Vertices, Size * sizeof(MD2_VERTEX) );
+ 	m_pVB->Unlock();
+
 	///////////////////메모리 해제//////////////////////////////////////////////////////
 	delete []pMD2Data;		//동적할당
 	delete pMD2Matrix;		//매트릭스 40바이트

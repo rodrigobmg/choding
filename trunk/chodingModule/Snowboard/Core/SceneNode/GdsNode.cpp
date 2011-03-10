@@ -65,8 +65,6 @@ HRESULT GdsNode::AttachChild( GdsNodePtr pNode )
 		return S_FALSE;
 
 	pNode->SetParent( shared_ptr_this() );	
-	//pNode->SetParent( GdsNodePtr( (GdsNode*)this ) );	
-	
 	m_listChildNode.push_back( pNode );
 	return S_OK;
 }
@@ -107,7 +105,10 @@ HRESULT GdsNode::Update( float fElapsedtime )
 
 void GdsNode::vInitGeometry()
 {
-
+	if ( GetParent() == NULL )
+		m_matWorld = m_matLocal;
+	else
+		GetParent()->GetWorldTransform() * m_matLocal;
 }
 
 void GdsNode::vRender()
@@ -118,4 +119,24 @@ void GdsNode::vRender()
 void GdsNode::vClear()
 {
 
+}
+
+D3DXMATRIXA16& GdsNode::GetTransform()
+{
+	return m_matLocal;
+}
+
+void GdsNode::SetTransform( D3DXMATRIXA16& mat )
+{
+	m_matLocal = mat;
+}
+
+D3DXMATRIXA16& GdsNode::GetWorldTransform()
+{
+	return m_matWorld;
+}
+
+void GdsNode::SetWorldTransform( D3DXMATRIXA16& mat )
+{
+	m_matWorld = mat;
 }

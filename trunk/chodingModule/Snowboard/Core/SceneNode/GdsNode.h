@@ -9,15 +9,19 @@ class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNod
 protected:	
 
 	typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
+	GdsNodePtr								m_pParentNode;
 
-	GdsNodePtr							m_pParentNode;
+	typedef	 std::list< GdsNodePtr >		CHILDLIST;
+	CHILDLIST								m_listChildNode;
 
-	typedef	 std::list< GdsNodePtr >	CHILDLIST;
-	CHILDLIST							m_listChildNode;
+	virtual	void							vInitGeometry();
+	virtual void							vRender();
+	virtual void							vClear();
 
-	virtual	void	vInitGeometry();
-	virtual void	vRender();
-	virtual void	vClear();
+	D3DXMATRIXA16							m_matWorld;
+	D3DXMATRIXA16							m_matLocal;
+
+	LPDIRECT3DDEVICE9						m_Device;
 
 public:
 	GdsNode();
@@ -28,14 +32,23 @@ public:
 		return shared_from_this();
 	}
 
-	HRESULT			Update( float fElapsedtime );
-	GdsNodePtr		GetParent();
-	void			SetParent( GdsNodePtr pNode );
-	GdsNodePtr		GetAt( unsigned int index );
+	void							SetDevice( LPDIRECT3DDEVICE9 device ){ m_Device = device; }
+	LPDIRECT3DDEVICE9				GetDevice(){ return m_Device; }
+
+	D3DXMATRIXA16&					GetTransform();
+	void							SetTransform( D3DXMATRIXA16& mat );
+
+	D3DXMATRIXA16&					GetWorldTransform();
+	void							SetWorldTransform( D3DXMATRIXA16& mat );
+
+	HRESULT							Update( float fElapsedtime );
+	GdsNodePtr						GetParent();
+	void							SetParent( GdsNodePtr pNode );
+	GdsNodePtr						GetAt( unsigned int index );
 	
-	virtual HRESULT AttachChild( GdsNodePtr pNode );
-	virtual HRESULT DetachChild( GdsNodePtr pNode );
-	virtual HRESULT	RemoveAllChild();
+	virtual HRESULT					AttachChild( GdsNodePtr pNode );
+	virtual HRESULT					DetachChild( GdsNodePtr pNode );
+	virtual HRESULT					RemoveAllChild();
 
 };
 

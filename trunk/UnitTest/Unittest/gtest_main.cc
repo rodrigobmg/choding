@@ -33,7 +33,7 @@
 
 #include "GdsResMgr_test.hpp"
 #include "Snowboard_test.hpp"
-
+#include "GdsNode_test.hpp"
 
 int main(int argc, char **argv)
 {
