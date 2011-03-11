@@ -1,53 +1,82 @@
-
 #ifndef _UNITTEST_GDSRESMGR_H_
 #define _UNITTEST_GDSRESMGR_H_
 
-#include "..\..\chodingModule\Snowboard\Utility\Utility.h"
-#include "..\..\chodingModule\Snowboard\Core\Camera\GdsCameraManagerDX9.h"
+#include "..\..\..\chodingModule\Snowboard\Core\Resource\GdsResMgr.h"
+#include "..\..\..\chodingModule\Snowboard\Core\Renderer\GdsRendererDX9.h"
 
-
-class GdsCameraManagerDX9Test : public ::testing::Test
+LRESULT WINAPI MsgProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
 {
-public:
-	GdsCameraManagerDX9Test()
+	switch( msg )
 	{
-		cammgr = GdsCameraManagerDX9Ptr( new GdsCameraManagerDX9 );
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
 	}
 
-	virtual ~GdsCameraManagerDX9Test()
+	return DefWindowProc( hWnd , msg , wParam , lParam );
+}
+
+class GdsResourceMgrTest : public ::testing::Test
+{
+public:
+	GdsResourceMgrTest()
 	{
+		WNDCLASSEX wc = { sizeof(WNDCLASSEX) , CS_CLASSDC , MsgProc , 0L , 0L ,
+			GetModuleHandle(NULL) , NULL , NULL , NULL , NULL ,
+			L"Choding" ,NULL };
+
+		RegisterClassEx( &wc );
+
+		hWnd = CreateWindow( L"Choding" , L"Choding" , WS_OVERLAPPEDWINDOW , 100 , 100,
+			300 , 300 ,
+			GetDesktopWindow() , NULL ,
+			wc.hInstance , NULL );
 		
+		UpdateWindow( hWnd );
+
+		resmgr = GdsResMgrPtr( new GdsResMgr );
+		renderer = GdsRendererDX9Ptr( new GdsRendererDX9 );
+		renderer->Create( hWnd );
+		resmgr->Create( renderer->GetDevice() );
+	}
+
+	virtual ~GdsResourceMgrTest()
+	{
+//		UnregisterClass( L"Choding" , wc.hInstance );
 	}
 
 	virtual void SetUp()
 	{
 		//생성자
+		TCHAR curpath[ MAX_PATH ];
+		GetCurrentDirectory( MAX_PATH, curpath );
+		TCHAR respath[MAX_PATH];
+		_stprintf_s( respath , L"%s\\%s" , L"E:\\Project\\choding\\Application" , L"Resource" );
+		resmgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"md2", respath , L"md2" , true ) );
+		resmgr->LoadRes( L"md2" );
 	}
 
 	virtual void TearDown()
 	{
 		//소멸자
+		resmgr->ReleaseRes( L"md2" );
+		resmgr->ReleaseList( L"md2" );
 	}
 
 	virtual void TestBody()
 	{
-		//테스트코드 ㅋㅋ
-		GdsCameraNodePtr camnode	= GdsCameraNodePtr( new GdsCameraNode );
-		cammgr->Attach( camnode );
-		int index = 0;	
-		cammgr->SetCam( index );
-		cammgr->Update( 0.0f );
-		cammgr->Detach( index );
 	}
 
-	GdsCameraManagerDX9Ptr	cammgr;
+	//WNDCLASSEX wc;
+	HWND hWnd;
+	GdsResMgrPtr resmgr;
+	GdsRendererDX9Ptr	renderer;
 };
 
 
-TEST_F( GdsCameraManagerDX9Test ,  Module )
+TEST_F( GdsResourceMgrTest ,  Module )
 {
-	GdsCameraManagerDX9Test test;
-	test.TestBody();
+	GdsResourceMgrTest test;
 }
 
 #endif	

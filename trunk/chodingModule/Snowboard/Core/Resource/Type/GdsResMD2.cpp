@@ -29,6 +29,12 @@ HRESULT GdsResMD2::Release()
 
 HRESULT GdsResMD2::LoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 {
+	if ( device == NULL )
+	{
+		ASSERT( 0 );
+		return S_FALSE;
+	}
+
    	GdsFile file( path ); 
    
    	MD2HEADER pMD2Header;

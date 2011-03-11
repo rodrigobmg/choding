@@ -1,15 +1,23 @@
 #include "GdsNode.h"
 
-GdsNode::GdsNode():
-m_pParentNode( GdsNodePtr( (GdsNode*)NULL) )
+GdsNode::GdsNode()
 {
 	SetName( OBJECT_NODE );
 	m_listChildNode.clear();
+	m_Device = NULL;
+	m_pParentNode = GdsNodePtr( (GdsNode*)NULL );
+	m_pRessource = GdsResBasePtr( (GdsResBase*)NULL );
 }
 
 GdsNode::~GdsNode()
 {
+	vClear();
 	RemoveAllChild();
+}
+
+void GdsNode::vClear()
+{
+
 }
 
 HRESULT GdsNode::RemoveAllChild()
@@ -112,11 +120,6 @@ void GdsNode::vInitGeometry()
 }
 
 void GdsNode::vRender()
-{
-
-}
-
-void GdsNode::vClear()
 {
 
 }

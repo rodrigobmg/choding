@@ -3,15 +3,14 @@
 #include "..\..\chodingModule\Snowboard\Core\SceneNode\GdsNode.h"
 #include "..\..\chodingModule\Snowboard\Core\SceneNode\GdsMeshNode.h"
 
-class NodeTest : public ::testing::Test
+class SnowboardTest : public ::testing::Test
 {
 public:
-	NodeTest()
+	SnowboardTest()
 	{
-		pNode = GdsNodePtr( new GdsNode );
 	}
 
-	virtual ~NodeTest()
+	virtual ~SnowboardTest()
 	{
 	}
 
@@ -28,22 +27,13 @@ public:
 
 	virtual void TestBody()
 	{
-		for ( size_t i = 0 ; i < 2 ; ++i )
-		{
-			GdsMeshNodePtr pMesh = GdsMeshNodePtr( new GdsMeshNode );
-			pNode->AttachChild( pMesh );	
-			//pNode->DetachChild( pMesh );
-		}
-		pNode->Update( 0.f );
+	
 	}
-
-	GdsNodePtr	   pNode;
 };
 
-TEST_F( NodeTest,  TestBody )
+TEST_F( SnowboardTest,  inittest )
 {		
-	NodeTest test;
-	test.TestBody();
+	SnowboardTest test;
 }
 
 #endif	

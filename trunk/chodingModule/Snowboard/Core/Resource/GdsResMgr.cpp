@@ -16,7 +16,8 @@
 #include <tbb/blocked_range.h>
 */
 
-GdsResMgr::GdsResMgr()
+GdsResMgr::GdsResMgr():
+m_pDevice( NULL )
 {
 	SetName( OBJECT_RES_MGR );
 	Clear();
@@ -204,7 +205,7 @@ HRESULT GdsResMgr::CreateList( LOADLIST_WORK_TOKEN work_token )
 			m_mapAllFilelist.insert( std::pair< const TCHAR* , RES_STRUCT >( work_token.alias.c_str() , resStruct ) );
 			END_PERFORMANCE( L"CreateList" );
 			OUTPUT_PERFORMANCE( L"CreateList" , sample );
-			LOG_WARNING_F( " [CreateList] Avg = %d , DeltaTick = %d , Count = %d " , sample.ulAvg , sample.ulTotalDeltaTick , sample.ulCount );
+			//LOG_WARNING_F( " [CreateList] Avg = %d , DeltaTick = %d , Count = %d " , sample.ulAvg , sample.ulTotalDeltaTick , sample.ulCount );
 			return true;
 		}
 	}
@@ -281,7 +282,7 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 
 	END_PERFORMANCE( L"LoadRes" );
 	OUTPUT_PERFORMANCE( L"LoadRes" , sample );
-	LOG_WARNING_F(" [LoadRes] Avg = %d , DeltaTick = %d , Count = %d", sample.ulAvg , sample.ulTotalDeltaTick , sample.ulCount );
+//	LOG_WARNING_F(" [LoadRes] Avg = %d , DeltaTick = %d , Count = %d", sample.ulAvg , sample.ulTotalDeltaTick , sample.ulCount );
 	stRes.bLoaded = bSuccess;
 	return bSuccess;
 }

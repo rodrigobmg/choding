@@ -2,6 +2,7 @@
 #define _SNOWBOARD_SCENENODE_BASE_
 
 #include "../Base\GdsObject.h"
+#include "../Resource/Type/GdsResBaseType.h"
 
 class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
 {
@@ -23,6 +24,8 @@ protected:
 
 	LPDIRECT3DDEVICE9						m_Device;
 
+	GdsResBasePtr							m_pRessource;
+
 public:
 	GdsNode();
 	virtual ~GdsNode();
@@ -35,6 +38,9 @@ public:
 	void							SetDevice( LPDIRECT3DDEVICE9 device ){ m_Device = device; }
 	LPDIRECT3DDEVICE9				GetDevice(){ return m_Device; }
 
+	void							SetResource( GdsResBasePtr pResource ){ m_pRessource = pResource; }
+	GdsResBasePtr					GetREsource() { return m_pRessource; }
+
 	D3DXMATRIXA16&					GetTransform();
 	void							SetTransform( D3DXMATRIXA16& mat );
 
@@ -46,9 +52,9 @@ public:
 	void							SetParent( GdsNodePtr pNode );
 	GdsNodePtr						GetAt( unsigned int index );
 	
-	virtual HRESULT					AttachChild( GdsNodePtr pNode );
-	virtual HRESULT					DetachChild( GdsNodePtr pNode );
-	virtual HRESULT					RemoveAllChild();
+	HRESULT					AttachChild( GdsNodePtr pNode );
+	HRESULT					DetachChild( GdsNodePtr pNode );
+	HRESULT					RemoveAllChild();
 
 };
 
