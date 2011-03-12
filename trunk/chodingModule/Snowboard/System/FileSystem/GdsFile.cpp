@@ -27,7 +27,7 @@ bool GdsFile::Read( size_t readsize ,void* buffer )
 {
 	if ( pfile_ == NULL )
 	{
-		ASSERT( 0 );
+		assert( 0 );
 		return false;
 	}
 

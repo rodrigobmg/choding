@@ -10,6 +10,7 @@
 #include "../System/Thread/GdsThreadPool.h"
 #include "SceneNode/GdsMeshNode.h"
 #include "SceneNode/GdsNode.h"
+#include "Resource/Type/GdsResMD2.h"
 
 CSnowboard::CSnowboard()
 {
@@ -46,7 +47,8 @@ bool CSnowboard::InitModule( HWND hWnd )
 bool	CSnowboard::InitRenderer( HWND hWnd )
 {
 	m_pRenderer = boost::shared_dynamic_cast< GdsRendererDX9 >( GdsCoreFactory::CreateCore( CORE_RENDERER ) );
-	m_pRenderer->Create( hWnd );
+	m_pRenderer->vCreate( hWnd );
+	m_pRenderer->GetRootNode()->SetDevice( m_pRenderer->GetDevice() );
 	
 	return TRUE;
 }
@@ -61,7 +63,7 @@ bool	CSnowboard::InitCamera( LPDIRECT3DDEVICE9 device )
 bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 {
 	m_pResMgr = boost::shared_dynamic_cast< GdsResMgr >( GdsCoreFactory::CreateCore( CORE_RESOURCE ) );
-	m_pResMgr->Create( device );
+	m_pResMgr->vCreate( device );
 	return TRUE;
 }
 
@@ -71,19 +73,19 @@ void CSnowboard::DestroyModule()
 	GdsThreadPool::destroySingleton();
 
 	if ( m_pRenderer )
-		m_pRenderer->Release();
+		m_pRenderer->vRelease();
 	if ( m_pResMgr )
-		m_pResMgr->Release();	
+		m_pResMgr->vRelease();	
 }
 
 
 void CSnowboard::OnIdle()
 {
-	if ( m_pRenderer )
-		m_pRenderer->Update( 0.f );
+	if ( m_pCamMgr )
+		m_pCamMgr->Update( 0.f );
 
 	if ( m_pRenderer )
-		m_pRenderer->Render( 0.f );
+		m_pRenderer->Update( 0.f );
 
 }
 
@@ -108,4 +110,25 @@ void CSnowboard::TestFunc()
 		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"md2" , respath , L"md2" , true ) );
 		m_pResMgr->LoadRes( L"md2" );
 	}
+
+	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"meat.md2" ) );
+	if( resmesh )
+	{
+		GdsMeshNodePtr mesh = GdsMeshNodePtr( new GdsMeshNode );
+		
+		mesh->SetResource( resmesh );
+		mesh->SetDevice( m_pRenderer->GetDevice() );
+
+		m_pRenderer->GetRootNode()->AttachChild( mesh );
+	}
+
+	GdsCameraNodePtr camnode = GdsCameraNodePtr( new GdsCameraNode );
+	D3DXVECTOR3 vEyePt( 0.0f, 0.0f,-100.0f );
+	D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
+	D3DXVECTOR3 vUpVec( 0.0f, 1.0f, 0.0f );
+	camnode->SetLootAtLH( vEyePt , vLookatPt , vUpVec );
+	m_pCamMgr->Attach( camnode );
+	m_pCamMgr->SetCam( 0 );
+	
+	
 }

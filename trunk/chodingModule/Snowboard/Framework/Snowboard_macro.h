@@ -5,7 +5,7 @@
 #define SAFE_DELETE_ARRAY(v) { if(v) { delete[] v; v = NULL; } }
 #define SAFE_RELEASE(v) {if(v){v->Release(); v = NULL;} }
 
-#define ASSERT( exp )	assert( exp )
+#define ASSERT( exp )	ASSERT( exp )
 
 #define STRING2(x)	#x
 #define STRING(x)	STRING2(x)

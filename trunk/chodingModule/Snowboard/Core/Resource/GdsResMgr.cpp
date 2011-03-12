@@ -20,31 +20,31 @@ GdsResMgr::GdsResMgr():
 m_pDevice( NULL )
 {
 	SetName( OBJECT_RES_MGR );
-	Clear();
+	vClear();
 }
 
 GdsResMgr::~GdsResMgr()
 {
-	Release();
+	vRelease();
 }
 
-void GdsResMgr::Clear()
+void GdsResMgr::vClear()
 {
 	m_mapRes.clear();
 	m_mapAllFilelist.clear();
 }
 
-HRESULT GdsResMgr::Create( LPDIRECT3DDEVICE9 device )
+HRESULT GdsResMgr::vCreate( LPDIRECT3DDEVICE9 device )
 {
-	Clear();
+	vClear();
 	m_pDevice = device;
-	return S_OK;
+	return true;
 }
 
-HRESULT GdsResMgr::Release()
+HRESULT GdsResMgr::vRelease()
 {
-	Clear();
-	return S_OK;
+	vClear();
+	return true;
 }
 
 void GdsResMgr::ReleaseRes( const TCHAR* alias )
@@ -190,7 +190,7 @@ HRESULT GdsResMgr::CreateList( LOADLIST_WORK_TOKEN work_token )
 		make_token( work_token.token.c_str() , tokenlist , L";" );
 		if ( tokenlist.empty() )
 		{
-			ASSERT( !L"토큰리스트에 값이 하나도 없다." );
+			assert( !L"토큰리스트에 값이 하나도 없다." );
 			return false;
 		}
 
@@ -224,7 +224,7 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 	if ( itAlllist == m_mapAllFilelist.end() )
 	{
 		assert( 0 && L"엉뚱한 리스트의 목록을 로드하려고 했음 " );
-		return S_FALSE;
+		return false;
 	}
 
 	RES_STRUCT& stRes = itAlllist->second;
@@ -232,7 +232,7 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 	if ( stRes.bLoaded == true )
 	{
 		assert( 0 && L" 왜 또 로드해 메모리 모질라면 니가 책임질래? ㅡㅡ " );
-		return S_FALSE;
+		return false;
 	}
 	
 	//확장자 구분해서 알아서 맞게끔 로드해서 m_mapRes에 넣어준다.
@@ -240,7 +240,7 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 	FILE_LIST::iterator it = filelist.begin();
 	tstring ext;
 	int size = static_cast< int>( filelist.size() );
-	bool	bSuccess  = S_OK;
+	bool	bSuccess  = true;
 	
 //#pragma omp parallel for
 
@@ -250,7 +250,7 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
   	{ 
 		BEGIN_PERFORMANCE( L"LoadRes" );
 
-  		if ( bSuccess == S_FALSE )
+  		if ( bSuccess == false )
   			break;
   		
   		size_t poscomma = filelist[index].rfind( L"." );
@@ -258,20 +258,20 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 		GdsResBasePtr pRes = resourceFactory( ext.c_str() , filelist[index].c_str() );
   		if ( pRes == NULL )
   		{
-  			bSuccess = S_FALSE;
+  			bSuccess = false;
   			break;
   		}
 		
 		bool bret = stack_data_to_container( alias , filelist[index].c_str() , pRes );
 		if ( bret == false )
 		{
-			bSuccess = S_FALSE;
+			bSuccess = false;
 			break;
 		}
   	}
 
 	// 데이타 로드 무결성 위반 데이타 롤백
-	if ( bSuccess == S_FALSE )
+	if ( bSuccess == false )
 	{
 		RES_CONTAINER::iterator it = m_mapRes.find( alias );
 		if ( it != m_mapRes.end() ) 
@@ -311,7 +311,7 @@ bool GdsResMgr::stack_data_to_container( const TCHAR* alias , const TCHAR* filep
 		}
 		else
 		{
-			ASSERT( !L"리소스 중복 저장" );
+			assert( !L"리소스 중복 저장" );
 		}
 	}
 	else
@@ -328,14 +328,24 @@ GdsResBasePtr GdsResMgr::resourceFactory( const TCHAR* ext , const TCHAR* filepa
 	if ( !_tcscmp( ext , L"bmp" ) || !_tcscmp( ext , L"tga" ) || !_tcscmp( ext , L"jpg" ) || !_tcscmp( ext , L"dds" ) )
 	{
 		GdsResTexturePtr ptex = GdsResTexturePtr( new GdsResTexture );
-		ptex->LoadResource( filepath , m_pDevice );
+		ptex->vLoadResource( filepath , m_pDevice );
 		return	ptex;	
 	}
 	else if ( !_tcscmp( ext , L"md2" ) )
 	{
 		GdsResMD2Ptr	pMd2 = GdsResMD2Ptr( new GdsResMD2 );
-		pMd2->LoadResource( filepath , m_pDevice );
+		pMd2->vLoadResource( filepath , m_pDevice );
+		return pMd2;
 	}
 
 	return GdsResBasePtr( (GdsResBase*)NULL);
+}
+
+HRESULT GdsResMgr::vReCreate( LPDIRECT3DDEVICE9 device , GdsResBasePtr recreated_res )
+{
+	if ( device == NULL || recreated_res == NULL )
+		return false;
+
+	recreated_res->vReCreate( device );
+	return true;
 }

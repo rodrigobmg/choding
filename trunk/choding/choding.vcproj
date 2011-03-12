@@ -200,58 +200,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="Framework"
-			>
-			<Filter
-				Name="Singleton"
-				>
-				<File
-					RelativePath=".\Framework\Singleton\CSingleton.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="ResourceManager"
-				>
-			</Filter>
-			<Filter
-				Name="BaseObject"
-				>
-				<File
-					RelativePath=".\Framework\BaseObject\CObject.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Profile"
-				>
-				<File
-					RelativePath=".\Framework\Profile\Profile.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Framework\Profile\Profile.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="MemoryManagement"
-				>
-			</Filter>
-			<Filter
-				Name="Utility"
-				>
-				<File
-					RelativePath=".\Framework\Utility\Utility.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Framework\Utility\Utility.h"
-					>
-				</File>
-			</Filter>
-		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

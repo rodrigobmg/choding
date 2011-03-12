@@ -3,9 +3,6 @@
 
 #include "choding_stdafx.h"
 
-#include "../Framework/ResourceManager/ResManager.h"
-
-#include "../Framework/Profile/Profile.h"
 #include "../../chodingModule/Snowboard/Framework/Snowboard.h"
 
 CSnowboard* g_pSnowboard = NULL;
@@ -56,7 +53,7 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 	RegisterClassEx( &wc );
 
 	HWND hWnd = CreateWindow( L"Choding" , L"Choding" , WS_OVERLAPPEDWINDOW , 100 , 100,
-								300 , 300 ,
+								800 , 600,
 								GetDesktopWindow() , NULL ,
 								wc.hInstance , NULL );
 

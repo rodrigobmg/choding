@@ -4,7 +4,7 @@
 #include <Windows.h>
 #include <WinBase.h>
 #include <d3dx9.h>
-#include <assert.h>
+#include <ASSERT.h>
 #include <d3d9.h>
 #include <tchar.h>
 #include <String>

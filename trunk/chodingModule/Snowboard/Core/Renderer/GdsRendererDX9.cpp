@@ -14,22 +14,22 @@ GdsRendererDX9::GdsRendererDX9()
 
 GdsRendererDX9::~GdsRendererDX9()
 {
-	Release();
+	vRelease();
 }
 
-HRESULT GdsRendererDX9::Release()
+HRESULT GdsRendererDX9::vRelease()
 {
 	SAFE_RELEASE(m_pD3D);
 	SAFE_RELEASE(m_pd3dDevice);
-	return S_OK;
+	return true;
 }
 
-void GdsRendererDX9::Clear()
+void GdsRendererDX9::vClear()
 {
 
 }
 
-HRESULT GdsRendererDX9::Create( HWND hWnd )
+HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 {
 	// Create the D3D object.
 	if( NULL == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) )
@@ -55,18 +55,19 @@ HRESULT GdsRendererDX9::Create( HWND hWnd )
 
 	m_RootNode = GdsNodePtr( new GdsNode );
 
-	return S_OK;
+	return true;
 }
 
 void GdsRendererDX9::Update( float fAccumTime )
 {
-	if ( m_RootNode )
-		m_RootNode->Update( fAccumTime );
-	else
-		assert( 0 );
-}
+	m_pd3dDevice->Clear( 0 , NULL , D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER , D3DCOLOR_XRGB( 128, 128, 128 ) , 1.f , 0 );
+	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
+	{
+		if ( m_RootNode )
+			m_RootNode->Update( fAccumTime );
 
-void GdsRendererDX9::Render( float fAccumTime )
-{
-	
+		m_pd3dDevice->EndScene();
+	}
+
+	m_pd3dDevice->Present( NULL , NULL , NULL , NULL );
 }

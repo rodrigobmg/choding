@@ -6,44 +6,65 @@ ImplementBoostPool( GdsResMD2 )
 GdsResMD2::GdsResMD2()
 {
 	SetName( OBJECT_RES_MD2 );
-	Clear();
+	vClear();
 }
 
 GdsResMD2::~GdsResMD2()
 {
 }
 
-void GdsResMD2::Clear()
+void GdsResMD2::vClear()
 {
+	m_pVB = NULL;
+	m_pTexture = NULL;
 }
 
-HRESULT GdsResMD2::Create()
+HRESULT GdsResMD2::vCreate()
 {
-	return S_OK;
+	if ( m_pTexture != NULL || m_pVB != NULL )
+	{
+		assert( 0 );
+		return false;
+	}
+	return true;
 }
 
-HRESULT GdsResMD2::Release()
+HRESULT GdsResMD2::vRelease()
 {	
-	return S_OK;
+	if ( m_pTexture )
+		m_pTexture->Release();
+	if ( m_pVB )
+		m_pVB->Release();
+
+	return true;
 }
 
-HRESULT GdsResMD2::LoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
+HRESULT GdsResMD2::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 {
 	if ( device == NULL )
 	{
-		ASSERT( 0 );
-		return S_FALSE;
+		assert( 0 );
+		return false;
 	}
+
+	m_strPath = path;
+
+	size_t poscomma = m_strPath.rfind( L"\\" );
+	tstring texturefilepath	= m_strPath.substr( 0 , poscomma );
+	texturefilepath += L"\\skin.jpg";
+
+	D3DXCreateTextureFromFile( device , texturefilepath.c_str() , &m_pTexture );
+
 
    	GdsFile file( path ); 
    
    	MD2HEADER pMD2Header;
 	if ( file.Read( sizeof( MD2HEADER ) , &pMD2Header )  == false )
-		return S_FALSE;
+		return false;
    
    	BYTE* pMD2Data = new BYTE[pMD2Header.offsetEnd];
 	if( file.Read( sizeof(BYTE)*( pMD2Header.offsetEnd - sizeof(MD2HEADER) ) , &pMD2Data[sizeof(MD2HEADER)] ) == false ) 
-		return S_FALSE;
+		return false;
 
 	///////////////////삼각형 그리기 개수 설정/////////////////////////////////////
 	m_uPrimitive = pMD2Header.numTris;
@@ -117,5 +138,57 @@ HRESULT GdsResMD2::LoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 	delete []pMD2Index;		//동적할당
 	delete []Vertices;		//동적할당
 
-	return S_OK;
+	return true;
 }
+
+HRESULT GdsResMD2::vReCreate( LPDIRECT3DDEVICE9 device )
+{
+	vRelease();
+	return vLoadResource( m_strPath.c_str() , device );
+}
+
+void GdsResMD2::SetVB( LPDIRECT3DVERTEXBUFFER9 vb )
+{
+	if ( m_pVB )
+		m_pVB->Release();
+
+	m_pVB = vb;
+}
+
+LPDIRECT3DVERTEXBUFFER9 GdsResMD2::GetVB()
+{
+	return m_pVB;
+}
+
+void GdsResMD2::SetFVF( DWORD flag )
+{
+	m_dFVF = flag;
+}
+
+DWORD GdsResMD2::GetFVF()
+{
+	return m_dFVF;
+}
+
+void GdsResMD2::SetTexture( LPDIRECT3DTEXTURE9 texture )
+{
+	if ( m_pTexture )
+		m_pTexture->Release();
+
+	m_pTexture = texture;
+}
+
+LPDIRECT3DTEXTURE9 GdsResMD2::GetTexture()
+{
+	return m_pTexture;
+}
+
+void GdsResMD2::SetPrimitive( UINT uPrimitive )
+{
+	m_uPrimitive = uPrimitive;
+}
+
+UINT GdsResMD2::GetPrimitive()
+{
+	return m_uPrimitive;
+}	

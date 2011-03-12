@@ -7,11 +7,6 @@ class GdsMeshNode : public GdsNode{
 
 protected:
 
-	LPDIRECT3DVERTEXBUFFER9		m_pVB;
-	LPDIRECT3DTEXTURE9			m_pTexture;
-	DWORD						m_dFVF;
-	UINT						m_uPrimitive;
-
 	virtual	void				vInitGeometry();
 	virtual void				vRender();
 	virtual void				vClear();

@@ -97,9 +97,10 @@ public:
 	HRESULT				LoadRes( const TCHAR* alias );
 	
 
-	virtual void		Clear();
-	virtual HRESULT		Create( LPDIRECT3DDEVICE9 device );
-	virtual HRESULT		Release();
+	virtual void		vClear();
+	virtual HRESULT		vCreate( LPDIRECT3DDEVICE9 device );
+	virtual	HRESULT		vReCreate( LPDIRECT3DDEVICE9 device , GdsResBasePtr recreated_res );
+	virtual HRESULT		vRelease();
 
 
 };

@@ -15,6 +15,7 @@ protected:
 	D3DXVECTOR3		vLookatPt;
 	D3DXVECTOR3		vUpVec;
 	D3DXMATRIXA16	matView;
+	
 
 public:
 	GdsCameraNode();

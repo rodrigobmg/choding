@@ -21,7 +21,7 @@ void GdsCameraManagerDX9::vClear()
 HRESULT GdsCameraManagerDX9::Create( LPDIRECT3DDEVICE9 device )
 {
 	m_pDevice = device;
-	return S_OK;
+	return true;
 }
 
 void GdsCameraManagerDX9::Update( float fElapsedTime )
@@ -34,7 +34,13 @@ void GdsCameraManagerDX9::Update( float fElapsedTime )
 		pcam->Update( fElapsedTime );
 
 	if ( m_pDevice )
+	{
 		m_pDevice->SetTransform( D3DTS_VIEW , &(pcam->GetViewMatrix()) );	
+		
+		D3DXMATRIXA16 matProj;
+		D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI/4, 1.0f, 1.0f, 1000.0f );
+		m_pDevice->SetTransform( D3DTS_PROJECTION, &matProj );
+	}
 }
 
 void GdsCameraManagerDX9::SetCam( int index )

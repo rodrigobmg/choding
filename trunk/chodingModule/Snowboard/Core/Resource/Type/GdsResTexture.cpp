@@ -5,7 +5,7 @@ ImplementBoostPool( GdsResTexture )
 GdsResTexture::GdsResTexture()
 {
 	SetName( OBJECT_RES_TEXTURE );
-	Clear();
+	vClear();
 }
 
 GdsResTexture::~GdsResTexture()
@@ -13,36 +13,45 @@ GdsResTexture::~GdsResTexture()
 	if ( m_pTexture )
 		m_pTexture->Release();	
 	
-	Clear();
+	vClear();
 }
 
-void GdsResTexture::Clear()
+void GdsResTexture::vClear()
 {
 	m_pTexture = NULL;
 }
 
-HRESULT GdsResTexture::Create()
+HRESULT GdsResTexture::vCreate()
 {
-	return S_OK;
+	return true;
 }
 
-HRESULT GdsResTexture::Release()
+HRESULT GdsResTexture::vRelease()
 {	
-	return S_OK;
+	return true;
 }
 
-HRESULT GdsResTexture::LoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
+HRESULT GdsResTexture::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 {
 	if ( device == NULL )
-		return S_FALSE;
+		return false;
 
 	if ( !_tcscmp( path , L"" ) )
-		return S_FALSE;
+		return false;
 
 	if ( SUCCEEDED( D3DXCreateTextureFromFile( device , path , &m_pTexture ) ) )
 	{
-		return S_OK;
+		m_strPath = path;
+		return true;
 	}
 
-	return S_FALSE;
+	return false;
+}
+
+HRESULT GdsResTexture::vReCreate( LPDIRECT3DDEVICE9 device )
+{
+	if ( m_pTexture )
+		m_pTexture->Release();
+
+	return vLoadResource( m_strPath.c_str() , device );
 }

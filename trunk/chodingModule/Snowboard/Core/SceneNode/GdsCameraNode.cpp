@@ -33,3 +33,4 @@ void GdsCameraNode::SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVE
 	vUpVec	= up;
 	D3DXMatrixLookAtLH( &matView , &vEyePt , &vLookatPt , &vUpVec );
 }
+

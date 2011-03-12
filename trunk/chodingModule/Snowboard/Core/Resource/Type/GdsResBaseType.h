@@ -3,7 +3,11 @@
 
 #include "../../Base/GdsObject.h"
 
-class GdsResBase : public GdsObject{
+class GdsResBase : public GdsObject
+{
+protected:
+
+	tstring				m_strPath;
 
 public:
 	GdsResBase()
@@ -13,10 +17,11 @@ public:
 
 	virtual ~GdsResBase(){};
 
-	virtual void	Clear() = 0;
-	virtual HRESULT	Create() = 0;
-	virtual HRESULT	Release() = 0;
-	virtual HRESULT LoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device ) = 0;
+	virtual void	vClear() = 0;
+	virtual HRESULT	vCreate() = 0;
+	virtual HRESULT	vRelease() = 0;
+	virtual	HRESULT	vReCreate( LPDIRECT3DDEVICE9 device ) = 0;
+	virtual HRESULT vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device ) = 0;
 };
 
 typedef boost::shared_ptr< GdsResBase >		GdsResBasePtr;

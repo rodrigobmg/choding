@@ -4,13 +4,6 @@
 #include "GdsResBaseType.h"
 
 class GdsResMD2 : public GdsResBase{
-	
-private:
-
-	LPDIRECT3DVERTEXBUFFER9		m_pVB;
-	LPDIRECT3DTEXTURE9			m_pTexture;
-	DWORD						m_dFVF;
-	UINT						m_uPrimitive;
 
 public:
 
@@ -76,14 +69,35 @@ public:
 
 	DeclareBoostPool	
 
+private:
+
+	LPDIRECT3DVERTEXBUFFER9		m_pVB;
+	LPDIRECT3DTEXTURE9			m_pTexture;
+	DWORD						m_dFVF;
+	UINT						m_uPrimitive;
+
 public:
 	GdsResMD2();
 	virtual ~GdsResMD2();
+	
+	void						SetVB( LPDIRECT3DVERTEXBUFFER9 vb );
+	LPDIRECT3DVERTEXBUFFER9		GetVB();
 
-	virtual void		Clear();
-	virtual HRESULT		Create();
-	virtual HRESULT		Release();
-	virtual HRESULT		LoadResource( const TCHAR* path  , LPDIRECT3DDEVICE9 device );
+	void						SetFVF( DWORD flag );
+	DWORD						GetFVF();
+
+	void						SetTexture( LPDIRECT3DTEXTURE9 texture );
+	LPDIRECT3DTEXTURE9			GetTexture();
+
+	void						SetPrimitive( UINT uPrimitive );
+	UINT						GetPrimitive();
+
+
+	virtual void		vClear();
+	virtual HRESULT		vCreate();
+	virtual HRESULT		vRelease();
+	virtual HRESULT		vReCreate( LPDIRECT3DDEVICE9 device );
+	virtual HRESULT		vLoadResource( const TCHAR* path  , LPDIRECT3DDEVICE9 device );
 		
 };
 

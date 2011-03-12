@@ -6,7 +6,7 @@ GdsNode::GdsNode()
 	m_listChildNode.clear();
 	m_Device = NULL;
 	m_pParentNode = GdsNodePtr( (GdsNode*)NULL );
-	m_pRessource = GdsResBasePtr( (GdsResBase*)NULL );
+	m_pResource = GdsResBasePtr( (GdsResBase*)NULL );
 }
 
 GdsNode::~GdsNode()
@@ -70,17 +70,17 @@ GdsNodePtr	GdsNode::GetAt( unsigned int index )
 HRESULT GdsNode::AttachChild( GdsNodePtr pNode )
 {
 	if ( this == pNode.get() )
-		return S_FALSE;
+		return false;
 
 	pNode->SetParent( shared_ptr_this() );	
 	m_listChildNode.push_back( pNode );
-	return S_OK;
+	return true;
 }
 
 HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 {
 	if ( this == pNode.get() )
-		return S_FALSE;
+		return false;
 
 	CHILDLIST::iterator it = m_listChildNode.begin();
 	for( ; it != m_listChildNode.end() ; ++it )
@@ -92,7 +92,7 @@ HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 		}
 	}
 
-	return S_OK;
+	return true;
 }
 
 HRESULT GdsNode::Update( float fElapsedtime )
@@ -116,7 +116,10 @@ void GdsNode::vInitGeometry()
 	if ( GetParent() == NULL )
 		m_matWorld = m_matLocal;
 	else
-		GetParent()->GetWorldTransform() * m_matLocal;
+		m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;
+
+	D3DXMatrixIdentity( &m_matWorld );
+	m_Device->SetTransform( D3DTS_WORLD , &m_matWorld );
 }
 
 void GdsNode::vRender()

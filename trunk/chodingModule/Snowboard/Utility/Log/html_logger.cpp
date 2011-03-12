@@ -55,8 +55,8 @@ namespace util
 		va_start(args, fmt); 
 		int length = _vsnwprintf_s(buff, BUFF_SIZE, _TRUNCATE, fmt, args);
 		va_end(args);
-		ASSERT(length > 0);
-		ASSERT(BUFF_SIZE > length+5);
+		assert(length > 0);
+		assert(BUFF_SIZE > length+5);
 
 		if (length > 0)
 		{
@@ -70,7 +70,7 @@ namespace util
 	{
 		wchar_t buff[128];
 		int writen = swprintf_s(buff, 128, L"<br><ul>\n<li>%s</li>\n", block_name);
-		ASSERT(-1 != writen);
+		assert(-1 != writen);
 
 		if (-1 != writen) {
 			vWrite(buff,writen);
@@ -89,7 +89,7 @@ namespace util
 			, szFont
 			, textsize
 			, color);
-		ASSERT(-1 != writen);
+		assert(-1 != writen);
 
 		if (-1 != writen) {
 			vWrite(buff,writen);
@@ -102,11 +102,11 @@ namespace util
 
 	bool HTML_Logger::vWrite(wchar_t const * str, size_t len)
 	{
-		ASSERT(fp_);
+		assert(fp_);
 		if (fp_) {
 			size_t writen = ::fwrite(str, sizeof(wchar_t), len, fp_);
 
-			ASSERT(writen == len);
+			assert(writen == len);
 			fflush(fp_);
 			return (writen == len);
 		}
@@ -117,12 +117,12 @@ namespace util
 	{
 		vClose();
 
-		ASSERT(NULL == buff_);
+		assert(NULL == buff_);
 		buff_ = (wchar_t*)malloc(buffSize_ * sizeof(wchar_t));
-		ASSERT(buff_);
+		assert(buff_);
 
 		_wfopen_s(&fp_, fname, L"wtc,ccs=utf-8");
-		//ASSERT(fp_ && "_wfopen_s failed!");
+		//assert(fp_ && "_wfopen_s failed!");
 
 		if (fp_) {
 			LPCTSTR str = _T("<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n");

@@ -13,20 +13,14 @@ GdsMeshNode::~GdsMeshNode()
 
 void GdsMeshNode::vInitGeometry()
 {
-// 	if( FAILED( GetDevice()->CreateVertexBuffer( Size * sizeof(MD2_VERTEX), 0, m_dFVF, D3DPOOL_DEFAULT, &m_pVB, NULL ) ) )
-// 	{ return E_FAIL; }
-// 
-// 	void *pVertices;
-// 	if( FAILED( m_pVB->Lock( 0, Size * sizeof(MD2_VERTEX), (void**)&pVertices, 0 ) ) )
-// 	{ return E_FAIL; }
-// 	memcpy( pVertices, Vertices, Size * sizeof(MD2_VERTEX) );
-// 	m_pVB->Unlock();
+	if ( GetDevice() == NULL )
+		return;
 
-// 	D3DXMATRIXA16 matWorld;
-// 	D3DXMatrixIdentity( &matWorld );
-// 	z += 3.0f;
-// 	matWorld._42 = z;
-// 	g_pd3dDevice->SetTransform( D3DTS_WORLD, &matWorld );
+ 	D3DXMATRIXA16 matWorld;
+ 	D3DXMatrixIdentity( &matWorld );
+//  	z += 3.0f;
+//  	matWorld._42 = z;
+ 	GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 }
 
 void GdsMeshNode::vRender()
@@ -34,13 +28,60 @@ void GdsMeshNode::vRender()
 	if ( GetDevice() == NULL )
 		return;
 
- 	GetDevice()->SetTexture( 0, m_pTexture );
-	GetDevice()->SetStreamSource( 0, m_pVB, 0, sizeof(GdsResMD2::MD2_VERTEX) );	
- 	GetDevice()->SetFVF( m_dFVF );
- 	GetDevice()->DrawPrimitive( D3DPT_TRIANGLELIST, 0, m_uPrimitive );
+	LPDIRECT3DVERTEXBUFFER9 vb;
+	LPDIRECT3DTEXTURE9 tex;
+	vb = GetVB();
+	tex = GetTexture();
+	DWORD fvf = GetFVF();
+	int prim = GetPrimitive();
+  	GetDevice()->SetTexture( 0, tex );
+ 	GetDevice()->SetStreamSource( 0, vb, 0, sizeof(GdsResMD2::MD2_VERTEX) );	
+  	GetDevice()->SetFVF( fvf );
+  	GetDevice()->DrawPrimitive( D3DPT_TRIANGLELIST, 0, prim );
 }
 
 void GdsMeshNode::vClear()
 {
 
+}
+
+void GdsMeshNode::SetVB( LPDIRECT3DVERTEXBUFFER9 vb )
+{
+
+}
+
+LPDIRECT3DVERTEXBUFFER9 GdsMeshNode::GetVB()
+{
+	return boost::shared_dynamic_cast< GdsResMD2 >( m_pResource )->GetVB();
+}
+
+void GdsMeshNode::SetFVF( DWORD flag )
+{
+
+}
+
+DWORD GdsMeshNode::GetFVF()
+{
+	return boost::shared_dynamic_cast< GdsResMD2 >( m_pResource )->GetFVF();
+}
+
+void GdsMeshNode::SetTexture( LPDIRECT3DTEXTURE9 texture )
+{
+
+}
+
+LPDIRECT3DTEXTURE9 GdsMeshNode::GetTexture()
+{
+	return boost::shared_dynamic_cast< GdsResMD2 >(m_pResource)->GetTexture();
+}
+
+void GdsMeshNode::SetPrimitive( UINT uPrimitive )
+{
+
+}
+
+UINT GdsMeshNode::GetPrimitive()
+{
+	GdsResMD2Ptr p = boost::shared_dynamic_cast< GdsResMD2 >(m_pResource);
+	return p->GetPrimitive();
 }

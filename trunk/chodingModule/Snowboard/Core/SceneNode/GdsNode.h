@@ -24,7 +24,7 @@ protected:
 
 	LPDIRECT3DDEVICE9						m_Device;
 
-	GdsResBasePtr							m_pRessource;
+	GdsResBasePtr							m_pResource;
 
 public:
 	GdsNode();
@@ -38,8 +38,8 @@ public:
 	void							SetDevice( LPDIRECT3DDEVICE9 device ){ m_Device = device; }
 	LPDIRECT3DDEVICE9				GetDevice(){ return m_Device; }
 
-	void							SetResource( GdsResBasePtr pResource ){ m_pRessource = pResource; }
-	GdsResBasePtr					GetREsource() { return m_pRessource; }
+	void							SetResource( GdsResBasePtr pResource ){ m_pResource = pResource; }
+	GdsResBasePtr					GetREsource() { return m_pResource; }
 
 	D3DXMATRIXA16&					GetTransform();
 	void							SetTransform( D3DXMATRIXA16& mat );
@@ -51,6 +51,8 @@ public:
 	GdsNodePtr						GetParent();
 	void							SetParent( GdsNodePtr pNode );
 	GdsNodePtr						GetAt( unsigned int index );
+
+	void							Deepcopy( GdsNodePtr pResource );
 	
 	HRESULT					AttachChild( GdsNodePtr pNode );
 	HRESULT					DetachChild( GdsNodePtr pNode );

@@ -36,8 +36,8 @@ public:
 
 		resmgr = GdsResMgrPtr( new GdsResMgr );
 		renderer = GdsRendererDX9Ptr( new GdsRendererDX9 );
-		renderer->Create( hWnd );
-		resmgr->Create( renderer->GetDevice() );
+		renderer->vCreate( hWnd );
+		resmgr->vCreate( renderer->GetDevice() );
 	}
 
 	virtual ~GdsResourceMgrTest()
@@ -51,9 +51,9 @@ public:
 		TCHAR curpath[ MAX_PATH ];
 		GetCurrentDirectory( MAX_PATH, curpath );
 		TCHAR respath[MAX_PATH];
-		_stprintf_s( respath , L"%s\\%s" , L"E:\\Project\\choding\\Application" , L"Resource" );
-		resmgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"md2", respath , L"md2" , true ) );
-		resmgr->LoadRes( L"md2" );
+		_stprintf_s( respath , L"%s\\%s" , L"E:\\Project\\choding\\Application" , L"Resource\\md2\\°í±â" );
+		ASSERT_TRUE( resmgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"md2", respath , L"md2" , true ) ) );
+		ASSERT_TRUE( resmgr->LoadRes( L"md2" ) );
 	}
 
 	virtual void TearDown()

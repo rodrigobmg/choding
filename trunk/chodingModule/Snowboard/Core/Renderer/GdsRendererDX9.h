@@ -19,15 +19,14 @@ public:
 	GdsRendererDX9();
 	virtual ~GdsRendererDX9();
 	
-	virtual	void			Clear();
-	virtual HRESULT			Create( HWND hWnd );
-	virtual HRESULT			Release();
+	virtual	void			vClear();
+	virtual HRESULT			vCreate( HWND hWnd );
+	virtual HRESULT			vRelease();
 
 	void					SetRootNode( GdsNodePtr node ){ m_RootNode = node; }
 	GdsNodePtr				GetRootNode() { return m_RootNode; }
 	
-	virtual void			Update( float fAccumTime );
-	virtual void			Render( float fAccumTime );
+	void					Update( float fAccumTime );
 
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
 
