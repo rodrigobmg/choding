@@ -4,11 +4,11 @@
 #include <Windows.h>
 #include "tchar.h"
 #include <iostream>
-#include <cassert>
+#include <cASSERT>
 #include <map>
 #include <vector>
 #include <d3dx9.h>
-#include <assert.h>
+#include <ASSERT.h>
 #include <string.h>
 #include <d3dx9tex.h>
 #include <shlwapi.h>
