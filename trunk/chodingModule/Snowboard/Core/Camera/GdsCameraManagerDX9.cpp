@@ -35,10 +35,17 @@ void GdsCameraManagerDX9::Update( float fElapsedTime )
 
 	if ( m_pDevice )
 	{
-		m_pDevice->SetTransform( D3DTS_VIEW , &(pcam->GetViewMatrix()) );	
+		D3DXVECTOR3 vEyept( 0.f , 3.f , -5.f );
+		D3DXVECTOR3 vLookatpt( 0.f , 0.f , 0.f );
+		D3DXVECTOR3 vUppt( 0.f , 1.f , 0.f );
+		D3DXMATRIXA16 matView;
+		D3DXMatrixLookAtLH( &matView , &vEyept , &vLookatpt , &vUppt );
+		m_pDevice->SetTransform( D3DTS_VIEW , &matView );
+
+		//m_pDevice->SetTransform( D3DTS_VIEW , &(pcam->GetViewMatrix()) );	
 		
 		D3DXMATRIXA16 matProj;
-		D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI/4, 1.0f, 1.0f, 1000.0f );
+		D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI/4, 1.0f, 1.0f, 100.0f );
 		m_pDevice->SetTransform( D3DTS_PROJECTION, &matProj );
 	}
 }

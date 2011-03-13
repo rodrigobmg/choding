@@ -81,8 +81,8 @@ void CSnowboard::DestroyModule()
 
 void CSnowboard::OnIdle()
 {
-	if ( m_pCamMgr )
-		m_pCamMgr->Update( 0.f );
+// 	if ( m_pCamMgr )
+// 		m_pCamMgr->Update( 0.f );
 
 	if ( m_pRenderer )
 		m_pRenderer->Update( 0.f );

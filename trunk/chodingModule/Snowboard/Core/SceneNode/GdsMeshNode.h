@@ -11,21 +11,19 @@ protected:
 	virtual void				vRender();
 	virtual void				vClear();
 
+	void						Triangle();
+
+	struct CUSTOMVERTEX
+	{
+		float x,y,z;
+		DWORD color;
+	};
+
+	LPDIRECT3DVERTEXBUFFER9		g_pVB;
+
 public:
 	GdsMeshNode();
 	virtual ~GdsMeshNode();
-
-	void						SetVB( LPDIRECT3DVERTEXBUFFER9 vb );
-	LPDIRECT3DVERTEXBUFFER9		GetVB();
-
-	void						SetFVF( DWORD flag );
-	DWORD						GetFVF();
-
-	void						SetTexture( LPDIRECT3DTEXTURE9 texture );
-	LPDIRECT3DTEXTURE9			GetTexture();
-
-	void						SetPrimitive( UINT uPrimitive );
-	UINT						GetPrimitive();
 
 };
 

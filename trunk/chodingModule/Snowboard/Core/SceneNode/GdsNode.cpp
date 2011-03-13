@@ -118,8 +118,8 @@ void GdsNode::vInitGeometry()
 	else
 		m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;
 
-	D3DXMatrixIdentity( &m_matWorld );
-	m_Device->SetTransform( D3DTS_WORLD , &m_matWorld );
+	//D3DXMatrixIdentity( &m_matWorld );
+	//m_Device->SetTransform( D3DTS_WORLD , &m_matWorld );
 }
 
 void GdsNode::vRender()

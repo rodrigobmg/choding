@@ -39,7 +39,7 @@ public:
 	LPDIRECT3DDEVICE9				GetDevice(){ return m_Device; }
 
 	void							SetResource( GdsResBasePtr pResource ){ m_pResource = pResource; }
-	GdsResBasePtr					GetREsource() { return m_pResource; }
+	GdsResBasePtr					GetResource() { return m_pResource; }
 
 	D3DXMATRIXA16&					GetTransform();
 	void							SetTransform( D3DXMATRIXA16& mat );
