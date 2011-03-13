@@ -1,7 +1,6 @@
 #include "GdsCameraManagerDX9.h"
 
-GdsCameraManagerDX9::GdsCameraManagerDX9( void ):
-m_pDevice( NULL )
+GdsCameraManagerDX9::GdsCameraManagerDX9( void )
 {
 	SetName( OBJECT_CAMMGR_DX9 );
 	vClear();
@@ -14,44 +13,12 @@ GdsCameraManagerDX9::~GdsCameraManagerDX9( void )
 
 void GdsCameraManagerDX9::vClear()
 {
-	m_iCurCamIndex = -1;
 	m_camaraContainer.clear();
 }
 
-HRESULT GdsCameraManagerDX9::Create( LPDIRECT3DDEVICE9 device )
+HRESULT GdsCameraManagerDX9::Create()
 {
-	m_pDevice = device;
 	return true;
-}
-
-void GdsCameraManagerDX9::Update( float fElapsedTime )
-{
-	if ( m_iCurCamIndex <= -1 )
-		return;
-	
-	GdsCameraNodePtr pcam = m_camaraContainer[m_iCurCamIndex];
-	if ( pcam )
-		pcam->Update( fElapsedTime );
-
-	if ( m_pDevice )
-	{
-		m_pDevice->SetTransform( D3DTS_VIEW , &(pcam->GetViewMatrix()) );
-		
-		m_pDevice->SetTransform( D3DTS_PROJECTION, &(pcam->GetProjMatrix()) );
-	}
-}
-
-void GdsCameraManagerDX9::SetCam( int index )
-{
-	int32_t size = (int32_t)m_camaraContainer.size();
-
-	if ( index > size || index <= -1 )
-	{
-		index = -1;
-		assert( 0 );
-	}
-
-	m_iCurCamIndex = index;	
 }
 
 void GdsCameraManagerDX9::Attach( GdsCameraNodePtr camnode )
@@ -73,7 +40,16 @@ void GdsCameraManagerDX9::Detach( int index )
 
 void GdsCameraManagerDX9::DetachAll()
 {
-	m_iCurCamIndex = -1;
 	m_camaraContainer.clear();
+}
+
+GdsCameraNodePtr GdsCameraManagerDX9::GetCamNode( int iCamIndex )
+{
+	size_t size = m_camaraContainer.size();
+
+	if ( iCamIndex < 0 || iCamIndex > size )
+		return GdsCameraNodePtr( (GdsCameraNode*)NULL );
+
+	GdsCameraNodePtr pcam = m_camaraContainer[iCamIndex];
 }
 

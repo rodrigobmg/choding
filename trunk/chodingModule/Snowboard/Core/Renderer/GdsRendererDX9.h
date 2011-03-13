@@ -14,7 +14,8 @@ private:
  	LPDIRECT3D9             m_pD3D;      // = NULL; // Used to create the D3DDevice
  	LPDIRECT3DDEVICE9       m_pd3dDevice;// = NULL; // Our rendering device
 	GdsNodePtr				m_RootNode;
-	
+
+	void					setRootNodeAndCamNode();
 protected:
 
 	GdsCameraManagerDX9Ptr	m_CamManager;

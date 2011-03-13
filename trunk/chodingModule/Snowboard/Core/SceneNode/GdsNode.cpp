@@ -97,6 +97,9 @@ HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 
 HRESULT GdsNode::Update( float fElapsedtime )
 {
+	if ( m_Device == NULL )
+		m_Device = GetParent()->GetDevice();
+
 	vInitGeometry();
 	vRender();
 

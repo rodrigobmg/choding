@@ -23,7 +23,8 @@ void GdsCameraNode::vRender()
 
 void GdsCameraNode::vInitGeometry()
 {
-	D3DXMatrixLookAtLH( &matView , &vEyePt , &vLookatPt , &vUpVec );
+	GetDevice()->SetTransform( D3DTS_VIEW , &matView );
+	GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
 }
 
 void GdsCameraNode::SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR3& up )

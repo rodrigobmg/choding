@@ -6,8 +6,7 @@
 
 class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
 {
-		
-protected:	
+protected:		
 
 	typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
 	GdsNodePtr								m_pParentNode;

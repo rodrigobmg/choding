@@ -105,7 +105,6 @@ void CSnowboard::TestFunc()
 		GdsMeshNodePtr mesh = GdsMeshNodePtr( new GdsMeshNode );
 		
 		mesh->SetResource( resmesh );
-		mesh->SetDevice( m_pRenderer->GetDevice() );
 
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
 	}	

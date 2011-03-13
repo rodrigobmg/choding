@@ -9,27 +9,24 @@ class GdsCameraManagerDX9 : public GdsCameraBase
 
 protected:
 
-	LPDIRECT3DDEVICE9	m_pDevice;
-
 	virtual void	vClear();
 
 	typedef std::vector< GdsCameraNodePtr >		CAM_CONTAINER;	
 	CAM_CONTAINER	m_camaraContainer;
 
-	int32_t				m_iCurCamIndex;
 public:
 
 	GdsCameraManagerDX9(void);
 	virtual ~GdsCameraManagerDX9(void);
 
-	virtual		HRESULT	Create( LPDIRECT3DDEVICE9 device );
+	virtual	HRESULT		Create();
 
+	GdsCameraNodePtr	GetCamNode( int iCamIndex );
 
-	virtual		void	SetCam( int32_t index );
-	virtual		void	Attach( GdsCameraNodePtr camnode );
-	virtual		void	Detach( int32_t index );
-	virtual		void	DetachAll();
-	void				Update( float fElapsedtime );
+	void				Attach( GdsCameraNodePtr camnode );
+	void				Detach( int32_t index );
+	void				DetachAll();
+
 };
 
 typedef boost::shared_ptr< GdsCameraManagerDX9 > GdsCameraManagerDX9Ptr;

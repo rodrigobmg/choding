@@ -9,7 +9,6 @@ class GdsCameraBase : public GdsObject
 protected:
 
 	virtual void	vClear() = 0;
-	virtual void	Update( float fElapsedtime ) = 0;
 
 public:
 
