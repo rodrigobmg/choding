@@ -22,10 +22,6 @@ GdsObjectPtr	GdsCoreFactory::CreateCore( const tstring& coretype )
 	{
 		return GdsRendererDX9Ptr( new GdsRendererDX9 );
 	}
-	else if ( coretype == CORE_CAMMGR_DX9 )
-	{
-		return GdsCameraManagerDX9Ptr( new GdsCameraManagerDX9 );
-	}
 	else
 	{
 		assert( 0 && L"정의되지 않은 코어는 생성될수 없습니다." );

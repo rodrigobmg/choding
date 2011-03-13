@@ -11,16 +11,6 @@ protected:
 	virtual void				vRender();
 	virtual void				vClear();
 
-	void						Triangle();
-
-	struct CUSTOMVERTEX
-	{
-		float x,y,z;
-		DWORD color;
-	};
-
-	LPDIRECT3DVERTEXBUFFER9		g_pVB;
-
 public:
 	GdsMeshNode();
 	virtual ~GdsMeshNode();

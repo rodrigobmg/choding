@@ -2,6 +2,7 @@
 #define _GDS_H_RENDERERDX9_
 
 #include "GdsRendererBase.h"
+#include "../Camera/GdsCameraManagerDX9.h"
 
 class GdsNode;
 
@@ -14,6 +15,10 @@ private:
  	LPDIRECT3DDEVICE9       m_pd3dDevice;// = NULL; // Our rendering device
 	GdsNodePtr				m_RootNode;
 	
+protected:
+
+	GdsCameraManagerDX9Ptr	m_CamManager;
+
 public:
 
 	GdsRendererDX9();
@@ -29,6 +34,7 @@ public:
 	void					Update( float fAccumTime );
 
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
+	GdsCameraManagerDX9Ptr	GetCamMgr()		{ return m_CamManager; }
 
 };
 

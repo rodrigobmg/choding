@@ -43,7 +43,7 @@ HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
 	d3dpp.EnableAutoDepthStencil = TRUE;
-	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;
 
 	// Create the D3DDevice
 	if( FAILED( m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,
@@ -53,7 +53,30 @@ HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 		return E_FAIL;
 	}
 
+	m_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
+	//m_pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
+	//m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
+
+	// Turn off D3D lighting
+	m_pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+
+
 	m_RootNode = GdsNodePtr( new GdsNode );
+	m_CamManager = GdsCameraManagerDX9Ptr( new GdsCameraManagerDX9 );
+	m_CamManager->Create( m_pd3dDevice );
+
+	GdsCameraNodePtr	camnode = GdsCameraNodePtr( new GdsCameraNode );
+	
+	D3DXVECTOR3 vEyePt( 0.0f, 0.0f,-100.0f );
+	D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
+	D3DXVECTOR3 vUpVec( 0.0f, 1.0f, 0.0f );
+	D3DXMATRIXA16 matView;
+	D3DXMatrixLookAtLH( &matView, &vEyePt, &vLookatPt, &vUpVec );
+	
+	camnode->SetLootAtLH( vEyePt , vLookatPt , vUpVec );
+	camnode->SetPerspective( D3DX_PI/4, 1.0f, 1.0f, 1000.0f );
+	m_CamManager->Attach( camnode );
+	m_CamManager->SetCam( 0 );
 
 	return true;
 }
@@ -63,6 +86,9 @@ void GdsRendererDX9::Update( float fAccumTime )
 	m_pd3dDevice->Clear( 0 , NULL , D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER , D3DCOLOR_XRGB( 128, 128, 128 ) , 1.f , 0 );
 	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
 	{
+		if ( m_CamManager )
+			m_CamManager->Update(fAccumTime);
+
 		if ( m_RootNode )
 			m_RootNode->Update( fAccumTime );
 

@@ -10,7 +10,6 @@
 #include "../Core/GdsCoreFactory.h"
 #include "../Core/Renderer/GdsRendererDX9.h"
 #include "../Core/Resource/GdsResMgr.h"
-#include "../Core/Camera/GdsCameraManagerDX9.h"
 
 class CSnowboard
 {
@@ -25,7 +24,6 @@ public:
 	HRESULT		MsgProc();
 
 	bool		InitRenderer( HWND hWnd );
-	bool		InitCamera( LPDIRECT3DDEVICE9 device );
 	bool		InitResource( LPDIRECT3DDEVICE9 device );
 
 	void		Clear();
@@ -35,7 +33,6 @@ public:
 	void		TestFunc();
 private:
 	
-	GdsCameraManagerDX9Ptr	m_pCamMgr;
 	GdsRendererDX9Ptr	m_pRenderer;
 	GdsResMgrPtr		m_pResMgr;
 	

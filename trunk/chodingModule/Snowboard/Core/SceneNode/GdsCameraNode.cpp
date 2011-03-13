@@ -34,3 +34,13 @@ void GdsCameraNode::SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVE
 	D3DXMatrixLookAtLH( &matView , &vEyePt , &vLookatPt , &vUpVec );
 }
 
+void GdsCameraNode::SetPerspective( float fov , float aspect , float znear , float zfar )
+{
+	this->fov = fov;
+	this->aspect = aspect;
+	this->znear = znear;
+	this->zfar = zfar;
+	
+	D3DXMatrixPerspectiveFovLH( &matProj, fov , aspect , znear , zfar );
+}
+

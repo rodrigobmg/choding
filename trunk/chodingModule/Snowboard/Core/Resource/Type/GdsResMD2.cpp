@@ -6,7 +6,7 @@ ImplementBoostPool( GdsResMD2 )
 GdsResMD2::GdsResMD2()
 {
 	SetName( OBJECT_RES_MD2 );
-	m_dFVF = D3DFVF_XYZ|D3DFVF_DIFFUSE|D3DFVF_TEX1;
+	m_dFVF = D3DFVF_XYZ|D3DFVF_TEX1;
 	vClear();
 }
 
@@ -117,7 +117,13 @@ HRESULT GdsResMD2::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 		}
 	}
 
- 	if( FAILED( device->CreateVertexBuffer( Size * sizeof(MD2_VERTEX), 0, D3DFVF_XYZ|D3DFVF_DIFFUSE|D3DFVF_TEX1 , D3DPOOL_DEFAULT, &m_pVB, NULL ) ) )
+ 	if( FAILED( device->CreateVertexBuffer( Size * sizeof(MD2_VERTEX), 
+											0, 
+											m_dFVF , 
+											D3DPOOL_DEFAULT, 
+											&m_pVB, 
+											NULL ) ) 
+											)
  	{
 		return E_FAIL; 
 	}

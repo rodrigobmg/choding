@@ -36,7 +36,6 @@ bool CSnowboard::InitModule( HWND hWnd )
 
 
 	InitRenderer( hWnd );
-	InitCamera( m_pRenderer->GetDevice() );
 	InitResource( m_pRenderer->GetDevice() );
 
 	TestFunc();
@@ -50,13 +49,6 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 	m_pRenderer->vCreate( hWnd );
 	m_pRenderer->GetRootNode()->SetDevice( m_pRenderer->GetDevice() );
 	
-	return TRUE;
-}
-
-bool	CSnowboard::InitCamera( LPDIRECT3DDEVICE9 device )
-{
-	m_pCamMgr = boost::shared_dynamic_cast< GdsCameraManagerDX9 >( GdsCoreFactory::CreateCore( CORE_CAMMGR_DX9 ));
-	m_pCamMgr->Create( device );
 	return TRUE;
 }
 
@@ -81,12 +73,8 @@ void CSnowboard::DestroyModule()
 
 void CSnowboard::OnIdle()
 {
-// 	if ( m_pCamMgr )
-// 		m_pCamMgr->Update( 0.f );
-
 	if ( m_pRenderer )
 		m_pRenderer->Update( 0.f );
-
 }
 
 
@@ -120,15 +108,5 @@ void CSnowboard::TestFunc()
 		mesh->SetDevice( m_pRenderer->GetDevice() );
 
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
-	}
-
-	GdsCameraNodePtr camnode = GdsCameraNodePtr( new GdsCameraNode );
-	D3DXVECTOR3 vEyePt( 0.0f, 0.0f,-100.0f );
-	D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
-	D3DXVECTOR3 vUpVec( 0.0f, 1.0f, 0.0f );
-	camnode->SetLootAtLH( vEyePt , vLookatPt , vUpVec );
-	m_pCamMgr->Attach( camnode );
-	m_pCamMgr->SetCam( 0 );
-	
-	
+	}	
 }
