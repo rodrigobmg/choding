@@ -74,7 +74,14 @@ void CSnowboard::DestroyModule()
 void CSnowboard::OnIdle()
 {
 	if ( m_pRenderer )
+	{		
+		BEGIN_PERFORMANCE( L"render" );
 		m_pRenderer->Update( 0.f );
+		END_PERFORMANCE( L"render" );
+		SAMPLE_PERFORMANCE sample;
+		OUTPUT_PERFORMANCE( L"render" , sample );
+		LOG_WARNING_F(" [Render] Avg = %d , DeltaTick = %d , Count = %d", sample.ulAvg , sample.ulTotalDeltaTick , sample.ulCount );
+	}
 }
 
 
@@ -102,10 +109,13 @@ void CSnowboard::TestFunc()
 	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"meat.md2" ) );
 	if( resmesh )
 	{
-		GdsMeshNodePtr mesh = GdsMeshNodePtr( new GdsMeshNode );
-		
-		mesh->SetResource( resmesh );
+		for ( size_t i=0 ; i < 1 ; i++)
+		{
+			GdsMeshNodePtr mesh = GdsMeshNodePtr( new GdsMeshNode );
 
-		m_pRenderer->GetRootNode()->AttachChild( mesh );
+			mesh->SetResource( resmesh );
+
+			m_pRenderer->GetRootNode()->AttachChild( mesh );
+		}		
 	}	
 }

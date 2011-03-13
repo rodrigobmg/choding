@@ -18,6 +18,12 @@ void GdsMeshNode::vInitGeometry()
 
 	D3DXMATRIXA16 matWorld;
 	D3DXMatrixIdentity( &matWorld );
+	
+// 	matWorld._42 = rand()%80 - 40;
+// 	matWorld._41 = rand()%80 - 40;
+	D3DXMatrixTranslation( &matWorld , 0 , 5 , 0 );
+	D3DXMatrixRotationX( &matWorld , 2 );
+	D3DXMatrixScaling( &matWorld , 2 , 1 , 2 );
 	GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 }
 

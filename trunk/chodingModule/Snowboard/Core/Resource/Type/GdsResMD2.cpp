@@ -6,7 +6,7 @@ ImplementBoostPool( GdsResMD2 )
 GdsResMD2::GdsResMD2()
 {
 	SetName( OBJECT_RES_MD2 );
-	m_dFVF = D3DFVF_XYZ|D3DFVF_TEX1;
+	m_dFVF = D3DFVF_XYZ|/*D3DFVF_DIFFUSE|*/D3DFVF_TEX1;
 	vClear();
 }
 
