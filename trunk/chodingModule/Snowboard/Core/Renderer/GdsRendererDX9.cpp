@@ -101,6 +101,6 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 	camnode->SetPerspective( D3DX_PI/4, 1.0f, 1.0f, 1000.0f );
 	m_CamManager->Attach( camnode );
 
-//	GdsCameraNodePtr camera = m_CamManager->GetCamNode( 0 );
-	m_RootNode->AttachChild( camnode );
+	GdsCameraNodePtr camera = m_CamManager->GetCamNode( 0 );
+	m_RootNode->AttachChild( camera );
 }

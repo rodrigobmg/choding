@@ -100,6 +100,9 @@ HRESULT GdsNode::Update( float fElapsedtime )
 	if ( m_Device == NULL )
 		m_Device = GetParent()->GetDevice();
 
+	if ( GetParent() != NULL && ( m_Device != GetParent()->GetDevice() ) )
+		m_Device = GetParent()->GetDevice();
+	
 	vInitGeometry();
 	vRender();
 

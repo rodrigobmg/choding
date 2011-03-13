@@ -50,6 +50,6 @@ GdsCameraNodePtr GdsCameraManagerDX9::GetCamNode( int iCamIndex )
 	if ( iCamIndex < 0 || iCamIndex > size )
 		return GdsCameraNodePtr( (GdsCameraNode*)NULL );
 
-	GdsCameraNodePtr pcam = m_camaraContainer[iCamIndex];
+	return m_camaraContainer[iCamIndex];
 }
 
