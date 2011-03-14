@@ -16,12 +16,12 @@ void GdsCameraNode::vClear()
 {
 }
 
-void GdsCameraNode::vRender()
+void GdsCameraNode::vRender( float fElapsedtime )
 {
 
 }
 
-void GdsCameraNode::vInitGeometry()
+void GdsCameraNode::vInitGeometry( float fElapsedtime )
 {
 	GetDevice()->SetTransform( D3DTS_VIEW , &matView );
 	GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );

@@ -11,23 +11,28 @@ GdsMeshNode::~GdsMeshNode()
 {
 }
 
-void GdsMeshNode::vInitGeometry()
+void GdsMeshNode::vInitGeometry( float fElapsedtime )
 {
 	if ( GetDevice() == NULL )
 		return;
 
+	m_matLocal.m_fScale = 10.1;
+
 	D3DXMATRIXA16 matWorld;
 	D3DXMatrixIdentity( &matWorld );
-	
-// 	matWorld._42 = rand()%80 - 40;
-// 	matWorld._41 = rand()%80 - 40;
-	D3DXMatrixTranslation( &matWorld , 0 , 5 , 0 );
-	D3DXMatrixRotationX( &matWorld , 2 );
-	D3DXMatrixScaling( &matWorld , 2 , 1 , 2 );
+	m_matWorld.m_Rotate.GetRow( 0 , matWorld._11 , matWorld._12 , matWorld._13 );
+	m_matWorld.m_Rotate.GetRow( 1 , matWorld._21 , matWorld._22 , matWorld._23 );
+	m_matWorld.m_Rotate.GetRow( 2 , matWorld._31 , matWorld._32 , matWorld._33 );
+	matWorld._41 = m_matWorld.m_Translate[0]; 
+	matWorld._42 = m_matWorld.m_Translate[1];
+	matWorld._43 = m_matWorld.m_Translate[2];	
+	//D3DXMatrixTranslation( &matWorld , m_matWorld.m_Translate.x , m_matWorld.m_Translate.y , m_matWorld.m_Translate.z );
+	GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
+	D3DXMatrixScaling( &matWorld , m_matWorld.m_fScale , m_matWorld.m_fScale , m_matWorld.m_fScale );
 	GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 }
 
-void GdsMeshNode::vRender()
+void GdsMeshNode::vRender( float fElapsedtime )
 {
 	if ( GetDevice() == NULL )
 		return;

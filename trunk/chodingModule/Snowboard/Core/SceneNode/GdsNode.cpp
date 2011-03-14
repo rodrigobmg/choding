@@ -7,6 +7,8 @@ GdsNode::GdsNode()
 	m_Device = NULL;
 	m_pParentNode = GdsNodePtr( (GdsNode*)NULL );
 	m_pResource = GdsResBasePtr( (GdsResBase*)NULL );
+	m_matWorld.MakeIdentity();
+	m_matLocal.MakeIdentity();
 }
 
 GdsNode::~GdsNode()
@@ -103,8 +105,8 @@ HRESULT GdsNode::Update( float fElapsedtime )
 	if ( GetParent() != NULL && ( m_Device != GetParent()->GetDevice() ) )
 		m_Device = GetParent()->GetDevice();
 	
-	vInitGeometry();
-	vRender();
+	InitGeometry( fElapsedtime );
+	Render( fElapsedtime );
 
 	if ( !m_listChildNode.empty() )
 	{
@@ -117,40 +119,27 @@ HRESULT GdsNode::Update( float fElapsedtime )
 	return TRUE;
 }
 
-void GdsNode::vInitGeometry()
+
+void GdsNode::InitGeometry( float fElapsedtime )
 {
-	/*
 	if ( GetParent() == NULL )
-			m_matWorld = m_matLocal;
-		else
-			m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;*/
+		m_matWorld = m_matLocal;
+	else
+		m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;
+
+	vInitGeometry(fElapsedtime);
 	
-
-	//D3DXMatrixIdentity( &m_matWorld );
-	//m_Device->SetTransform( D3DTS_WORLD , &m_matWorld );
 }
 
-void GdsNode::vRender()
+void GdsNode::Render( float fElapsedtime )
 {
-
+	vRender(fElapsedtime);
 }
 
-GdsTransform& GdsNode::GetTransform()
+void GdsNode::vInitGeometry( float fElapsedtime )
 {
-	return m_matLocal;
 }
 
-void GdsNode::SetTransform( GdsTransform& mat )
+void GdsNode::vRender( float fElapsedtime )
 {
-	m_matLocal = mat;
-}
-
-GdsTransform& GdsNode::GetWorldTransform()
-{
-	return m_matWorld;
-}
-
-void GdsNode::SetWorldTransform( GdsTransform& mat )
-{
-	m_matWorld = mat;
 }

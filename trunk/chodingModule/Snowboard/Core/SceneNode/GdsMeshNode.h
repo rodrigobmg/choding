@@ -7,8 +7,8 @@ class GdsMeshNode : public GdsNode{
 
 protected:
 
-	virtual	void				vInitGeometry();
-	virtual void				vRender();
+	virtual	void				vInitGeometry( float fElapsedtime );
+	virtual void				vRender( float fElapsedtime );
 	virtual void				vClear();
 
 public:

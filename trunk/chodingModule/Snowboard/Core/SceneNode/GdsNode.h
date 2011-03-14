@@ -15,15 +15,13 @@ protected:
 	typedef	 std::list< GdsNodePtr >		CHILDLIST;
 	CHILDLIST								m_listChildNode;
 
-	virtual	void							vInitGeometry();
-	virtual void							vRender();
+	virtual	void							vInitGeometry( float fElapsedtime );
+	virtual void							vRender( float fElapsedtime );
 	virtual void							vClear();
 
 	
 	GdsTransform							m_matWorld;
 	GdsTransform							m_matLocal;
-	GdsVector3								m_local;
-	
 
 	LPDIRECT3DDEVICE9						m_Device;
 
@@ -44,13 +42,17 @@ public:
 	void							SetResource( GdsResBasePtr pResource ){ m_pResource = pResource; }
 	GdsResBasePtr					GetResource() { return m_pResource; }
 
-	GdsTransform&					GetTransform();
-	void							SetTransform( GdsTransform& mat );
+	GdsTransform&					GetTransform(){ return m_matLocal; }
+	void							SetTransform( GdsTransform& mat ){ m_matLocal = mat; }
 
-	GdsTransform&					GetWorldTransform();
-	void							SetWorldTransform( GdsTransform& mat );
+	GdsTransform&					GetWorldTransform(){ return m_matWorld; }
+	void							SetWorldTransform( GdsTransform& mat ){ m_matWorld = mat; }
 
 	HRESULT							Update( float fElapsedtime );
+	void							InitGeometry( float fElapsedtime );
+	void							Render( float fElapsedtime );
+
+
 	GdsNodePtr						GetParent();
 	void							SetParent( GdsNodePtr pNode );
 	GdsNodePtr						GetAt( unsigned int index );

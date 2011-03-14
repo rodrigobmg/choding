@@ -95,14 +95,7 @@ void CSnowboard::TestFunc()
 
 	if ( m_pResMgr )
 	{	 
-  		GdsThreadPool::getInstance().GetBGThread()->Push< GdsResMgr::LOADLIST_WORK_TOKEN >(
-  														m_pResMgr.get() ,
-  														GdsResMgr::LOADLIST_WORK_TOKEN( L"test" , respath , L"tga;bmp;dds" , true ) , 
-  														&GdsResMgr::CreateList );
-		
-		GdsThreadPool::getInstance().GetBGThread()->Push< const TCHAR* >( m_pResMgr.get() , L"test"  , &GdsResMgr::LoadRes );
-	
-		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"md2" , respath , L"md2" , true ) );
+ 		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"md2" , respath , L"md2" , true ) );
 		m_pResMgr->LoadRes( L"md2" );
 	}
 
