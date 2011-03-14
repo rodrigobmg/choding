@@ -18,17 +18,18 @@ void GdsMeshNode::vInitGeometry( float fElapsedtime )
 
 	D3DXMATRIXA16 matWorld;
 	D3DXMatrixIdentity( &matWorld );
-	D3DXMATRIXA16 scale;
-	D3DXMatrixIdentity( &scale );
+	
 	m_matWorld.m_Rotate.GetRow( 0 , matWorld._11 , matWorld._12 , matWorld._13 );
 	m_matWorld.m_Rotate.GetRow( 1 , matWorld._21 , matWorld._22 , matWorld._23 );
 	m_matWorld.m_Rotate.GetRow( 2 , matWorld._31 , matWorld._32 , matWorld._33 );
 	matWorld._41 = m_matWorld.m_Translate[0]; 
 	matWorld._42 = m_matWorld.m_Translate[1];
 	matWorld._43 = m_matWorld.m_Translate[2];	
+	matWorld._11 *= m_matWorld.m_fScale;
+	matWorld._22 *= m_matWorld.m_fScale;
+	matWorld._33 *= m_matWorld.m_fScale;
 	
-	D3DXMatrixScaling( &scale , m_matWorld.m_fScale , m_matWorld.m_fScale , m_matWorld.m_fScale );	
-	GetDevice()->SetTransform( D3DTS_WORLD, &( matWorld * scale ) );
+	GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 }
 
 void GdsMeshNode::vRender( float fElapsedtime )
