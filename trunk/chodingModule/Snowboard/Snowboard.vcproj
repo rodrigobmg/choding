@@ -314,7 +314,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Core\Transform\GdsVector .cpp"
+					RelativePath=".\Core\Transform\GdsVector.cpp"
 					>
 				</File>
 				<File

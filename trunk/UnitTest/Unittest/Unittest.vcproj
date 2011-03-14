@@ -203,6 +203,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\testUnit\GdsTransform_test.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\testUnit\Snowboard_test.hpp"
 				>
 			</File>
