@@ -127,7 +127,4 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 	GdsCameraNodePtr camera = m_CamManager->GetCamNode( 0 );
 	m_RootNode->AttachChild( camera );
 
-	m_RootNode->GetTransform().m_Rotate.MakeZRotation( 2.f );
-	m_RootNode->GetTransform().m_Translate.x = 10;
-	m_RootNode->GetTransform().m_fScale = 0.1;
 }
