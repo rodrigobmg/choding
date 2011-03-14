@@ -6,7 +6,7 @@ ImplementBoostPool( GdsResMD2 )
 GdsResMD2::GdsResMD2()
 {
 	SetName( OBJECT_RES_MD2 );
-	m_dFVF = D3DFVF_XYZ|/*D3DFVF_DIFFUSE|*/D3DFVF_TEX1;
+	m_dFVF = D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1;
 	vClear();
 }
 
@@ -115,6 +115,17 @@ HRESULT GdsResMD2::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 				pMD2Texture[pMD2Index[i].texture[j]].tu / (float)pMD2Header.skinwidth,
 				pMD2Texture[pMD2Index[i].texture[j]].tv / (float)pMD2Header.skinheight );
 		}
+
+		D3DXVECTOR3 v1, v2, v3;
+		v1 = Vertices[i*3+1].v - Vertices[i*3+0].v;
+		v2 = Vertices[i*3+2].v - Vertices[i*3+0].v;
+
+		D3DXVec3Cross( &v3, &v1, &v2 ); //¼öÁ÷ º¤ÅÍ
+		D3DXVec3Normalize( &v3, &v3 ); //´ÜÀ§ º¤ÅÍ
+
+		Vertices[i*3+0].n = v3;
+		Vertices[i*3+1].n = v3;
+		Vertices[i*3+2].n = v3;
 	}
 
  	if( FAILED( device->CreateVertexBuffer( Size * sizeof(MD2_VERTEX), 

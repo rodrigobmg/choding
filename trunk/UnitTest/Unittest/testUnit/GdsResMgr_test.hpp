@@ -38,11 +38,13 @@ public:
 		renderer = GdsRendererDX9Ptr( new GdsRendererDX9 );
 		renderer->vCreate( hWnd );
 		resmgr->vCreate( renderer->GetDevice() );
+
+		UnregisterClass( L"Choding" , wc.hInstance );
 	}
 
 	virtual ~GdsResourceMgrTest()
 	{
-//		UnregisterClass( L"Choding" , wc.hInstance );
+
 	}
 
 	virtual void SetUp()
@@ -51,7 +53,7 @@ public:
 		TCHAR curpath[ MAX_PATH ];
 		GetCurrentDirectory( MAX_PATH, curpath );
 		TCHAR respath[MAX_PATH];
-		_stprintf_s( respath , L"%s\\%s" , L"E:\\Project\\choding\\Application" , L"Resource\\md2\\°í±â" );
+		_stprintf_s( respath , L"%s\\%s" , L"D:\\choding\\Application" , L"Resource\\md2" );
 		ASSERT_TRUE( resmgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"md2", respath , L"md2" , true ) ) );
 		ASSERT_TRUE( resmgr->LoadRes( L"md2" ) );
 	}

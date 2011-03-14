@@ -2,6 +2,7 @@
 #define _SNOWBOARD_SCENENODE_BASE_
 
 #include "../Base\GdsObject.h"
+#include "../Transform/GdsTransform.h"
 #include "../Resource/Type/GdsResBaseType.h"
 
 class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
@@ -18,8 +19,8 @@ protected:
 	virtual void							vRender();
 	virtual void							vClear();
 
-	D3DXMATRIXA16							m_matWorld;
-	D3DXMATRIXA16							m_matLocal;
+	GdsTransform							m_matWorld;
+	GdsTransform							m_matLocal;
 
 	LPDIRECT3DDEVICE9						m_Device;
 
@@ -40,11 +41,11 @@ public:
 	void							SetResource( GdsResBasePtr pResource ){ m_pResource = pResource; }
 	GdsResBasePtr					GetResource() { return m_pResource; }
 
-	D3DXMATRIXA16&					GetTransform();
-	void							SetTransform( D3DXMATRIXA16& mat );
+	GdsTransform&					GetTransform();
+	void							SetTransform( GdsTransform& mat );
 
-	D3DXMATRIXA16&					GetWorldTransform();
-	void							SetWorldTransform( D3DXMATRIXA16& mat );
+	GdsTransform&					GetWorldTransform();
+	void							SetWorldTransform( GdsTransform& mat );
 
 	HRESULT							Update( float fElapsedtime );
 	GdsNodePtr						GetParent();

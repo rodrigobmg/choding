@@ -119,10 +119,12 @@ HRESULT GdsNode::Update( float fElapsedtime )
 
 void GdsNode::vInitGeometry()
 {
+	/*
 	if ( GetParent() == NULL )
-		m_matWorld = m_matLocal;
-	else
-		m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;
+			m_matWorld = m_matLocal;
+		else
+			m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;*/
+	
 
 	//D3DXMatrixIdentity( &m_matWorld );
 	//m_Device->SetTransform( D3DTS_WORLD , &m_matWorld );
@@ -133,22 +135,22 @@ void GdsNode::vRender()
 
 }
 
-D3DXMATRIXA16& GdsNode::GetTransform()
+GdsTransform& GdsNode::GetTransform()
 {
 	return m_matLocal;
 }
 
-void GdsNode::SetTransform( D3DXMATRIXA16& mat )
+void GdsNode::SetTransform( GdsTransform& mat )
 {
 	m_matLocal = mat;
 }
 
-D3DXMATRIXA16& GdsNode::GetWorldTransform()
+GdsTransform& GdsNode::GetWorldTransform()
 {
 	return m_matWorld;
 }
 
-void GdsNode::SetWorldTransform( D3DXMATRIXA16& mat )
+void GdsNode::SetWorldTransform( GdsTransform& mat )
 {
 	m_matWorld = mat;
 }

@@ -58,11 +58,13 @@ public:
 		struct
 		{
 			float x, y, z;
+			float nx , ny , nz;
 			float tu, tv;
 		};
 		struct
 		{
 			D3DXVECTOR3 v;
+			D3DXVECTOR3 n; //노멀 벡터 추가
 			D3DXVECTOR2 t;
 		};
 	};
