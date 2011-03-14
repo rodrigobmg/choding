@@ -30,8 +30,8 @@
 
 #include "gtest/gtest.h"
 
-#include "Snowboard_test.hpp"
-#include "GdsResMgr_test.hpp"
+//#include "Snowboard_test.hpp"
+//#include "GdsResMgr_test.hpp"
 //#include "GdsNode_test.hpp"
 #include "GdsTransform_test.hpp"
 

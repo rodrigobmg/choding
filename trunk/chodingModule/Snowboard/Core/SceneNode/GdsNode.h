@@ -19,8 +19,11 @@ protected:
 	virtual void							vRender();
 	virtual void							vClear();
 
+	
 	GdsTransform							m_matWorld;
 	GdsTransform							m_matLocal;
+	GdsVector3								m_local;
+	
 
 	LPDIRECT3DDEVICE9						m_Device;
 

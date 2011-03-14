@@ -237,14 +237,6 @@
 					Name="Type"
 					>
 					<File
-						RelativePath=".\Core\Resource\Type\GdsResASE.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Resource\Type\GdsResASE.h"
-						>
-					</File>
-					<File
 						RelativePath=".\Core\Resource\Type\GdsResBaseType.h"
 						>
 					</File>
@@ -306,6 +298,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Core\Transform\GdsMatrix.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Core\Transform\GdsTransform.cpp"
 					>
 				</File>
@@ -319,6 +315,10 @@
 				</File>
 				<File
 					RelativePath=".\Core\Transform\GdsVector.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Transform\GdsVector.inl"
 					>
 				</File>
 			</Filter>
