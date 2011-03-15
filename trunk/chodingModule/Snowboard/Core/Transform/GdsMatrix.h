@@ -4,17 +4,17 @@
 #include "../Base/GdsObject.h"
 #include "GdsVector.h"
 
-class GdsMatrix : public GdsObject
+class GdsMatrix3 : public GdsObject
 {
 public:
 
 	float m_pEntry[3][3];
 
-	static const GdsMatrix ZERO;
-	static const GdsMatrix IDENTITY;
+	static const GdsMatrix3 ZERO;
+	static const GdsMatrix3 IDENTITY;
 
-	inline GdsMatrix();
-	GdsMatrix(const GdsVector3& col0, const GdsVector3& col1, 
+	inline GdsMatrix3();
+	GdsMatrix3(const GdsVector3& col0, const GdsVector3& col1, 
 		const GdsVector3& col2);
 
 	//  Row access functions
@@ -48,21 +48,21 @@ public:
 	void MakeRotation(float fAngle, float x, float y, float z);
 	inline void MakeRotation(float fAngle, const GdsVector3& axis);
 
-	bool operator==(const GdsMatrix& mat) const;
-	inline bool operator!=(const GdsMatrix& mat) const;
+	bool operator==(const GdsMatrix3& mat) const;
+	inline bool operator!=(const GdsMatrix3& mat) const;
 
-	GdsMatrix operator+(const GdsMatrix& mat) const;
-	GdsMatrix operator-(const GdsMatrix& mat) const;
-	inline GdsMatrix operator*(const GdsMatrix& mat) const;
+	GdsMatrix3 operator+(const GdsMatrix3& mat) const;
+	GdsMatrix3 operator-(const GdsMatrix3& mat) const;
+	inline GdsMatrix3 operator*(const GdsMatrix3& mat) const;
 
-	inline GdsMatrix operator*(float fScalar) const;
+	inline GdsMatrix3 operator*(float fScalar) const;
 
 	// use this operator to compute MATRIX*VECTOR
 	inline GdsVector3 operator*(const GdsVector3& pt) const;
 
-	GdsMatrix Inverse() const;
-	bool Inverse(GdsMatrix& inv) const;
-	GdsMatrix Transpose() const;
+	GdsMatrix3 Inverse() const;
+	bool Inverse(GdsMatrix3& inv) const;
+	GdsMatrix3 Transpose() const;
 };
 
 #include "GdsMatrix.inl"

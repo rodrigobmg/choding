@@ -74,29 +74,29 @@ void GdsRendererDX9::Update( float fAccumTime )
 	{
 		if ( m_RootNode )
 			m_RootNode->Update( fAccumTime );
-// 
-//  		D3DMATERIAL9 mtrl;
-//  		ZeroMemory( &mtrl , sizeof( D3DMATERIAL9 ) );
-//  		mtrl.Diffuse.r = mtrl.Ambient.r = 1.0f;
-//  		mtrl.Diffuse.g = mtrl.Ambient.g = 1.0f;
-//  		mtrl.Diffuse.b = mtrl.Ambient.b = 0.0f;
-//  		mtrl.Diffuse.a = mtrl.Ambient.a = 1.0f;
-//  		m_pd3dDevice->SetMaterial( &mtrl );
-//  
-//  		D3DXVECTOR3 vecDir;
-//  		D3DLIGHT9	light;
-//  		ZeroMemory( &light , sizeof( D3DLIGHT9 ) );
-//  		light.Type = D3DLIGHT_DIRECTIONAL;
-//  		light.Diffuse.r = 1.0f;
-//  		light.Diffuse.g = 1.0f;
-//  		light.Diffuse.b = 1.0f;
-//  		vecDir = D3DXVECTOR3( cosf( timeGetTime() / 350.f ) , 1.0f , sinf( timeGetTime()/350.f )) ;
-//  		D3DXVec3Normalize( (D3DXVECTOR3*)&light.Direction , &vecDir );
-//  		light.Range = 1000.0f;
-//  		m_pd3dDevice->SetLight( 0 , &light );
-//  		m_pd3dDevice->LightEnable( 0 , TRUE );
-//  		m_pd3dDevice->SetRenderState( D3DRS_LIGHTING , TRUE );
-//  		m_pd3dDevice->SetRenderState( D3DRS_AMBIENT , 0x00202020 );
+ 
+//   		D3DMATERIAL9 mtrl;
+//   		ZeroMemory( &mtrl , sizeof( D3DMATERIAL9 ) );
+//   		mtrl.Diffuse.r = mtrl.Ambient.r = 1.0f;
+//   		mtrl.Diffuse.g = mtrl.Ambient.g = 1.0f;
+//   		mtrl.Diffuse.b = mtrl.Ambient.b = 0.0f;
+//   		mtrl.Diffuse.a = mtrl.Ambient.a = 1.0f;
+//   		m_pd3dDevice->SetMaterial( &mtrl );
+//   
+//   		D3DXVECTOR3 vecDir;
+//   		D3DLIGHT9	light;
+//   		ZeroMemory( &light , sizeof( D3DLIGHT9 ) );
+//   		light.Type = D3DLIGHT_DIRECTIONAL;
+//   		light.Diffuse.r = 1.0f;
+//   		light.Diffuse.g = 1.0f;
+//   		light.Diffuse.b = 1.0f;
+//   		vecDir = D3DXVECTOR3( cosf( timeGetTime() / 350.f ) , 1.0f , sinf( timeGetTime()/350.f )) ;
+//   		D3DXVec3Normalize( (D3DXVECTOR3*)&light.Direction , &vecDir );
+//   		light.Range = 1000.0f;
+//   		m_pd3dDevice->SetLight( 0 , &light );
+//   		m_pd3dDevice->LightEnable( 0 , TRUE );
+//   		m_pd3dDevice->SetRenderState( D3DRS_LIGHTING , TRUE );
+//   		m_pd3dDevice->SetRenderState( D3DRS_AMBIENT , 0x00202020 );
 
 		m_pd3dDevice->EndScene();
 	}
@@ -114,17 +114,17 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 
 	GdsCameraNodePtr	camnode = GdsCameraNodePtr( new GdsCameraNode );
 
-	D3DXVECTOR3 vEyePt( 0.0f, 0.0f,-30.0f );
-	D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
-	D3DXVECTOR3 vUpVec( 0.0f, 1.0f, 0.0f );
-	D3DXMATRIXA16 matView;
-	D3DXMatrixLookAtLH( &matView, &vEyePt, &vLookatPt, &vUpVec );
+	GdsVector3 vEyePt( 10.0f, 0.0f,-30.0f );
+	GdsVector3 vLookatPt( 0.0f, 0.0f, 0.0f );
+	GdsVector3 vUpVec( 0.0f, 1.0f, 0.0f );
 
 	camnode->SetLootAtLH( vEyePt , vLookatPt , vUpVec );
-	camnode->SetPerspective( D3DX_PI/4, 1.0f, 1.0f, 1000.0f );
+
+	camnode->SetPerspective2( 1 , 1 , 1.0f, 100.0f , false );
 	m_CamManager->Attach( camnode );
 
 	GdsCameraNodePtr camera = m_CamManager->GetCamNode( 0 );
 	m_RootNode->AttachChild( camera );
 
+	//camnode->SetTranslate( 0 , 0 , 0 );
 }

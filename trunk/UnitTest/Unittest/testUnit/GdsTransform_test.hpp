@@ -11,8 +11,8 @@ TEST( GdsVector3Test  ,  Module )
 	EXPECT_EQ( 1 , pos1[0] );
 	EXPECT_NE( pos , pos1 );
 
-	GdsMatrix rot = GdsMatrix::ZERO;
-	GdsMatrix rot1 = GdsMatrix::IDENTITY;
+	GdsMatrix3 rot = GdsMatrix3::ZERO;
+	GdsMatrix3 rot1 = GdsMatrix3::IDENTITY;
 	EXPECT_NE( rot , rot1 );
 }
 

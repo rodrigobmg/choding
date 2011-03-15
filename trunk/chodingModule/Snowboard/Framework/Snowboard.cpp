@@ -102,13 +102,15 @@ void CSnowboard::TestFunc()
 	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"meat.md2" ) );
 	if( resmesh )
 	{
-		for ( size_t i=0 ; i < 1 ; i++)
-		{
-			GdsMeshNodePtr mesh = GdsMeshNodePtr( new GdsMeshNode );
+		GdsMeshNodePtr mesh = GdsMeshNodePtr( new GdsMeshNode );
+		mesh->SetResource( resmesh );
+		m_pRenderer->GetRootNode()->AttachChild( mesh );
 
-			mesh->SetResource( resmesh );
+		GdsMeshNodePtr mesh1 = GdsMeshNodePtr( new GdsMeshNode );
+		//GdsResMD2Ptr resmesh1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"cart.md2" ) );
+		mesh1->SetResource( resmesh );
+		mesh1->SetTranslate( -10 , 0 , 0 );
+		m_pRenderer->GetRootNode()->AttachChild( mesh1 );
 
-			m_pRenderer->GetRootNode()->AttachChild( mesh );
-		}		
 	}	
 }

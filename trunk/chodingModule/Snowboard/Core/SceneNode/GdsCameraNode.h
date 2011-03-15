@@ -11,10 +11,10 @@ protected:
 	virtual void	vRender( float fElapsedtime );
 	virtual	void	vClear();
 
-	D3DXVECTOR3		vEyePt;
-	D3DXVECTOR3		vLookatPt;
-	D3DXVECTOR3		vUpVec;
-	D3DXMATRIXA16	matView;
+	GdsVector3		vEyePt;
+	GdsVector3		vLookatPt;
+	GdsVector3		vUpVec;
+	GdsMatrix3	matView;
 	
 	float			fov;
 	float			aspect;
@@ -22,15 +22,28 @@ protected:
 	float			zfar;
 	D3DXMATRIXA16	matProj;
 
+	float			m_fWidth;
+	float			m_fHeight;
+	float			m_fnear;
+	float			m_ffar;
+
+	bool			m_bOrtho;
 public:
 	GdsCameraNode();
 	virtual ~GdsCameraNode();
 
-	void			SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR3& up );
-	D3DXMATRIXA16&	GetViewMatrix() { return matView; }
+	void			SetLootAtLH( GdsVector3& eye , GdsVector3& lookat , GdsVector3& up );
+	GdsMatrix3&		GetViewMatrix() { return matView; }
+	
+	void			SetLookAt( GdsVector3& lookat );
+	void			SetEye( GdsVector3& eye );
+	void			SetUp( GdsVector3& up );
+
+
 
 	void			SetPerspective( float fov , float aspect , float znear , float zfar );
-	D3DXMATRIXA16&	GetProjMatrix() { return matProj; }
+	void			SetPerspective2( float width , float height , float znear , float zfar , bool bOrtho = false );
+	//GdsMatrix3&		GetProjMatrix() { return matProj; }
 	
 };
 

@@ -4,18 +4,18 @@
 #include <climits>
 #include <cmath>
 
-const GdsMatrix GdsMatrix::ZERO(
+const GdsMatrix3 GdsMatrix3::ZERO(
 								GdsVector3(0.0f, 0.0f, 0.0f),
 								GdsVector3(0.0f, 0.0f, 0.0f),
 								GdsVector3(0.0f, 0.0f, 0.0f));
 
-const GdsMatrix GdsMatrix::IDENTITY(
+const GdsMatrix3 GdsMatrix3::IDENTITY(
 									GdsVector3(1.0f, 0.0f, 0.0f),
 									GdsVector3(0.0f, 1.0f, 0.0f),
 									GdsVector3(0.0f, 0.0f, 1.0f));
 
 
-GdsMatrix::GdsMatrix (const GdsVector3& col0, const GdsVector3& col1, 
+GdsMatrix3::GdsMatrix3 (const GdsVector3& col0, const GdsVector3& col1, 
 					  const GdsVector3& col2 )
 {
 	SetCol( 0, col0 );
@@ -23,7 +23,7 @@ GdsMatrix::GdsMatrix (const GdsVector3& col0, const GdsVector3& col1,
 	SetCol( 2, col2 );
 }
 //---------------------------------------------------------------------------
-void GdsMatrix::MakeIdentity ()
+void GdsMatrix3::MakeIdentity ()
 {
 	m_pEntry[0][0] = 1.0f;
 	m_pEntry[0][1] = 0.0f;
@@ -36,7 +36,7 @@ void GdsMatrix::MakeIdentity ()
 	m_pEntry[2][2] = 1.0f;
 }
 //---------------------------------------------------------------------------
-void GdsMatrix::MakeDiagonal (float fDiag0, float fDiag1, float fDiag2)
+void GdsMatrix3::MakeDiagonal (float fDiag0, float fDiag1, float fDiag2)
 {
 	m_pEntry[0][0] = fDiag0;
 	m_pEntry[0][1] = 0.0f;
@@ -49,7 +49,7 @@ void GdsMatrix::MakeDiagonal (float fDiag0, float fDiag1, float fDiag2)
 	m_pEntry[2][2] = fDiag2;
 }
 //---------------------------------------------------------------------------
-void GdsMatrix::MakeXRotation (float fAngle)
+void GdsMatrix3::MakeXRotation (float fAngle)
 {
 	float sn, cs;
 	sn = sin( fAngle );
@@ -67,7 +67,7 @@ void GdsMatrix::MakeXRotation (float fAngle)
 	m_pEntry[2][2] = cs;
 }
 //---------------------------------------------------------------------------
-void GdsMatrix::MakeYRotation (float fAngle)
+void GdsMatrix3::MakeYRotation (float fAngle)
 {
 	float sn, cs;
 	sn = sin( fAngle );
@@ -85,7 +85,7 @@ void GdsMatrix::MakeYRotation (float fAngle)
 	m_pEntry[2][2] = cs;
 }
 //---------------------------------------------------------------------------
-void GdsMatrix::MakeZRotation (float fAngle)
+void GdsMatrix3::MakeZRotation (float fAngle)
 {
 	float sn, cs;
 	sn = sin( fAngle );
@@ -103,7 +103,7 @@ void GdsMatrix::MakeZRotation (float fAngle)
 	m_pEntry[2][2] = 1.0f;
 }
 //---------------------------------------------------------------------------
-void GdsMatrix::MakeRotation (float fAngle, float x, float y, float z)
+void GdsMatrix3::MakeRotation (float fAngle, float x, float y, float z)
 {
 	float sn, cs;
 	sn = sin( fAngle );
@@ -133,7 +133,7 @@ void GdsMatrix::MakeRotation (float fAngle, float x, float y, float z)
 	m_pEntry[2][2] = z2*omcs+cs;
 }
 //---------------------------------------------------------------------------
-bool GdsMatrix::operator== (const GdsMatrix& mat) const
+bool GdsMatrix3::operator== (const GdsMatrix3& mat) const
 {
 	return
 		(m_pEntry[0][0] == mat.m_pEntry[0][0]) &&
@@ -147,9 +147,9 @@ bool GdsMatrix::operator== (const GdsMatrix& mat) const
 		(m_pEntry[2][2] == mat.m_pEntry[2][2]);
 }
 //---------------------------------------------------------------------------
-GdsMatrix GdsMatrix::operator+ (const GdsMatrix& mat) const
+GdsMatrix3 GdsMatrix3::operator+ (const GdsMatrix3& mat) const
 {
-	GdsMatrix result = *this;
+	GdsMatrix3 result = *this;
 	result.m_pEntry[0][0] += mat.m_pEntry[0][0];
 	result.m_pEntry[0][1] += mat.m_pEntry[0][1];
 	result.m_pEntry[0][2] += mat.m_pEntry[0][2];
@@ -162,9 +162,9 @@ GdsMatrix GdsMatrix::operator+ (const GdsMatrix& mat) const
 	return result;
 }
 //---------------------------------------------------------------------------
-GdsMatrix GdsMatrix::operator- (const GdsMatrix& mat) const
+GdsMatrix3 GdsMatrix3::operator- (const GdsMatrix3& mat) const
 {
-	GdsMatrix result = *this;
+	GdsMatrix3 result = *this;
 	result.m_pEntry[0][0] -= mat.m_pEntry[0][0];
 	result.m_pEntry[0][1] -= mat.m_pEntry[0][1];
 	result.m_pEntry[0][2] -= mat.m_pEntry[0][2];
@@ -177,7 +177,7 @@ GdsMatrix GdsMatrix::operator- (const GdsMatrix& mat) const
 	return result;
 }
 //---------------------------------------------------------------------------
-GdsVector3 operator* (const GdsVector3& pt, const GdsMatrix& mat)
+GdsVector3 operator* (const GdsVector3& pt, const GdsMatrix3& mat)
 {
 	return GdsVector3
 		(
@@ -190,7 +190,7 @@ GdsVector3 operator* (const GdsVector3& pt, const GdsMatrix& mat)
 	);
 }
 //---------------------------------------------------------------------------
-bool GdsMatrix::Inverse (GdsMatrix& inv) const
+bool GdsMatrix3::Inverse (GdsMatrix3& inv) const
 {
 	// Invert a 3x3 using cofactors.  This is about 8 times faster than
 	// the Numerical Recipes code which uses Gaussian elimination.
@@ -232,9 +232,9 @@ bool GdsMatrix::Inverse (GdsMatrix& inv) const
 	return true;
 }
 //---------------------------------------------------------------------------
-GdsMatrix GdsMatrix::Inverse () const
+GdsMatrix3 GdsMatrix3::Inverse () const
 {
-	GdsMatrix inv;
+	GdsMatrix3 inv;
 
 	if ( Inverse(inv) == false )
 		inv.MakeZero( );
@@ -242,7 +242,7 @@ GdsMatrix GdsMatrix::Inverse () const
 	return inv;
 }
 //---------------------------------------------------------------------------
-GdsMatrix GdsMatrix::Transpose () const
+GdsMatrix3 GdsMatrix3::Transpose () const
 {
 	GdsVector3 row[3];
 
@@ -250,5 +250,5 @@ GdsMatrix GdsMatrix::Transpose () const
 	GetRow( 1, row[1] );
 	GetRow( 2, row[2] );
 
-	return GdsMatrix( row[0], row[1], row[2] );
+	return GdsMatrix3( row[0], row[1], row[2] );
 }
