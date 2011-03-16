@@ -109,7 +109,7 @@ void CSnowboard::TestFunc()
 		GdsMeshNodePtr mesh1 = GdsMeshNodePtr( new GdsMeshNode );
 		//GdsResMD2Ptr resmesh1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"cart.md2" ) );
 		mesh1->SetResource( resmesh );
-		mesh1->SetTranslate( -10 , 0 , 0 );
+		mesh1->SetTranslate( -10 , 0 , 50 );
 		m_pRenderer->GetRootNode()->AttachChild( mesh1 );
 
 	}	

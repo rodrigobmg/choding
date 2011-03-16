@@ -62,4 +62,3 @@ void GdsTransform::Interpolate(
 		kResultQuat.ToRotation(kOutput.m_Rotate);
 	}
 }*/
-

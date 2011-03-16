@@ -74,7 +74,7 @@ void GdsRendererDX9::Update( float fAccumTime )
 	{
 		if ( m_RootNode )
 			m_RootNode->Update( fAccumTime );
- 
+			
 //   		D3DMATERIAL9 mtrl;
 //   		ZeroMemory( &mtrl , sizeof( D3DMATERIAL9 ) );
 //   		mtrl.Diffuse.r = mtrl.Ambient.r = 1.0f;
@@ -114,17 +114,16 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 
 	GdsCameraNodePtr	camnode = GdsCameraNodePtr( new GdsCameraNode );
 
-	GdsVector3 vEyePt( 10.0f, 0.0f,-30.0f );
+	GdsVector3 vEyePt( 0.0f, 0.0f,-30.0f );
 	GdsVector3 vLookatPt( 0.0f, 0.0f, 0.0f );
 	GdsVector3 vUpVec( 0.0f, 1.0f, 0.0f );
 
 	camnode->SetLootAtLH( vEyePt , vLookatPt , vUpVec );
 
-	camnode->SetPerspective2( 1 , 1 , 1.0f, 100.0f , false );
+	camnode->SetFrustum( GdsFrustum( -0.5 , 0.5 , 0.5 , -0.5 , 1.f , 100.f , false ) );
 	m_CamManager->Attach( camnode );
 
 	GdsCameraNodePtr camera = m_CamManager->GetCamNode( 0 );
 	m_RootNode->AttachChild( camera );
 
-	//camnode->SetTranslate( 0 , 0 , 0 );
 }

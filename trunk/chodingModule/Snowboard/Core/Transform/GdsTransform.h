@@ -9,9 +9,9 @@ class GdsTransform : public GdsObject
 {
 public:
 
- 	GdsMatrix3		m_Rotate;
- 	GdsVector3		m_Translate;
- 	float			m_fScale;
+	GdsMatrix3		m_Rotate;
+	GdsVector3		m_Translate;
+	float			m_fScale;
 
 	bool operator!=(const GdsTransform &xform) const;
 	inline GdsTransform GdsTransform::operator*(const GdsTransform &xform) const
