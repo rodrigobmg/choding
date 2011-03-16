@@ -13,6 +13,8 @@ public:
 	GdsVector3		m_Translate;
 	float			m_fScale;
 
+	GdsTransform(){ SetName( OBJECT_TRANSFORM ); }
+
 	bool operator!=(const GdsTransform &xform) const;
 	inline GdsTransform GdsTransform::operator*(const GdsTransform &xform) const
 	{

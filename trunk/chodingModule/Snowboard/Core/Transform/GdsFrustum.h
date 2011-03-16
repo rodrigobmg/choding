@@ -7,7 +7,7 @@ class GdsFrustum : public GdsObject
 {
 public:
 
-	GdsFrustum(){ m_bOrtho = false; }
+	GdsFrustum(){ SetName( OBJECT_FRUSTUM ); m_bOrtho = false; }
 	GdsFrustum( float fLeft , float fRight , float fBottom , float fTop , float fNear , float fFar , bool bOrtho = false);
 	
 	float		m_fZnear;

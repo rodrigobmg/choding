@@ -1,10 +1,11 @@
 inline GdsVector3::GdsVector3()
 {
-	/* */
+	SetName( OBJECT_VECTOR3 );
 }
 //---------------------------------------------------------------------------
 inline GdsVector3::GdsVector3(float fX, float fY, float fZ)
 {
+	SetName( OBJECT_VECTOR3 );
 	x = fX;
 	y = fY;
 	z = fZ;

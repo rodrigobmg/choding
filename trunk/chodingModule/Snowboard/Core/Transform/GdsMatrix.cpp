@@ -18,6 +18,7 @@ const GdsMatrix3 GdsMatrix3::IDENTITY(
 GdsMatrix3::GdsMatrix3 (const GdsVector3& col0, const GdsVector3& col1, 
 					  const GdsVector3& col2 )
 {
+	SetName( OBJECT_MATRIX3 );
 	SetCol( 0, col0 );
 	SetCol( 1, col1 );
 	SetCol( 2, col2 );

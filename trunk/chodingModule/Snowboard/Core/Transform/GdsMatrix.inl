@@ -1,6 +1,7 @@
 
 inline GdsMatrix3::GdsMatrix3()
 {
+	SetName( OBJECT_MATRIX3 );
 }
 //---------------------------------------------------------------------------
 inline void GdsMatrix3::MakeZero ()
