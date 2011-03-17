@@ -46,7 +46,7 @@ bool CSnowboard::InitModule( HWND hWnd )
 bool	CSnowboard::InitRenderer( HWND hWnd )
 {
 	m_pRenderer = boost::shared_dynamic_cast< GdsRendererDX9 >( GdsCoreFactory::CreateCore( CORE_RENDERER ) );
-	m_pRenderer->vCreate( hWnd );
+	m_pRenderer->Create( hWnd );
 	m_pRenderer->GetRootNode()->SetDevice( m_pRenderer->GetDevice() );
 	
 	return TRUE;
@@ -55,7 +55,7 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 {
 	m_pResMgr = boost::shared_dynamic_cast< GdsResMgr >( GdsCoreFactory::CreateCore( CORE_RESOURCE ) );
-	m_pResMgr->vCreate( device );
+	m_pResMgr->Create( device );
 	return TRUE;
 }
 
@@ -65,9 +65,9 @@ void CSnowboard::DestroyModule()
 	GdsThreadPool::destroySingleton();
 
 	if ( m_pRenderer )
-		m_pRenderer->vRelease();
+		m_pRenderer->Release();
 	if ( m_pResMgr )
-		m_pResMgr->vRelease();	
+		m_pResMgr->Release();	
 }
 
 

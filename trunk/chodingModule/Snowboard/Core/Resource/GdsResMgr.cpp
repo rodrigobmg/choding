@@ -20,30 +20,30 @@ GdsResMgr::GdsResMgr():
 m_pDevice( NULL )
 {
 	SetName( OBJECT_RES_MGR );
-	vClear();
+	Clear();
 }
 
 GdsResMgr::~GdsResMgr()
 {
-	vRelease();
+	Release();
 }
 
-void GdsResMgr::vClear()
+void GdsResMgr::Clear()
 {
 	m_mapRes.clear();
 	m_mapAllFilelist.clear();
 }
 
-HRESULT GdsResMgr::vCreate( LPDIRECT3DDEVICE9 device )
+HRESULT GdsResMgr::Create( LPDIRECT3DDEVICE9 device )
 {
-	vClear();
+	Clear();
 	m_pDevice = device;
 	return true;
 }
 
-HRESULT GdsResMgr::vRelease()
+HRESULT GdsResMgr::Release()
 {
-	vClear();
+	Clear();
 	return true;
 }
 
@@ -328,24 +328,24 @@ GdsResBasePtr GdsResMgr::resourceFactory( const TCHAR* ext , const TCHAR* filepa
 	if ( !_tcscmp( ext , L"bmp" ) || !_tcscmp( ext , L"tga" ) || !_tcscmp( ext , L"jpg" ) || !_tcscmp( ext , L"dds" ) )
 	{
 		GdsResTexturePtr ptex = GdsResTexturePtr( new GdsResTexture );
-		ptex->vLoadResource( filepath , m_pDevice );
+		ptex->LoadResource( filepath , m_pDevice );
 		return	ptex;	
 	}
 	else if ( !_tcscmp( ext , L"md2" ) )
 	{
 		GdsResMD2Ptr	pMd2 = GdsResMD2Ptr( new GdsResMD2 );
-		pMd2->vLoadResource( filepath , m_pDevice );
+		pMd2->LoadResource( filepath , m_pDevice );
 		return pMd2;
 	}
 
 	return GdsResBasePtr( (GdsResBase*)NULL);
 }
 
-HRESULT GdsResMgr::vReCreate( LPDIRECT3DDEVICE9 device , GdsResBasePtr recreated_res )
+HRESULT GdsResMgr::ReCreate( LPDIRECT3DDEVICE9 device , GdsResBasePtr recreated_res )
 {
 	if ( device == NULL || recreated_res == NULL )
 		return false;
 
-	recreated_res->vReCreate( device );
+	recreated_res->ReCreate( device );
 	return true;
 }

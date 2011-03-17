@@ -3,7 +3,7 @@
 GdsNode::GdsNode()
 {
 	SetName( OBJECT_NODE );
-	m_listChildNode.clear();
+	m_ChildNode.clear();
 	m_Device = NULL;
 	m_pParentNode = GdsNodePtr( (GdsNode*)NULL );
 	m_pResource = GdsResBasePtr( (GdsResBase*)NULL );
@@ -24,13 +24,13 @@ void GdsNode::vClear()
 
 HRESULT GdsNode::RemoveAllChild()
 {
-	if ( !m_listChildNode.empty() )
+	if ( !m_ChildNode.empty() )
 	{
-		CHILDLIST::iterator it = m_listChildNode.begin();
-		for( ; it != m_listChildNode.end() ;  )
+		CHILDNODE_CONTAINER::iterator it = m_ChildNode.begin();
+		for( ; it != m_ChildNode.end() ;  )
 		{
 			(*it)->RemoveAllChild();
-			m_listChildNode.erase( it++ );
+			m_ChildNode.erase( it++ );
 		}
 	}
 	return TRUE;
@@ -49,14 +49,14 @@ GdsNodePtr	GdsNode::GetParent()
 // 0부터 시작함
 GdsNodePtr	GdsNode::GetAt( unsigned int index )
 {
-	if ( m_listChildNode.empty() )
+	if ( m_ChildNode.empty() )
 		return GdsNodePtr( (GdsNode*)NULL );
 
-	if ( m_listChildNode.size() < index )
+	if ( m_ChildNode.size() < index )
 		return GdsNodePtr( (GdsNode*)NULL );
 
- 	CHILDLIST::iterator it = m_listChildNode.begin();
- 	for ( size_t t = 0 ; it != m_listChildNode.end() ; ++it )
+ 	CHILDNODE_CONTAINER::iterator it = m_ChildNode.begin();
+ 	for ( size_t t = 0 ; it != m_ChildNode.end() ; ++it )
  	{
 		if ( t == index )
 			return (*it);
@@ -75,7 +75,7 @@ HRESULT GdsNode::AttachChild( GdsNodePtr pNode )
 		return false;
 
 	pNode->SetParent( shared_ptr_this() );	
-	m_listChildNode.push_back( pNode );
+	m_ChildNode.push_back( pNode );
 	return true;
 }
 
@@ -84,12 +84,12 @@ HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 	if ( this == pNode.get() )
 		return false;
 
-	CHILDLIST::iterator it = m_listChildNode.begin();
-	for( ; it != m_listChildNode.end() ; ++it )
+	CHILDNODE_CONTAINER::iterator it = m_ChildNode.begin();
+	for( ; it != m_ChildNode.end() ; ++it )
 	{
 		if ( (*it) == pNode )
 		{
-			m_listChildNode.erase( it );
+			m_ChildNode.erase( it );
 			break;
 		}
 	}
@@ -108,9 +108,9 @@ HRESULT GdsNode::Update( float fElapsedtime )
 	InitGeometry( fElapsedtime );
 	Render( fElapsedtime );
 
-	if ( !m_listChildNode.empty() )
+	if ( !m_ChildNode.empty() )
 	{
-		for( CHILDLIST::iterator it = m_listChildNode.begin() ; it != m_listChildNode.end() ; ++it )
+		for( CHILDNODE_CONTAINER::iterator it = m_ChildNode.begin() ; it != m_ChildNode.end() ; ++it )
 		{
 			(*it)->Update(fElapsedtime);
 		}

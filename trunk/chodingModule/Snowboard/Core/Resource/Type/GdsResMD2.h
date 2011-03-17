@@ -78,6 +78,14 @@ private:
 	DWORD						m_dFVF;
 	UINT						m_uPrimitive;
 
+protected:
+
+	virtual void				vClear();
+	virtual HRESULT				vCreate();
+	virtual HRESULT				vRelease();
+	virtual HRESULT				vReCreate( LPDIRECT3DDEVICE9 device );
+	virtual HRESULT				vLoadResource( const TCHAR* path  , LPDIRECT3DDEVICE9 device );
+
 public:
 	GdsResMD2();
 	virtual ~GdsResMD2();
@@ -95,11 +103,7 @@ public:
 	UINT						GetPrimitive();
 
 
-	virtual void		vClear();
-	virtual HRESULT		vCreate();
-	virtual HRESULT		vRelease();
-	virtual HRESULT		vReCreate( LPDIRECT3DDEVICE9 device );
-	virtual HRESULT		vLoadResource( const TCHAR* path  , LPDIRECT3DDEVICE9 device );
+	
 		
 };
 

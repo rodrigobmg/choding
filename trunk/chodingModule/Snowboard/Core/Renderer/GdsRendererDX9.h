@@ -20,14 +20,18 @@ protected:
 
 	GdsCameraManagerDX9Ptr	m_CamManager;
 
+	virtual	void			vClear();
+	virtual HRESULT			vCreate( HWND hWnd );
+	virtual HRESULT			vRelease();
+
 public:
 
 	GdsRendererDX9();
 	virtual ~GdsRendererDX9();
 	
-	virtual	void			vClear();
-	virtual HRESULT			vCreate( HWND hWnd );
-	virtual HRESULT			vRelease();
+	void					Clear(){ vClear(); }
+	HRESULT					Create( HWND hWnd ){ return vCreate( hWnd ); }
+	HRESULT					Release(){ return vRelease(); }
 
 	void					SetRootNode( GdsNodePtr node ){ m_RootNode = node; }
 	GdsNodePtr				GetRootNode() { return m_RootNode; }

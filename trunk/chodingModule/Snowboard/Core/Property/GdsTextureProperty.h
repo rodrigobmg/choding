@@ -11,7 +11,12 @@ public:
 
 protected:
 
+	LPDIRECT3DTEXTURE9		m_Tex;
+
 	virtual void	vUpdate( float fElapsedTime );
+	virtual void	vClear();
 };
+
+typedef boost::shared_ptr< GdsTextureProperty > GdsTexturePropertyPtr;
 
 #endif

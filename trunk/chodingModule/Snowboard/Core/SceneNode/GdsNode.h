@@ -4,6 +4,7 @@
 #include "../Base\GdsObject.h"
 #include "../Transform/GdsTransform.h"
 #include "../Resource/Type/GdsResBaseType.h"
+#include "../Property/GdsProperty.h"
 
 class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
 {
@@ -12,8 +13,8 @@ protected:
 	typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
 	GdsNodePtr								m_pParentNode;
 
-	typedef	 std::list< GdsNodePtr >		CHILDLIST;
-	CHILDLIST								m_listChildNode;
+	typedef	 std::vector< GdsNodePtr >		CHILDNODE_CONTAINER;
+	CHILDNODE_CONTAINER						m_ChildNode;
 
 	virtual	void							vInitGeometry( float fElapsedtime );
 	virtual void							vRender( float fElapsedtime );

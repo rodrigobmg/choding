@@ -11,7 +11,12 @@ public:
 
 protected:
 
+	LPDIRECT3DVERTEXBUFFER9		m_VB;
+
 	virtual	void	vUpdate( float fElapsedTime );
+	virtual void	vClear();
 };
+
+typedef boost::shared_ptr< GdsVertexBufferProperty > GdsVertexBufferPropertyPtr;
 
 #endif

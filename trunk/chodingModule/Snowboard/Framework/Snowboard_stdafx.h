@@ -12,6 +12,7 @@
 #include <vector>
 #include <queue>
 #include <list>
+#include <map>
 
 #include <boost/pool/pool.hpp>
 #include <boost/shared_ptr.hpp>

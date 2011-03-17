@@ -9,6 +9,8 @@ public:
 	GdsProperty(void);
 	virtual ~GdsProperty(void);
 
+	typedef boost::shared_ptr< GdsProperty > GdsPropertyPtr;
+
 	enum PROPERTY_TYPE{
 		NONE_TYPE = -1,
 		TEXTURE = 0,
@@ -18,13 +20,26 @@ public:
 
 	void			Update( float fElapsedTime );
 	void			SetType( PROPERTY_TYPE type );
-	PROPERTY_TYPE	GetType(){ return m_eType; }
-	
+	PROPERTY_TYPE	GetType(){ return m_eType; }	
+
+	GdsPropertyPtr	GetProperty( PROPERTY_TYPE type );
+	void			Clear(){ vClear(); }
+
+private:
+
+	GdsPropertyPtr	create_property( PROPERTY_TYPE type );
+
 protected:
 	
 	PROPERTY_TYPE	m_eType;
 
+ 	typedef std::map< PROPERTY_TYPE , GdsPropertyPtr >	PROPERTY_MAP;
+ 	PROPERTY_MAP	m_PropertyContainer;
+
 	virtual void	vUpdate( float fElapsedTime ) = 0;
+	virtual void	vClear();
 };
+
+typedef boost::shared_ptr< GdsProperty > GdsPropertyPtr;
 
 #endif

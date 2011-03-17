@@ -10,8 +10,13 @@ public:
 	virtual ~GdsIndexBufferProperty(void);
 
 protected:
+	
+	LPDIRECT3DINDEXBUFFER9 m_IB;
 
 	virtual void	vUpdate(float fElapsedTime );
+	virtual void	vClear();
 };
+
+typedef boost::shared_ptr< GdsIndexBufferProperty > GdsIndexBufferPropertyPtr;
 
 #endif
