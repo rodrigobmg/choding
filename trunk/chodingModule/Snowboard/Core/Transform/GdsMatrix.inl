@@ -19,7 +19,7 @@ inline void GdsMatrix3::MakeRotation (float fAngle, const GdsVector3& axis)
 //  Row access functions
 inline void GdsMatrix3::GetRow( unsigned int uiRow, GdsVector3& row ) const
 {
-	assert( uiRow <= 2 );
+	ASSERT( uiRow <= 2 );
 	row.x   = m_pEntry[uiRow][0];
 	row.y   = m_pEntry[uiRow][1];
 	row.z   = m_pEntry[uiRow][2];
@@ -27,7 +27,7 @@ inline void GdsMatrix3::GetRow( unsigned int uiRow, GdsVector3& row ) const
 //---------------------------------------------------------------------------
 inline void GdsMatrix3::SetRow( unsigned int uiRow, const GdsVector3& row )
 {
-	assert( uiRow <= 2 );
+	ASSERT( uiRow <= 2 );
 	m_pEntry[uiRow][0]  = row.x;
 	m_pEntry[uiRow][1]  = row.y;
 	m_pEntry[uiRow][2]  = row.z;
@@ -36,7 +36,7 @@ inline void GdsMatrix3::SetRow( unsigned int uiRow, const GdsVector3& row )
 inline void GdsMatrix3::GetRow( unsigned int uiRow, float& f0, float& f1, 
 							  float& f2 ) const
 {
-	assert( uiRow <= 2 );
+	ASSERT( uiRow <= 2 );
 	f0 = m_pEntry[uiRow][0];
 	f1 = m_pEntry[uiRow][1];
 	f2 = m_pEntry[uiRow][2];
@@ -45,7 +45,7 @@ inline void GdsMatrix3::GetRow( unsigned int uiRow, float& f0, float& f1,
 inline void GdsMatrix3::SetRow( unsigned int uiRow, float f0, float f1, 
 							  float f2 )
 {
-	assert( uiRow <= 2 );
+	ASSERT( uiRow <= 2 );
 	m_pEntry[uiRow][0]  = f0;
 	m_pEntry[uiRow][1]  = f1;
 	m_pEntry[uiRow][2]  = f2;
@@ -53,7 +53,7 @@ inline void GdsMatrix3::SetRow( unsigned int uiRow, float f0, float f1,
 //---------------------------------------------------------------------------
 inline void GdsMatrix3::GetRow( unsigned int uiRow, float* pRow ) const
 {
-	assert( uiRow <= 2 );
+	ASSERT( uiRow <= 2 );
 	pRow[0] = m_pEntry[uiRow][0];
 	pRow[1] = m_pEntry[uiRow][1];
 	pRow[2] = m_pEntry[uiRow][2];
@@ -61,7 +61,7 @@ inline void GdsMatrix3::GetRow( unsigned int uiRow, float* pRow ) const
 //---------------------------------------------------------------------------
 inline void GdsMatrix3::SetRow( unsigned int uiRow, const float* pRow )
 {
-	assert( uiRow <= 2 );
+	ASSERT( uiRow <= 2 );
 	m_pEntry[uiRow][0]  = pRow[0];
 	m_pEntry[uiRow][1]  = pRow[1];
 	m_pEntry[uiRow][2]  = pRow[2];
@@ -71,7 +71,7 @@ inline void GdsMatrix3::SetRow( unsigned int uiRow, const float* pRow )
 //  Column access functions
 inline void GdsMatrix3::GetCol( unsigned int uiCol, GdsVector3& col ) const
 {
-	assert( uiCol <= 2 );
+	ASSERT( uiCol <= 2 );
 	col.x   = m_pEntry[0][uiCol];
 	col.y   = m_pEntry[1][uiCol];
 	col.z   = m_pEntry[2][uiCol];
@@ -79,7 +79,7 @@ inline void GdsMatrix3::GetCol( unsigned int uiCol, GdsVector3& col ) const
 //---------------------------------------------------------------------------
 inline void GdsMatrix3::SetCol( unsigned int uiCol, const GdsVector3& col )
 {
-	assert( uiCol <= 2 );
+	ASSERT( uiCol <= 2 );
 	m_pEntry[0][uiCol]  = col.x;
 	m_pEntry[1][uiCol]  = col.y;
 	m_pEntry[2][uiCol]  = col.z;
@@ -88,7 +88,7 @@ inline void GdsMatrix3::SetCol( unsigned int uiCol, const GdsVector3& col )
 inline void GdsMatrix3::GetCol( unsigned int uiCol, float& f0, float& f1, 
 							  float& f2 ) const
 {
-	assert( uiCol <= 2 );
+	ASSERT( uiCol <= 2 );
 	f0 = m_pEntry[0][uiCol];
 	f1 = m_pEntry[1][uiCol];
 	f2 = m_pEntry[2][uiCol];
@@ -97,7 +97,7 @@ inline void GdsMatrix3::GetCol( unsigned int uiCol, float& f0, float& f1,
 inline void GdsMatrix3::SetCol( unsigned int uiCol, float f0, float f1, 
 							  float f2 )
 {
-	assert( uiCol <= 2 );
+	ASSERT( uiCol <= 2 );
 	m_pEntry[0][uiCol] = f0;
 	m_pEntry[1][uiCol] = f1;
 	m_pEntry[2][uiCol] = f2;
@@ -105,7 +105,7 @@ inline void GdsMatrix3::SetCol( unsigned int uiCol, float f0, float f1,
 //---------------------------------------------------------------------------
 inline void GdsMatrix3::GetCol( unsigned int uiCol, float* pCol ) const
 {
-	assert( uiCol <= 2 );
+	ASSERT( uiCol <= 2 );
 	pCol[0] = m_pEntry[0][uiCol];
 	pCol[1] = m_pEntry[1][uiCol];
 	pCol[2] = m_pEntry[2][uiCol];
@@ -113,7 +113,7 @@ inline void GdsMatrix3::GetCol( unsigned int uiCol, float* pCol ) const
 //---------------------------------------------------------------------------
 inline void GdsMatrix3::SetCol( unsigned int uiCol, const float* pCol )
 {
-	assert( uiCol <= 2 );
+	ASSERT( uiCol <= 2 );
 	m_pEntry[0][uiCol] = pCol[0];
 	m_pEntry[1][uiCol] = pCol[1];
 	m_pEntry[2][uiCol] = pCol[2];
@@ -124,14 +124,14 @@ inline void GdsMatrix3::SetCol( unsigned int uiCol, const float* pCol )
 inline float GdsMatrix3::GetEntry( unsigned int uiRow, 
 								 unsigned int uiCol ) const
 {
-	assert( uiRow <= 2 && uiCol <= 2 );
+	ASSERT( uiRow <= 2 && uiCol <= 2 );
 	return m_pEntry[uiRow][uiCol];
 }
 //---------------------------------------------------------------------------
 inline void GdsMatrix3::SetEntry( unsigned int uiRow, unsigned int uiCol, 
 								float fEntry )
 {
-	assert( uiRow <= 2 && uiCol <= 2 );
+	ASSERT( uiRow <= 2 && uiCol <= 2 );
 	m_pEntry[uiRow][uiCol]  = fEntry;
 }
 

@@ -30,7 +30,7 @@ void GdsCameraManagerDX9::Detach( int index )
 {
 	if ( m_camaraContainer.size() == 0 )
 	{
-		assert( 0 && "카메라노드가 없다.");
+		ASSERT( 0 && "카메라노드가 없다.");
 		return;
 	}
 

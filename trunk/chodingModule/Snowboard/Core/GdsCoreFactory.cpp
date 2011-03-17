@@ -24,7 +24,7 @@ GdsObjectPtr	GdsCoreFactory::CreateCore( const tstring& coretype )
 	}
 	else
 	{
-		assert( 0 && L"정의되지 않은 코어는 생성될수 없습니다." );
+		ASSERT( 0 && L"정의되지 않은 코어는 생성될수 없습니다." );
 		return GdsObjectPtr( (GdsObject*)NULL );
 	}
 }

@@ -2,7 +2,7 @@
 #ifndef _SNOWBOARD_UTILITY_SINGLETON_
 #define _SNOWBOARD_UTILITY_SINGLETON_
 
-#include <assert.h>
+#include <ASSERT.h>
 
 template < typename T > 
 class singleton 
@@ -12,13 +12,13 @@ class singleton
 public:
 	singleton()
 	{
-		assert( !ms_singleton && L"하나만 맹거주세요~~" );
+		ASSERT( !ms_singleton && L"하나만 맹거주세요~~" );
 		ms_singleton = 0; 
 	}
 
 	virtual ~singleton()
 	{
-		assert( ms_singleton && L"이미 없는데 왜 또 없앨려고 하나용~~"); 
+		ASSERT( ms_singleton && L"이미 없는데 왜 또 없앨려고 하나용~~"); 
 		ms_singleton = 0; 
 	}
 
@@ -35,7 +35,7 @@ public:
 
 	static T& getInstance()
 	{
-		assert( ms_singleton );
+		ASSERT( ms_singleton );
 		return *ms_singleton;
 	}
 	static T* getInstancePtr()

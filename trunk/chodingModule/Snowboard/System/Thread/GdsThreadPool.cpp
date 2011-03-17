@@ -29,7 +29,7 @@ void GdsThreadPool::Clear()
 void GdsThreadPool::SetBGThreadMaxCapacity( BYTE byvalue )
 {
 	if ( m_GdsBGThread == NULL )
-		assert( 0 && "백그라운더 할당후 해주세요" );
+		ASSERT( 0 && "백그라운더 할당후 해주세요" );
 
 	m_GdsBGThread->SetMaxcapacity( byvalue );
 }
@@ -37,7 +37,7 @@ void GdsThreadPool::SetBGThreadMaxCapacity( BYTE byvalue )
 BYTE GdsThreadPool::GetBGThreadMaxCapacity()
 {
 	if ( m_GdsBGThread == NULL )
-		assert( 0 && "백그라운더 할당후 해주세요" );
+		ASSERT( 0 && "백그라운더 할당후 해주세요" );
 
 	return m_GdsBGThread->GetMaxcapacity();
 }

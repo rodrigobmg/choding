@@ -118,7 +118,7 @@ namespace util
 			DWORD errcode = ::GetLastError();
 			errcode;
 		}
-		assert(length == writen);
+		ASSERT(length == writen);
 	}
 	void ConsoleLogger::vWriteMsg(char const* msg, uint32_t length)
 	{
@@ -129,7 +129,7 @@ namespace util
 			DWORD errcode = ::GetLastError();
 			errcode;
 		}
-		assert(length == writen);
+		ASSERT(length == writen);
 	}
 
 	void ConsoleLogger::vClear( )
@@ -170,7 +170,7 @@ namespace util
 
 			DWORD writen = 0 ;
 	//		VERIFY(WriteConsole( handle_, str, LEN, &writen, NULL ));
-			assert(LEN == writen);
+			ASSERT(LEN == writen);
 
 			_freea(str);
 		}

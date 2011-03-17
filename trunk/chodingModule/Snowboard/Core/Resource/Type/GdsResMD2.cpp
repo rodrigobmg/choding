@@ -24,7 +24,7 @@ HRESULT GdsResMD2::vCreate()
 {
 	if ( m_pTexture != NULL || m_pVB != NULL )
 	{
-		assert( 0 );
+		ASSERT( 0 );
 		return false;
 	}
 	return true;
@@ -44,7 +44,7 @@ HRESULT GdsResMD2::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 {
 	if ( device == NULL )
 	{
-		assert( 0 );
+		ASSERT( 0 );
 		return false;
 	}
 

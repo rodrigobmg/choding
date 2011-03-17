@@ -68,7 +68,7 @@ void GdsResMgr::ReleaseList( const TCHAR* alias )
 	{
 		if( itList->second.bLoaded == true )
 		{
-			assert( 0 && L"메모리에 로드중인 리스트는 지울수 없다. 메모리에서 해제한후 지워라");			
+			ASSERT( 0 && L"메모리에 로드중인 리스트는 지울수 없다. 메모리에서 해제한후 지워라");			
 			return;
 		}
 		else
@@ -190,7 +190,7 @@ HRESULT GdsResMgr::CreateList( LOADLIST_WORK_TOKEN work_token )
 		make_token( work_token.token.c_str() , tokenlist , L";" );
 		if ( tokenlist.empty() )
 		{
-			assert( !L"토큰리스트에 값이 하나도 없다." );
+			ASSERT( !L"토큰리스트에 값이 하나도 없다." );
 			return false;
 		}
 
@@ -211,7 +211,7 @@ HRESULT GdsResMgr::CreateList( LOADLIST_WORK_TOKEN work_token )
 	}
 	else
 	{
-		assert( 0 && L" 중복 삽입 " );
+		ASSERT( 0 && L" 중복 삽입 " );
 		return false;
 	}
 
@@ -223,7 +223,7 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 	RES_ALL_FILELIST_MAP::iterator itAlllist = m_mapAllFilelist.find( alias );
 	if ( itAlllist == m_mapAllFilelist.end() )
 	{
-		assert( 0 && L"엉뚱한 리스트의 목록을 로드하려고 했음 " );
+		ASSERT( 0 && L"엉뚱한 리스트의 목록을 로드하려고 했음 " );
 		return false;
 	}
 
@@ -231,7 +231,7 @@ HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
 
 	if ( stRes.bLoaded == true )
 	{
-		assert( 0 && L" 왜 또 로드해 메모리 모질라면 니가 책임질래? ㅡㅡ " );
+		ASSERT( 0 && L" 왜 또 로드해 메모리 모질라면 니가 책임질래? ㅡㅡ " );
 		return false;
 	}
 	
@@ -298,7 +298,7 @@ bool GdsResMgr::stack_data_to_container( const TCHAR* alias , const TCHAR* filep
 	tstring filename = wstrpath.substr( poscomma + 1 , wstrpath.length() );
 	if ( exist( alias , filename.c_str() ) )
 	{
-		assert( 0 && L"키값 중복이 있어서는 안된다." );
+		ASSERT( 0 && L"키값 중복이 있어서는 안된다." );
 		return false;
 	}		
 	RES_CONTAINER::iterator itResAll = m_mapRes.find( alias );
@@ -311,7 +311,7 @@ bool GdsResMgr::stack_data_to_container( const TCHAR* alias , const TCHAR* filep
 		}
 		else
 		{
-			assert( !L"리소스 중복 저장" );
+			ASSERT( !L"리소스 중복 저장" );
 		}
 	}
 	else

@@ -330,6 +330,42 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Property"
+				>
+				<File
+					RelativePath=".\Core\Property\GdsIndexBufferProperty.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsIndexBufferProperty.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsProperty.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsProperty.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsTextureProperty.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsTextureProperty.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsVertexBufferProperty.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsVertexBufferProperty.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Utility"

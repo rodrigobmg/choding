@@ -64,7 +64,7 @@ GdsNodePtr	GdsNode::GetAt( unsigned int index )
  		++t;
  	}
 
-	assert( 0 && L"못찾는건 말이 안된다. 차일드 리스트의 마지막 자식노드를 찾는중에 그 마지막 노드가 루프도중에 지워진거다;; ");
+	ASSERT( 0 && L"못찾는건 말이 안된다. 차일드 리스트의 마지막 자식노드를 찾는중에 그 마지막 노드가 루프도중에 지워진거다;; ");
 	return GdsNodePtr( (GdsNode*)NULL );
 }
 

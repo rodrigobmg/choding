@@ -45,7 +45,7 @@ public:
 	{
 		if ( m_ThreadQueue.size() > m_byMaxcapacity )
 		{
-			assert( 0 && "MAX 段引" );
+			ASSERT( 0 && "MAX 段引" );
 			return;
 		}
 

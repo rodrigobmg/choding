@@ -63,6 +63,11 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_TRANSFORM	L"Transform"
 #define OBJECT_VECTOR3		L"Vector3"
 
+#define OBJECT_PROPERTY			L"Property"
+#define OBJECT_PROPERTY_TEXTURE	L"Texture_Property"
+#define OBJECT_PROPERTY_VB		L"VB_Property"
+#define OBJECT_PROPERTY_IB		L"IB_Property"
+
 
 
 #include "Snowboard_macro.h"
