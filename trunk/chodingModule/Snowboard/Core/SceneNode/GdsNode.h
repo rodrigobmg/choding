@@ -4,7 +4,7 @@
 #include "../Base\GdsObject.h"
 #include "../Transform/GdsTransform.h"
 #include "../Resource/Type/GdsResBaseType.h"
-#include "../Property/GdsProperty.h"
+#include "../Property/GdsPropertyState.h"
 
 class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
 {
@@ -13,7 +13,7 @@ protected:
 	typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
 	GdsNodePtr								m_pParentNode;
 
-	typedef	 std::vector< GdsNodePtr >		CHILDNODE_CONTAINER;
+	typedef	 std::list< GdsNodePtr >		CHILDNODE_CONTAINER;
 	CHILDNODE_CONTAINER						m_ChildNode;
 
 	virtual	void							vInitGeometry( float fElapsedtime );
@@ -27,6 +27,8 @@ protected:
 	LPDIRECT3DDEVICE9						m_Device;
 
 	GdsResBasePtr							m_pResource;
+
+	GdsPropertyStatePtr						m_PropertyState;
 
 public:
 	GdsNode();
@@ -42,6 +44,9 @@ public:
 
 	void					SetResource( GdsResBasePtr pResource ){ m_pResource = pResource; }
 	GdsResBasePtr			GetResource() { return m_pResource; }
+
+	void					SetPropertyState( GdsPropertyStatePtr pProperty ){ m_PropertyState = pProperty; }
+	GdsPropertyStatePtr		GetPropertyState(){ return m_PropertyState; }
 
 	GdsTransform&			GetTransform(){ return m_matLocal; }
 	void					SetTransform( GdsTransform& mat ){ m_matLocal = mat; }

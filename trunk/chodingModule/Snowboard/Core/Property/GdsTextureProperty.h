@@ -9,12 +9,17 @@ public:
 	GdsTextureProperty(void);
 	virtual ~GdsTextureProperty(void);
 
+	LPDIRECT3DTEXTURE9		GetTexturePtr(){ return m_Tex; }
+	LPDIRECT3DTEXTURE9*		GetTexture(){ return &m_Tex; }
+
+
+	void			Render( LPDIRECT3DDEVICE9 device );
+	void			Clear();
+
 protected:
 
 	LPDIRECT3DTEXTURE9		m_Tex;
 
-	virtual void	vUpdate( float fElapsedTime );
-	virtual void	vClear();
 };
 
 typedef boost::shared_ptr< GdsTextureProperty > GdsTexturePropertyPtr;

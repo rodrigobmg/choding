@@ -1,5 +1,6 @@
 #include "GdsResMD2.h"
 #include "../../../System/FileSystem/GdsFile.h"
+#include "Property/GdsTextureProperty.h"
 
 ImplementBoostPool( GdsResMD2 )
 
@@ -54,7 +55,9 @@ HRESULT GdsResMD2::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 	tstring texturefilepath	= m_strPath.substr( 0 , poscomma );
 	texturefilepath += L"\\skin.jpg";
 
-	D3DXCreateTextureFromFile( device , texturefilepath.c_str() , &m_pTexture );
+	//D3DXCreateTextureFromFile( device , texturefilepath.c_str() , &m_pTexture );
+	GdsTexturePropertyPtr texture = m_PropertyState->GetTextureProperty();
+	D3DXCreateTextureFromFile( device , texturefilepath.c_str() ,  texture->GetTexture() );
 
 
    	GdsFile file( path ); 
@@ -128,11 +131,16 @@ HRESULT GdsResMD2::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 		Vertices[i*3+2].n = v3;
 	}
 
+	GdsPolygonPropertyPtr polygon = m_PropertyState->GetPolygonProperty();
+	polygon->SetFVF( m_dFVF );
+	polygon->SetPrimitive( m_uPrimitive );
+	polygon->SetVertexFormatSize( sizeof(MD2_VERTEX) );
+	
  	if( FAILED( device->CreateVertexBuffer( Size * sizeof(MD2_VERTEX), 
 											0, 
 											m_dFVF , 
 											D3DPOOL_DEFAULT, 
-											&m_pVB, 
+											polygon->GetVB() , //&m_pVB, 
 											NULL ) ) 
 											)
  	{
@@ -140,13 +148,13 @@ HRESULT GdsResMD2::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 	}
  
  	void *pVertices;
- 	if( FAILED( m_pVB->Lock( 0, Size * sizeof(MD2_VERTEX), (void**)&pVertices, 0 ) ) )
+ 	if( FAILED( polygon->GetVBPtr()->Lock( 0, Size * sizeof(MD2_VERTEX), (void**)&pVertices, 0 ) ) )
  	{
 		return E_FAIL; 
 	}
 
  	memcpy( pVertices, Vertices, Size * sizeof(MD2_VERTEX) );
- 	m_pVB->Unlock();
+ 	polygon->GetVBPtr()->Unlock();
 
 	///////////////////메모리 해제//////////////////////////////////////////////////////
 	delete []pMD2Data;		//동적할당

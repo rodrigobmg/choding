@@ -2,14 +2,14 @@
 #define _GDS_H_RESBASETYPE_
 
 #include "../../Base/GdsObject.h"
-#include "../../Property/GdsProperty.h"
+#include "../../Property/GdsPropertyState.h"
 
 class GdsResBase : public GdsObject
 {
 protected:
 
-	tstring			m_strPath;
-	GdsPropertyPtr	m_Property;
+	tstring				m_strPath;
+	GdsPropertyStatePtr	m_PropertyState;
 
 	virtual void	vClear() = 0;
 	virtual HRESULT	vCreate() = 0;
@@ -21,11 +21,12 @@ public:
 	GdsResBase()
 	{
 		SetName( OBJECT_RES_BASE );
+		m_PropertyState = GdsPropertyStatePtr( new GdsPropertyState );
 	}
 
 	virtual ~GdsResBase(){};
 
-	GdsPropertyPtr	GetProperty(){ return m_Property; }
+	GdsPropertyStatePtr	GetPropertyState(){ return m_PropertyState; }
 	void			Clear(){ vClear(); }
 	HRESULT			Create(){ return vCreate(); }
 	HRESULT			Release(){ return vRelease(); }

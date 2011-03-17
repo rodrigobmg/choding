@@ -334,19 +334,23 @@
 				Name="Property"
 				>
 				<File
-					RelativePath=".\Core\Property\GdsIndexBufferProperty.cpp"
+					RelativePath=".\Core\Property\GdsPolygonProperty.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Core\Property\GdsIndexBufferProperty.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsProperty.cpp"
+					RelativePath=".\Core\Property\GdsPolygonProperty.h"
 					>
 				</File>
 				<File
 					RelativePath=".\Core\Property\GdsProperty.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsPropertyState.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsPropertyState.h"
 					>
 				</File>
 				<File
@@ -355,14 +359,6 @@
 				</File>
 				<File
 					RelativePath=".\Core\Property\GdsTextureProperty.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsVertexBufferProperty.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsVertexBufferProperty.h"
 					>
 				</File>
 			</Filter>

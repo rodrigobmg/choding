@@ -1,7 +1,6 @@
 #include "GdsProperty.h"
 #include "GdsTextureProperty.h"
-#include "GdsVertexBufferProperty.h"
-#include "GdsIndexBufferProperty.h"
+#include "GdsPolygonProperty.h"
 
 GdsProperty::GdsProperty(void)
 {
@@ -15,10 +14,6 @@ GdsProperty::~GdsProperty(void)
 	vClear();
 }
 
-void GdsProperty::Update( float fElapsedTime )
-{
-	vUpdate( fElapsedTime );
-}
 
 void GdsProperty::SetType( PROPERTY_TYPE type )
 {
@@ -43,6 +38,7 @@ GdsPropertyPtr GdsProperty::GetProperty( PROPERTY_TYPE type )
  	if ( it == m_PropertyContainer.end() )
  	{
  		GdsPropertyPtr pNewProperty = create_property( type );
+		m_PropertyContainer.insert( std::pair< PROPERTY_TYPE , GdsPropertyPtr>( type ,pNewProperty ) );
 		return pNewProperty;
  	}
 	return it->second;
@@ -56,13 +52,16 @@ GdsPropertyPtr GdsProperty::create_property( PROPERTY_TYPE type )
 		return GdsTexturePropertyPtr( new GdsTextureProperty );
 		break;
 
-	case VERTEX_BUFFER:
-		return GdsVertexBufferPropertyPtr( new GdsVertexBufferProperty );
+	case POLYGON:
+		return GdsPolygonPropertyPtr( new GdsPolygonProperty );
 		break;
 		
-	case INDEX_BUFFER:
-		return GdsIndexBufferPropertyPtr( new GdsIndexBufferProperty );
-		break;
 	}
 	ASSERT( 0 && "없는 타입");
+	return GdsPropertyPtr( (GdsProperty*)NULL );
+}
+
+void GdsProperty::vUpdate( float fElapsedTime )
+{
+	ASSERT( 0 && "부모객체가 업데이트 되어선 안된다." );
 }

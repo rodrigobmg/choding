@@ -6,38 +6,35 @@
 class GdsProperty : public GdsObject
 {
 public:
-	GdsProperty(void);
-	virtual ~GdsProperty(void);
+	GdsProperty(void)
+	{
+		SetName(OBJECT_PROPERTY); 
+		SetType( NONE_TYPE ); 
+	}
 
-	typedef boost::shared_ptr< GdsProperty > GdsPropertyPtr;
+	virtual ~GdsProperty(void)
+	{
+	}
 
 	enum PROPERTY_TYPE{
 		NONE_TYPE = -1,
 		TEXTURE = 0,
-		VERTEX_BUFFER,
-		INDEX_BUFFER,
+		POLYGON,
 	};
 
-	void			Update( float fElapsedTime );
-	void			SetType( PROPERTY_TYPE type );
+
 	PROPERTY_TYPE	GetType(){ return m_eType; }	
 
-	GdsPropertyPtr	GetProperty( PROPERTY_TYPE type );
-	void			Clear(){ vClear(); }
+	virtual void	Clear() = 0;
 
-private:
-
-	GdsPropertyPtr	create_property( PROPERTY_TYPE type );
 
 protected:
-	
-	PROPERTY_TYPE	m_eType;
 
- 	typedef std::map< PROPERTY_TYPE , GdsPropertyPtr >	PROPERTY_MAP;
- 	PROPERTY_MAP	m_PropertyContainer;
+	void				SetType( PROPERTY_TYPE type ){ m_eType = type; }
+	PROPERTY_TYPE		m_eType;
 
-	virtual void	vUpdate( float fElapsedTime ) = 0;
-	virtual void	vClear();
+	LPDIRECT3DDEVICE9	m_pDevice;
+
 };
 
 typedef boost::shared_ptr< GdsProperty > GdsPropertyPtr;

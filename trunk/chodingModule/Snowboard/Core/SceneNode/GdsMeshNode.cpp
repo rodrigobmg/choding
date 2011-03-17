@@ -1,6 +1,8 @@
 
 #include "GdsMeshNode.h"
 #include "Resource\Type\GdsResMD2.h"
+#include "Property\GdsTextureProperty.h"
+#include "Property\GdsProperty.h"
 
 GdsMeshNode::GdsMeshNode()
 {
@@ -37,14 +39,12 @@ void GdsMeshNode::vRender( float fElapsedtime )
 	if ( GetDevice() == NULL )
 		return;
 	
-	GdsResMD2Ptr pResource = boost::dynamic_pointer_cast< GdsResMD2 >( GetResource() );
+	GdsResMD2Ptr pResource = boost::shared_dynamic_cast< GdsResMD2 >( GetResource() );
 	if ( pResource == NULL )
 		return;
 
-  	GetDevice()->SetTexture( 0, pResource->GetTexture() );
-  	GetDevice()->SetStreamSource( 0, pResource->GetVB() , 0, sizeof(GdsResMD2::MD2_VERTEX) );	
-   	GetDevice()->SetFVF( pResource->GetFVF() );
-   	GetDevice()->DrawPrimitive( D3DPT_TRIANGLELIST, 0, pResource->GetPrimitive() );
+	GetPropertyState()->Render( GetDevice() );
+
 }
 
 void GdsMeshNode::vClear()
