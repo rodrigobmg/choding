@@ -7,7 +7,7 @@ ImplementBoostPool( GdsResMD2 )
 GdsResMD2::GdsResMD2()
 {
 	SetName( OBJECT_RES_MD2 );
-	m_dFVF = D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1;
+	SetFVF( D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1 );
 	vClear();
 }
 
@@ -17,31 +17,19 @@ GdsResMD2::~GdsResMD2()
 
 void GdsResMD2::vClear()
 {
-	m_pVB = NULL;
-	m_pTexture = NULL;
 }
 
-HRESULT GdsResMD2::vCreate()
+HRESULT GdsResMD2::vCreate( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 {
-	if ( m_pTexture != NULL || m_pVB != NULL )
-	{
-		ASSERT( 0 );
-		return false;
-	}
 	return true;
 }
 
 HRESULT GdsResMD2::vRelease()
 {	
-	if ( m_pTexture )
-		m_pTexture->Release();
-	if ( m_pVB )
-		m_pVB->Release();
-
 	return true;
 }
 
-HRESULT GdsResMD2::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
+HRESULT GdsResMD2::vLoadResource()
 {
 	if ( device == NULL )
 	{
@@ -54,11 +42,8 @@ HRESULT GdsResMD2::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 	size_t poscomma = m_strPath.rfind( L"\\" );
 	tstring texturefilepath	= m_strPath.substr( 0 , poscomma );
 	texturefilepath += L"\\skin.jpg";
-
-	//D3DXCreateTextureFromFile( device , texturefilepath.c_str() , &m_pTexture );
 	GdsTexturePropertyPtr texture = m_PropertyState->GetTextureProperty();
 	D3DXCreateTextureFromFile( device , texturefilepath.c_str() ,  texture->GetTexture() );
-
 
    	GdsFile file( path ); 
    
@@ -69,9 +54,6 @@ HRESULT GdsResMD2::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
    	BYTE* pMD2Data = new BYTE[pMD2Header.offsetEnd];
 	if( file.Read( sizeof(BYTE)*( pMD2Header.offsetEnd - sizeof(MD2HEADER) ) , &pMD2Data[sizeof(MD2HEADER)] ) == false ) 
 		return false;
-
-	///////////////////삼각형 그리기 개수 설정/////////////////////////////////////
-	m_uPrimitive = pMD2Header.numTris;
 
 	///////////////////매트릭스 읽기(스케일, 이동값)///////////////////////////////
 
@@ -133,7 +115,7 @@ HRESULT GdsResMD2::vLoadResource( const TCHAR* path , LPDIRECT3DDEVICE9 device )
 
 	GdsPolygonPropertyPtr polygon = m_PropertyState->GetPolygonProperty();
 	polygon->SetFVF( m_dFVF );
-	polygon->SetPrimitive( m_uPrimitive );
+	polygon->SetPrimitive( pMD2Header.numTris );
 	polygon->SetVertexFormatSize( sizeof(MD2_VERTEX) );
 	
  	if( FAILED( device->CreateVertexBuffer( Size * sizeof(MD2_VERTEX), 
@@ -172,49 +154,3 @@ HRESULT GdsResMD2::vReCreate( LPDIRECT3DDEVICE9 device )
 	vRelease();
 	return vLoadResource( m_strPath.c_str() , device );
 }
-
-void GdsResMD2::SetVB( LPDIRECT3DVERTEXBUFFER9 vb )
-{
-	if ( m_pVB )
-		m_pVB->Release();
-
-	m_pVB = vb;
-}
-
-LPDIRECT3DVERTEXBUFFER9 GdsResMD2::GetVB()
-{
-	return m_pVB;
-}
-
-void GdsResMD2::SetFVF( DWORD flag )
-{
-	m_dFVF = flag;
-}
-
-DWORD GdsResMD2::GetFVF()
-{
-	return m_dFVF;
-}
-
-void GdsResMD2::SetTexture( LPDIRECT3DTEXTURE9 texture )
-{
-	if ( m_pTexture )
-		m_pTexture->Release();
-
-	m_pTexture = texture;
-}
-
-LPDIRECT3DTEXTURE9 GdsResMD2::GetTexture()
-{
-	return m_pTexture;
-}
-
-void GdsResMD2::SetPrimitive( UINT uPrimitive )
-{
-	m_uPrimitive = uPrimitive;
-}
-
-UINT GdsResMD2::GetPrimitive()
-{
-	return m_uPrimitive;
-}	

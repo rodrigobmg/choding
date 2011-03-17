@@ -6,7 +6,6 @@ GdsNode::GdsNode()
 	m_ChildNode.clear();
 	m_Device = NULL;
 	m_pParentNode = GdsNodePtr( (GdsNode*)NULL );
-	m_pResource = GdsResBasePtr( (GdsResBase*)NULL );
 	m_matWorld.MakeIdentity();
 	m_matLocal.MakeIdentity();
 }

@@ -73,35 +73,22 @@ public:
 
 private:
 
-	LPDIRECT3DVERTEXBUFFER9		m_pVB;
-	LPDIRECT3DTEXTURE9			m_pTexture;
 	DWORD						m_dFVF;
-	UINT						m_uPrimitive;
 
 protected:
 
 	virtual void				vClear();
-	virtual HRESULT				vCreate();
+	virtual HRESULT				vCreate( const TCHAR* path  , LPDIRECT3DDEVICE9 device );
 	virtual HRESULT				vRelease();
 	virtual HRESULT				vReCreate( LPDIRECT3DDEVICE9 device );
-	virtual HRESULT				vLoadResource( const TCHAR* path  , LPDIRECT3DDEVICE9 device );
+	virtual HRESULT				vLoadResource();
 
 public:
 	GdsResMD2();
 	virtual ~GdsResMD2();
 	
-	void						SetVB( LPDIRECT3DVERTEXBUFFER9 vb );
-	LPDIRECT3DVERTEXBUFFER9		GetVB();
-
-	void						SetFVF( DWORD flag );
-	DWORD						GetFVF();
-
-	void						SetTexture( LPDIRECT3DTEXTURE9 texture );
-	LPDIRECT3DTEXTURE9			GetTexture();
-
-	void						SetPrimitive( UINT uPrimitive );
-	UINT						GetPrimitive();
-
+	void						SetFVF( DWORD flag ){ m_dFVF = flag; }
+	DWORD						GetFVF(){ return m_dFVF; }
 
 	
 		

@@ -39,12 +39,7 @@ void GdsMeshNode::vRender( float fElapsedtime )
 	if ( GetDevice() == NULL )
 		return;
 	
-	GdsResMD2Ptr pResource = boost::shared_dynamic_cast< GdsResMD2 >( GetResource() );
-	if ( pResource == NULL )
-		return;
-
 	GetPropertyState()->Render( GetDevice() );
-
 }
 
 void GdsMeshNode::vClear()

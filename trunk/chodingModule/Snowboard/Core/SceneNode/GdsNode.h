@@ -3,7 +3,6 @@
 
 #include "../Base\GdsObject.h"
 #include "../Transform/GdsTransform.h"
-#include "../Resource/Type/GdsResBaseType.h"
 #include "../Property/GdsPropertyState.h"
 
 class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
@@ -26,8 +25,6 @@ protected:
 
 	LPDIRECT3DDEVICE9						m_Device;
 
-	GdsResBasePtr							m_pResource;
-
 	GdsPropertyStatePtr						m_PropertyState;
 
 public:
@@ -41,9 +38,6 @@ public:
 
 	void					SetDevice( LPDIRECT3DDEVICE9 device ){ m_Device = device; }
 	LPDIRECT3DDEVICE9		GetDevice(){ return m_Device; }
-
-	void					SetResource( GdsResBasePtr pResource ){ m_pResource = pResource; }
-	GdsResBasePtr			GetResource() { return m_pResource; }
 
 	void					SetPropertyState( GdsPropertyStatePtr pProperty ){ m_PropertyState = pProperty; }
 	GdsPropertyStatePtr		GetPropertyState(){ return m_PropertyState; }
