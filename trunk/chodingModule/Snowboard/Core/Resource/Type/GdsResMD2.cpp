@@ -19,17 +19,12 @@ void GdsResMD2::vClear()
 {
 }
 
-HRESULT GdsResMD2::vCreate( const TCHAR* path , LPDIRECT3DDEVICE9 device )
-{
-	return true;
-}
-
 HRESULT GdsResMD2::vRelease()
 {	
 	return true;
 }
 
-HRESULT GdsResMD2::vLoadResource()
+HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 {
 	if ( device == NULL )
 	{
@@ -37,15 +32,20 @@ HRESULT GdsResMD2::vLoadResource()
 		return false;
 	}
 
-	m_strPath = path;
+	if ( m_strPath == L"" )
+	{
+		ASSERT( 0 );
+		return false;
+	}
 
 	size_t poscomma = m_strPath.rfind( L"\\" );
 	tstring texturefilepath	= m_strPath.substr( 0 , poscomma );
 	texturefilepath += L"\\skin.jpg";
+
 	GdsTexturePropertyPtr texture = m_PropertyState->GetTextureProperty();
 	D3DXCreateTextureFromFile( device , texturefilepath.c_str() ,  texture->GetTexture() );
 
-   	GdsFile file( path ); 
+   	GdsFile file( m_strPath ); 
    
    	MD2HEADER pMD2Header;
 	if ( file.Read( sizeof( MD2HEADER ) , &pMD2Header )  == false )
@@ -147,10 +147,4 @@ HRESULT GdsResMD2::vLoadResource()
 	delete []Vertices;		//동적할당
 
 	return true;
-}
-
-HRESULT GdsResMD2::vReCreate( LPDIRECT3DDEVICE9 device )
-{
-	vRelease();
-	return vLoadResource( m_strPath.c_str() , device );
 }

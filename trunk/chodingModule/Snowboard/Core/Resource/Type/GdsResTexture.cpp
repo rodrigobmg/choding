@@ -17,20 +17,6 @@ void GdsResTexture::vClear()
 {
 }
 
-HRESULT GdsResTexture::vCreate( const TCHAR* path , LPDIRECT3DDEVICE9 device )
-{
-
-	if ( device == NULL )
-		return false;
-
-	m_strPath = path;
-	if ( vLoadResource() )
-	{
-
-	}
-	return true;
-}
-
 HRESULT GdsResTexture::vRelease()
 {	
 	return true;
@@ -38,19 +24,23 @@ HRESULT GdsResTexture::vRelease()
 
 HRESULT GdsResTexture::vLoadResource( LPDIRECT3DDEVICE9 device )
 {
-	if ( m_strPath == L"" )
+	if ( device == NULL )
+	{
+		ASSERT( 0 );
 		return false;
+	}
+
+	if ( m_strPath == L"" )
+	{
+		ASSERT( 0 );
+		return false;
+	}
 
 	GdsTexturePropertyPtr texture = m_PropertyState->GetTextureProperty();
-	if ( SUCCEEDED( D3DXCreateTextureFromFile( device , path , texture->GetTexture() ) ) )
+	if ( SUCCEEDED( D3DXCreateTextureFromFile( device , m_strPath.c_str() , texture->GetTexture() ) ) )
 	{
 		return true;
 	}
 
 	return false;
-}
-
-HRESULT GdsResTexture::vReCreate( LPDIRECT3DDEVICE9 device )
-{
-	return vLoadResource( device );
 }

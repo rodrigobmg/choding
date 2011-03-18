@@ -6,6 +6,12 @@
 class GdsTextureProperty : public GdsProperty
 {
 public:
+
+	enum TEXTURE_TYPE{
+		MULTI_TEXTURE,
+		BUMP,
+	};
+
 	GdsTextureProperty(void);
 	virtual ~GdsTextureProperty(void);
 

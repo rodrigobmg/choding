@@ -11,11 +11,9 @@ protected:
 	tstring				m_strPath;
 	GdsPropertyStatePtr	m_PropertyState;
 
-	virtual void	vClear() = 0;
-	virtual HRESULT	vCreate(  const TCHAR* path , LPDIRECT3DDEVICE9 device ) = 0;
-	virtual HRESULT	vRelease() = 0;
-	virtual	HRESULT	vReCreate( LPDIRECT3DDEVICE9 device ) = 0;
-	virtual HRESULT vLoadResource() = 0;
+	virtual void		vClear() = 0;
+	virtual HRESULT		vRelease() = 0;
+	virtual HRESULT		vLoadResource( LPDIRECT3DDEVICE9 device ) = 0;
 
 public:
 	GdsResBase()
@@ -27,13 +25,24 @@ public:
 	virtual ~GdsResBase(){};
 
 	GdsPropertyStatePtr	GetPropertyState(){ return m_PropertyState; }
-	void			Clear(){ vClear(); }
-	HRESULT			Create( const TCHAR* path , LPDIRECT3DDEVICE9 device ){ return vCreate( path , device ); }
-	HRESULT			Release(){ return vRelease(); }
-	HRESULT			ReCreate( LPDIRECT3DDEVICE9 device ) { return vReCreate( device ); }
-	HRESULT			LoadResource(){ return vLoadResource(); }
+
+	void				Clear(){ vClear(); }
+	HRESULT				Create( const TCHAR* path , LPDIRECT3DDEVICE9 device )
+						{
+							m_strPath = path;
+							return vLoadResource( device );
+						}
+
+	HRESULT				ReCreate( LPDIRECT3DDEVICE9 device ) 
+						{ 
+							vRelease();
+							return vLoadResource( device ); 
+						}
+
+	HRESULT				LoadResource(LPDIRECT3DDEVICE9 device){ return vLoadResource(device); }
 	
 };
+
 
 typedef boost::shared_ptr< GdsResBase >		GdsResBasePtr;
 

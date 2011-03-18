@@ -13,10 +13,10 @@ private:
 public:
 
 	GdsFile();
-	GdsFile( tstring path );
+	GdsFile( tstring& path );
 	virtual ~GdsFile();
 
-	void	Setpath( tstring path );
+	void	Setpath( tstring& path );
 	bool	Read( size_t readsize , void* buffer );
 	void	Write( size_t writesize , BYTE* buffer );
 

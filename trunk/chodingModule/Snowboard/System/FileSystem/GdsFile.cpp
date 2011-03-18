@@ -6,7 +6,7 @@ GdsFile::GdsFile()
 {
 }
 
-GdsFile::GdsFile( tstring path )
+GdsFile::GdsFile( tstring& path )
 {
 	Setpath( path );
 }
@@ -17,7 +17,7 @@ GdsFile::~GdsFile()
 		fclose( pfile_ );
 }
 
-void GdsFile::Setpath( tstring path )
+void GdsFile::Setpath( tstring& path )
 {
 	//파일 열기
 	_wfopen_s( &pfile_ , path.c_str() , L"rb" );

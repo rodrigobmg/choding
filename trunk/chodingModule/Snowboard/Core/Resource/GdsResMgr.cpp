@@ -328,13 +328,13 @@ GdsResBasePtr GdsResMgr::resourceFactory( const TCHAR* ext , const TCHAR* filepa
 	if ( !_tcscmp( ext , L"bmp" ) || !_tcscmp( ext , L"tga" ) || !_tcscmp( ext , L"jpg" ) || !_tcscmp( ext , L"dds" ) )
 	{
 		GdsResTexturePtr ptex = GdsResTexturePtr( new GdsResTexture );
-		ptex->LoadResource( filepath , m_pDevice );
+		ptex->Create( filepath , m_pDevice );
 		return	ptex;	
 	}
 	else if ( !_tcscmp( ext , L"md2" ) )
 	{
 		GdsResMD2Ptr	pMd2 = GdsResMD2Ptr( new GdsResMD2 );
-		pMd2->LoadResource( filepath , m_pDevice );
+		pMd2->Create( filepath , m_pDevice );
 		return pMd2;
 	}
 
