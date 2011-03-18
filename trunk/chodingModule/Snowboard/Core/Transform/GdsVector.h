@@ -6,6 +6,9 @@
 class GdsVector3 : public GdsObject
 {
 public:
+
+	DeclareBoostPool
+
 	float x , y , z;
 
 	static const GdsVector3 ZERO;

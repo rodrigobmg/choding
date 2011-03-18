@@ -23,7 +23,8 @@ public:
 	void			Clear();
 
 protected:
-
+	
+	int32_t					m_iCountOfTexture;
 	LPDIRECT3DTEXTURE9		m_Tex;
 
 };

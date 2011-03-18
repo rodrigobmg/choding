@@ -9,6 +9,8 @@ class GdsTransform : public GdsObject
 {
 public:
 
+	DeclareBoostPool
+
 	GdsMatrix3		m_Rotate;
 	GdsVector3		m_Translate;
 	float			m_fScale;

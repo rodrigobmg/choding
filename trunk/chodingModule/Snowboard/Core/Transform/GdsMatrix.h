@@ -8,6 +8,8 @@ class GdsMatrix3 : public GdsObject
 {
 public:
 
+	DeclareBoostPool
+
 	float m_pEntry[3][3];
 
 	static const GdsMatrix3 ZERO;

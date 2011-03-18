@@ -23,8 +23,6 @@ public:
 	void					Render( LPDIRECT3DDEVICE9 device );
 
 private:
-	
-	LPDIRECT3DDEVICE9		m_pDevice;
 
 	GdsTexturePropertyPtr	m_TextureProperty;
 	GdsPolygonPropertyPtr	m_PolygonProperty;

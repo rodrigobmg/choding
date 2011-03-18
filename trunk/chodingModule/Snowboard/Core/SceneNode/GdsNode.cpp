@@ -1,5 +1,7 @@
 #include "GdsNode.h"
 
+ImplementBoostPool( GdsNode )
+
 GdsNode::GdsNode()
 {
 	SetName( OBJECT_NODE );
@@ -8,6 +10,7 @@ GdsNode::GdsNode()
 	m_pParentNode = GdsNodePtr( (GdsNode*)NULL );
 	m_matWorld.MakeIdentity();
 	m_matLocal.MakeIdentity();
+	m_eCull = CULL_OFF;
 }
 
 GdsNode::~GdsNode()
@@ -149,6 +152,9 @@ void GdsNode::InitGeometry( float fElapsedtime )
 
 void GdsNode::Render( float fElapsedtime )
 {
+	if ( m_eCull == CULL_ON )
+		return;
+
 	if ( GetDevice() == NULL )
 		return;
 

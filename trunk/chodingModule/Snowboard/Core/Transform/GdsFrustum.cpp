@@ -1,5 +1,6 @@
 #include "GdsFrustum.h"
 
+ImplementBoostPool( GdsFrustum )
 
 GdsFrustum::GdsFrustum( float fLeft , float fRight , float fBottom , float fTop , float fNear , float fFar , bool bOrtho /*= false*/ )
 {

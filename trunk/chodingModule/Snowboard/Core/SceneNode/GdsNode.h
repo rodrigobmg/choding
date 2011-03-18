@@ -7,6 +7,16 @@
 
 class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
 {
+public:
+	
+	DeclareBoostPool
+
+	enum CULL_TYPE{
+		CULL_ON = 0,
+		CULL_OFF,
+		CULL_OFF_ALL_CHILD,
+	};
+
 protected:		
 
 	typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
@@ -27,6 +37,8 @@ protected:
 
 	GdsPropertyStatePtr						m_PropertyState;
 
+	CULL_TYPE								m_eCull;
+
 public:
 	GdsNode();
 	virtual ~GdsNode();
@@ -35,6 +47,9 @@ public:
 	{
 		return shared_from_this();
 	}
+
+	void					SetCullType( CULL_TYPE eCull ){ m_eCull = eCull; }
+	CULL_TYPE				GetCullType(){ return m_eCull; }
 
 	void					SetDevice( LPDIRECT3DDEVICE9 device ){ m_Device = device; }
 	LPDIRECT3DDEVICE9		GetDevice(){ return m_Device; }

@@ -1,5 +1,7 @@
 #include "GdsTransform.h"
 
+ImplementBoostPool( GdsTransform )
+
 void GdsTransform::MakeIdentity()
 {
 	m_Rotate.MakeIdentity();

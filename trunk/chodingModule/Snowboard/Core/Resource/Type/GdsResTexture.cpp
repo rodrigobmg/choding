@@ -37,7 +37,15 @@ HRESULT GdsResTexture::vLoadResource( LPDIRECT3DDEVICE9 device )
 	}
 
 	GdsTexturePropertyPtr texture = m_PropertyState->GetTextureProperty();
-	if ( SUCCEEDED( D3DXCreateTextureFromFile( device , m_strPath.c_str() , texture->GetTexture() ) ) )
+// 	if ( SUCCEEDED( D3DXCreateTextureFromFile( device , m_strPath.c_str() , texture->GetTexture() ) ) )
+// 	{
+// 		return true;
+// 	}
+	if ( SUCCEEDED( D3DXCreateTextureFromFileEx( device , m_strPath.c_str() , D3DX_DEFAULT , D3DX_DEFAULT , D3DX_DEFAULT , 0 ,
+								D3DFMT_X8R8G8B8 ,
+								D3DPOOL_MANAGED , 
+								D3DX_DEFAULT , D3DX_DEFAULT , 0 ,
+								NULL , NULL , texture->GetTexture() ) ) )
 	{
 		return true;
 	}
