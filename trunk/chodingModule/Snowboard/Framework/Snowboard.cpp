@@ -8,7 +8,6 @@
 #include "../Utility/PerformanceCheck/Performance.h"
 
 #include "../System/Thread/GdsThreadPool.h"
-#include "SceneNode/GdsMeshNode.h"
 #include "SceneNode/GdsNode.h"
 #include "Resource/Type/GdsResMD2.h"
 
@@ -102,12 +101,11 @@ void CSnowboard::TestFunc()
 	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"meat.md2" ) );
 	if( resmesh )
 	{
-		GdsMeshNodePtr mesh = GdsMeshNodePtr( new GdsMeshNode );
+		GdsNodePtr mesh = GdsNodePtr( new GdsNode );
 		mesh->SetPropertyState( resmesh->GetPropertyState() );
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
 
-		GdsMeshNodePtr mesh1 = GdsMeshNodePtr( new GdsMeshNode );
-		//GdsResMD2Ptr resmesh1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"cart.md2" ) );
+		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );
 		mesh1->SetPropertyState( resmesh->GetPropertyState() );
 		mesh1->SetTranslate( -10 , 0 , 50 );
 		m_pRenderer->GetRootNode()->AttachChild( mesh1 );

@@ -126,12 +126,39 @@ void GdsNode::InitGeometry( float fElapsedtime )
 	else
 		m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;
 
+
+	D3DXMATRIXA16 matWorld;
+	D3DXMatrixIdentity( &matWorld );
+
+	m_matWorld.m_Rotate.GetRow( 0 , matWorld._11 , matWorld._12 , matWorld._13 );
+	m_matWorld.m_Rotate.GetRow( 1 , matWorld._21 , matWorld._22 , matWorld._23 );
+	m_matWorld.m_Rotate.GetRow( 2 , matWorld._31 , matWorld._32 , matWorld._33 );
+	matWorld._41 = m_matWorld.m_Translate[0]; 
+	matWorld._42 = m_matWorld.m_Translate[1];
+	matWorld._43 = m_matWorld.m_Translate[2];	
+	matWorld._11 *= m_matWorld.m_fScale;
+	matWorld._22 *= m_matWorld.m_fScale;
+	matWorld._33 *= m_matWorld.m_fScale;
+
+	GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
+
+	//virtual
 	vInitGeometry(fElapsedtime);
 	
 }
 
 void GdsNode::Render( float fElapsedtime )
 {
+	if ( GetDevice() == NULL )
+		return;
+
+	if ( GetPropertyState() == NULL )
+		return;
+
+
+	GetPropertyState()->Render( GetDevice() );
+
+	// virtual
 	vRender(fElapsedtime);
 }
 
@@ -140,5 +167,5 @@ void GdsNode::vInitGeometry( float fElapsedtime )
 }
 
 void GdsNode::vRender( float fElapsedtime )
-{
+{	
 }

@@ -270,14 +270,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Core\SceneNode\GdsMeshNode.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\SceneNode\GdsMeshNode.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Core\SceneNode\GdsNode.cpp"
 					>
 				</File>
