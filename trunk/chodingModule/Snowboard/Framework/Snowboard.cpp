@@ -10,6 +10,7 @@
 #include "../System/Thread/GdsThreadPool.h"
 #include "SceneNode/GdsNode.h"
 #include "Resource/Type/GdsResMD2.h"
+#include "SceneNode/GdsBillboardNode.h"
 
 CSnowboard::CSnowboard()
 {
@@ -96,6 +97,9 @@ void CSnowboard::TestFunc()
 	{	 
  		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"md2" , respath , L"md2" , true ) );
 		m_pResMgr->LoadRes( L"md2" );
+
+		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"tex" , respath , L"bmp;dds;tga" , true ) );
+		m_pResMgr->LoadRes( L"tex" );
 	}
 
 	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"meat.md2" ) );
@@ -118,4 +122,17 @@ void CSnowboard::TestFunc()
 		m_pRenderer->GetRootNode()->AttachChild( mesh1 );
 
 	}	
+
+	//create billboard
+	GdsResTexturePtr restex = boost::shared_dynamic_cast< GdsResTexture >( m_pResMgr->Get( L"tex" , L"banana.bmp" ) );
+	if ( restex )
+	{
+		GdsBillboardNodePtr billboard = GdsBillboardNodePtr( new GdsBillboardNode );
+		GdsPropertyStatePtr billboardproperty = GdsPropertyStatePtr( new GdsPropertyState );
+		billboardproperty->GetTextureProperty()->SetTexture( restex->GetTexturePtr() );
+		billboard->SetPropertyState( billboardproperty );
+
+		m_pRenderer->GetRootNode()->AttachChild( billboard );
+	}
+
 }

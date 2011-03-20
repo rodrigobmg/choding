@@ -36,7 +36,7 @@ public:
 	void					SetRootNode( GdsNodePtr node ){ m_RootNode = node; }
 	GdsNodePtr				GetRootNode() { return m_RootNode; }
 	
-	void					Update( float fAccumTime );
+	void					vUpdate( float fAccumTime );
 
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
 	GdsCameraManagerDX9Ptr	GetCamMgr()		{ return m_CamManager; }

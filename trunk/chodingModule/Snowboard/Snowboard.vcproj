@@ -262,6 +262,14 @@
 				Name="SceneNode"
 				>
 				<File
+					RelativePath=".\Core\SceneNode\GdsBillboardNode.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\SceneNode\GdsBillboardNode.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Core\SceneNode\GdsCameraNode.cpp"
 					>
 				</File>

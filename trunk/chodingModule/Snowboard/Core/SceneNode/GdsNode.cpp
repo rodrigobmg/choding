@@ -143,11 +143,11 @@ void GdsNode::InitGeometry( float fElapsedtime )
 	matWorld._22 *= m_matWorld.m_fScale;
 	matWorld._33 *= m_matWorld.m_fScale;
 
-	GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
-
 	//virtual
 	vInitGeometry(fElapsedtime);
-	
+
+
+	GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 }
 
 void GdsNode::Render( float fElapsedtime )

@@ -9,6 +9,12 @@ class GdsRendererBase : public GdsObject{
 public:
 	GdsRendererBase(){ SetName( OBJECT_RENDERBASE ); }
 	virtual ~GdsRendererBase(){};
+
+	void			Update( float fElapsedTime ){ vUpdate(fElapsedTime); }
+
+protected:
+
+	virtual void	vUpdate( float fElapsedTime ) = 0;
 };
 
 #endif
