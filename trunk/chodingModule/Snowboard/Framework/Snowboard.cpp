@@ -101,12 +101,19 @@ void CSnowboard::TestFunc()
 	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"meat.md2" ) );
 	if( resmesh )
 	{
-		GdsNodePtr mesh = GdsNodePtr( new GdsNode );
-		mesh->SetPropertyState( resmesh->GetPropertyState() );
+		GdsNodePtr mesh = GdsNodePtr( new GdsNode );		
+		GdsPropertyStatePtr pProperty = GdsPropertyStatePtr( new GdsPropertyState );
+		pProperty->GetPolygonProperty()->SetVB(resmesh->GetVertexBufferPtr() );
+		pProperty->GetPolygonProperty()->SetFVF( resmesh->GetFVF() );
+		pProperty->GetPolygonProperty()->SetPrimitive( resmesh->GetPrimitive() );
+		pProperty->GetPolygonProperty()->SetVertexFormatSize( resmesh->GetVertexSize() );
+		pProperty->GetTextureProperty()->SetTexture( resmesh->GetTexturePtr() );
+		mesh->SetPropertyState( pProperty );
+		
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
 
 		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );
-		mesh1->SetPropertyState( resmesh->GetPropertyState() );
+		mesh1->SetPropertyState( pProperty );
 		mesh1->SetTranslate( -10 , 0 , 50 );
 		m_pRenderer->GetRootNode()->AttachChild( mesh1 );
 

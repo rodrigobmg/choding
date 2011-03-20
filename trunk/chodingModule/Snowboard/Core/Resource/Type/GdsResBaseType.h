@@ -9,22 +9,15 @@ class GdsResBase : public GdsObject
 protected:
 
 	tstring				m_strPath;
-	GdsPropertyStatePtr	m_PropertyState;
 
 	virtual void		vClear() = 0;
 	virtual HRESULT		vRelease() = 0;
 	virtual HRESULT		vLoadResource( LPDIRECT3DDEVICE9 device ) = 0;
 
 public:
-	GdsResBase()
-	{
-		SetName( OBJECT_RES_BASE );
-		m_PropertyState = GdsPropertyStatePtr( new GdsPropertyState );
-	}
+	GdsResBase(){ SetName( OBJECT_RES_BASE );	}
 
 	virtual ~GdsResBase(){};
-
-	GdsPropertyStatePtr	GetPropertyState(){ return m_PropertyState; }
 
 	void				Clear(){ vClear(); }
 	HRESULT				Create( const TCHAR* path , LPDIRECT3DDEVICE9 device )

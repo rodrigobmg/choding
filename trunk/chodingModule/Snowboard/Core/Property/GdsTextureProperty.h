@@ -8,24 +8,32 @@ class GdsTextureProperty : public GdsProperty
 public:
 
 	enum TEXTURE_TYPE{
+		DEFAULT,
 		MULTI_TEXTURE,
 		BUMP,
+	};
+
+	enum MULTI_TEXTURE_MAX{
+		MAX = 4,
 	};
 
 	GdsTextureProperty(void);
 	virtual ~GdsTextureProperty(void);
 
-	LPDIRECT3DTEXTURE9		GetTexturePtr(){ return m_Tex; }
-	LPDIRECT3DTEXTURE9*		GetTexture(){ return &m_Tex; }
+	LPDIRECT3DTEXTURE9		GetTexturePtr( const int num = 0 );
+	LPDIRECT3DTEXTURE9*		GetTexture( const int num = 0 );
+
+	void			SetTexture( LPDIRECT3DTEXTURE9 texture , const int num = 0 );
 
 
 	void			Render( LPDIRECT3DDEVICE9 device );
 	void			Clear();
 
-protected:
-	
-	int32_t					m_iCountOfTexture;
-	LPDIRECT3DTEXTURE9		m_Tex;
+private:
+
+	TEXTURE_TYPE						m_eTexturingType;
+	int32_t								m_iCountOfTexture;
+	std::vector< LPDIRECT3DTEXTURE9	>	m_Tex;
 
 };
 

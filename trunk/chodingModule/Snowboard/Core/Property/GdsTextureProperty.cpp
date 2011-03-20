@@ -1,11 +1,14 @@
 #include "GdsTextureProperty.h"
 
 GdsTextureProperty::GdsTextureProperty(void):
-m_Tex(NULL)
+m_eTexturingType( DEFAULT )
 {
 	SetName( OBJECT_PROPERTY_TEXTURE );
 	SetType( TEXTURE );
 	Clear();
+	for ( size_t i = 0 ; i < MAX ; i++ )
+		m_Tex.push_back( NULL );
+
 }
 
 GdsTextureProperty::~GdsTextureProperty(void)
@@ -15,14 +18,49 @@ GdsTextureProperty::~GdsTextureProperty(void)
 
 void GdsTextureProperty::Clear()
 {
-	if ( m_Tex )
-	{
-		m_Tex->Release();
-		m_Tex = NULL;
-	}
+	for_each( m_Tex.begin() , m_Tex.end() , functor::release() );
 }
 
 void GdsTextureProperty::Render( LPDIRECT3DDEVICE9 device )
 {
-	device->SetTexture( 0, m_Tex );  	
+	if ( m_eTexturingType == DEFAULT )
+		device->SetTexture( 0, m_Tex[0] );  	
+	else if ( m_eTexturingType == MULTI_TEXTURE )
+	{
+		
+	}
+}
+
+void GdsTextureProperty::SetTexture( LPDIRECT3DTEXTURE9 texture , const int num /*= 0 */ )
+{
+	if ( ( m_eTexturingType == MULTI_TEXTURE ) && ( num != 0 ) )
+		ASSERT( 0 );
+
+	if ( m_Tex.size() < num )
+		ASSERT( 0 );
+
+	ASSERT( texture );
+
+	if ( m_Tex[num] == NULL ) 
+	{
+		m_Tex[num] = texture; 
+	}
+}
+
+LPDIRECT3DTEXTURE9* GdsTextureProperty::GetTexture( const int num /*= 0 */ )
+{
+	if ( ( m_eTexturingType == MULTI_TEXTURE ) && ( num != 0 ) )
+		ASSERT( 0 );
+	if ( m_Tex.size() < num )
+		ASSERT( 0 );
+	return &(m_Tex[num]);
+}
+
+LPDIRECT3DTEXTURE9 GdsTextureProperty::GetTexturePtr( const int num /*= 0 */ )
+{
+	if ( ( m_eTexturingType == MULTI_TEXTURE ) && ( num != 0 ) )
+		ASSERT( 0 );
+	if ( m_Tex.size() < num )
+		ASSERT( 0 );
+	return m_Tex[num];
 }

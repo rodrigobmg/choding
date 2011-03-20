@@ -1,10 +1,5 @@
 #include "GdsRendererDX9.h"
 
-
-// 사용자정의 정점 버텍스
-#define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZRHW | D3DFVF_DIFFUSE)
-
-
 GdsRendererDX9::GdsRendererDX9()
 {
 	SetName( OBJECT_RENDERERDX9 );

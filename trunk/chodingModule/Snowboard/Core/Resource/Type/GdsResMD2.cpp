@@ -4,7 +4,9 @@
 
 ImplementBoostPool( GdsResMD2 )
 
-GdsResMD2::GdsResMD2()
+GdsResMD2::GdsResMD2():
+m_pVB(NULL),
+m_pTexture(NULL)
 {
 	SetName( OBJECT_RES_MD2 );
 	SetFVF( D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1 );
@@ -21,6 +23,8 @@ void GdsResMD2::vClear()
 
 HRESULT GdsResMD2::vRelease()
 {	
+	SAFE_RELEASE( m_pVB );
+	SAFE_RELEASE( m_pTexture );
 	return true;
 }
 
@@ -42,8 +46,7 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 	tstring texturefilepath	= m_strPath.substr( 0 , poscomma );
 	texturefilepath += L"\\skin.jpg";
 
-	GdsTexturePropertyPtr texture = m_PropertyState->GetTextureProperty();
-	D3DXCreateTextureFromFile( device , texturefilepath.c_str() ,  texture->GetTexture() );
+	D3DXCreateTextureFromFile( device , texturefilepath.c_str() ,  &m_pTexture );
 
    	GdsFile file( m_strPath ); 
    
@@ -85,6 +88,7 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 	MD2_VERTEX *Vertices = new MD2_VERTEX[Size];
 	ZeroMemory( Vertices, Size * sizeof(MD2_VERTEX) );
 
+	m_uiPrimitive = pMD2Header.numTris;
 	for( int i = 0; i < pMD2Header.numTris; i++ )
 	{
 		for( int j = 0; j < 3; j++ )
@@ -112,17 +116,12 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 		Vertices[i*3+1].n = v3;
 		Vertices[i*3+2].n = v3;
 	}
-
-	GdsPolygonPropertyPtr polygon = m_PropertyState->GetPolygonProperty();
-	polygon->SetFVF( m_dFVF );
-	polygon->SetPrimitive( pMD2Header.numTris );
-	polygon->SetVertexFormatSize( sizeof(MD2_VERTEX) );
 	
  	if( FAILED( device->CreateVertexBuffer( Size * sizeof(MD2_VERTEX), 
 											0, 
 											m_dFVF , 
 											D3DPOOL_DEFAULT, 
-											polygon->GetVB() , //&m_pVB, 
+											&m_pVB, 
 											NULL ) ) 
 											)
  	{
@@ -130,13 +129,13 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 	}
  
  	void *pVertices;
- 	if( FAILED( polygon->GetVBPtr()->Lock( 0, Size * sizeof(MD2_VERTEX), (void**)&pVertices, 0 ) ) )
+ 	if( FAILED( m_pVB->Lock( 0, Size * sizeof(MD2_VERTEX), (void**)&pVertices, 0 ) ) )
  	{
 		return E_FAIL; 
 	}
 
  	memcpy( pVertices, Vertices, Size * sizeof(MD2_VERTEX) );
- 	polygon->GetVBPtr()->Unlock();
+ 	m_pVB->Unlock();
 
 	///////////////////메모리 해제//////////////////////////////////////////////////////
 	delete []pMD2Data;		//동적할당

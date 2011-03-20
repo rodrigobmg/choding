@@ -161,11 +161,11 @@ namespace functor
 
 	struct release{
 		template<typename T> void operator() (T*& t){
-			if(t){ t->Release(); }
+			if(t){ t->Release(); t = NULL; }
 		}
 		template<typename KEY, typename VALUE> 
 		void operator() (std::pair<const KEY, VALUE>& t){
-			if(t.second){ t.second->Release(); }
+			if(t.second){ t.second->Release(); t.second = NULL; }
 		}
 	};
 

@@ -11,6 +11,8 @@ public:
 
 	LPDIRECT3DVERTEXBUFFER9		GetVBPtr(){ return m_VB; }
 	LPDIRECT3DVERTEXBUFFER9*	GetVB(){ return &m_VB; }
+
+	void			SetVB( LPDIRECT3DVERTEXBUFFER9 p );
 	
 	
 	void			SetFVF( uint32_t FVF ){ m_FVF = FVF; }
@@ -22,6 +24,9 @@ public:
 
 	LPDIRECT3DINDEXBUFFER9		GetIBPtr(){ return m_IB; }
 	LPDIRECT3DINDEXBUFFER9*		GetIB(){ return &m_IB; }
+
+	void			SetIB( LPDIRECT3DINDEXBUFFER9 p );
+
 	void			SetPrimitive( uint32_t uicount ){ m_uiPrimitive = uicount; }
 	uint32_t		GetPrimitive(){ return m_uiPrimitive; }
 	

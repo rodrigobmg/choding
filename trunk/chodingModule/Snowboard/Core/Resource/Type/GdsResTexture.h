@@ -17,6 +17,13 @@ protected:
 public:
 	GdsResTexture();
 	virtual ~GdsResTexture();
+
+	LPDIRECT3DTEXTURE9		GetTexturePtr(){ return m_pTex; }
+	LPDIRECT3DTEXTURE9*		GetTexture(){ return &m_pTex; }
+
+private:
+
+	LPDIRECT3DTEXTURE9		m_pTex;
 	
 };
 

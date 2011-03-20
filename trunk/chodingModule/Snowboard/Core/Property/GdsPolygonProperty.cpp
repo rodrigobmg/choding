@@ -33,3 +33,21 @@ void GdsPolygonProperty::Render( LPDIRECT3DDEVICE9 device )
 		device->DrawPrimitive( D3DPT_TRIANGLELIST, 0, m_uiPrimitive );
 	}
 }
+
+void GdsPolygonProperty::SetVB( LPDIRECT3DVERTEXBUFFER9 p )
+{
+	ASSERT( !m_VB && p );
+	if ( m_VB == NULL )
+	{
+		m_VB = p; 
+	}
+}
+
+void GdsPolygonProperty::SetIB( LPDIRECT3DINDEXBUFFER9 p )
+{
+	ASSERT( !m_IB && p );
+	if ( m_IB == NULL )
+	{ 
+		m_IB = p; 
+	}
+}
