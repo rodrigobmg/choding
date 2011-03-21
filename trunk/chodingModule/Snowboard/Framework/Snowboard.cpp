@@ -97,10 +97,11 @@ void CSnowboard::TestFunc()
 	}
 
 	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"meat.md2" ) );
+	GdsPropertyStatePtr pProperty = GdsPropertyStatePtr( new GdsPropertyState );
 	if( resmesh )
 	{
 		GdsNodePtr mesh = GdsNodePtr( new GdsNode );		
-		GdsPropertyStatePtr pProperty = GdsPropertyStatePtr( new GdsPropertyState );
+		
 		pProperty->GetPolygonProperty()->SetVB(resmesh->GetVertexBufferPtr() );
 		pProperty->GetPolygonProperty()->SetFVF( resmesh->GetFVF() );
 		pProperty->GetPolygonProperty()->SetPrimitive( resmesh->GetPrimitive() );
@@ -112,8 +113,9 @@ void CSnowboard::TestFunc()
 
 		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );
 		mesh1->SetPropertyState( pProperty );
-		mesh1->SetTranslate( -10 , 0 , 50 );
+		mesh1->SetTranslate( -10 , 0 , 0 );
 		m_pRenderer->GetRootNode()->AttachChild( mesh1 );
+		//mesh1->SetCullType( GdsNode::CULL_ON );
 
 	}	
 
@@ -124,9 +126,10 @@ void CSnowboard::TestFunc()
 		GdsBillboardNodePtr billboard = GdsBillboardNodePtr( new GdsBillboardNode );
 		GdsPropertyStatePtr billboardproperty = GdsPropertyStatePtr( new GdsPropertyState );
 		billboardproperty->GetTextureProperty()->SetTexture( restex->GetTexturePtr() );
-		billboard->SetPropertyState( billboardproperty );
-
+		billboard->SetPropertyState( pProperty );
+		billboard->SetTranslate( 0 , 10 , 10 );
 		m_pRenderer->GetRootNode()->AttachChild( billboard );
+		//billboard->SetCullType( GdsNode::CULL_ON );
 	}
 
 }

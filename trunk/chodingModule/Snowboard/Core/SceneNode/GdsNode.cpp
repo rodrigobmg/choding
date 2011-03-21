@@ -131,7 +131,9 @@ void GdsNode::InitGeometry( float fElapsedtime )
 	else
 		m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;
 
-
+	//virtual
+	vInitGeometry(fElapsedtime);
+	
 	D3DXMATRIXA16 matWorld;
 	D3DXMatrixIdentity( &matWorld );
 
@@ -144,10 +146,6 @@ void GdsNode::InitGeometry( float fElapsedtime )
 	matWorld._11 *= m_matWorld.m_fScale;
 	matWorld._22 *= m_matWorld.m_fScale;
 	matWorld._33 *= m_matWorld.m_fScale;
-
-	//virtual
-	vInitGeometry(fElapsedtime);
-
 
 	GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 }
