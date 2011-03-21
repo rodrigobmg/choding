@@ -1,6 +1,7 @@
 #include "GdsNode.h"
 
 //ImplementBoostPool( GdsNode )
+//boost::pool<> GdsNode::bpool( sizeof( GdsNode ) );
 
 GdsNode::GdsNode()
 {
@@ -176,3 +177,15 @@ void GdsNode::vInitGeometry( float fElapsedtime )
 void GdsNode::vRender( float fElapsedtime )
 {	
 }
+
+/*
+void* GdsNode::operator new( size_t s )
+{
+	return my_pool::malloc();
+}
+
+void GdsNode::operator delete( void* p )
+{
+	my_pool::free(p);
+}
+*/

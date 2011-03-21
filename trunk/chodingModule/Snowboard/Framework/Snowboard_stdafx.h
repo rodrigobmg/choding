@@ -15,6 +15,8 @@
 #include <map>
 
 #include <boost/pool/pool.hpp>
+#include <boost/pool/poolfwd.hpp>
+#include <boost/pool/singleton_pool.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 

@@ -1,28 +1,65 @@
 
 #pragma once
-
-#include "..\..\..\chodingModule\Snowboard\Core\SceneNode\GdsMeshNode.h"
+#include <boost\pool\singleton_pool.hpp>
 #include "..\..\..\chodingModule\Snowboard\Core\SceneNode\GdsNode.h"
+
+class Testa
+{
+public:
+	Testa();
+	virtual ~Testa();
+};
+
+Testa::Testa()
+{
+	int a = 0;
+}
+
+Testa::~Testa()
+{
+
+}
+
+class Testb : public Testa
+{
+public:
+	Testb();
+	virtual ~Testb();
+
+ 	void* operator new( size_t size );
+ 	void operator delete(void* p);
+
+};
+
+struct MyPoolTag1 { };
+typedef boost::singleton_pool<MyPoolTag1, sizeof(Testb)> my_pool1;
+
+Testb::Testb()
+{
+
+}
+
+Testb::~Testb()
+{
+
+}
+
+ void* Testb::operator new( size_t s )
+ {
+ 	return my_pool1::malloc();
+ }
+ 
+ void Testb::operator delete( void* p )
+ {
+ 	my_pool1::free(p);
+ }
 
 TEST( test ,  Module )
 {
- 	GdsNodePtr rootnode = GdsNodePtr( new GdsNode );
-// 	
- 	GdsMeshNodePtr meshnode = GdsMeshNodePtr( new GdsMeshNode );
- 	GdsMeshNodePtr meshnode_child = GdsMeshNodePtr( new GdsMeshNode );
- 	GdsMeshNodePtr meshnode_child2 = GdsMeshNodePtr( new GdsMeshNode );
-// 
- 	EXPECT_EQ( true , rootnode->AttachChild( meshnode ) );
-// 	
- 	EXPECT_EQ( true , meshnode_child->AttachChild( meshnode_child2 ) );
-
-	//rootnode->DetachChild( meshnode );
-	//meshnode_child->DetachChild( meshnode_child2 );
-// 
- 	GdsMeshNodePtr child = boost::shared_dynamic_cast< GdsMeshNode >( rootnode->GetAt(0) );	
-// 	EXPECT_EQ( true , child->AttachChild( meshnode_child ) );
-// 	EXPECT_EQ( TRUE , rootnode->Update( 0.f ) );
-	rootnode->RemoveAllChild();
-	meshnode_child->RemoveAllChild();
+	for (size_t t = 0 ; t < 100 ; t++)
+	{
+		GdsNodePtr node = GdsNodePtr( new GdsNode );
+	}
 	
+	GdsNodePtr node2 = GdsNodePtr( new GdsNode );
 }

@@ -41,10 +41,12 @@ public:
 	GdsNode();
 	virtual ~GdsNode();
 
-	boost::shared_ptr< GdsNode > shared_ptr_this()
-	{
-		return shared_from_this();
-	}
+ 	
+ 	boost::shared_ptr< GdsNode > shared_ptr_this()
+ 	{
+ 		return shared_from_this();
+ 	}
+ 	
 
 	void					SetCullType( CULL_TYPE eCull ){ m_eCull = eCull; }
 	CULL_TYPE				GetCullType(){ return m_eCull; }
@@ -93,19 +95,21 @@ public:
 	HRESULT					Update( float fElapsedtime );
 	void					InitGeometry( float fElapsedtime );
 	void					Render( float fElapsedtime );
+	
 
 	//DeclareBoostPool(GdsNode)
-	void*		operator new ( size_t s )
-	{
-		return new();
-	}
+// 	void*	operator new( size_t s );
+// 	void	operator delete(void* p);
 
-	void		operator delete(void* p)
-	{
-		delete p;
-	}
+// private:
+// 	static boost::pool<> bpool;
 
 };
+
+// 
+// struct MyPoolTag { };
+// typedef boost::singleton_pool<MyPoolTag, sizeof(GdsObject)> my_pool;
+
 
 typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
 
