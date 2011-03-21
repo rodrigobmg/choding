@@ -28,11 +28,8 @@ void CSnowboard::Clear()
 
 bool CSnowboard::InitModule( HWND hWnd )
 {
-	util::Logger::createSingleton();
-	util::Logger::getInstance().Init(NULL , NULL , NULL , NULL );
-
-	GdsThreadPool::createSingleton();
-	GdsThreadPool::getInstance().Create( 0 );
+	LOGGER.Init(NULL , NULL , NULL , NULL );
+//	GdsThreadPool::getInstance().Create( 0 );
 
 
 	InitRenderer( hWnd );
@@ -61,9 +58,6 @@ bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 
 void CSnowboard::DestroyModule()
 {
-	util::Logger::destroySingleton();
-	GdsThreadPool::destroySingleton();
-
 	if ( m_pRenderer )
 		m_pRenderer->Release();
 	if ( m_pResMgr )

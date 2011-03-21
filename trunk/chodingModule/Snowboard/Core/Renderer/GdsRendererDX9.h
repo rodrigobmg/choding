@@ -18,8 +18,6 @@ private:
 	void					setRootNodeAndCamNode();
 protected:
 
-	GdsCameraManagerDX9Ptr	m_CamManager;
-
 	virtual	void			vClear();
 	virtual HRESULT			vCreate( HWND hWnd );
 	virtual HRESULT			vRelease();
@@ -39,7 +37,6 @@ public:
 	void					vUpdate( float fAccumTime );
 
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
-	GdsCameraManagerDX9Ptr	GetCamMgr()		{ return m_CamManager; }
 
 };
 

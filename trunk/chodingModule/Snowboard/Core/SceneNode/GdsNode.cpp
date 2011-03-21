@@ -11,6 +11,7 @@ GdsNode::GdsNode()
 	m_matWorld.MakeIdentity();
 	m_matLocal.MakeIdentity();
 	m_eCull = CULL_OFF;
+	
 }
 
 GdsNode::~GdsNode()

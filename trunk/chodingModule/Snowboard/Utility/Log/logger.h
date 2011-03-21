@@ -6,18 +6,18 @@
 #if defined(_LOGGER_ON_)
 
 #define LOG_INIT(fptrWarning, fptrError)					\
-	util::Logger::getInstance().Init(fptrWarning, fptrError)
+	LOGGER.Init(fptrWarning, fptrError)
 
 #define LOG_BLOCK(block_name)								\
 	util::Logger::Block MAKE_NAME(block)(block_name); MAKE_NAME(block)
 
-#define LOG_INFO(str)			util::Logger::getInstance().LogMsg(str)
+#define LOG_INFO(str)			LOGGER.LogMsg(str)
 
 
 #define LOG_ERROR(str)										\
 	do														\
 	{														\
-		util::Logger & g_logger = util::Logger::getInstance();	\
+		util::Logger & g_logger = LOGGER;	\
 		g_logger.SetForError(FILE_LINEW);					\
 		g_logger.LogMsg(str);								\
 		g_logger.LogString( ::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
@@ -29,7 +29,7 @@
 #define LOG_WARNING(str)									\
 	do														\
 	{														\
-		util::Logger & g_logger = util::Logger::getInstance();	\
+		util::Logger & g_logger = LOGGER;	\
 		g_logger.SetForWarning(FILE_LINEW);					\
 		g_logger.LogMsg(str);								\
 		g_logger.LogString( ::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
@@ -44,7 +44,7 @@
 #define LOG_ERROR_F(fmt, ...)								\
 	do														\
 	{														\
-		util::Logger & g_logger = util::Logger::getInstance();	\
+		util::Logger & g_logger = LOGGER;	\
 		g_logger.SetForError(FILE_LINEW);					\
 		g_logger.LogF(fmt, __VA_ARGS__);					\
 		g_logger.LogString( ::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
@@ -56,7 +56,7 @@
 #define LOG_WARNING_F(fmt, ...)								\
 	do														\
 	{														\
-		util::Logger & g_logger = util::Logger::getInstance();	\
+		util::Logger & g_logger = LOGGER;	\
 		g_logger.SetForWarning(FILE_LINEW);					\
 		g_logger.LogF(fmt, __VA_ARGS__);					\
 		g_logger.LogString( ::util::string::GetLastErrorString(__FILEW__, __LINE__) );	\
@@ -68,7 +68,7 @@
 #define LOG_COLOR(COLOR, str)								\
 	do														\
 	{														\
-		util::Logger & g_logger = util::Logger::getInstance();	\
+		util::Logger & g_logger = LOGGER;	\
 		g_logger.SetColorTo##COLOR();						\
 		g_logger.LogMsg(str);								\
 		g_logger.SetColorToBLACK();							\
@@ -140,7 +140,7 @@ namespace util
 	class ConsoleLogger;
 	class HTML_Logger;
 
-	class Logger : public singleton< Logger >
+	class Logger
 	{		
 		typedef std::wstring wstring;
 
@@ -224,3 +224,5 @@ namespace util
 		
 	};
 }//namespace util
+
+#define LOGGER	singleton_holder< util::Logger >::instance()

@@ -1,4 +1,5 @@
 #include "GdsRendererDX9.h"
+#include "../Camera/GdsCameraManagerDX9.h"
 
 GdsRendererDX9::GdsRendererDX9()
 {
@@ -17,7 +18,6 @@ HRESULT GdsRendererDX9::vRelease()
 	SAFE_RELEASE(m_pD3D);
 	SAFE_RELEASE(m_pd3dDevice);
 	m_RootNode->RemoveAllChild();
-	m_CamManager->DetachAll();
 	return true;
 }
 
@@ -67,7 +67,8 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 	m_pd3dDevice->Clear( 0 , NULL , D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER , D3DCOLOR_XRGB( 128, 128, 128 ) , 1.f , 0 );
 	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
 	{
-		m_CamManager->Update(fAccumTime);
+
+		CAMMGR.Update( fAccumTime );
 
 		if ( m_RootNode )
 			m_RootNode->Update( fAccumTime );
@@ -106,9 +107,8 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 {
 	m_RootNode = GdsNodePtr( new GdsNode );
 	m_RootNode->SetDevice( m_pd3dDevice );
-
-	m_CamManager = GdsCameraManagerDX9Ptr( new GdsCameraManagerDX9 );
-	m_CamManager->Create( m_pd3dDevice );
+	
+	
 
 	GdsCameraNodePtr	camnode = GdsCameraNodePtr( new GdsCameraNode );
 
@@ -119,11 +119,8 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 	camnode->SetLootAtLH( vEyePt , vLookatPt , vUpVec );
 
 	camnode->SetFrustum( GdsFrustum( -0.5 , 0.5 , 0.5 , -0.5 , 1.f , 100.f , false ) );
-	m_CamManager->Attach( camnode );
 
-	m_CamManager->SetCurCam( 0 );
-
-	//GdsCameraNodePtr camera = m_CamManager->GetCamNode( 0 );
-	//m_RootNode->AttachChild( camera );
-
+	CAMMGR.Create( m_pd3dDevice );
+	CAMMGR.Attach( camnode );
+ 	CAMMGR.SetCurCam( 0 );
 }

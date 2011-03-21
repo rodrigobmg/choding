@@ -173,5 +173,6 @@ namespace util
 				return false;
 			}
 		}
-	}
-}
+	} // end of string
+
+}// end of util

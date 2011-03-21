@@ -4,16 +4,15 @@
 #include "GdsCameraBase.h"
 #include "../SceneNode/GdsCameraNode.h"
 
-class GdsCameraManagerDX9 : public GdsCameraBase 
+class GdsCameraManagerDX9 : public GdsCameraBase
 {
 
 private:
 
 	LPDIRECT3DDEVICE9		m_pDevice;
 	typedef std::vector< GdsCameraNodePtr >		CAM_CONTAINER;	
-	CAM_CONTAINER	m_camaraContainer;
-
-	int32_t			m_iCurCamIndex;
+	CAM_CONTAINER			m_camaraContainer;
+	int32_t					m_iCurCamIndex;
 
 protected:
 
@@ -39,5 +38,7 @@ public:
 };
 
 typedef boost::shared_ptr< GdsCameraManagerDX9 > GdsCameraManagerDX9Ptr;
+
+#define CAMMGR	singleton_holder< GdsCameraManagerDX9 >::instance()
 
 #endif

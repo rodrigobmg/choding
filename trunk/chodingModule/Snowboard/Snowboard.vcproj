@@ -367,10 +367,6 @@
 			Name="Utility"
 			>
 			<File
-				RelativePath=".\Utility\singleton.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Utility\Utility.cpp"
 				>
 			</File>

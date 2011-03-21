@@ -69,8 +69,7 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_PROPERTY_TEXTURE	L"Texture_Property"
 #define OBJECT_PROPERTY_POLYGON	L"Polygon_Property"
 
-
-
+#include "../System/Singleton/Singleton.h"
 #include "Snowboard_macro.h"
 #include "../Utility/Utility.h"
 

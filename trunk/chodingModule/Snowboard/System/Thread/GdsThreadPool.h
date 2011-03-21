@@ -6,7 +6,7 @@
 #include "GdsBGThread.h"
 
 
-class GdsThreadPool : public singleton< GdsThreadPool >
+class GdsThreadPool
 {
 private:
 
