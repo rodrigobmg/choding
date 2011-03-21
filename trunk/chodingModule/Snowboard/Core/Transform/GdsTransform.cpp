@@ -1,6 +1,6 @@
 #include "GdsTransform.h"
 
-ImplementBoostPool( GdsTransform )
+//ImplementBoostPool( GdsTransform )
 
 void GdsTransform::MakeIdentity()
 {

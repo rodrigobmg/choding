@@ -1,5 +1,7 @@
 #include "GdsObject.h"
 
+//ImplementBoostPool( GdsObject )
+
 GdsObject::GdsObject()
 {
 	m_iRefCount = 0;

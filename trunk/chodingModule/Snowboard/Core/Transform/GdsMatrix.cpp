@@ -4,7 +4,7 @@
 #include <climits>
 #include <cmath>
 
-ImplementBoostPool( GdsMatrix3 )
+//ImplementBoostPool( GdsMatrix3 )
 
 
 const GdsMatrix3 GdsMatrix3::ZERO(

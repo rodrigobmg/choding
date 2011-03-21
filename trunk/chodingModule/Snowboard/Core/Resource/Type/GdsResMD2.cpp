@@ -2,7 +2,8 @@
 #include "../../../System/FileSystem/GdsFile.h"
 #include "Property/GdsTextureProperty.h"
 
-ImplementBoostPool( GdsResMD2 )
+//ImplementBoostPool( GdsResMD2::MD2_VERTEX )
+//boost::pool<> GdsResMD2::bpool(sizeof(GdsResMD2::MD2_VERTEX));
 
 GdsResMD2::GdsResMD2():
 m_pVB(NULL),

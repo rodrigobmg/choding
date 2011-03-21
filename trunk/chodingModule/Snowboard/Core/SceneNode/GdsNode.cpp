@@ -1,6 +1,6 @@
 #include "GdsNode.h"
 
-ImplementBoostPool( GdsNode )
+//ImplementBoostPool( GdsNode )
 
 GdsNode::GdsNode()
 {

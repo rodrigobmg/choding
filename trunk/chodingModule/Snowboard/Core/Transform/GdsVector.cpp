@@ -1,6 +1,6 @@
 #include "GdsVector.h"
 
-ImplementBoostPool( GdsVector3 )
+//ImplementBoostPool( GdsVector3 )
 
 const GdsVector3 GdsVector3::ZERO(0.0f,0.0f,0.0f);
 const GdsVector3 GdsVector3::UNIT_X(1.0f,0.0f,0.0f);

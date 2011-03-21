@@ -69,7 +69,7 @@ public:
 		};
 	};
 
-	DeclareBoostPool	
+	//DeclareBoostPool	
 
 private:
 

@@ -7,8 +7,6 @@ class GdsVector3 : public GdsObject
 {
 public:
 
-	DeclareBoostPool
-
 	float x , y , z;
 
 	static const GdsVector3 ZERO;
@@ -50,7 +48,7 @@ public:
 	// This finds one of the infinite set of perpendicular vectors
 	inline GdsVector3 Perpendicular () const;
 
-	// *** end Emergent internal use only ***
+	//DeclareBoostPool(GdsVector3)
 };
 
 #include "GdsVector.inl"

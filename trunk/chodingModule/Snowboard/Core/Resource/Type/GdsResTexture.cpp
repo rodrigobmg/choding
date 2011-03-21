@@ -1,6 +1,6 @@
 #include "GdsResTexture.h"
 
-ImplementBoostPool( GdsResTexture )
+//ImplementBoostPool( GdsResTexture )
 
 GdsResTexture::GdsResTexture():
 m_pTex(NULL)

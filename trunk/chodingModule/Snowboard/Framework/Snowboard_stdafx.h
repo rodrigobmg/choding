@@ -75,7 +75,7 @@ typedef unsigned __int64	uint64_t;
 
 
 //메모리 릭 탐지
-#define _CRTDBG_MAP_ALLOC
+//#define _CRTDBG_MAP_ALLOC
 
 #ifdef _CRTDBG_MAP_ALLOC
 
@@ -100,18 +100,23 @@ typedef unsigned __int64	uint64_t;
 #else
 	
 	// 부스트풀 메모리
-	#define ImplementBoostPool(class) boost::pool<> class::bpool(sizeof(class));
-	#define DeclareBoostPool \
+// 	#define ImplementBoostPool(class) \
+// 	struct class##tag {};	\
+// 	boost::singleton_pool< class##tag , sizeof( class ) > class##pool;	\
+	
+
+	#define DeclareBoostPool( class ) \
 		void* operator new(size_t s) \
 	{ \
-		return bpool.malloc(); \
+		return class##bpool.malloc(); \
 	} \
 		void operator delete(void *p) \
 	{ \
-		bpool.free(p); \
+		class##bpool.free(p); \
 	} \
-	private: \
-		static boost::pool<> bpool; \
+ 	private: \
+	struct class##tag {};	\
+	boost::singleton_pool< class##tag , sizeof( class ) > class##pool;	\
 
 
 #endif

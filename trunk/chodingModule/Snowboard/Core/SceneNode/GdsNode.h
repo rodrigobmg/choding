@@ -9,8 +9,6 @@ class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNod
 {
 public:
 	
-	DeclareBoostPool
-
 	enum CULL_TYPE{
 		CULL_ON = 0,
 		CULL_OFF,
@@ -95,6 +93,17 @@ public:
 	HRESULT					Update( float fElapsedtime );
 	void					InitGeometry( float fElapsedtime );
 	void					Render( float fElapsedtime );
+
+	//DeclareBoostPool(GdsNode)
+	void*		operator new ( size_t s )
+	{
+		return new();
+	}
+
+	void		operator delete(void* p)
+	{
+		delete p;
+	}
 
 };
 
