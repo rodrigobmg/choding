@@ -22,9 +22,9 @@ private:
 	int32_t		m_iRefCount;
 	tstring		m_strName;
 
-	//DeclareBoostPool
 
 };
+
 
 typedef boost::shared_ptr< GdsObject >	GdsObjectPtr;
 

@@ -11,6 +11,7 @@
 #include "SceneNode/GdsNode.h"
 #include "Resource/Type/GdsResMD2.h"
 #include "SceneNode/GdsBillboardNode.h"
+#include "../System/Time/GdsSystemTime.h"
 
 CSnowboard::CSnowboard()
 {
@@ -24,6 +25,7 @@ CSnowboard::~CSnowboard()
 
 void CSnowboard::Clear()
 {
+	m_fFrameRate = 0.0f;
 }
 
 bool CSnowboard::InitModule( HWND hWnd )
@@ -67,14 +69,15 @@ void CSnowboard::DestroyModule()
 
 void CSnowboard::OnIdle()
 {
+	if ( !GDS::MeasureTime() )
+	{
+		return;
+	}
+
 	if ( m_pRenderer )
 	{		
-		BEGIN_PERFORMANCE( L"render" );
 		m_pRenderer->Update( 0.f );
-		END_PERFORMANCE( L"render" );
-		SAMPLE_PERFORMANCE sample;
-		OUTPUT_PERFORMANCE( L"render" , sample );
-		LOG_WARNING_F(" [Render] Avg = %d , DeltaTick = %d , Count = %d", sample.ulAvg , sample.ulTotalDeltaTick , sample.ulCount );
+		m_fFrameRate = 1.0f / GDS::GetFrameTime();
 	}
 }
 
@@ -132,4 +135,9 @@ void CSnowboard::TestFunc()
 		//billboard->SetCullType( GdsNode::CULL_ON );
 	}
 
+}
+
+HRESULT CSnowboard::MsgProc()
+{
+	return true;
 }

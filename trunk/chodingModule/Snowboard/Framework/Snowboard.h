@@ -28,14 +28,16 @@ public:
 
 	void		Clear();
 
-	bool		MeasureTime();
-
 	void		TestFunc();
+
+	float		GetFrameRate(){ return m_fFrameRate; }
+
 private:
 	
 	GdsRendererDX9Ptr	m_pRenderer;
 	GdsResMgrPtr		m_pResMgr;
 	
+	float		m_fFrameRate;
 };
 
 #endif

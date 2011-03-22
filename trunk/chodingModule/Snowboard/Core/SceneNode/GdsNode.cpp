@@ -176,14 +176,4 @@ void GdsNode::vRender( float fElapsedtime )
 {	
 }
 
-/*
-void* GdsNode::operator new( size_t s )
-{
-	return my_pool::malloc();
-}
 
-void GdsNode::operator delete( void* p )
-{
-	my_pool::free(p);
-}
-*/

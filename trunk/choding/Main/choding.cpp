@@ -6,6 +6,7 @@
 #include "../../chodingModule/Snowboard/Framework/Snowboard.h"
 
 CSnowboard* g_pSnowboard = NULL;
+HWND hWnd;
 
 bool InitModule( HWND hWnd )
 {
@@ -31,6 +32,8 @@ LRESULT WINAPI MsgProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
+	default:
+		g_pSnowboard->MsgProc();
 	}
 
 	return DefWindowProc( hWnd , msg , wParam , lParam );
@@ -39,7 +42,15 @@ LRESULT WINAPI MsgProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
 bool OnIdle()
 {
 	if ( g_pSnowboard )
+	{
 		g_pSnowboard->OnIdle();
+		float rate = g_pSnowboard->GetFrameRate();
+		
+		char buffer[256] = {0,};
+		sprintf_s( buffer , 256 , "FrameRate = %d" , (int)rate);
+		::SetWindowTextA( hWnd , buffer );
+		
+	}
 
 	return true;
 }
@@ -52,7 +63,7 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 
 	RegisterClassEx( &wc );
 
-	HWND hWnd = CreateWindow( L"Choding" , L"Choding" , WS_OVERLAPPEDWINDOW , 100 , 100,
+	hWnd = CreateWindow( L"Choding" , L"Choding" , WS_OVERLAPPEDWINDOW , 100 , 100,
 								800 , 600,
 								GetDesktopWindow() , NULL ,
 								wc.hInstance , NULL );

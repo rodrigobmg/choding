@@ -107,8 +107,7 @@ public:
 };
 
 // 
-// struct MyPoolTag { };
-// typedef boost::singleton_pool<MyPoolTag, sizeof(GdsObject)> my_pool;
+
 
 
 typedef boost::shared_ptr< GdsNode >	GdsNodePtr;

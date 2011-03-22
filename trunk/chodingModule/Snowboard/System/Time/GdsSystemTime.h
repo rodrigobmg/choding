@@ -22,6 +22,16 @@ namespace GDS
 	float m_fMinFramePeriod = 1.0f / 100.0f;
 	float m_fLastFrame = 0.0f;
 	float m_fFixedTimeIncrement = 1.0f / 60.0f;
+	
+	float GetAccumTime(){ return m_fAccumTime; }
+	float GetFrameTime(){ return m_fFrameTime; }
+	
+	void  ResetFrameTimings()
+	{
+// 		m_fUpdateTime = 0.0f;
+// 		m_fCullTime = 0.0f;
+// 		m_fRenderTime = 0.0f;
+	}
 
 	float GetCurrentTimeInSec()
 	{
