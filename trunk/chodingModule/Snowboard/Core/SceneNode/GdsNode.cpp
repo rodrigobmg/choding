@@ -130,7 +130,7 @@ void GdsNode::InitGeometry( float fElapsedtime )
 	if ( GetParent() == NULL )
 		m_matWorld = m_matLocal;
 	else
-		m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;
+		m_matWorld = m_matLocal * GetParent()->GetWorldTransform();
 
 	//virtual
 	vInitGeometry(fElapsedtime);

@@ -70,7 +70,7 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 
 		CAMMGR.Update( fAccumTime );
 
-		m_RootNode->GetAt(0)->MakeYRotation( timeGetTime() / 1000.f );
+		m_RootNode->GetAt(0)->MakeYRotation( 2 );
 
 		if ( m_RootNode )
 			m_RootNode->Update( fAccumTime );
