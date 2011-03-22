@@ -98,7 +98,7 @@ void CSnowboard::TestFunc()
 	}
 
 	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"tree2.md2" ) );
-	GdsResMD2Ptr res_tree1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"fruit.md2" ) );
+	GdsResMD2Ptr res_tree1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"cart.md2" ) );
 
 	m_pRenderer->GetRootNode()->SetDrawAxis( true );
 
@@ -126,28 +126,17 @@ void CSnowboard::TestFunc()
 		pProperty_tree->GetPolygonProperty()->SetPrimitive( res_tree1->GetPrimitive() );
 		pProperty_tree->GetPolygonProperty()->SetVertexFormatSize( res_tree1->GetVertexSize() );
 		pProperty_tree->GetTextureProperty()->SetTexture( res_tree1->GetTexturePtr() );
-
-		mesh1->SetPropertyState( pProperty_tree );
-		mesh1->SetTranslate( -10 , -10 , 0 );
 		
-		//mesh->AttachChild( mesh1 );
-		//mesh1->SetCullType( GdsNode::CULL_ON );
-
-	}	
-
-	//create billboard
-	GdsResTexturePtr restex = boost::shared_dynamic_cast< GdsResTexture >( m_pResMgr->Get( L"tex" , L"banana.bmp" ) );
-	if ( restex )
-	{
+		//create billboard
 		GdsBillboardNodePtr billboard = GdsBillboardNodePtr( new GdsBillboardNode );
 		GdsPropertyStatePtr billboardproperty = GdsPropertyStatePtr( new GdsPropertyState );
-		billboardproperty->GetTextureProperty()->SetTexture( restex->GetTexturePtr() );
-		billboard->SetPropertyState( pProperty );
-		billboard->SetTranslate( 0 , 10 , 10 );
-		//m_pRenderer->GetRootNode()->AttachChild( billboard );
-		//billboard->SetCullType( GdsNode::CULL_ON );
-	}
+		billboard->SetPropertyState( pProperty_tree );
+		billboard->SetTranslate( -150 , 10 , -10 );
+		billboard->SetScale( 2 );
+		billboard->SetDrawAxis( true );
 
+		mesh->AttachChild( billboard );
+	}	
 }
 
 HRESULT CSnowboard::MsgProc()

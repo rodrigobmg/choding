@@ -4,8 +4,6 @@
 #include "GdsRendererBase.h"
 #include "../Camera/GdsCameraManagerDX9.h"
 
-class GdsNode;
-
 class GdsRendererDX9 : public GdsRendererBase
 {
 
