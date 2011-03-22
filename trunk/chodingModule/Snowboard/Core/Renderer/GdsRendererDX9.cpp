@@ -67,8 +67,7 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 	m_pd3dDevice->Clear( 0 , NULL , D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER , D3DCOLOR_XRGB( 128, 128, 128 ) , 1.f , 0 );
 	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
 	{
-
-		CAMMGR.Update( fAccumTime );
+				CAMMGR.Update( fAccumTime );
 
 		if ( m_RootNode )
 			m_RootNode->Update( fAccumTime );
@@ -95,9 +94,11 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 //   		m_pd3dDevice->LightEnable( 0 , TRUE );
 //   		m_pd3dDevice->SetRenderState( D3DRS_LIGHTING , TRUE );
 //   		m_pd3dDevice->SetRenderState( D3DRS_AMBIENT , 0x00202020 );
-
+			
+		DrawAxis();
 
 		m_pd3dDevice->EndScene();
+
 	}
 
 	m_pd3dDevice->Present( NULL , NULL , NULL , NULL );
@@ -112,7 +113,7 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 
 	GdsCameraNodePtr	camnode = GdsCameraNodePtr( new GdsCameraNode );
 
-	GdsVector3 vEyePt( 0.0f, 0.0f,-30.0f );
+	GdsVector3 vEyePt( -50.0f, 20.0f,-30.0f );
 	GdsVector3 vLookatPt( 0.0f, 0.0f, 0.0f );
 	GdsVector3 vUpVec( 0.0f, 1.0f, 0.0f );
 
@@ -123,4 +124,40 @@ void GdsRendererDX9::setRootNodeAndCamNode()
  	CAMMGR.Create( m_pd3dDevice );
  	CAMMGR.Attach( camnode );
   	CAMMGR.SetCurCam( 0 );
+}
+
+void GdsRendererDX9::DrawAxis()
+{
+	D3DXMATRIXA16 matWorld;
+	D3DXMATRIXA16 matView;
+	D3DXMATRIXA16 matProj;
+	m_pd3dDevice->GetTransform( D3DTS_WORLD , &matWorld );
+	m_pd3dDevice->GetTransform( D3DTS_VIEW  , &matView );
+	m_pd3dDevice->GetTransform( D3DTS_PROJECTION , &matProj );
+
+	D3DXVECTOR3 axisX[2];
+	axisX[0].x = 0.0f; axisX[0].y = 0.0f; axisX[0].z = 0.0f;
+	axisX[1].x = 30.0f; axisX[1].y = 0.0f; axisX[1].z = 0.0f;
+
+	D3DXVECTOR3 axisY[2];
+	axisY[0].x = 0.0f; axisY[0].y = 0.0f; axisY[0].z = 0.0f;
+	axisY[1].x = 0.0f; axisY[1].y = 30.0f; axisY[1].z = 0.0f;
+
+	D3DXVECTOR3 axisZ[2];
+	axisZ[0].x = 0.0f; axisZ[0].y = 0.0f; axisZ[0].z = 0.0f;
+	axisZ[1].x = 0.0f; axisZ[1].y = 0.0f; axisZ[1].z = 30.0f;
+
+	//D3DXMatrixIdentity( &matWorld );
+
+	ID3DXLine* Line;
+	D3DXCreateLine( m_pd3dDevice , &Line );
+	Line->SetWidth( 1 );
+	Line->SetAntialias( true );
+	Line->Begin();
+	Line->DrawTransform( axisX , 2, &(matWorld*matView*matProj), D3DXCOLOR( 1.0f , 0.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( axisY , 2, &(matWorld*matView*matProj), D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( axisZ , 2, &(matWorld*matView*matProj), D3DXCOLOR( 0.0f , 0.0f , 1.0f , 1.0f ));
+	Line->End();
+	Line->Release();
+
 }

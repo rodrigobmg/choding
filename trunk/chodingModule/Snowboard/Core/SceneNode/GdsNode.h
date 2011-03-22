@@ -36,6 +36,7 @@ protected:
 	GdsPropertyStatePtr						m_PropertyState;
 
 	CULL_TYPE								m_eCull;
+	bool									m_bDrawAxis;
 
 public:
 	GdsNode();
@@ -47,6 +48,8 @@ public:
  		return shared_from_this();
  	}
  	
+	void					SetScale( float fvalue ){ m_matLocal.m_fScale = fvalue; }
+	float					GetScale(){ m_matLocal.m_fScale; }
 
 	void					SetCullType( CULL_TYPE eCull ){ m_eCull = eCull; }
 	CULL_TYPE				GetCullType(){ return m_eCull; }
@@ -95,7 +98,9 @@ public:
 	HRESULT					Update( float fElapsedtime );
 	void					InitGeometry( float fElapsedtime );
 	void					Render( float fElapsedtime );
-	
+
+	void					SetDrawAxis( bool bFlag ) { m_bDrawAxis = bFlag; }
+	void					DrawAxis();
 
 	//DeclareBoostPool(GdsNode)
 // 	void*	operator new( size_t s );

@@ -31,8 +31,6 @@ void CSnowboard::Clear()
 bool CSnowboard::InitModule( HWND hWnd )
 {
 	LOGGER.Init(NULL , NULL , NULL , NULL );
-//	GdsThreadPool::getInstance().Create( 0 );
-
 
 	InitRenderer( hWnd );
 	InitResource( m_pRenderer->GetDevice() );
@@ -76,7 +74,7 @@ void CSnowboard::OnIdle()
 
 	if ( m_pRenderer )
 	{		
-		m_pRenderer->Update( 0.f );
+		m_pRenderer->Update( GDS::GetAccumTime() );
 		m_fFrameRate = 1.0f / GDS::GetFrameTime();
 	}
 }
@@ -99,7 +97,9 @@ void CSnowboard::TestFunc()
 		m_pResMgr->LoadRes( L"tex" );
 	}
 
-	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"meat.md2" ) );
+	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"tree2.md2" ) );
+	GdsResMD2Ptr res_tree1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"fruit.md2" ) );
+
 	GdsPropertyStatePtr pProperty = GdsPropertyStatePtr( new GdsPropertyState );
 	if( resmesh )
 	{
@@ -111,13 +111,22 @@ void CSnowboard::TestFunc()
 		pProperty->GetPolygonProperty()->SetVertexFormatSize( resmesh->GetVertexSize() );
 		pProperty->GetTextureProperty()->SetTexture( resmesh->GetTexturePtr() );
 		mesh->SetPropertyState( pProperty );
-		
+		mesh->SetScale( 0.5 );
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
 
 		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );
-		mesh1->SetPropertyState( pProperty );
+
+		GdsPropertyStatePtr pProperty_tree = GdsPropertyStatePtr( new GdsPropertyState );
+		pProperty_tree->GetPolygonProperty()->SetVB( res_tree1->GetVertexBufferPtr() );
+		pProperty_tree->GetPolygonProperty()->SetFVF( res_tree1->GetFVF() );
+		pProperty_tree->GetPolygonProperty()->SetPrimitive( res_tree1->GetPrimitive() );
+		pProperty_tree->GetPolygonProperty()->SetVertexFormatSize( res_tree1->GetVertexSize() );
+		pProperty_tree->GetTextureProperty()->SetTexture( res_tree1->GetTexturePtr() );
+
+		mesh1->SetPropertyState( pProperty_tree );
 		mesh1->SetTranslate( -10 , 0 , 0 );
-		m_pRenderer->GetRootNode()->AttachChild( mesh1 );
+		
+		//mesh->AttachChild( mesh1 );
 		//mesh1->SetCullType( GdsNode::CULL_ON );
 
 	}	

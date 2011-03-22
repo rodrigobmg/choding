@@ -38,6 +38,8 @@ public:
 
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
 
+	void					DrawAxis();
+
 };
 
 typedef boost::shared_ptr< GdsRendererDX9 > GdsRendererDX9Ptr;
