@@ -153,6 +153,9 @@ void GdsNode::InitGeometry( float fElapsedtime )
 
 void GdsNode::Render( float fElapsedtime )
 {
+	if ( m_bDrawAxis )
+		DrawAxis();
+
 	if ( m_eCull == CULL_ON )
 		return;
 
@@ -165,8 +168,6 @@ void GdsNode::Render( float fElapsedtime )
 
 	GetPropertyState()->Render( GetDevice() );
 
-	if ( m_bDrawAxis )
-		DrawAxis();
 
 	// virtual
 	vRender(fElapsedtime);

@@ -100,6 +100,8 @@ void CSnowboard::TestFunc()
 	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"tree2.md2" ) );
 	GdsResMD2Ptr res_tree1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"fruit.md2" ) );
 
+	m_pRenderer->GetRootNode()->SetDrawAxis( true );
+
 	GdsPropertyStatePtr pProperty = GdsPropertyStatePtr( new GdsPropertyState );
 	if( resmesh )
 	{
@@ -113,6 +115,7 @@ void CSnowboard::TestFunc()
 		mesh->SetPropertyState( pProperty );
 		mesh->SetScale( 0.5 );
 		mesh->SetDrawAxis( true );
+		mesh->SetTranslate( 10 , 10 , 0 );
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
 
 		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );
@@ -125,7 +128,7 @@ void CSnowboard::TestFunc()
 		pProperty_tree->GetTextureProperty()->SetTexture( res_tree1->GetTexturePtr() );
 
 		mesh1->SetPropertyState( pProperty_tree );
-		mesh1->SetTranslate( -10 , 0 , 0 );
+		mesh1->SetTranslate( -10 , -10 , 0 );
 		
 		//mesh->AttachChild( mesh1 );
 		//mesh1->SetCullType( GdsNode::CULL_ON );
@@ -141,7 +144,7 @@ void CSnowboard::TestFunc()
 		billboardproperty->GetTextureProperty()->SetTexture( restex->GetTexturePtr() );
 		billboard->SetPropertyState( pProperty );
 		billboard->SetTranslate( 0 , 10 , 10 );
-		m_pRenderer->GetRootNode()->AttachChild( billboard );
+		//m_pRenderer->GetRootNode()->AttachChild( billboard );
 		//billboard->SetCullType( GdsNode::CULL_ON );
 	}
 

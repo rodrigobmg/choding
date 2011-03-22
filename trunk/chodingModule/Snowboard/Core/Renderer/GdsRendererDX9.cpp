@@ -67,7 +67,8 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 	m_pd3dDevice->Clear( 0 , NULL , D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER , D3DCOLOR_XRGB( 128, 128, 128 ) , 1.f , 0 );
 	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
 	{
-				CAMMGR.Update( fAccumTime );
+
+		CAMMGR.Update( fAccumTime );
 
 		if ( m_RootNode )
 			m_RootNode->Update( fAccumTime );
@@ -111,7 +112,7 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 	
 	GdsCameraNodePtr	camnode = GdsCameraNodePtr( new GdsCameraNode );
 
-	GdsVector3 vEyePt( -50.0f, 20.0f,-30.0f );
+	GdsVector3 vEyePt( 1.0f, 10.0f,-30.0f );
 	GdsVector3 vLookatPt( 0.0f, 0.0f, 0.0f );
 	GdsVector3 vUpVec( 0.0f, 1.0f, 0.0f );
 
