@@ -1,7 +1,6 @@
 #ifndef _UNITTEST_H_
 #define _UNITTEST_H_
 #include "..\..\chodingModule\Snowboard\Core\SceneNode\GdsNode.h"
-#include "..\..\chodingModule\Snowboard\Core\SceneNode\GdsMeshNode.h"
 
 class SnowboardTest : public ::testing::Test
 {

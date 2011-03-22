@@ -118,7 +118,7 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 
 	camnode->SetLootAtLH( vEyePt , vLookatPt , vUpVec );
 
-	camnode->SetFrustum( GdsFrustum( -0.5 , 0.5 , 0.5 , -0.5 , 1.f , 1000.f , false ) );
+	camnode->SetFrustum( GdsFrustum( -0.5 , 0.5 , -0.5 , 0.5 , 1.f , 1000.f , false ) );
 
  	CAMMGR.Create( m_pd3dDevice );
  	CAMMGR.Attach( camnode );

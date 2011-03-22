@@ -28,14 +28,17 @@ void GdsCameraNode::vInitGeometry( float fElapsedtime )
 	n.Unitize();
 	GdsVector3 v = vUpVec.Cross( n );
 	v.Unitize();
-	GdsVector3 u = v.Cross( n );
+	GdsVector3 u = n.Cross( v );
 
 	matView._11 = v[0];	matView._12 = u[0];	matView._13 = n[0];	matView._14 = 0;
 	matView._21 = v[1];	matView._22 = u[1];	matView._23 = n[1];	matView._24 = 0;
 	matView._31 = v[2];	matView._32 = u[2];	matView._33 = n[2];	matView._34 = 0;
-	matView._41 = -( m_matWorld.m_Translate.Dot( v ) );
-	matView._42 = -( m_matWorld.m_Translate.Dot( u ) );
-	matView._43 = -( m_matWorld.m_Translate.Dot( n ) );
+// 	matView._41 = -( m_matWorld.m_Translate.Dot( v ) );
+// 	matView._42 = -( m_matWorld.m_Translate.Dot( u ) );
+// 	matView._43 = -( m_matWorld.m_Translate.Dot( n ) );
+	matView._41 = -( v.Dot( m_matWorld.m_Translate ) );
+	matView._42 = -( u.Dot( m_matWorld.m_Translate ) );
+	matView._43 = -( n.Dot( m_matWorld.m_Translate ) );
 	matView._44 = 1;
 
 	/*
