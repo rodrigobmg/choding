@@ -4,7 +4,7 @@
 //boost::pool<> GdsNode::bpool( sizeof( GdsNode ) );
 
 GdsNode::GdsNode():
-m_bDrawAxis( true )
+m_bDrawAxis( false )
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();

@@ -112,6 +112,7 @@ void CSnowboard::TestFunc()
 		pProperty->GetTextureProperty()->SetTexture( resmesh->GetTexturePtr() );
 		mesh->SetPropertyState( pProperty );
 		mesh->SetScale( 0.5 );
+		mesh->SetDrawAxis( true );
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
 
 		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );
