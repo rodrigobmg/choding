@@ -113,35 +113,18 @@ void CSnowboard::TestFunc()
 		pProperty->GetPolygonProperty()->SetVertexFormatSize( resmesh->GetVertexSize() );
 		pProperty->GetTextureProperty()->SetTexture( resmesh->GetTexturePtr() );
 		mesh->SetPropertyState( pProperty );
-		mesh->SetScale( 0.1 );
 		mesh->SetDrawAxis( true );
-		mesh->SetTranslate( 10 , 2 , 0 );
-		mesh->SetCullType( GdsNode::CULL_ON );
+		mesh->SetScale( 0.2 );
+		mesh->SetTranslate( 50 , 2 , 0 );
+		//mesh->SetCullType( GdsNode::CULL_ON );
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
 
-		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );
-		mesh1->SetPropertyState( pProperty );
-		mesh->AttachChild( mesh1 );
-		mesh1->SetTranslate( -30 , 0 , -10 );
-		mesh1->SetCullType( GdsNode::CULL_ON );
-		mesh1->SetDrawAxis( true );
-
-		GdsPropertyStatePtr pProperty_tree = GdsPropertyStatePtr( new GdsPropertyState );
-		pProperty_tree->GetPolygonProperty()->SetVB( res_tree1->GetVertexBufferPtr() );
-		pProperty_tree->GetPolygonProperty()->SetFVF( res_tree1->GetFVF() );
-		pProperty_tree->GetPolygonProperty()->SetPrimitive( res_tree1->GetPrimitive() );
-		pProperty_tree->GetPolygonProperty()->SetVertexFormatSize( res_tree1->GetVertexSize() );
-		pProperty_tree->GetTextureProperty()->SetTexture( res_tree1->GetTexturePtr() );
-		
-		//create billboard
-		GdsBillboardNodePtr billboard = GdsBillboardNodePtr( new GdsBillboardNode );
-		GdsPropertyStatePtr billboardproperty = GdsPropertyStatePtr( new GdsPropertyState );
-		billboard->SetPropertyState( pProperty_tree );
-		billboard->SetTranslate( -30 , 0 , -10 );
-		billboard->SetScale( 2 );
-		billboard->SetDrawAxis( true );
-
-//		mesh->AttachChild( billboard );
+// 		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );		
+// 		mesh1->SetPropertyState( pProperty );		
+// 		mesh1->SetTranslate( -1 , 0 , -10 );
+// 		mesh1->SetCullType( GdsNode::CULL_ON );
+// 		mesh1->SetDrawAxis( true );
+// 		mesh->AttachChild( mesh1 );
 	}	
 }
 

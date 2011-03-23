@@ -23,7 +23,6 @@ public:
 		res.m_fScale = m_fScale * xform.m_fScale;
 		res.m_Rotate = m_Rotate * xform.m_Rotate;
 		res.m_Translate = m_Translate + m_fScale * (m_Rotate * xform.m_Translate);
-		//res.m_Translate = m_Translate + xform.m_Translate;
 
 		return res;
 	}

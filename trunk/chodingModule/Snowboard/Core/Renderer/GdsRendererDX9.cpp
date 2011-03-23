@@ -70,7 +70,8 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 
 		CAMMGR.Update( fAccumTime );
 
-		m_RootNode->GetAt(0)->MakeYRotation( timeGetTime() / 1000.f );
+		//m_RootNode->GetAt(0)->MakeYRotation( timeGetTime() / 1000.f );
+		m_RootNode->MakeYRotation( timeGetTime() / 1000.f );
 
 		if ( m_RootNode )
 			m_RootNode->Update( fAccumTime );
@@ -114,7 +115,7 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 	
 	GdsCameraNodePtr	camnode = GdsCameraNodePtr( new GdsCameraNode );
 
-	GdsVector3 vEyePt( 1.0f, 10.0f,-30.0f );
+	GdsVector3 vEyePt( 1.0f, 50.0f,-200.0f );
 	GdsVector3 vLookatPt( 0.0f, 0.0f, 0.0f );
 	GdsVector3 vUpVec( 0.0f, 1.0f, 0.0f );
 

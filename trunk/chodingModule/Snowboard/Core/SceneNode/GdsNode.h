@@ -52,7 +52,7 @@ public:
  	}
  	
 	void					SetScale( float fvalue ){ m_matLocal.m_fScale = fvalue; }
-	float					GetScale(){ m_matLocal.m_fScale; }
+	float					GetScale(){ return m_matLocal.m_fScale; }
 
 	void					SetCullType( CULL_TYPE eCull ){ m_eCull = eCull; }
 	CULL_TYPE				GetCullType(){ return m_eCull; }

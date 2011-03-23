@@ -30,7 +30,7 @@ public:
 	inline GdsVector3 operator* (float fScalar) const;
 	inline GdsVector3 operator/ (float fScalar) const;
 	inline GdsVector3 operator- () const;
-	
+
 	static GdsVector3 ComponentProduct (const GdsVector3& p0, const GdsVector3& p1);
 
 	inline GdsVector3& operator+= (const GdsVector3& pt);

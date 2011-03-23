@@ -1,3 +1,4 @@
+
 inline GdsVector3::GdsVector3()
 {
 	SetName( OBJECT_VECTOR3 );
@@ -70,6 +71,8 @@ inline GdsVector3 operator* (float fScalar, const GdsVector3& kPt)
 {
 	return GdsVector3(fScalar*kPt.x,fScalar*kPt.y,fScalar*kPt.z);
 }
+
+
 //---------------------------------------------------------------------------
 inline GdsVector3& GdsVector3::operator+= (const GdsVector3& kPt)
 {
