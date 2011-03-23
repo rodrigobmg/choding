@@ -125,7 +125,7 @@ inline float GdsVector3::Dot(const GdsVector3& kPt) const
 	return x*kPt.x+y*kPt.y+z*kPt.z;
 }
 //---------------------------------------------------------------------------
-inline float GdsVector3::Unitize()
+inline float GdsVector3::Normalize()
 {
 	float fLength = Length();
 

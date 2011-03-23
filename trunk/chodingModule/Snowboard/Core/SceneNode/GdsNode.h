@@ -38,6 +38,9 @@ protected:
 	CULL_TYPE								m_eCull;
 	bool									m_bDrawAxis;
 
+
+	D3DXMATRIXA16							m_DXmatWorld;
+
 public:
 	GdsNode();
 	virtual ~GdsNode();

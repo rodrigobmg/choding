@@ -25,9 +25,9 @@ void GdsCameraNode::vInitGeometry( float fElapsedtime )
 {
 	//카메라 뷰 변환 행렬
 	GdsVector3 n = vLookatPt - m_matWorld.m_Translate;
-	n.Unitize();
+	n.Normalize();
 	GdsVector3 v = vUpVec.Cross( n );
-	v.Unitize();
+	v.Normalize();
 	GdsVector3 u = n.Cross( v );
 
 	matView._11 = v[0];	matView._12 = u[0];	matView._13 = n[0];	matView._14 = 0;

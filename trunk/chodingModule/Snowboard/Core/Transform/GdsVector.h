@@ -41,7 +41,7 @@ public:
 	float Length () const;
 	inline float SqrLength () const;
 	inline float Dot (const GdsVector3& pt) const;
-	inline float Unitize ();
+	inline float Normalize ();
 	inline GdsVector3 Cross (const GdsVector3& pt) const;
 	GdsVector3 UnitCross (const GdsVector3& pt) const;
 

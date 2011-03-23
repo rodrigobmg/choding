@@ -9,7 +9,7 @@ TEST( GdsVector3Test  ,  Module )
 	GdsVector3 pos1( 1.f , -1.f , 0.f );
 
 	GdsVector3 gdsv = pos1.Cross( pos );
-	gdsv.Unitize();
+	gdsv.Normalize();
 
 	D3DXVECTOR3 dxv( -1.f , -1.f , 10.f );
 	D3DXVECTOR3 dxv1( 1.f , -1.f , 0.f );
@@ -17,9 +17,9 @@ TEST( GdsVector3Test  ,  Module )
 	D3DXVec3Cross( &dxvoutput , &dxv1 , &dxv );
 	D3DXVec3Normalize( &dxvoutput , &dxvoutput );
 
-	EXPECT_EQ( dxvoutput[0] , gdsv[0] );
-	EXPECT_EQ( dxvoutput[1] , gdsv[1] );
-	EXPECT_EQ( dxvoutput[2] , gdsv[2] );
+	EXPECT_EQ( (float)dxvoutput[0] , (float)gdsv[0] );
+	EXPECT_EQ( (float)dxvoutput[1] , (float)gdsv[1] );
+	EXPECT_EQ( (float)dxvoutput[2] , (float)gdsv[2] );
 
 	D3DXMATRIXA16 rotDX;
 	GdsMatrix3 rotGDS;

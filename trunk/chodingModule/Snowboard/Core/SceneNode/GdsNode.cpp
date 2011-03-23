@@ -135,20 +135,27 @@ void GdsNode::InitGeometry( float fElapsedtime )
 	//virtual
 	vInitGeometry(fElapsedtime);
 	
-	D3DXMATRIXA16 matWorld;
-	D3DXMatrixIdentity( &matWorld );
+	m_DXmatWorld._11 = m_matWorld.m_Rotate.GetEntry( 0 , 0 ) * m_matWorld.m_fScale;
+	m_DXmatWorld._12 = m_matWorld.m_Rotate.GetEntry( 0 , 1 ) * m_matWorld.m_fScale;
+	m_DXmatWorld._13 = m_matWorld.m_Rotate.GetEntry( 0 , 2 ) * m_matWorld.m_fScale;
+	m_DXmatWorld._14 = 0.0f;
 
-	m_matWorld.m_Rotate.GetRow( 0 , matWorld._11 , matWorld._12 , matWorld._13 );
-	m_matWorld.m_Rotate.GetRow( 1 , matWorld._21 , matWorld._22 , matWorld._23 );
-	m_matWorld.m_Rotate.GetRow( 2 , matWorld._31 , matWorld._32 , matWorld._33 );
-	matWorld._41 = m_matWorld.m_Translate[0]; 
-	matWorld._42 = m_matWorld.m_Translate[1];
-	matWorld._43 = m_matWorld.m_Translate[2];	
-	matWorld._11 *= m_matWorld.m_fScale;
-	matWorld._22 *= m_matWorld.m_fScale;
-	matWorld._33 *= m_matWorld.m_fScale;
+	m_DXmatWorld._21 = m_matWorld.m_Rotate.GetEntry( 1 , 0 ) * m_matWorld.m_fScale;
+	m_DXmatWorld._22 = m_matWorld.m_Rotate.GetEntry( 1 , 1 ) * m_matWorld.m_fScale;
+	m_DXmatWorld._23 = m_matWorld.m_Rotate.GetEntry( 1 , 2 ) * m_matWorld.m_fScale;
+	m_DXmatWorld._24 = 0.0f;
 
-	GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
+	m_DXmatWorld._31 = m_matWorld.m_Rotate.GetEntry( 2 , 0 ) * m_matWorld.m_fScale;
+	m_DXmatWorld._32 = m_matWorld.m_Rotate.GetEntry( 2 , 1 ) * m_matWorld.m_fScale;
+	m_DXmatWorld._33 = m_matWorld.m_Rotate.GetEntry( 2 , 2 ) * m_matWorld.m_fScale;
+	m_DXmatWorld._34 = 0.0f;
+
+	m_DXmatWorld._41 = m_matWorld.m_Translate[0];
+	m_DXmatWorld._42 = m_matWorld.m_Translate[1];
+	m_DXmatWorld._43 = m_matWorld.m_Translate[2];
+	m_DXmatWorld._44 = 1.0f;
+
+	GetDevice()->SetTransform( D3DTS_WORLD, &m_DXmatWorld );
 }
 
 void GdsNode::Render( float fElapsedtime )
