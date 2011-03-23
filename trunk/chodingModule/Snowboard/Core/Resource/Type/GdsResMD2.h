@@ -4,8 +4,10 @@
 #include "GdsResBaseType.h"
 
 class GdsResMD2 : public GdsResBase{
+private:
 
-public:
+	GdsPolygonPropertyPtr		m_Polygon;
+	GdsTexturePropertyPtr		m_Texture;
 
 	typedef struct 
 	{
@@ -69,16 +71,6 @@ public:
 		};
 	};
 
-	//DeclareBoostPool	
-
-private:
-
-	LPDIRECT3DTEXTURE9			m_pTexture;
-	LPDIRECT3DVERTEXBUFFER9		m_pVB;
-	DWORD						m_dFVF;
-	uint32_t					m_uiPrimitive;
-	uint32_t					m_uiVertexSize;
-
 protected:
 
 	virtual void				vClear();
@@ -88,15 +80,6 @@ protected:
 public:
 	GdsResMD2();
 	virtual ~GdsResMD2();
-
-	uint32_t					GetVertexSize(){ return sizeof( MD2_VERTEX ); }
-	uint32_t					GetPrimitive(){ return m_uiPrimitive; }
-	
-	void						SetFVF( DWORD flag ){ m_dFVF = flag; }
-	DWORD						GetFVF(){ return m_dFVF; }
-
-	LPDIRECT3DTEXTURE9			GetTexturePtr(){ return m_pTexture; }
-	LPDIRECT3DVERTEXBUFFER9		GetVertexBufferPtr(){ return m_pVB; }
 		
 };
 

@@ -3,7 +3,7 @@
 //ImplementBoostPool( GdsResTexture )
 
 GdsResTexture::GdsResTexture():
-m_pTex(NULL)
+m_TextureProperty( GdsTexturePropertyPtr( new GdsTextureProperty ) )
 {
 	SetName( OBJECT_RES_TEXTURE );
 	vClear();
@@ -20,7 +20,6 @@ void GdsResTexture::vClear()
 
 HRESULT GdsResTexture::vRelease()
 {	
-	SAFE_RELEASE( m_pTex );
 	return true;
 }
 
@@ -42,12 +41,16 @@ HRESULT GdsResTexture::vLoadResource( LPDIRECT3DDEVICE9 device )
 // 	{
 // 		return true;
 // 	}
+
 	if ( SUCCEEDED( D3DXCreateTextureFromFileEx( device , m_strPath.c_str() , D3DX_DEFAULT , D3DX_DEFAULT , D3DX_DEFAULT , 0 ,
 								D3DFMT_X8R8G8B8 ,
 								D3DPOOL_MANAGED , 
 								D3DX_DEFAULT , D3DX_DEFAULT , 0 ,
-								NULL , NULL , &m_pTex ) ) )
+								NULL , NULL , 
+								m_TextureProperty->GetTexture() //&m_pTex 
+								) ) )
 	{
+		GetPropertyState()->SetTextureProperty( m_TextureProperty );
 		return true;
 	}
 

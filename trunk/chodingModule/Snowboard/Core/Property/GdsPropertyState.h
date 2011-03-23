@@ -17,8 +17,11 @@ public:
 		POLYGON,
 	};
 
-	GdsTexturePropertyPtr	GetTextureProperty();
-	GdsPolygonPropertyPtr	GetPolygonProperty();
+	GdsTexturePropertyPtr	GetTextureProperty(){ return m_TextureProperty; }
+	void					SetTextureProperty( GdsTexturePropertyPtr tex ){ m_TextureProperty = tex; }
+
+	GdsPolygonPropertyPtr	GetPolygonProperty(){ return m_PolygonProperty; }
+	void					SetPolygonProperty( GdsPolygonPropertyPtr polygon ){ m_PolygonProperty = polygon; }
 
 	void					Render( LPDIRECT3DDEVICE9 device );
 

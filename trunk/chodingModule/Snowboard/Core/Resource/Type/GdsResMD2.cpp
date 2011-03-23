@@ -2,15 +2,11 @@
 #include "../../../System/FileSystem/GdsFile.h"
 #include "Property/GdsTextureProperty.h"
 
-//ImplementBoostPool( GdsResMD2::MD2_VERTEX )
-//boost::pool<> GdsResMD2::bpool(sizeof(GdsResMD2::MD2_VERTEX));
-
 GdsResMD2::GdsResMD2():
-m_pVB(NULL),
-m_pTexture(NULL)
+m_Polygon( GdsPolygonPropertyPtr( new GdsPolygonProperty ) ),
+m_Texture( GdsTexturePropertyPtr( new GdsTextureProperty ) )
 {
 	SetName( OBJECT_RES_MD2 );
-	SetFVF( D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1 );
 	vClear();
 }
 
@@ -24,8 +20,6 @@ void GdsResMD2::vClear()
 
 HRESULT GdsResMD2::vRelease()
 {	
-	SAFE_RELEASE( m_pVB );
-	SAFE_RELEASE( m_pTexture );
 	return true;
 }
 
@@ -47,7 +41,7 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 	tstring texturefilepath	= m_strPath.substr( 0 , poscomma );
 	texturefilepath += L"\\skin.jpg";
 
-	D3DXCreateTextureFromFile( device , texturefilepath.c_str() ,  &m_pTexture );
+	D3DXCreateTextureFromFile( device , texturefilepath.c_str() ,  m_Texture->GetTexture() );
 
    	GdsFile file( m_strPath ); 
    
@@ -89,7 +83,6 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 	MD2_VERTEX *Vertices = new MD2_VERTEX[Size];
 	ZeroMemory( Vertices, Size * sizeof(MD2_VERTEX) );
 
-	m_uiPrimitive = pMD2Header.numTris;
 	for( int i = 0; i < pMD2Header.numTris; i++ )
 	{
 		for( int j = 0; j < 3; j++ )
@@ -120,9 +113,9 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 	
  	if( FAILED( device->CreateVertexBuffer( Size * sizeof(MD2_VERTEX), 
 											0, 
-											m_dFVF , 
+											D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1, 
 											D3DPOOL_DEFAULT, 
-											&m_pVB, 
+											m_Polygon->GetVB(), //&m_pVB, 
 											NULL ) ) 
 											)
  	{
@@ -130,14 +123,20 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 	}
  
  	void *pVertices;
- 	if( FAILED( m_pVB->Lock( 0, Size * sizeof(MD2_VERTEX), (void**)&pVertices, 0 ) ) )
+ 	if( FAILED( /*m_pVB*/m_Polygon->GetVBPtr()->Lock( 0, Size * sizeof(MD2_VERTEX), (void**)&pVertices, 0 ) ) )
  	{
 		return E_FAIL; 
 	}
 
  	memcpy( pVertices, Vertices, Size * sizeof(MD2_VERTEX) );
- 	m_pVB->Unlock();
+ 	//m_pVB->Unlock();
+	m_Polygon->SetPrimitive( pMD2Header.numTris );
+	m_Polygon->GetVBPtr()->Unlock();
+	m_Polygon->SetFVF( D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1 );
+	m_Polygon->SetVertexFormatSize( sizeof( MD2_VERTEX ) );
 
+	GetPropertyState()->SetTextureProperty( m_Texture );
+	GetPropertyState()->SetPolygonProperty( m_Polygon );
 	///////////////////메모리 해제//////////////////////////////////////////////////////
 	delete []pMD2Data;		//동적할당
 	delete pMD2Matrix;		//매트릭스 40바이트

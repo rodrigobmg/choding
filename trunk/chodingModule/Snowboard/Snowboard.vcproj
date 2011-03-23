@@ -237,6 +237,10 @@
 					Name="Type"
 					>
 					<File
+						RelativePath=".\Core\Resource\Type\GdsResBaseType.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\Core\Resource\Type\GdsResBaseType.h"
 						>
 					</File>

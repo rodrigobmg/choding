@@ -13,24 +13,6 @@ GdsPropertyState::~GdsPropertyState(void)
 {
 }
 
-GdsTexturePropertyPtr GdsPropertyState::GetTextureProperty()
-{
-	if ( m_TextureProperty == NULL )
-	{
-		m_TextureProperty = GdsTexturePropertyPtr( new GdsTextureProperty );
-	}
-	return m_TextureProperty;
-}
-
-GdsPolygonPropertyPtr GdsPropertyState::GetPolygonProperty()
-{
-	if ( m_PolygonProperty == NULL )
-	{
-		m_PolygonProperty = GdsPolygonPropertyPtr( new GdsPolygonProperty );
-	}
-	return m_PolygonProperty;
-}
-
 void GdsPropertyState::Render( LPDIRECT3DDEVICE9 device )
 {
 	if ( m_TextureProperty )

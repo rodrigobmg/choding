@@ -102,19 +102,13 @@ void CSnowboard::TestFunc()
 
 	m_pRenderer->GetRootNode()->SetDrawAxis( true );
 
-	GdsPropertyStatePtr pProperty = GdsPropertyStatePtr( new GdsPropertyState );
 	if( resmesh )
 	{
 		GdsNodePtr mesh = GdsNodePtr( new GdsNode );		
 		
-		pProperty->GetPolygonProperty()->SetVB(resmesh->GetVertexBufferPtr() );
-		pProperty->GetPolygonProperty()->SetFVF( resmesh->GetFVF() );
-		pProperty->GetPolygonProperty()->SetPrimitive( resmesh->GetPrimitive() );
-		pProperty->GetPolygonProperty()->SetVertexFormatSize( resmesh->GetVertexSize() );
-		pProperty->GetTextureProperty()->SetTexture( resmesh->GetTexturePtr() );
-		mesh->SetPropertyState( pProperty );
+		mesh->SetPropertyState( resmesh->GetPropertyState() );
 		mesh->SetDrawAxis( true );
-		mesh->SetScale( 0.2 );
+		mesh->SetScale( 0.2f );
 		mesh->SetTranslate( 50 , 2 , 0 );
 		//mesh->SetCullType( GdsNode::CULL_ON );
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
