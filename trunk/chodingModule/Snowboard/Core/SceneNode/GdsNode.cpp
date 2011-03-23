@@ -109,9 +109,11 @@ HRESULT GdsNode::Update( float fElapsedtime )
 
 	if ( GetParent() != NULL && ( m_Device != GetParent()->GetDevice() ) )
 		m_Device = GetParent()->GetDevice();
+
 	
 	InitGeometry( fElapsedtime );
 	Render( fElapsedtime );
+
 
 	if ( !m_ChildNode.empty() )
 	{
@@ -130,7 +132,7 @@ void GdsNode::InitGeometry( float fElapsedtime )
 	if ( GetParent() == NULL )
 		m_matWorld = m_matLocal;
 	else
-		m_matWorld = m_matLocal * GetParent()->GetWorldTransform();
+		m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;
 
 	//virtual
 	vInitGeometry(fElapsedtime);

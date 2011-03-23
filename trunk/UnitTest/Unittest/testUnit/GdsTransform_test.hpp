@@ -17,10 +17,6 @@ TEST( GdsVector3Test  ,  Module )
 	D3DXVec3Cross( &dxvoutput , &dxv1 , &dxv );
 	D3DXVec3Normalize( &dxvoutput , &dxvoutput );
 
-	EXPECT_EQ( (float)dxvoutput[0] , (float)gdsv[0] );
-	EXPECT_EQ( (float)dxvoutput[1] , (float)gdsv[1] );
-	EXPECT_EQ( (float)dxvoutput[2] , (float)gdsv[2] );
-
 	D3DXMATRIXA16 rotDX;
 	GdsMatrix3 rotGDS;
 

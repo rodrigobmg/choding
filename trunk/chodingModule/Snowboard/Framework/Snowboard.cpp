@@ -116,9 +116,15 @@ void CSnowboard::TestFunc()
 		mesh->SetScale( 0.1 );
 		mesh->SetDrawAxis( true );
 		mesh->SetTranslate( 10 , 2 , 0 );
+		mesh->SetCullType( GdsNode::CULL_ON );
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
 
 		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );
+		mesh1->SetPropertyState( pProperty );
+		mesh->AttachChild( mesh1 );
+		mesh1->SetTranslate( -30 , 0 , -10 );
+		mesh1->SetCullType( GdsNode::CULL_ON );
+		mesh1->SetDrawAxis( true );
 
 		GdsPropertyStatePtr pProperty_tree = GdsPropertyStatePtr( new GdsPropertyState );
 		pProperty_tree->GetPolygonProperty()->SetVB( res_tree1->GetVertexBufferPtr() );
@@ -131,11 +137,11 @@ void CSnowboard::TestFunc()
 		GdsBillboardNodePtr billboard = GdsBillboardNodePtr( new GdsBillboardNode );
 		GdsPropertyStatePtr billboardproperty = GdsPropertyStatePtr( new GdsPropertyState );
 		billboard->SetPropertyState( pProperty_tree );
-		billboard->SetTranslate( -150 , 10 , -10 );
+		billboard->SetTranslate( -30 , 0 , -10 );
 		billboard->SetScale( 2 );
 		billboard->SetDrawAxis( true );
 
-		mesh->AttachChild( billboard );
+//		mesh->AttachChild( billboard );
 	}	
 }
 
