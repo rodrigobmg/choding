@@ -119,6 +119,10 @@ void CSnowboard::TestFunc()
 		//mesh->SetCullType( GdsNode::CULL_ON );
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
 
+		GdsBillboardNodePtr billboard = GdsBillboardNodePtr( new GdsBillboardNode );
+		billboard->SetDrawAxis( true );
+		billboard->SetTranslate( -10 , -20 , 0 );
+		mesh->AttachChild( billboard );
 // 		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );		
 // 		mesh1->SetPropertyState( pProperty );		
 // 		mesh1->SetTranslate( -1 , 0 , -10 );
