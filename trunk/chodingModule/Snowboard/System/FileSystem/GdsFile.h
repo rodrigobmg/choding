@@ -7,7 +7,7 @@ class GdsFile : noncopyable
 {
 private:
 	
-	FILE*	pfile_;
+	FILE*	m_pFile;
 
 public:
 
@@ -20,9 +20,22 @@ public:
 
 };
 
-class Linecontainer : noncopyable
+class ReadFileToMemory : noncopyable
 {
+	ReadFileToMemory( tstring& strPath );
+	~ReadFileToMemory();
 
+	GdsFile			m_File;
+	const TCHAR*	m_token;
+	wchar_t*		m_buffer;
+
+	void			init();
+	void			clear();
+
+public:
+
+	void			SetToken( const TCHAR* token ){ m_token = token; }
+	const TCHAR*	Next();
 };
 
 #endif
