@@ -582,10 +582,6 @@
 				Name="FrameMemory"
 				>
 				<File
-					RelativePath=".\System\FrameMemory\GdsFrameMemory.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\System\FrameMemory\GdsFrameMemory.h"
 					>
 				</File>

@@ -2,16 +2,15 @@
 
 #include "../Core/GdsCoreFactory.h"
 #include "../Core/Renderer/GdsRendererDX9.h"
-#include "../Core/Resource/Type/GdsResTexture.h"
 
 #include "../Utility/Log/logger.h"
 #include "../Utility/PerformanceCheck/Performance.h"
 
-#include "../System/Thread/GdsThreadPool.h"
 #include "SceneNode/GdsNode.h"
-#include "Resource/Type/GdsResMD2.h"
 #include "SceneNode/GdsBillboardNode.h"
 #include "../System/Time/GdsSystemTime.h"
+#include "../System/FrameMemory/GdsFrameMemory.h"
+#include "Resource/Type/GdsResMD2.h"
 
 CSnowboard::CSnowboard()
 {
@@ -31,6 +30,8 @@ void CSnowboard::Clear()
 bool CSnowboard::InitModule( HWND hWnd )
 {
 	LOGGER.Init(NULL , NULL , NULL , NULL );
+	FRAMEMEMORY.Init( 1024 );
+	LOG_WARNING_F( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
 
 	InitRenderer( hWnd );
 	InitResource( m_pRenderer->GetDevice() );

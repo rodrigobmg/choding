@@ -32,6 +32,8 @@ public:
 		cur_pos -= freesize;
 	}
 
+	size_t GetSize(){ return frame_size; }
+
 private:
 
 	void clear()
