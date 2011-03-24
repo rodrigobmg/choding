@@ -237,6 +237,14 @@
 					Name="Type"
 					>
 					<File
+						RelativePath=".\Core\Resource\Type\GdsResASE.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Resource\Type\GdsResASE.h"
+						>
+					</File>
+					<File
 						RelativePath=".\Core\Resource\Type\GdsResBaseType.cpp"
 						>
 					</File>
@@ -567,6 +575,18 @@
 				</File>
 				<File
 					RelativePath=".\System\FileSystem\GdsFile.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="FrameMemory"
+				>
+				<File
+					RelativePath=".\System\FrameMemory\GdsFrameMemory.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\System\FrameMemory\GdsFrameMemory.h"
 					>
 				</File>
 			</Filter>

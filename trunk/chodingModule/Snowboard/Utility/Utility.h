@@ -184,3 +184,4 @@ namespace functor
 	};
 }// end of namespace functor
 
+using namespace util;

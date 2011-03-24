@@ -43,14 +43,13 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 
 	D3DXCreateTextureFromFile( device , texturefilepath.c_str() ,  m_Texture->GetTexture() );
 
-   	GdsFile file( m_strPath ); 
-   
+   	GdsFile file( m_strPath , L"rb" );    
    	MD2HEADER pMD2Header;
-	if ( file.Read( sizeof( MD2HEADER ) , &pMD2Header )  == false )
+	if ( file.read( sizeof( MD2HEADER ) , &pMD2Header )  == false )
 		return false;
    
    	BYTE* pMD2Data = new BYTE[pMD2Header.offsetEnd];
-	if( file.Read( sizeof(BYTE)*( pMD2Header.offsetEnd - sizeof(MD2HEADER) ) , &pMD2Data[sizeof(MD2HEADER)] ) == false ) 
+	if( file.read( sizeof(BYTE)*( pMD2Header.offsetEnd - sizeof(MD2HEADER) ) , &pMD2Data[sizeof(MD2HEADER)] ) == false ) 
 		return false;
 
 	///////////////////매트릭스 읽기(스케일, 이동값)///////////////////////////////

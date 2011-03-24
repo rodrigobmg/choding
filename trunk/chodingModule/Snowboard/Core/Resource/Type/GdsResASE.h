@@ -3,23 +3,16 @@
 
 #include "GdsResBaseType.h"
 
-class GdsResASE : public GdsResBase{
-
-public:
-
-	DeclareBoostPool	
-
-private:
+class GdsResASE : public GdsResBase
+{
 
 public:
 	GdsResASE();
 	virtual ~GdsResASE();
 	
 	virtual void		vClear();
-	virtual HRESULT		vCreate();
 	virtual HRESULT		vRelease();
-	virtual HRESULT		vReCreate( LPDIRECT3DDEVICE9 device );
-	virtual HRESULT		vLoadResource( const TCHAR* path  , LPDIRECT3DDEVICE9 device );
+	virtual HRESULT		vLoadResource( LPDIRECT3DDEVICE9 device );
 		
 };
 
