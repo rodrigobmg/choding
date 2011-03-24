@@ -19,6 +19,9 @@ public:
 	void* Alloc( size_t allocsize )
 	{
 		ASSERT( cur_pos + allocsize < frame_size );
+		if ( cur_pos + allocsize > frame_size )
+			return NULL;
+
 		void* p = buffer + cur_pos;
 		cur_pos += allocsize;
 		stack.push_back( p );
