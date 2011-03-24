@@ -1,10 +1,9 @@
 #ifndef _GDS_SYSTEM_FILESYSTEM_FILE_H_
 #define _GDS_SYSTEM_FILESYSTEM_FILE_H_
 
-#include "../../Core/Base/GdsObject.h"
-#include <mbstring.h>
+#include "../../Framework/Snowboard_stdafx.h"
 
-class GdsFile : public GdsObject
+class GdsFile : noncopyable
 {
 private:
 	
@@ -13,12 +12,17 @@ private:
 public:
 
 	GdsFile();
-	GdsFile( tstring& path );
+	GdsFile( tstring& path , const TCHAR* mode );
 	virtual ~GdsFile();
 
-	void	Setpath( tstring& path );
-	bool	Read( size_t readsize , void* buffer );
-	void	Write( size_t writesize , BYTE* buffer );
+	bool	read( size_t readsize , void* buffer );
+	void	write( size_t writesize , BYTE* buffer );
 
 };
+
+class Linecontainer : noncopyable
+{
+
+};
+
 #endif

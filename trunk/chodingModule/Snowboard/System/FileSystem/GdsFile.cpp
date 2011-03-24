@@ -6,9 +6,10 @@ GdsFile::GdsFile()
 {
 }
 
-GdsFile::GdsFile( tstring& path )
+GdsFile::GdsFile( tstring& path , const TCHAR* mode )
 {
-	Setpath( path );
+	//파일 열기
+	_wfopen_s( &pfile_ , path.c_str() , mode );
 }
 
 GdsFile::~GdsFile()
@@ -17,13 +18,7 @@ GdsFile::~GdsFile()
 		fclose( pfile_ );
 }
 
-void GdsFile::Setpath( tstring& path )
-{
-	//파일 열기
-	_wfopen_s( &pfile_ , path.c_str() , L"rb" );
-}
-
-bool GdsFile::Read( size_t readsize ,void* buffer )
+bool GdsFile::read( size_t readsize ,void* buffer )
 {
 	if ( pfile_ == NULL )
 	{
@@ -35,7 +30,7 @@ bool GdsFile::Read( size_t readsize ,void* buffer )
 	return true;
 }
 
-void GdsFile::Write( size_t writesize , BYTE* buffer )
+void GdsFile::write( size_t writesize , BYTE* buffer )
 {
 
 }
