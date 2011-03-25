@@ -10,6 +10,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snowboard", "chodingModule\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Unittest", "UnitTest\Unittest\Unittest.vcproj", "{7EC726BF-657A-4F2D-BA24-7EB5F418C11B}"
 	ProjectSection(ProjectDependencies) = postProject
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7} = {C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}
 		{73F5138D-F518-49EA-81A1-40AB0DA84E9E} = {73F5138D-F518-49EA-81A1-40AB0DA84E9E}
 	EndProjectSection
 EndProject
