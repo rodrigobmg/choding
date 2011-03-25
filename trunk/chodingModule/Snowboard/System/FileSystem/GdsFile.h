@@ -15,24 +15,25 @@ public:
 	GdsFile( tstring& path , const TCHAR* mode );
 	virtual ~GdsFile();
 
-	bool	read( size_t readsize , void* buffer );
-	void	write( size_t writesize , BYTE* buffer );
-
+	bool	read( long readsize , void* buffer );
+	void	write( long writesize , BYTE* buffer );
+	long	size();
 };
 
-class ReadFileToMemory : noncopyable
+class ReadFileInMemory : noncopyable
 {
-	ReadFileToMemory( tstring& strPath );
-	~ReadFileToMemory();
-
 	GdsFile			m_File;
 	const TCHAR*	m_token;
-	wchar_t*		m_buffer;
+	char*			m_buffer;
 
 	void			init();
 	void			clear();
 
+
 public:
+
+	ReadFileInMemory( tstring& strPath );
+	~ReadFileInMemory();
 
 	void			SetToken( const TCHAR* token ){ m_token = token; }
 	const TCHAR*	Next();
