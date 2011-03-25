@@ -11,7 +11,7 @@ private:
 
 public:
 
-	GdsFile( tstring& path );
+	explicit GdsFile( tstring& path );
 	~GdsFile();
 
 	bool	read( long readsize , void* buffer );
@@ -31,7 +31,7 @@ class ReadFileInMemory : noncopyable
 
 public:
 
-	ReadFileInMemory( tstring& strPath );
+	explicit ReadFileInMemory( tstring& strPath );
 	
 	template< class T >
 	ReadFileInMemory( tstring& strPath , T const& additionToken )
@@ -81,7 +81,7 @@ public:
 		char* m_next;
 	};
 
-	LineContainerA( tstring& full_path) : m_buff(full_path, '\0') {}
+	explicit LineContainerA( tstring& full_path) : m_buff(full_path, '\0') {}
 	bool empty()const { return (NULL == m_buff.GetBuffer()); }
 
 	iterator begin() { return iterator((char*)m_buff.GetBuffer()); }
@@ -126,7 +126,7 @@ public:
 		wchar_t* m_next;
 	};
 
-	LineContainerW( tstring& full_path) : m_buff(full_path, L'\0') {}
+	explicit LineContainerW( tstring& full_path) : m_buff(full_path, L'\0') {}
 	bool empty()const { return (NULL == m_buff.GetBuffer()); }
 
 	iterator begin() { return iterator(vGetBuffer()); }
