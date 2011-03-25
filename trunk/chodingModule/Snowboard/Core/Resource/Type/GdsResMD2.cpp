@@ -43,7 +43,7 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 
 	D3DXCreateTextureFromFile( device , texturefilepath.c_str() ,  m_Texture->GetTexture() );
 
-   	GdsFile file( m_strPath , L"rb" );    
+   	GdsFile file( m_strPath );    
    	MD2HEADER pMD2Header;
 	if ( file.read( sizeof( MD2HEADER ) , &pMD2Header )  == false )
 		return false;
