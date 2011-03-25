@@ -61,7 +61,12 @@ void ReadFileInMemory::init( tstring& strPath , void* const addtionToken )
 	long buffersize = File.size();
 	size_t addsize = sizeof( &addtionToken );
 	m_buffer = (BYTE*)FRAMEMEMORY.Alloc( buffersize + addsize );	
-	ASSERT( m_buffer );
+	if ( m_buffer == NULL )
+	{
+		ASSERT( 0 );
+		return;
+	}
+
 	File.read( buffersize , m_buffer );
 	memcpy_s( (BYTE*)m_buffer + buffersize , addsize , addtionToken , addsize );
 	m_buffersize = buffersize;
