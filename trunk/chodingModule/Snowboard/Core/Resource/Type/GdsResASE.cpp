@@ -29,7 +29,7 @@ HRESULT GdsResASE::vLoadResource( LPDIRECT3DDEVICE9 device )
 
 	for ( ; it != it_end ; ++it )
 	{
-		LOG_WARNING_F( "%s" , *(it) );
+		//LOG_WARNING_F( "%s" , *(it) );
 	}
 	
 
