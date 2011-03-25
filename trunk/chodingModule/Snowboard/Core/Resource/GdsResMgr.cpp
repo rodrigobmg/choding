@@ -6,6 +6,7 @@
 #include "Log/logger.h"
 #include "PerformanceCheck/Performance.h"
 #include "Type/GdsResMD2.h"
+#include "Type/GdsResASE.h"
 
 /*
 #include "tbb/task_scheduler_init.h"
@@ -336,6 +337,12 @@ GdsResBasePtr GdsResMgr::resourceFactory( const TCHAR* ext , const TCHAR* filepa
 		GdsResMD2Ptr	pMd2 = GdsResMD2Ptr( new GdsResMD2 );
 		pMd2->Create( filepath , m_pDevice );
 		return pMd2;
+	}
+	else if ( !_tcscmp( ext , L"ase" ) ) 
+	{
+		GdsResASEPtr	pAse = GdsResASEPtr( new GdsResASE );
+		pAse->Create( filepath , m_pDevice );
+		return pAse;
 	}
 
 	return GdsResBasePtr( (GdsResBase*)NULL);

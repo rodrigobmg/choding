@@ -30,7 +30,7 @@ void CSnowboard::Clear()
 bool CSnowboard::InitModule( HWND hWnd )
 {
 	LOGGER.Init(NULL , NULL , NULL , NULL );
-	FRAMEMEMORY.Init( 1024 );
+	FRAMEMEMORY.Init( 1024 * 1024 );
 	LOG_WARNING_F( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
 
 	InitRenderer( hWnd );
@@ -96,6 +96,9 @@ void CSnowboard::TestFunc()
 
 		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"tex" , respath , L"bmp;dds;tga" , true ) );
 		m_pResMgr->LoadRes( L"tex" );
+
+		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"ase" , respath , L"ase" , true ) );
+		m_pResMgr->LoadRes( L"ase" );
 	}
 
 	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"tree2.md2" ) );
