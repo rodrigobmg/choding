@@ -89,8 +89,10 @@ void LineContainerA::iterator::next_line()
 {
 	m_next = m_curr;
 
-	while (*m_next) {
-		if('\n' == *m_next) {
+	while (*m_next) 
+	{
+		if('\n' == *m_next) 
+		{
 			*(m_next++) = '\0';
 			break;
 		}
@@ -109,7 +111,8 @@ void LineContainerA::iterator::forward()
 
 void LineContainerA::iterator::trim_left()
 {
-	while(*m_curr) {
+	while(*m_curr) 
+	{
 		if (!::isspace(*m_curr))
 			break;
 		++m_curr;
@@ -139,8 +142,10 @@ void LineContainerW::iterator::next_line()
 {
 	m_next = m_curr;
 
-	while (*m_next) {
-		if(L'\n' == *m_next) {
+	while (*m_next) 
+	{
+		if(L'\n' == *m_next) 
+		{
 			*(m_next++) = L'\0';
 			break;
 		}
@@ -159,7 +164,8 @@ void LineContainerW::iterator::forward()
 
 void LineContainerW::iterator::trim_left()
 {
-	while(*m_curr) {
+	while(*m_curr) 
+	{
 		if (!::iswspace(*m_curr))
 			break;
 		++m_curr;
