@@ -91,18 +91,11 @@ void CSnowboard::TestFunc()
 
 	if ( m_pResMgr )
 	{	 
- 		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"md2" , respath , L"md2" , true ) );
-		m_pResMgr->LoadRes( L"md2" );
-
-		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"tex" , respath , L"bmp;dds;tga" , true ) );
-		m_pResMgr->LoadRes( L"tex" );
-
-		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( L"ase" , respath , L"ase" , true ) );
-		m_pResMgr->LoadRes( L"ase" );
+ 		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"md2;ase;bmp" , true ) );
 	}
 
-	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"tree2.md2" ) );
-	GdsResMD2Ptr res_tree1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2" , L"cart.md2" ) );
+	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2\\나무02\\tree2.md2" ) );
+	GdsResMD2Ptr resmesh1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2\\나무02\\tree2.md2" ) );
 
 	m_pRenderer->GetRootNode()->SetDrawAxis( true );
 
@@ -112,14 +105,14 @@ void CSnowboard::TestFunc()
 		
 		mesh->SetPropertyState( resmesh->GetPropertyState() );
 		mesh->SetDrawAxis( true );
-		mesh->SetScale( 0.2f );
-		mesh->SetTranslate( 50 , 2 , 0 );
+		//mesh->SetScale( 0.2f );
+		mesh->SetTranslate( 10 , 2 , 0 );
 		//mesh->SetCullType( GdsNode::CULL_ON );
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
 
 		GdsBillboardNodePtr billboard = GdsBillboardNodePtr( new GdsBillboardNode );
 		billboard->SetDrawAxis( true );
-		billboard->SetTranslate( -10 , -20 , 0 );
+		billboard->SetTranslate( -20 , 0 , 0 );
 		mesh->AttachChild( billboard );
 // 		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );		
 // 		mesh1->SetPropertyState( pProperty );		

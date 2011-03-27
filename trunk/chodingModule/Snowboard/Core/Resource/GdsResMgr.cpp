@@ -31,8 +31,6 @@ GdsResMgr::~GdsResMgr()
 
 void GdsResMgr::Clear()
 {
-	m_mapRes.clear();
-	m_mapAllFilelist.clear();
 }
 
 HRESULT GdsResMgr::Create( LPDIRECT3DDEVICE9 device )
@@ -51,53 +49,57 @@ HRESULT GdsResMgr::Release()
 void GdsResMgr::ReleaseRes( const TCHAR* alias )
 {
 	
-	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
-	if ( itAll != m_mapRes.end() )
-		m_mapRes.erase( itAll );
-
-	
-	RES_ALL_FILELIST_MAP::iterator itList = m_mapAllFilelist.find( alias );
-	if ( itList != m_mapAllFilelist.end() )
-		itList->second.bLoaded = false;
+	HASHMAPRes::iterator itAll = m_LoadedResList.find( alias );
+	if ( itAll != m_LoadedResList.end() )
+		m_LoadedResList.erase( itAll );
 
 }
 
-void GdsResMgr::ReleaseList( const TCHAR* alias )
+GdsResBasePtr GdsResMgr::exist( const TCHAR* filename )
 {
-	RES_ALL_FILELIST_MAP::iterator itList = m_mapAllFilelist.find( alias );
-	if ( itList != m_mapAllFilelist.end() )
+	HASHMAPRes::iterator itAll = m_LoadedResList.find( filename );
+	if ( itAll != m_LoadedResList.end() )
 	{
-		if( itList->second.bLoaded == true )
-		{
-			ASSERT( 0 && L"메모리에 로드중인 리스트는 지울수 없다. 메모리에서 해제한후 지워라");			
-			return;
-		}
-		else
-		{
-			m_mapAllFilelist.erase( itList );
-		}
-	}
-}
-
-GdsResBasePtr GdsResMgr::exist( const TCHAR* alias , const TCHAR* filename )
-{
-	RES_CONTAINER::iterator itAll = m_mapRes.find( alias );
-	if ( itAll != m_mapRes.end() )
-	{
-		HASHMAPRes_ITERATOR it = itAll->second.find( filename );
-		if ( it != itAll->second.end() )
-			return it->second;
+		return itAll->second;
 	}
 
 	return GdsResBasePtr( (GdsResBase*)NULL );
 }
 
 
-GdsResBasePtr	GdsResMgr::Get( const TCHAR* alias , const TCHAR* filename )
+GdsResBasePtr	GdsResMgr::Get( const TCHAR* filename )
 {
-	GdsResBasePtr p = exist( alias ,filename );
+	GdsResBasePtr p = exist( filename );
 	if ( p )
+	{
 		return p;
+	}
+	
+	return load_res( filename );
+}
+
+GdsResBasePtr GdsResMgr::load_res( const TCHAR* filename )
+{
+	tstring strFilepath = m_strResBasePath + L"\\" + filename;
+	for_each( strFilepath.begin() , strFilepath.end() , functor::ToLower() );
+
+	FILE_LIST::iterator it = std::find( m_ResFileList.begin() , m_ResFileList.end() , strFilepath );
+
+	bool bSuccess  = true;
+	if ( it == m_ResFileList.end() )
+		bSuccess = false;
+
+	if ( bSuccess )
+	{
+		size_t poscomma = strFilepath.rfind( L"." );
+		tstring ext		= strFilepath.substr( poscomma + 1 , strFilepath.length() );
+		GdsResBasePtr pRes = resourceFactory( ext.c_str() , strFilepath.c_str() );
+		if ( pRes != NULL )
+		{
+			if ( stack_data_to_container( filename , pRes ) )
+				return pRes;		
+		}
+	}	
 
 	return GdsResBasePtr( (GdsResBase*)NULL );
 }
@@ -183,144 +185,52 @@ void GdsResMgr::make_token( const TCHAR* token , std::list<tstring>& tokenlist ,
 }
 
 HRESULT GdsResMgr::CreateList( LOADLIST_WORK_TOKEN work_token )
-{		
-	RES_ALL_FILELIST_MAP::iterator it = m_mapAllFilelist.find( work_token.path );
-	if ( it == m_mapAllFilelist.end() )
+{	
+	m_strResBasePath = work_token.path;
+	if ( !m_ResFileList.empty() )
 	{
-		std::list<tstring> tokenlist;
-		make_token( work_token.token.c_str() , tokenlist , L";" );
-		if ( tokenlist.empty() )
-		{
-			ASSERT( !L"토큰리스트에 값이 하나도 없다." );
-			return false;
-		}
-
-		SAMPLE_PERFORMANCE sample;
-		BEGIN_PERFORMANCE( L"CreateList" );
-
-		RES_STRUCT resStruct;
-		load_res_dir( work_token.path.c_str() , resStruct.filelist , tokenlist , work_token.recursive );
-		if ( !resStruct.filelist.empty() )
-		{
-			//resStruct.filelist.sort();
-			m_mapAllFilelist.insert( std::pair< const TCHAR* , RES_STRUCT >( work_token.alias.c_str() , resStruct ) );
-			END_PERFORMANCE( L"CreateList" );
-			OUTPUT_PERFORMANCE( L"CreateList" , sample );
-			//LOG_WARNING_F( " [CreateList] Avg = %d , DeltaTick = %d , Count = %d " , sample.ulAvg , sample.ulTotalDeltaTick , sample.ulCount );
-			return true;
-		}
-	}
-	else
-	{
-		ASSERT( 0 && L" 중복 삽입 " );
+		ASSERT( 0 );
 		return false;
 	}
 
-	return false;
-}
-
-HRESULT GdsResMgr::LoadRes( const TCHAR* alias )
-{
-	RES_ALL_FILELIST_MAP::iterator itAlllist = m_mapAllFilelist.find( alias );
-	if ( itAlllist == m_mapAllFilelist.end() )
+	std::list<tstring> tokenlist;
+	make_token( work_token.token.c_str() , tokenlist , L";" );
+	if ( tokenlist.empty() )
 	{
-		ASSERT( 0 && L"엉뚱한 리스트의 목록을 로드하려고 했음 " );
+		ASSERT( !L"토큰리스트에 값이 하나도 없다." );
 		return false;
 	}
-
-	RES_STRUCT& stRes = itAlllist->second;
-
-	if ( stRes.bLoaded == true )
-	{
-		ASSERT( 0 && L" 왜 또 로드해 메모리 모질라면 니가 책임질래? ㅡㅡ " );
-		return false;
-	}
-	
-	//확장자 구분해서 알아서 맞게끔 로드해서 m_mapRes에 넣어준다.
-	FILE_LIST filelist = stRes.filelist;
-	FILE_LIST::iterator it = filelist.begin();
-	tstring ext;
-	int size = static_cast< int>( filelist.size() );
-	bool	bSuccess  = true;
-	
-//#pragma omp parallel for
 
 	SAMPLE_PERFORMANCE sample;
+	BEGIN_PERFORMANCE( L"CreateList" );
 
-  	for ( int index = 0 ; index < size ; ++index )
-  	{ 
-		BEGIN_PERFORMANCE( L"LoadRes" );
-
-  		if ( bSuccess == false )
-  			break;
-  		
-  		size_t poscomma = filelist[index].rfind( L"." );
-  		ext				= filelist[index].substr( poscomma + 1 , filelist[index].length() );
-		GdsResBasePtr pRes = resourceFactory( ext.c_str() , filelist[index].c_str() );
-  		if ( pRes == NULL )
-  		{
-  			bSuccess = false;
-  			break;
-  		}
-		
-		bool bret = stack_data_to_container( alias , filelist[index].c_str() , pRes );
-		if ( bret == false )
-		{
-			bSuccess = false;
-			break;
-		}
-  	}
-
-	// 데이타 로드 무결성 위반 데이타 롤백
-	if ( bSuccess == false )
+	load_res_dir( work_token.path.c_str() , m_ResFileList , tokenlist , work_token.recursive );
+	if ( m_ResFileList.empty() )
 	{
-		RES_CONTAINER::iterator it = m_mapRes.find( alias );
-		if ( it != m_mapRes.end() ) 
-		{
-			m_mapRes.erase( it );
-		}
+		ASSERT( 0 );
+		return false;
 	}
 
-	END_PERFORMANCE( L"LoadRes" );
-	OUTPUT_PERFORMANCE( L"LoadRes" , sample );
-//	LOG_WARNING_F(" [LoadRes] Avg = %d , DeltaTick = %d , Count = %d", sample.ulAvg , sample.ulTotalDeltaTick , sample.ulCount );
-	stRes.bLoaded = bSuccess;
-	return bSuccess;
+	return true;
 }
 
-bool GdsResMgr::stack_data_to_container( const TCHAR* alias , const TCHAR* filepath , GdsResBasePtr pres )
+bool GdsResMgr::stack_data_to_container( const TCHAR* filepath , GdsResBasePtr pres )
 {
 	if ( pres == NULL )
 		return false;
 
-
-	tstring wstrpath(filepath);
-	size_t poscomma  = wstrpath.rfind( L"\\" );
-	tstring filename = wstrpath.substr( poscomma + 1 , wstrpath.length() );
-	if ( exist( alias , filename.c_str() ) )
+	if ( exist( filepath ) )
 	{
 		ASSERT( 0 && L"키값 중복이 있어서는 안된다." );
 		return false;
 	}		
-	RES_CONTAINER::iterator itResAll = m_mapRes.find( alias );
-	if ( itResAll != m_mapRes.end() )
+	
+	HASHMAPRes::iterator it = m_LoadedResList.find( filepath );
+	if ( it == m_LoadedResList.end() )
 	{
-		HASHMAPRes_ITERATOR itRes = itResAll->second.find( filename );
-		if ( itRes == itResAll->second.end() )
-		{
-			itResAll->second.insert( make_pair( filename , pres ) );
-		}
-		else
-		{
-			ASSERT( !L"리소스 중복 저장" );
-		}
+		m_LoadedResList.insert( make_pair( filepath , pres ) );
 	}
-	else
-	{
-		HASHMAPRes hmapRes;
-		hmapRes.insert( make_pair( filename , pres ) );
-		m_mapRes.insert( std::pair< const TCHAR* , HASHMAPRes >( alias , hmapRes ) );
-	}	
+	
 	return true;
 }
 
