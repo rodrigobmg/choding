@@ -33,7 +33,7 @@ public:
 	void			Render( LPDIRECT3DDEVICE9 device );
 	void			Clear();
 
-protected:
+private:
 
 	DWORD			m_FVF;
 	int32_t			m_iSizeofVertexFormat;

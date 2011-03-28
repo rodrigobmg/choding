@@ -346,6 +346,14 @@
 				Name="Property"
 				>
 				<File
+					RelativePath=".\Core\Property\GdsMaterialProperty.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsMaterialProperty.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Core\Property\GdsPolygonProperty.cpp"
 					>
 				</File>

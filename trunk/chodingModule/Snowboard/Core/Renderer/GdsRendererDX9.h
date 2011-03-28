@@ -40,4 +40,6 @@ public:
 
 typedef boost::shared_ptr< GdsRendererDX9 > GdsRendererDX9Ptr;
 
+#define RENDERER	singleton_holder< GdsRendererDX9 >::instance()
+
 #endif

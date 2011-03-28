@@ -11,12 +11,6 @@ public:
 	GdsPropertyState(void);
 	virtual ~GdsPropertyState(void);
 
-	enum PROPERTY_TYPE{
-		NONE_TYPE = -1,
-		TEXTURE = 0,
-		POLYGON,
-	};
-
 	GdsTexturePropertyPtr	GetTextureProperty(){ return m_TextureProperty; }
 	void					SetTextureProperty( GdsTexturePropertyPtr tex ){ m_TextureProperty = tex; }
 
