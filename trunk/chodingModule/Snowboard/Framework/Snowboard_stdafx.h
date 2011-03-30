@@ -14,7 +14,7 @@
 #include <list>
 #include <map>
 #include <algorithm>
-#include <utility>
+#include <stdlib.h>
 
 #include <boost/pool/pool.hpp>
 #include <boost/pool/poolfwd.hpp>
