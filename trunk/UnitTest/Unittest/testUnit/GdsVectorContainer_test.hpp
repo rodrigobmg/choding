@@ -55,22 +55,24 @@ public:
 		T find( KEY key )
 		{
 			ASSERT( m_isSorted );	
-			if ( binary_search( m_vecData.begin() , m_vecData.end() , key , DataCompare() ) )
-			{
-				CONTAINER::iterator i = lower_bound( m_vecData.begin() , m_vecData.end() , key , DataCompare() );
-				if ( i != m_vecData.end() && !(i->first < key ) )
-				{
-					// 						pair< CONTAINER::iterator , CONTAINER::iterator > range = 
-					// 							equal_range( m_vecData.begin() , m_vecData.end() , key , DataCompare() );
-					// 
-					// 						if ( range.first != range.second )
-					// 						{
-					// 							return 
-					// 						}
-					size_t dis = distance( m_vecData.begin() , i );
-					return m_vecData[dis].second;
-				}
-			}
+// 			if ( binary_search( m_vecData.begin() , m_vecData.end() , key , DataCompare() ) )
+// 			{
+// 			
+// 			}
+			CONTAINER::iterator i = lower_bound( m_vecData.begin() , m_vecData.end() , key , DataCompare() );
+			return m_vecData[ distance( m_vecData.begin() , i ) ].second;
+// 			if ( i != m_vecData.end() && !(i->first < key ) )
+// 			{
+// 				// 						pair< CONTAINER::iterator , CONTAINER::iterator > range = 
+// 				// 							equal_range( m_vecData.begin() , m_vecData.end() , key , DataCompare() );
+// 				// 
+// 				// 						if ( range.first != range.second )
+// 				// 						{
+// 				// 							return 
+// 				// 						}
+// 				size_t dis = distance( m_vecData.begin() , i );
+// 				return m_vecData[dis].second;
+// 			}
 		}
 
 		void sort()
@@ -90,15 +92,15 @@ public:
 
 	virtual void SetUp()
 	{
-		for ( size_t cnt = 0 ; cnt < 100000 ; ++cnt)
+		for ( size_t cnt = 0 ; cnt < 10000 ; ++cnt)
 		{
 			map.insert( pair<int, int>( cnt , cnt ) );
 		}
-		for ( size_t cnt = 0 ; cnt < 100000 ; ++cnt)
+		for ( size_t cnt = 0 ; cnt < 10000 ; ++cnt)
 		{
 			table.add( cnt , cnt );
 		}
-		table.sort();	
+		table.sort();
 	}
 
 	virtual void TearDown()
@@ -114,21 +116,25 @@ public:
 
 };
 
+TEST_F( GdsVectorContainerTest , sort )
+{
+}
+
 TEST_F( GdsVectorContainerTest ,  map )
 {
-	for (size_t cnt = 0 ; cnt < 100000; ++cnt )
+	for (size_t cnt = 0 ; cnt < 10000; ++cnt )
 	{
-		int val = rand()%100000;
-		map.find( val );
+		int key = rand()%10000;
+		map.find( key );
 	}
 }
 
 TEST_F( GdsVectorContainerTest , vector )
 {
-	for (size_t cnt = 0 ; cnt < 100000; ++cnt )
+	for (size_t cnt = 0 ; cnt < 10000; ++cnt )
 	{
-		int val = rand()%100000;
-		table.find( val );
+		int key = rand()%10000;
+		table.find( key );
 	}
 }
 
