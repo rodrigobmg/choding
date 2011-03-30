@@ -9,8 +9,8 @@ public:
 	GdsPolygonProperty(void);
 	virtual ~GdsPolygonProperty(void);
 
-	LPDIRECT3DVERTEXBUFFER9		GetVBPtr(){ return m_VB; }
-	LPDIRECT3DVERTEXBUFFER9*	GetVB(){ return &m_VB; }
+	LPDIRECT3DVERTEXBUFFER9		GetVB(){ return m_VB; }
+	LPDIRECT3DVERTEXBUFFER9*	GetVBPtr(){ return &m_VB; }
 
 	void			SetVB( LPDIRECT3DVERTEXBUFFER9 p );
 	
@@ -22,8 +22,8 @@ public:
 	int32_t			GetVertexFormatSize(){ return m_iSizeofVertexFormat; }
 
 
-	LPDIRECT3DINDEXBUFFER9		GetIBPtr(){ return m_IB; }
-	LPDIRECT3DINDEXBUFFER9*		GetIB(){ return &m_IB; }
+	LPDIRECT3DINDEXBUFFER9		GetIB(){ return m_IB; }
+	LPDIRECT3DINDEXBUFFER9*		GetIBPtr(){ return &m_IB; }
 
 	void			SetIB( LPDIRECT3DINDEXBUFFER9 p );
 

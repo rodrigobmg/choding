@@ -41,7 +41,7 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 	tstring texturefilepath	= m_strPath.substr( 0 , poscomma );
 	texturefilepath += L"\\skin.jpg";
 
-	D3DXCreateTextureFromFile( device , texturefilepath.c_str() ,  m_Texture->GetTexture() );
+	D3DXCreateTextureFromFile( device , texturefilepath.c_str() ,  (LPDIRECT3DTEXTURE9*)m_Texture->GetTexture() );
 
    	GdsFile file( m_strPath );    
    	MD2HEADER pMD2Header;
@@ -114,15 +114,15 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 											0, 
 											D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1, 
 											D3DPOOL_DEFAULT, 
-											m_Polygon->GetVB(), //&m_pVB, 
+											m_Polygon->GetVBPtr() , //&m_pVB, 
 											NULL ) ) 
 											)
  	{
 		return E_FAIL; 
 	}
- 
+
  	void *pVertices;
- 	if( FAILED( /*m_pVB*/m_Polygon->GetVBPtr()->Lock( 0, Size * sizeof(MD2_VERTEX), (void**)&pVertices, 0 ) ) )
+ 	if( FAILED( /*m_pVB*/m_Polygon->GetVB()->Lock( 0, Size * sizeof(MD2_VERTEX), (void**)&pVertices, 0 ) ) )
  	{
 		return E_FAIL; 
 	}
@@ -130,7 +130,7 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
  	memcpy( pVertices, Vertices, Size * sizeof(MD2_VERTEX) );
  	//m_pVB->Unlock();
 	m_Polygon->SetPrimitive( pMD2Header.numTris );
-	m_Polygon->GetVBPtr()->Unlock();
+	m_Polygon->GetVB()->Unlock();
 	m_Polygon->SetFVF( D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1 );
 	m_Polygon->SetVertexFormatSize( sizeof( MD2_VERTEX ) );
 

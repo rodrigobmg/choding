@@ -37,6 +37,7 @@
 // #include "GdsProperty_test.hpp"
 // #include "GdsSingleton_test.hpp"
 #include "GdsFile_test.hpp"
+#include "GdsVectorContainer_test.hpp"
 
 int main(int argc, char **argv)
 {

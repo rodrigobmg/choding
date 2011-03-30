@@ -219,6 +219,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\testUnit\GdsVectorContainer_test.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\testUnit\Snowboard_test.hpp"
 				>
 			</File>

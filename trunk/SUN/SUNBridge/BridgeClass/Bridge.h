@@ -41,7 +41,7 @@ namespace SUNBridgeDLL{
 	};
 
 	// c++ -> C#을 위한 랩핑 클래스
-	public class CBridgeMessenger : public CMessengerToCSharp
+	public class CBridgeMessenger// : public CMessengerToCSharp
 	{
 	public:
 		CBridgeMessenger();
