@@ -92,11 +92,11 @@ public:
 
 	virtual void SetUp()
 	{
-		for ( size_t cnt = 0 ; cnt < 10000 ; ++cnt)
+		for ( size_t cnt = 0 ; cnt < 100000 ; ++cnt)
 		{
 			map.insert( pair<int, int>( cnt , cnt ) );
 		}
-		for ( size_t cnt = 0 ; cnt < 10000 ; ++cnt)
+		for ( size_t cnt = 0 ; cnt < 100000 ; ++cnt)
 		{
 			table.add( cnt , cnt );
 		}
@@ -120,22 +120,22 @@ TEST_F( GdsVectorContainerTest , sort )
 {
 }
 
-TEST_F( GdsVectorContainerTest ,  map )
-{
-	for (size_t cnt = 0 ; cnt < 10000; ++cnt )
-	{
-		int key = rand()%10000;
-		map.find( key );
-	}
-}
 
 TEST_F( GdsVectorContainerTest , vector )
 {
-	for (size_t cnt = 0 ; cnt < 10000; ++cnt )
+	for (size_t cnt = 0 ; cnt < 100000; ++cnt )
 	{
-		int key = rand()%10000;
+		int key = rand()%100000;
 		table.find( key );
 	}
 }
 
+TEST_F( GdsVectorContainerTest ,  map )
+{
+	for (size_t cnt = 0 ; cnt < 100000; ++cnt )
+	{
+		int key = rand()%100000;
+		map.find( key );
+	}
+}
 #endif	

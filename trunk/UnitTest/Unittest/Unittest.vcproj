@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../..\chodingModule\gtest-1.6.0\include"
+				AdditionalIncludeDirectories="testUnit;../..\chodingModule\gtest-1.6.0\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
