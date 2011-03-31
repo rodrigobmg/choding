@@ -52,6 +52,8 @@ public:
  	{
  		return shared_from_this();
  	}
+
+	GdsNodePtr				GetObjectbyName( tstring strname );
  	
 	void					SetScale( float fvalue ){ m_matLocal.m_fScale = fvalue; }
 	float					GetScale(){ return m_matLocal.m_fScale; }
