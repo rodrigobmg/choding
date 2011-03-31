@@ -7,29 +7,21 @@
 
 class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
 {
+
 public:
-	
 	enum CULL_TYPE{
 		CULL_ON = 0,
 		CULL_OFF,
 		CULL_OFF_ALL_CHILD,
 	};
 
-protected:		
+private:
 
 	typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
 	GdsNodePtr								m_pParentNode;
 
 	typedef	 std::list< GdsNodePtr >		CHILDNODE_CONTAINER;
-	CHILDNODE_CONTAINER						m_ChildNode;
-
-	virtual	void							vInitGeometry( float fElapsedtime );
-	virtual void							vRender( float fElapsedtime );
-	virtual void							vClear();
-
-	
-	GdsTransform							m_matWorld;
-	GdsTransform							m_matLocal;
+	CHILDNODE_CONTAINER						m_ChildNode;	
 
 	LPDIRECT3DDEVICE9						m_Device;
 
@@ -41,10 +33,19 @@ protected:
 
 	D3DXMATRIXA16							m_DXmatWorld;
 
+protected:			
+
+	GdsTransform							m_matWorld;
+	GdsTransform							m_matLocal;
+
+	virtual	void							vInitGeometry( float fElapsedtime );
+	virtual void							vRender( float fElapsedtime );
+	virtual void							vClear();
+
 public:
+
 	GdsNode();
 	virtual ~GdsNode();
-
  	
  	boost::shared_ptr< GdsNode > shared_ptr_this()
  	{
