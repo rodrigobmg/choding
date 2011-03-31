@@ -24,7 +24,7 @@ void GdsCameraNode::vRender( float fElapsedtime )
 void GdsCameraNode::vInitGeometry( float fElapsedtime )
 {
 	//카메라 뷰 변환 행렬
-	GdsVector3 n = vLookatPt - m_matWorld.m_Translate;
+	GdsVector3 n = vLookatPt - GetWorldTanslate();
 	n.Normalize();
 	GdsVector3 v = vUpVec.Cross( n );
 	v.Normalize();
@@ -33,14 +33,14 @@ void GdsCameraNode::vInitGeometry( float fElapsedtime )
 	matView._11 = v[0];	matView._12 = u[0];	matView._13 = n[0];	matView._14 = 0;
 	matView._21 = v[1];	matView._22 = u[1];	matView._23 = n[1];	matView._24 = 0;
 	matView._31 = v[2];	matView._32 = u[2];	matView._33 = n[2];	matView._34 = 0;
- 	matView._41 = -( m_matWorld.m_Translate.Dot( v ) );
- 	matView._42 = -( m_matWorld.m_Translate.Dot( u ) );
- 	matView._43 = -( m_matWorld.m_Translate.Dot( n ) );
+ 	matView._41 = -( GetWorldTanslate().Dot( v ) );
+ 	matView._42 = -( GetWorldTanslate().Dot( u ) );
+ 	matView._43 = -( GetWorldTanslate().Dot( n ) );
 	matView._44 = 1;
 
-	m_matLocal.m_Rotate.SetRow( 0 , matView._11 , matView._12 , matView._13 );
-	m_matLocal.m_Rotate.SetRow( 1 , matView._21 , matView._22 , matView._23 );
-	m_matLocal.m_Rotate.SetRow( 2 , matView._31 , matView._32 , matView._33 );
+	GetRotate().SetRow( 0 , matView._11 , matView._12 , matView._13 );
+	GetRotate().SetRow( 1 , matView._21 , matView._22 , matView._23 );
+	GetRotate().SetRow( 2 , matView._31 , matView._32 , matView._33 );
 
 	
 	/*
@@ -79,7 +79,7 @@ void GdsCameraNode::SetLootAtLH( GdsVector3& eye , GdsVector3& lookat , GdsVecto
 	vEyePt = eye;
 	vLookatPt = lookat;
 	vUpVec	= up;
-	m_matLocal.m_Translate.x = eye.x;
-	m_matLocal.m_Translate.y = eye.y;
-	m_matLocal.m_Translate.z = eye.z;
+	GetTranslate().x = eye.x;
+	GetTranslate().y = eye.y;
+	GetTranslate().z = eye.z;
 }

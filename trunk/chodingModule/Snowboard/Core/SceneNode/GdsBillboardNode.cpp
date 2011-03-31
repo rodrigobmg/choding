@@ -25,7 +25,7 @@ void GdsBillboardNode::vInitGeometry( float fElapsedtime )
 	billboard.SetEntry( 2 , 2 , camMat.m_pEntry[2][2] );
 	billboard = billboard.Inverse();
 
-	m_matWorld.m_Rotate = billboard;
+	GetWorldRotate() = billboard;
 	
 }
 

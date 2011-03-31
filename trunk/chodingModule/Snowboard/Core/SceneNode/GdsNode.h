@@ -33,10 +33,11 @@ private:
 
 	D3DXMATRIXA16							m_DXmatWorld;
 
-protected:			
-
 	GdsTransform							m_matWorld;
 	GdsTransform							m_matLocal;
+
+protected:			
+
 
 	virtual	void							vInitGeometry( float fElapsedtime );
 	virtual void							vRender( float fElapsedtime );
