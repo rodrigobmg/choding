@@ -14,7 +14,8 @@ class GdsResMgr : public GdsObject{
 private:
 
  	typedef stdext::hash_map< tstring , GdsResBasePtr >	HASHMAPRes;
-	typedef std::vector<tstring>	FILE_LIST;
+	//typedef std::vector<tstring>	FILE_LIST;
+	typedef GdsLookupTable< tstring , tstring > FILE_LIST;
 
 	FILE_LIST			m_ResFileList;
 	HASHMAPRes			m_LoadedResList;

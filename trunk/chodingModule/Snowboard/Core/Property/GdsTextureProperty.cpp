@@ -45,6 +45,8 @@ void GdsTextureProperty::SetTexture( LPDIRECT3DTEXTURE9 texture , const int num 
 	{
 		m_Tex[num] = texture; 
 	}
+
+	m_iCountOfTexture = m_Tex.size();
 }
 
 LPDIRECT3DTEXTURE9* GdsTextureProperty::GetTexture( const int num /*= 0 */ )

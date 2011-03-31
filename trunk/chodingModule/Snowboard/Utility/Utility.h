@@ -126,6 +126,88 @@ namespace util
 	DeleteCriticalSection( &cs );
 */
 
+	//룩업 테이블
+	template< class KEY , class T >
+	class GdsLookupTable
+	{
+		typedef pair< KEY , T > VALUE;
+		typedef vector< VALUE > CONTAINER;
+		CONTAINER		m_vecData;
+
+		bool			m_isSorted;
+
+		void clear()
+		{
+			m_isSorted = false;
+			m_vecData.clear();
+		}
+
+		bool isUnique()
+		{
+			return ( m_vecData.end() == adjacent_find(m_vecData.begin(), m_vecData.end()));
+		}
+
+	public:
+
+		class DataCompare
+		{
+		public:
+			bool operator()( const VALUE& lhs , const VALUE& rhs ) const
+			{
+				return lhs.first < rhs.first;
+			}
+			bool operator()( const VALUE& lhs , const KEY& rhs ) const 
+			{
+				return lhs.first < rhs;
+			}
+			bool operator()( const KEY& lhs , const VALUE& rhs ) const
+			{
+				return lhs < rhs.first;
+			}
+		};
+
+
+		GdsLookupTable(){ clear(); }
+		~GdsLookupTable(){ clear(); }
+
+		void add( KEY key , T val )
+		{
+			VALUE data;
+			data.first = key;
+			data.second = val;
+			m_vecData.push_back( data );				
+		}	
+
+		bool empty()
+		{
+			return m_vecData.empty();
+		}
+
+		T* find( KEY key )
+		{
+			ASSERT( m_isSorted );	
+			CONTAINER::iterator i = lower_bound( m_vecData.begin() , m_vecData.end() , key , DataCompare() );
+			if ( i != m_vecData.end() )
+			{
+				//return &m_vecData[ distance( m_vecData.begin() , i ) ].second;
+				return &(i->second);
+			}
+			else
+			{
+				return NULL;
+			}		
+		}
+
+		void sort()
+		{	
+			CONTAINER( m_vecData ).swap( m_vecData );
+			std::sort( m_vecData.begin() , m_vecData.end() , DataCompare() );
+			ASSERT( isUnique() && "키값 중복" );
+
+			m_isSorted = true;
+		}
+	};
+
 }// end of namespace util
 
 namespace functor

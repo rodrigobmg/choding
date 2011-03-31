@@ -83,13 +83,17 @@ GdsResBasePtr GdsResMgr::load_res( const TCHAR* filename )
 	tstring strFilepath = m_strResBasePath + L"\\" + filename;
 	for_each( strFilepath.begin() , strFilepath.end() , functor::ToLower() );
 
-	FILE_LIST::iterator it = std::find( m_ResFileList.begin() , m_ResFileList.end() , strFilepath );
+	//FILE_LIST::iterator it = std::find( m_ResFileList.begin() , m_ResFileList.end() , strFilepath );
+	tstring* strpath = m_ResFileList.find( strFilepath );
+	bool bexist = true;
+	if ( strpath == NULL )
+		bexist = false;
 
-	bool bSuccess  = true;
-	if ( it == m_ResFileList.end() )
-		bSuccess = false;
+// 	bool bSuccess  = true;
+// 	if ( it == m_ResFileList.end() )
+// 		bSuccess = false;
 
-	if ( bSuccess )
+	if ( bexist )
 	{
 		size_t poscomma = strFilepath.rfind( L"." );
 		tstring ext		= strFilepath.substr( poscomma + 1 , strFilepath.length() );
@@ -151,7 +155,8 @@ bool	GdsResMgr::load_res_dir( const TCHAR* dirpath , FILE_LIST& filelist , std::
 				tstring ext		= wstr.substr( poscomma + 1 , wstr.length() );
 
 				if ( std::binary_search( tokenlist.begin() , tokenlist.end() , ext ) )
-					filelist.push_back( wstr );
+					//filelist.push_back( wstr );
+					filelist.add( wstr , wstr );
 			}	
 		}
 		
@@ -210,6 +215,7 @@ HRESULT GdsResMgr::CreateList( LOADLIST_WORK_TOKEN work_token )
 		ASSERT( 0 );
 		return false;
 	}
+	m_ResFileList.sort();
 
 	return true;
 }
