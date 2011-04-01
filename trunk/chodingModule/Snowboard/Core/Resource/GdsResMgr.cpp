@@ -206,6 +206,7 @@ HRESULT GdsResMgr::CreateList( LOADLIST_WORK_TOKEN work_token )
 		return false;
 	}
 
+
 	SAMPLE_PERFORMANCE sample;
 	BEGIN_PERFORMANCE( L"CreateList" );
 
