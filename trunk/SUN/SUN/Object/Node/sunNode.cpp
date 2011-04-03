@@ -96,19 +96,29 @@ inline const D3DXQUATERNION& sunNode::GetWorldRotate() const
 	return m_qWorldRot;
 }
 
-inline const D3DXMATRIX& sunNode::GetLocalMatrix() const
+const D3DXMATRIX& sunNode::GetLocalMatrix() const
 {
 	return m_matLocal;
 }
 
-inline const D3DXMATRIX& sunNode::GetWorldMatrix() const
+const D3DXMATRIX& sunNode::GetWorldMatrix() const
 {
 	return m_matWorld;
 }
 
-inline void sunNode::SetLocalMatrix( const D3DXMATRIX& matLocal )
+void sunNode::SetLocalMatrix( const D3DXMATRIX& matLocal )
 {
 	m_matLocal = matLocal;
+}
+
+void sunNode::SetLocalMatrix( const _stMat16& kMat4X4 )
+{
+	memcpy( &m_matLocal, &kMat4X4, sizeof(m_matLocal) );
+}
+
+void sunNode::SetWorldMatrix( const _stMat16& kMat4X4 )
+{
+	memcpy( &m_matWorld, &kMat4X4, sizeof(m_matWorld) );
 }
 
 inline void sunNode::SetLocalFromWorldTransform( const D3DXMATRIX& matWorld )
@@ -151,11 +161,11 @@ void sunNode::UpdateWorldData()
 	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
 	D3DXMatrixRotationQuaternion(&matRot, &m_qRot);
 
-	m_matLocal = matTrans * matRot * matScale;
+	//m_matLocal = matTrans * matRot * matScale;
 
 	if(m_pParent)
 	{
-		m_matWorld = m_pParent->GetWorldMatrix() * m_matLocal;
+		m_matWorld = m_matLocal * m_pParent->GetWorldMatrix();
 	}
 	else
 	{

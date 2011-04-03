@@ -21,22 +21,22 @@ public:
 
 
 public:
-	inline void				SetState( eLodingState eState);
-	inline eLodingState		GetState();
+	void				SetState( eLodingState eState);
+	eLodingState		GetState();
 
 
-	inline void				SetName( const tstring& strFileName );
-	inline const tstring&   GetName();
+	void				SetName( const tstring& strFileName );
+	const tstring&   GetName();
 
-	inline void				SetFileName( const tstring& strFileName );
-	inline const tstring&   GetFileName();
+	void				SetFileName( const tstring& strFileName );
+	const tstring&   GetFileName();
 
-	inline void				SetFullFileName( const tstring& strFileName );
-	inline const tstring&   GetFullFileName();
+	void				SetFullFileName( const tstring& strFileName );
+	const tstring&   GetFullFileName();
 
 
 public:
-	virtual	bool Load() = 0;
+	virtual	bool Load(const tstring& strFileName) = 0;
 
 protected:
 

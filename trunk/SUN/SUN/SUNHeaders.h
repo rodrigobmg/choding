@@ -38,7 +38,7 @@ const D3DXVECTOR3	VECT3_ZERO( 0.0f, 0.0f, 0.0f);
 #include "Resource/sunResourceFactory.h"
 #include "Resource/sunResource.h"
 #include "Resource/sunMesh.h"
-
+#include "Resource/sunParserXML.h"
 
 
 #include "CoreManger/Renderer/sunRenderer.h"
@@ -51,6 +51,8 @@ const D3DXVECTOR3	VECT3_ZERO( 0.0f, 0.0f, 0.0f);
 
 #include "../SUNBridge/Messenger.h"
 
+
+#include "SUNConvert.h"
 
 extern sunCoreManager* g_pCoreManager;
 

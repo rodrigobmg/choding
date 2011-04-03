@@ -44,7 +44,7 @@ sunResourcePtr sunResourceFactory::CreateResource(const tstring& strFileName, eR
 	spResource->SetResourceGroup(eGroup);
 	m_ResourceGroup_Map[eGroup].insert(make_pair(strFileName, spResource));
 
-	if(spResource->Load())
+	if(spResource->Load(NULL))
 		return spResource;
 
 	return NULL;

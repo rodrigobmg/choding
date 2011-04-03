@@ -5,7 +5,7 @@ ImplementRootRTTI( sunCamera );
 
 sunCamera::sunCamera()
 {
-	m_vPos		= D3DXVECTOR3( 5.0f, 1.0f, -5.0f );
+	m_vPos		= D3DXVECTOR3( 5.0f, 10.0f, -300.0f );
 	m_vLookat	= D3DXVECTOR3( 0.0f, 0.0f, -0.0f );
 	m_vUp		= D3DXVECTOR3( 0.0f, 1.0f,  0.0f );
 

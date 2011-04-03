@@ -104,10 +104,15 @@ void sunRendererDX9::RenderObject( const vector<sunRenderNodePtr>& RenderList )
 	{
 		spObject->GetRenderOperation( RenderOp );
 
-		assert( RenderOp.m_pVertexData->m_iVertexCount > 0 );
+		
+		if(NULL == RenderOp.m_pVertexData)
+		{
+			continue;
+		}
+		
 		if(RenderOp.m_pVertexData->m_iVertexCount < 0 )
 		{
-			return;
+			continue;
 		}
 
 		m_pD3DDevice->SetVertexDeclaration( RenderOp.m_pVertexData->m_pVertexDeclaration );
@@ -115,12 +120,17 @@ void sunRendererDX9::RenderObject( const vector<sunRenderNodePtr>& RenderList )
 
 		D3DXMATRIX matWorld;
 		D3DXMatrixIdentity(&matWorld);
+
 		m_pD3DDevice->SetTransform( D3DTS_WORLD, &spObject->GetWorldMatrix() );
 		assert( RenderOp.m_dwPrimCount > 0);
 			
 		HRESULT hr;
 		if( RenderOp.m_bUseIndexes )	
 		{
+
+		//	if( NULL == RenderOp.m_pIndexData )
+		//		continue;
+
 			if( FAILED( hr = m_pD3DDevice->SetIndices( RenderOp.m_pIndexData->m_pIB ) ) )
 			{
 				assert(0 && "SetIndices is Failed" );

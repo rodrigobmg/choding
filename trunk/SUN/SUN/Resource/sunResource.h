@@ -12,13 +12,13 @@ public:
 	typedef sunResourceFactory::eResourceGroup eResourceGroup;
 
 public:
-	virtual bool Load();
+	virtual bool Load(const tstring& strFileName);
 	virtual void SetResourceGroup(eResourceGroup eGroup); 
 	virtual eResourceGroup GetResourceGroup();
  
 
 public:
-	inline void SetResourceFactory( sunResourceFactory* pResourceFactory);
+	void SetResourceFactory( sunResourceFactory* pResourceFactory);
 
 protected:
 	eResourceGroup			m_eGroup;

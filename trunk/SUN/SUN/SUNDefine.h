@@ -34,10 +34,18 @@
 #include <dinput.h>
 
 
+#include "tinyxml.h"
+
 //기본 라이브로리
 #pragma comment(lib, "D3D9.lib")
 #pragma comment(lib, "D3DX9.lib")
 #pragma comment(lib, "DINPUT8.lib")
+
+#ifdef _DEBUG
+	#pragma comment(lib, "TinyXMLStaticMDd.lib")
+#else
+	#pragma comment(lib, "TinyXMLStaticMD.lib")
+#endif
 
 #include <boost/foreach.hpp>
 #include <boost/pool/pool.hpp>

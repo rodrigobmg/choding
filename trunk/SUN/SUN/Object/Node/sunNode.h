@@ -6,6 +6,66 @@ typedef list<sunNodePtr>			NodeList;
 typedef list<sunNodePtr>::iterator  NodeListIT;
 
 
+
+typedef struct _stVector3i
+{
+	int x;
+	int y;
+	int z;
+
+	_stVector3i():
+	x(0),
+	y(0),
+	z(0)
+	{
+
+	}
+} stVector3i;
+
+
+typedef struct _stVector3f
+{
+	float x;
+	float y;
+	float z;
+	
+	_stVector3f():
+	x(0.0f),
+	y(0.0f),
+	z(0.0f)
+	{
+
+	}
+
+} stVector3f;
+
+typedef struct _stVector4f
+{
+	float x;
+	float y;
+	float z;
+	float w;
+
+	_stVector4f():
+	x(0.0f),
+	y(0.0f),
+	z(0.0f),
+	w(0.0f)
+	{
+
+	}
+
+} stVector4f;
+
+
+typedef struct _stMat16
+{
+	stVector4f kRow[4];
+} stMat16;
+
+
+
+
 class DLL_API sunNode : public sunObject
 {
 
@@ -39,10 +99,15 @@ public:
 	inline const D3DXVECTOR3& GetWorldTranslate() const;
 	inline const D3DXQUATERNION& GetWorldRotate() const;
 
-	inline const D3DXMATRIX& GetLocalMatrix() const;
-	inline const D3DXMATRIX& GetWorldMatrix() const;
-	inline void SetLocalMatrix( const D3DXMATRIX& matLocal );
+	const D3DXMATRIX& GetLocalMatrix() const;
+	const D3DXMATRIX& GetWorldMatrix() const;
+
+	void SetLocalMatrix( const D3DXMATRIX& matLocal );
 	inline void SetLocalFromWorldTransform( const D3DXMATRIX& matWorld );
+
+	void		SetLocalMatrix( const stMat16& Mat4X4 );
+
+	void		SetWorldMatrix( const stMat16& Mat4X4 );
 
 public:
 	virtual void BegineUpdate();

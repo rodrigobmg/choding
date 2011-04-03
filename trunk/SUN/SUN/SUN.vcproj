@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SUN"
+				AdditionalIncludeDirectories="../SUN; ../Include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;DLL_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +63,9 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				LinkLibraryDependencies="true"
 				OutputFile="..\Library\$(ProjectName)_d.lib"
+				AdditionalLibraryDirectories="..\Library\"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -106,7 +108,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../SUN"
+				AdditionalIncludeDirectories="../SUN; ../Include"
 				PreprocessorDefinitions="WIN32;_LIB;DLL_EXPORT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -128,6 +130,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\Library\$(ProjectName).lib"
+				AdditionalLibraryDirectories="..\Library\"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -354,6 +357,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Resource\sunParserXML.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Resource\sunParserXML.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Resource\sunResource.cpp"
 				>
 			</File>
@@ -388,6 +399,10 @@
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
+			>
+		</File>
+		<File
+			RelativePath=".\SUNConvert.h"
 			>
 		</File>
 		<File

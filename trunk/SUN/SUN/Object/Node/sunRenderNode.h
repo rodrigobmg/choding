@@ -23,8 +23,8 @@ public:
 	virtual void GetRenderOperation(sunRenderOperation& op);
 
 public:
-	//inline void SetMesh( sunMeshPtr spMesh );
-	//inline void 
+	void SetMesh( sunMeshPtr spMesh );
+	sunMeshPtr GetMesh( void );
 
 
 public:
@@ -43,6 +43,8 @@ public:
 protected:
 	bool		m_bVisible;
 	bool		m_bSelected;
+
+	sunMeshPtr  m_spMesh;
 
 };
 
@@ -80,11 +82,14 @@ class DLL_API sunIndexData
 
 public:
 	sunIndexData() : m_pIB(NULL), m_iIndexStart(0), m_iIndexCount(0){}
-	~sunIndexData(){}
+	~sunIndexData()
+	{
+		Safe_Release( m_pIB );
+	}
 
 	void Destory()
 	{
-		Safe_Release( m_pIB );
+		
 	}
 
 public:
@@ -100,6 +105,7 @@ class DLL_API sunRenderOperation
 {
 public:
 	sunRenderOperation();
+	~sunRenderOperation();
 
 public:
 	/* Index를 사용할 경우 PrimCount는 인덱스 갯수를 지정한다.

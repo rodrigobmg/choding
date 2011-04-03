@@ -14,13 +14,15 @@ sunResource::sunResource()
 sunResource::~sunResource()
 {
 	
-	assert(m_pResourceFactory);
+//	assert(m_pResourceFactory);
 	
-	m_pResourceFactory->RemoveResource(m_strFileName, m_eGroup);
+//	m_pResourceFactory->RemoveResource(m_strFileName, m_eGroup);
 }
 
-bool sunResource::Load()
+bool sunResource::Load(const tstring& strFileName)
 {
+	sunStream::SetFileName(strFileName);
+
 	return true;
 }
 

@@ -33,15 +33,22 @@ int TestScene::InitializeScene()
 
 	m_pGrid = new Grid3D;
 	assert(m_pGrid);
+	m_pGrid->SetName(L"Grid");
 	m_pGrid->CreateNewGrid();
 	AppendScene( m_pGrid );
 
-	m_pTriangle = new Triangle;
-	assert(m_pTriangle);
-	m_pTriangle->CreateTriangle();
-	AppendScene( m_pTriangle);
+	//m_pTriangle = new Triangle;
+	//assert(m_pTriangle);
+	//m_pTriangle->CreateTriangle();
+	//AppendScene( m_pTriangle);
 
+	sunParserXMLPtr spParserXML = new sunParserXML;
+		
+	spParserXML->Load(L"boxbody.xml");
 
+	AppendScene( SmartPointerCast(sunNode, spParserXML->GetLoadedEntity()) );
+
+	//spParserXML = NULL;
 	return true;
 
 }
@@ -50,13 +57,15 @@ int TestScene::InitializeScene()
 void TestScene::DestroyScene()
 {
 
-	m_spCamera = NULL;
+	//m_spCamera = NULL;
+	
+	
 	assert(m_pGrid);
 	m_pGrid->Destory();
 	m_pGrid = NULL;
 
-	m_pTriangle->Destory();
-	m_pTriangle = NULL;
+	//m_pTriangle->Destory();
+	//m_pTriangle = NULL;
 
 }
 

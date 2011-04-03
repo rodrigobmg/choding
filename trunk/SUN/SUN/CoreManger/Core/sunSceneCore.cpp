@@ -120,7 +120,7 @@ void sunSceneCore::RegistRenderList()
 		return;
 
 	sunNodePtr spRoot = m_pCurrentScene->GetRootNode();
-	if(NULL == spRoot)
+	 if(NULL == spRoot)
 		return;
 
 	// 그래픽 코어에 렌더리스트 등록을 요청
