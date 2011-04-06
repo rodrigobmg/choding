@@ -3,8 +3,8 @@
 #include "Type/GdsResTexture.h"
 #include <algorithm>
 #include <omp.h>
-#include "Log/logger.h"
-#include "PerformanceCheck/Performance.h"
+#include "../../System/Logger/logger.h"
+#include "../../System/PerformanceCheck/Performance.h"
 #include "Type/GdsResMD2.h"
 #include "Type/GdsResASE.h"
 

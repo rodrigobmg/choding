@@ -1,6 +1,6 @@
 #include "GdsResASE.h"
 #include "../../../System/FileSystem/GdsFile.h"
-#include "Log/logger.h"
+#include "../../../System/Logger/logger.h"
 
 GdsResASE::GdsResASE()
 {

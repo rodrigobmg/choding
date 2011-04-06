@@ -3,8 +3,8 @@
 #include "../Core/GdsCoreFactory.h"
 #include "../Core/Renderer/GdsRendererDX9.h"
 
-#include "../Utility/Log/logger.h"
-#include "../Utility/PerformanceCheck/Performance.h"
+#include "../System/Logger/logger.h"
+#include "../System/PerformanceCheck/Performance.h"
 
 #include "SceneNode/GdsNode.h"
 #include "SceneNode/GdsBillboardNode.h"

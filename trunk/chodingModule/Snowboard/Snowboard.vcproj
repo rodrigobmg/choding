@@ -384,66 +384,6 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="Utility"
-			>
-			<File
-				RelativePath=".\Utility\Utility.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Utility\Utility.h"
-				>
-			</File>
-			<Filter
-				Name="Log"
-				>
-				<File
-					RelativePath=".\Utility\Log\console_logger.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Utility\Log\console_logger.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Utility\Log\html_logger.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Utility\Log\html_logger.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Utility\Log\logger.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Utility\Log\logger.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Utility\Log\output_logger.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Utility\Log\output_logger.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Performance"
-				>
-				<File
-					RelativePath=".\Utility\PerformanceCheck\Performance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Utility\PerformanceCheck\Performance.h"
-					>
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
 			Name="System"
 			>
 			<Filter
@@ -591,6 +531,66 @@
 				>
 				<File
 					RelativePath=".\System\FrameMemory\GdsFrameMemory.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Util"
+				>
+				<File
+					RelativePath=".\System\Util\Utility.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\System\Util\Utility.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Logger"
+				>
+				<File
+					RelativePath=".\System\Logger\console_logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\System\Logger\console_logger.h"
+					>
+				</File>
+				<File
+					RelativePath=".\System\Logger\html_logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\System\Logger\html_logger.h"
+					>
+				</File>
+				<File
+					RelativePath=".\System\Logger\logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\System\Logger\logger.h"
+					>
+				</File>
+				<File
+					RelativePath=".\System\Logger\output_logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\System\Logger\output_logger.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="PerformanceCheck"
+				>
+				<File
+					RelativePath=".\System\PerformanceCheck\Performance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\System\PerformanceCheck\Performance.h"
 					>
 				</File>
 			</Filter>

@@ -77,7 +77,7 @@ typedef unsigned __int64	uint64_t;
 
 #include "../System/Singleton/Singleton.h"
 #include "Snowboard_macro.h"
-#include "../Utility/Utility.h"
+#include "../System/Util/Utility.h"
 
 //메모리 릭 탐지
 #define _CRTDBG_MAP_ALLOC

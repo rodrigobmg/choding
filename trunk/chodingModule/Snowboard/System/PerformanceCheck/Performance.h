@@ -2,7 +2,7 @@
 
 #include <map>
 #include <tchar.h>
-#include "../Utility.h"
+#include "../Util/Utility.h"
 
 namespace util 
 {

@@ -3,7 +3,7 @@
 #define _UNITTEST_GDSFILE_H_
 
 #include "..\..\..\chodingModule\Snowboard\System\FrameMemory\GdsFrameMemory.h"
-#include "..\..\..\chodingModule\Snowboard\Utility\Log\logger.h"
+#include "..\..\..\chodingModule\Snowboard\System\Logger\logger.h"
 #include "..\..\..\chodingModule\Snowboard\System\FileSystem\GdsFile.h"
 
 class GdsFrameMemoryTest : public ::testing::Test

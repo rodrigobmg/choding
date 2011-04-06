@@ -1,7 +1,7 @@
 #ifndef _UNITTEST_GDSVECTORCONTAINER_H_
 #define _UNITTEST_GDSVECTORCONTAINER_H_
 
-#include "..\..\..\chodingModule\Snowboard\Utility\Utility.h"
+#include "..\..\..\chodingModule\Snowboard\System\Util\Utility.h"
 #include <hash_map>
 
 class GdsVectorContainerTest : public ::testing::Test
