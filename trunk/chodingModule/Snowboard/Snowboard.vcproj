@@ -354,6 +354,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Core\Property\GdsMeshProperty.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsMeshProperty.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Core\Property\GdsPolygonProperty.cpp"
 					>
 				</File>

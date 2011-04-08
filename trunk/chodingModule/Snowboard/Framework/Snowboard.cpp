@@ -11,6 +11,7 @@
 #include "../System/Time/GdsSystemTime.h"
 #include "../System/FrameMemory/GdsFrameMemory.h"
 #include "Resource/Type/GdsResMD2.h"
+#include "Resource/Type/GdsResASE.h"
 
 CSnowboard::CSnowboard()
 {
@@ -96,6 +97,7 @@ void CSnowboard::TestFunc()
 
 	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2\\나무02\\tree2.md2" ) );
 	GdsResMD2Ptr resmesh1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2\\나무02\\tree2.md2" ) );
+	GdsResASEPtr resASE	= boost::shared_dynamic_cast< GdsResASE >( m_pResMgr->Get( L"ase\\woman.ase" ) );
 
 	m_pRenderer->GetRootNode()->SetDrawAxis( true );
 
