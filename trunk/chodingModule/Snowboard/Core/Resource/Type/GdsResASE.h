@@ -11,11 +11,13 @@ class GdsResASE : public GdsResBase
 	bool				DecodeMATERIAL_LIST( LineContainerA::iterator& line );
 	bool				DecodeGEOMOBJECT( LineContainerA::iterator& line );
 	bool				DecodeMaterial( LineContainerA::iterator& line );
+	bool				DecodeMap( LineContainerA::iterator& line );
 
 	bool				CheckKeyword( const char* keyword , LineContainerA::iterator& line );
 	bool				GetValue( LineContainerA::iterator& line , const char* SEP , float& fvalue );
 	bool				GetValue( LineContainerA::iterator& line , const char* SEP , float& fvalue1, float& fvalue2, float& fvalue3);
 	bool				GetValue( LineContainerA::iterator& line , const char* SEP , int& ivalue );
+	bool				GetValue( LineContainerA::iterator& line , const char* SEP , std::string& const str );
 
 	float				m_fFirstFrame;
 	float				m_fLastFrame;
@@ -37,6 +39,8 @@ class GdsResASE : public GdsResBase
 	float				m_fSpecularR;
 	float				m_fSpecularG;
 	float				m_fSpecularB;
+
+	std::string				m_strTextureName;
 	
 public:
 	GdsResASE();

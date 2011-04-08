@@ -41,6 +41,8 @@ private:
 
 	void clear()
 	{
+		ASSERT( stack.empty() );
+
 		free( buffer );
 		cur_pos = 0;
 		frame_size = 0;

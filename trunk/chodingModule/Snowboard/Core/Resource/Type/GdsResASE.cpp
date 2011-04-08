@@ -141,6 +141,21 @@ bool GdsResASE::GetValue( LineContainerA::iterator& line , const char* SEP , int
 	return true;
 }
 
+bool GdsResASE::GetValue( LineContainerA::iterator& line , const char* SEP , std::string& const str )
+{
+	char* in_str = *line;
+	char* context = NULL;
+
+	strtok_s( in_str , SEP ,&context );
+	std::string token( context );
+	str = token;
+
+	//한줄 점프~
+	++line;
+
+	return true;
+}
+
 bool GdsResASE::DecodeMATERIAL_LIST( LineContainerA::iterator& line )
 {
 	GetValue( line , " " , m_iCountMaterial );
@@ -148,8 +163,7 @@ bool GdsResASE::DecodeMATERIAL_LIST( LineContainerA::iterator& line )
 	int iCheck = 0;
 	
 	do
-	{
-		
+	{		
 		if( CheckKeyword( "*MATERIAL" , line ) )
 		{
 			//한줄 점프~~
@@ -157,16 +171,16 @@ bool GdsResASE::DecodeMATERIAL_LIST( LineContainerA::iterator& line )
 
 			DecodeMaterial( line );
 			++iCheck;
-		}
 
+			continue;
+		}
 		if( CheckKeyword( "}" , line ) )
 		{
 			//한줄 점프~~
 			++line;
-
 			break;
 		}
-
+	
 	}while(1);
 
 
@@ -193,29 +207,82 @@ bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line )
 		if ( CheckKeyword( "*MATERIAL_AMBIENT" , line ) )
 		{
 			GetValue( line , "\t " , m_fAmbientR , m_fAmbientG , m_fAmbientB );
-			continue;
 		}
 
 		if ( CheckKeyword( "*MATERIAL_DIFFUSE" , line ) )
 		{
 			GetValue( line , "\t " , m_fDiffuseR , m_fDiffuseG , m_fDiffuseB );
-			continue;
 		}
 
 		if ( CheckKeyword( "*MATERIAL_SPECULAR" , line ) )
 		{
 			GetValue( line , "\t " , m_fSpecularR , m_fSpecularG , m_fSpecularB );
+		}
+
+		if( CheckKeyword( "*MAP_DIFFUSE" , line ) )
+		{
+			//CurMaterial->bUseTexture = true;
+			DecodeMap( line );
+			continue;
+		}
+
+		if( CheckKeyword( "*MAP_OPACITY" , line ) )
+		{
+// 			CurMaterial->bUseTexture = true;
+// 			CurMaterial->bUseOpacity = true;
+			DecodeMap( line );
+			continue;
+		}
+		if( CheckKeyword( "*MAP_SELFILLUM" , line ) )
+		{
+			DecodeMap( line );
+			continue;
+		}
+
+		if( CheckKeyword( "*MAP_REFLECT" , line ) )
+		{
+			DecodeMap( line );
+			continue;
+		}
+
+		if( CheckKeyword( "*MAP_SPECULAR" , line ) )
+		{
+			DecodeMap( line );
 			continue;
 		}
 
 		if( CheckKeyword( "}" , line ) )
 		{
+			++line;
 			break;
 		}
 
 		++line;
 
 	} while (1);
+
+	return true;
+}
+
+bool GdsResASE::DecodeMap( LineContainerA::iterator& line )
+{
+	do{
+
+		if( CheckKeyword( "*BITMAP" , line ) )
+		{
+			GetValue( line , "\t " , m_strTextureName );
+			continue;
+		}
+
+		if( CheckKeyword( "}" , line ) )
+		{
+			++line;
+			break;
+		}
+
+		++line;
+
+	}while(1);
 
 	return true;
 }
