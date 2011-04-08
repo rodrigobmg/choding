@@ -58,10 +58,8 @@ HRESULT GdsResASE::vLoadResource( LPDIRECT3DDEVICE9 device )
 bool GdsResASE::CheckKeyword( const char* keyword , LineContainerA::iterator& line )
 {
 	char* in_str = *line;
-	size_t len = strlen( in_str );
+	size_t len = strlen( in_str ) + 1;
 	
-	if( len < 2 ) len = 2;
-
 	char* str = static_cast< char* >( FRAMEMEMORY.Alloc( len ) );
 
 	sscanf_s( in_str , "%s" , str , len );
