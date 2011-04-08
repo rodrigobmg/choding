@@ -34,7 +34,7 @@
 #include <dinput.h>
 
 
-#include "tinyxml.h"
+#include "../Include/tinyxml.h"
 
 //기본 라이브로리
 #pragma comment(lib, "D3D9.lib")
@@ -42,9 +42,9 @@
 #pragma comment(lib, "DINPUT8.lib")
 
 #ifdef _DEBUG
-	#pragma comment(lib, "TinyXMLStaticMDd.lib")
+	#pragma comment(lib, "../Library/TinyXMLStaticMDd.lib")
 #else
-	#pragma comment(lib, "TinyXMLStaticMD.lib")
+	#pragma comment(lib, "../Library/TinyXMLStaticMD.lib")
 #endif
 
 #include <boost/foreach.hpp>

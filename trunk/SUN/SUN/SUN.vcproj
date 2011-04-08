@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SUN; ../Include"
+				AdditionalIncludeDirectories="../SUN; ../Include ../Library"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;DLL_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

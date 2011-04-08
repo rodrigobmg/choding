@@ -207,6 +207,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\testUnit\GdsResASE_test.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\testUnit\GdsResMgr_test.hpp"
 				>
 			</File>
