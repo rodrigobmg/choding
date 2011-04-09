@@ -6,6 +6,22 @@
 
 class GdsResASE : public GdsResBase
 {
+	struct getValue
+	{
+		bool operator ()( LineContainerA::iterator& line , const char* SEP , float& fvalue )
+		{
+			char* in_str = *line;
+			char* context = NULL;
+
+			strtok_s( in_str , SEP ,&context );
+			fvalue = atof( context );
+
+			//한줄 점프~
+			++line;
+
+			return true;
+		};
+	};
 
 	bool				DecodeSCENE( LineContainerA::iterator& line );
 	bool				DecodeMATERIAL_LIST( LineContainerA::iterator& line );
@@ -14,10 +30,11 @@ class GdsResASE : public GdsResBase
 	bool				DecodeMap( LineContainerA::iterator& line );
 
 	bool				CheckKeyword( const char* keyword , LineContainerA::iterator& line );
-	bool				GetValue( LineContainerA::iterator& line , const char* SEP , float& fvalue );
-	bool				GetValue( LineContainerA::iterator& line , const char* SEP , float& fvalue1, float& fvalue2, float& fvalue3);
-	bool				GetValue( LineContainerA::iterator& line , const char* SEP , int& ivalue );
-	bool				GetValue( LineContainerA::iterator& line , const char* SEP , std::string& const str );
+	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , getValue functor );
+	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , float& fvalue );
+	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , float& fvalue1, float& fvalue2, float& fvalue3);
+	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , int& ivalue );
+	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , std::string& const str );
 
 	float				m_fFirstFrame;
 	float				m_fLastFrame;
