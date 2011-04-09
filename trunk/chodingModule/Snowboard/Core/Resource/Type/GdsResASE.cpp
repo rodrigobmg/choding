@@ -67,11 +67,10 @@ bool GdsResASE::DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pN
 
 		std::string parent_name;
 		GetValue( "*NODE_PARENT" , line , "\t " , parent_name );
-
 	
 		if ( CheckKeyword( "*NODE_TM" , line ) )
 		{
-			//DecodeTm(fp);
+			DecodeTM( line , pNode );
 		}
 
 		if( CheckKeyword( "*MESH" , line ) )
@@ -96,6 +95,64 @@ bool GdsResASE::DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pN
 	return false;
 }
 
+bool GdsResASE::DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+// 	fgets(m_line, 256, fp); //NODE_NAME
+// 	fgets(m_line, 256, fp); //*INHERIT_POS
+// 	fgets(m_line, 256, fp); //*INHERIT_ROT
+// 	fgets(m_line, 256, fp); //*INHERIT_SCL
+// 	fgets(m_line, 256, fp); //*TM_ROW0
+	D3DXMATRIXA16 dxMat;
+	float fScale;
+
+	do 
+	{
+		GetValue( "*TM_ROW0" , line , "\t " , dxMat._11 , dxMat._13 , dxMat._12 );
+		GetValue( "*TM_ROW1" , line , "\t " , dxMat._31 , dxMat._33 , dxMat._32 );
+		GetValue( "*TM_ROW2" , line , "\t " , dxMat._21 , dxMat._23 , dxMat._22 );
+		GetValue( "*TM_ROW3" , line , "\t " , dxMat._41 , dxMat._43 , dxMat._42 );	
+		GetValue( "*TM_SCALE" , line , "\t " , fScale );
+
+		if ( CheckKeyword( "}" , line ) )
+		{
+			pNode->GetRotate().SetRow( 0 , dxMat._11 , dxMat._12 , dxMat._13 );
+			pNode->GetRotate().SetRow( 1 , dxMat._21 , dxMat._22 , dxMat._23 );
+			pNode->GetRotate().SetRow( 2 , dxMat._31 , dxMat._32 , dxMat._33 );
+			pNode->GetTranslate().x = dxMat._41;
+			pNode->GetTranslate().y = dxMat._42;
+			pNode->GetTranslate().z = dxMat._43;
+			pNode->SetScale( fScale );
+			break;
+		}
+
+		++line;
+	} while (1);
+	
+
+	//GetValue( "*TM_SCALE" , line , "\t " , (float*)( pNode->GetScale() ) );
+
+// 	fgets(m_line, 256, fp); //*TM_ROTAXIS
+// 	sscanf(m_line, "%s%f%f%f",m_string, &fX, &fZ, &fY);
+// 	fgets(m_line, 256, fp); //*TM_ROTANGLE
+// 	sscanf(m_line,"%s%f", m_string, &fW);
+// 	//fW = -fW;
+// 	m_CurMesh->m_TmRot.x = (float)sinf(fW / 2.0f) * fX;
+// 	m_CurMesh->m_TmRot.y = (float)sinf(fW / 2.0f) * fY;
+// 	m_CurMesh->m_TmRot.z = (float)sinf(fW / 2.0f) * fZ;
+// 	m_CurMesh->m_TmRot.w = (float)cosf(fW / 2.0f);
+// 	fgets(m_line, 256, fp);//*TM_SCALE
+// 	sscanf(m_line, "%s%f%f%f",m_string, &(m_CurMesh->m_TmScale.x), &(m_CurMesh->m_TmScale.z), &(m_CurMesh->m_TmScale.y));
+// 	fgets(m_line, 256, fp);//*TM_SCALEAXIS
+// 	sscanf(m_line, "%s%f%f%f",m_string, &fX,&fZ,&fY);
+// 	fgets(m_line, 256, fp);//*TM_SCALEAXISANG
+// 	sscanf(m_line, "%s%f",m_string, &fW);
+// 	m_CurMesh->m_TmScaleRot.x = (float)sin(fW / 2.0f) * fX;
+// 	m_CurMesh->m_TmScaleRot.y = (float)sin(fW / 2.0f) * fY;
+// 	m_CurMesh->m_TmScaleRot.z = (float)sin(fW / 2.0f) * fZ;
+// 	m_CurMesh->m_TmScaleRot.w = (float)cos(fW / 2.0f);
+// 	fgets(m_line, 256, fp);//}
+	return true;
+}
 
 bool GdsResASE::CheckKeyword( const char* keyword , LineContainerA::iterator& line )
 {

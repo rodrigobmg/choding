@@ -25,10 +25,13 @@ class GdsResASE : public GdsResBase
 // 	};
 
 	bool				DecodeSCENE( LineContainerA::iterator& line );
-	bool				DecodeMATERIAL_LIST( LineContainerA::iterator& line );
-	bool				DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeMATERIAL_LIST( LineContainerA::iterator& line );	
 	bool				DecodeMaterial( LineContainerA::iterator& line );
 	bool				DecodeMap( LineContainerA::iterator& line );
+
+	bool				DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode );
+
 
 	bool				CheckKeyword( const char* keyword , LineContainerA::iterator& line );
 //	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , getValue functor );
