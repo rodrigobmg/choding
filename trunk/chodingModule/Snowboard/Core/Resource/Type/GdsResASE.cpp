@@ -31,6 +31,7 @@ HRESULT GdsResASE::vLoadResource( LPDIRECT3DDEVICE9 device )
 	if ( CheckKeyword( "*3DSMAX_ASCIIEXPORT" , it ) == false )
 		return false;
 
+	m_iCountBone = 0;
 	for ( ; it != it_end ; ++it )
 	{ 		
 		if ( CheckKeyword( "*SCENE" , it ) )
@@ -45,13 +46,56 @@ HRESULT GdsResASE::vLoadResource( LPDIRECT3DDEVICE9 device )
 
 		if ( CheckKeyword( "*GEOMOBJECT" , it ) )
 		{
-
+			GdsNodePtr pNode = GdsNodePtr( new GdsNode );
+			DecodeGEOMOBJECT( it , pNode );
+			++m_iCountBone;
 		}
 
 	}	
 
 	return true;
 }
+
+bool GdsResASE::DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	do 
+	{
+		std::string node_name;
+		GetValue( "*NODE_NAME" , line , "\t " , node_name );
+		tstring str = util::string::mb2wc( node_name.c_str() );
+		pNode->SetName( str );
+
+		std::string parent_name;
+		GetValue( "*NODE_PARENT" , line , "\t " , parent_name );
+
+	
+		if ( CheckKeyword( "*NODE_TM" , line ) )
+		{
+			//DecodeTm(fp);
+		}
+
+		if( CheckKeyword( "*MESH" , line ) )
+		{
+			//DecodeMESH(fp);
+		}
+
+		GetValue( "*MATERIAL_REF" , line , "\t " , m_iMeshRef );
+
+		if( CheckKeyword( "*TM_ANIMATION" , line ) )
+		{
+			//	DecodeANIMATION(&m_CurMesh->m_Animation, fp);
+		}
+
+		if ( CheckKeyword( "}" , line ) )
+			return true;
+
+		++line;
+
+	} while (1);
+	
+	return false;
+}
+
 
 bool GdsResASE::CheckKeyword( const char* keyword , LineContainerA::iterator& line )
 {
@@ -62,7 +106,7 @@ bool GdsResASE::CheckKeyword( const char* keyword , LineContainerA::iterator& li
 
 	sscanf_s( in_str , "%s" , str , len );
 	
-	bool bflag = _stricmp( keyword , str );		
+	bool bflag = static_cast<bool>( _stricmp( keyword , str ) );
 	
 	FRAMEMEMORY.Free( len , str );
 
@@ -80,6 +124,7 @@ bool GdsResASE::DecodeSCENE( LineContainerA::iterator& line )
 
 	//*SCENE_FIRSTFRAME
 	GetValue( "*SCENE_FIRSTFRAME" , line , " " , m_fFirstFrame );
+	//getValue( "*SCENE_FIRSTFRAME" , line , " " , m_fFirstFrame ) ;
 
 	//*SCENE_LASTFRAME
 	GetValue( "*SCENE_LASTFRAME" , line , " " , m_fLastFrame );
@@ -106,7 +151,7 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 	
 	if( _stricmp( keyword , token ) == false )
 	{
-		fvalue = atof( context );
+		fvalue = static_cast<float>( atof( context ) );
 		//한줄 점프~
 		++line;
 	}	
@@ -130,13 +175,13 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 	if( _stricmp( keyword , token ) == false )
 	{
 		token = strtok_s( NULL , SEP , &context );
-		fvalue1 = atof( token );
+		fvalue1 = static_cast<float>( atof( token ) );
 
 		token = strtok_s( NULL , SEP , &context );
-		fvalue2 = atof( token );
+		fvalue2 = static_cast<float>( atof( token ) );
 
 		token = strtok_s( NULL , SEP , &context );
-		fvalue3 = atof( token );
+		fvalue3 = static_cast<float>( atof( token ) );
 
 		//한줄 점프~
 		++line;
@@ -158,7 +203,7 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 	token = strtok_s( dest_str , SEP ,&context );
 	if( _stricmp( keyword , token ) == false )
 	{
-		ivalue = atoi( context );
+		ivalue = static_cast<int>( atoi( context ) );
 		//한줄 점프~
 		++line;
 	}
@@ -288,3 +333,4 @@ bool GdsResASE::DecodeMap( LineContainerA::iterator& line )
 
 	return true;
 }
+

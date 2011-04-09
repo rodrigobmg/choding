@@ -18,10 +18,13 @@ public:
 
 	virtual void SetUp()
 	{
+		tstring strmap( L"map" );
+		tstring strhmap( L"hmap" );
+
 		for ( size_t cnt = 0 ; cnt < 100 ; ++cnt)
-		{
-			map.insert( pair<int, tstring >( 100000-cnt , L"map" ) );
-			hmap.insert( make_pair( cnt , L"hmap" ) );
+		{			
+			map.insert( pair<int, tstring >( (int)( 100000-cnt ) , strmap ) );
+			hmap.insert( make_pair( (int)cnt , strhmap ) );
 			table.add( 100000-cnt , L"vector" );
 		}
 		table.sort();
