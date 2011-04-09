@@ -6,9 +6,9 @@
 class GdsFrameMemory : noncopyable
 {
 public:
-	GdsFrameMemory():frame_size(0) , buffer(NULL) , cur_pos(0) {};
+	explicit GdsFrameMemory():frame_size(0) , buffer(NULL) , cur_pos(0) {};
 	~GdsFrameMemory(){ clear(); }
-
+	
 	void Init( size_t framesize_ )
 	{
 		ASSERT( buffer == NULL );
@@ -16,6 +16,8 @@ public:
 		ASSERT( buffer != NULL );
 		frame_size = framesize_;
 	}
+
+	//not thread safe
 	void* Alloc( size_t allocsize )
 	{
 		ASSERT( cur_pos + allocsize < frame_size );
