@@ -62,8 +62,11 @@ bool GdsResASE::DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pN
 	{
 		std::string node_name;
 		GetValue( "*NODE_NAME" , line , "\t " , node_name );
-		tstring str = util::string::mb2wc( node_name.c_str() );
-		pNode->SetName( str );
+		if ( node_name != "" )
+		{
+			tstring str = util::string::mb2wc( node_name.c_str() );
+			pNode->SetName( str );
+		}		
 
 		std::string parent_name;
 		GetValue( "*NODE_PARENT" , line , "\t " , parent_name );
@@ -75,14 +78,14 @@ bool GdsResASE::DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pN
 
 		if( CheckKeyword( "*MESH" , line ) )
 		{
-			//DecodeMESH(fp);
+			DecodeMESH( line , pNode );
 		}
 
 		GetValue( "*MATERIAL_REF" , line , "\t " , m_iMeshRef );
 
 		if( CheckKeyword( "*TM_ANIMATION" , line ) )
 		{
-			//	DecodeANIMATION(&m_CurMesh->m_Animation, fp);
+			DecodeANIMATION( line , pNode );
 		}
 
 		if ( CheckKeyword( "}" , line ) )
@@ -94,6 +97,223 @@ bool GdsResASE::DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pN
 	
 	return false;
 }
+
+
+bool GdsResASE::DecodeANIMATION( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	while(1)
+	{
+		std::string name;
+		GetValue( "*NODE_NAME" , line , "\t " , name );
+		tstring tstrname = util::string::mb2wc( name.c_str() );
+		if ( pNode->GetName() != tstrname )
+			return false;
+	
+		if ( CheckKeyword( "*CONTROL_ROT_TRACK" , line ) 
+			|| CheckKeyword( "*CONTROL_ROT_TCB" , line ) 
+			|| CheckKeyword( "*CONTROL_ROT_BEZIER" , line ) 
+			)
+		{
+			DecodeROT_TRACK( line , pNode );
+		}
+
+		if( CheckKeyword( "*CONTROL_SCALE_TRACK" , line ) 
+			|| CheckKeyword( "*CONTROL_SCALE_TCB" , line )
+			|| CheckKeyword( "*CONTROL_SCALE_BEZIER" , line ) 
+			)
+		{
+			DecodeSCALE_TRACK( line , pNode );
+		}
+
+		if( CheckKeyword( "*CONTROL_POS_TRACK" , line )
+			|| CheckKeyword( "*CONTROL_POS_TCB" , line )
+			|| CheckKeyword( "*CONTROL_POS_BEZIER" , line )
+			)
+		{
+			DecodePOS_TRACK( line , pNode );
+		}
+
+		if ( CheckKeyword( "}" , line ) )
+			return true;
+	}
+
+	return false;
+}
+
+
+bool GdsResASE::DecodeROT_TRACK( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	do 
+	{
+		if ( CheckKeyword( "}" , line ) )
+			return true;
+
+		++line;
+	} while ( 1 );
+
+	return false;
+}
+
+bool GdsResASE::DecodeSCALE_TRACK( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	do 
+	{
+		if ( CheckKeyword( "}" , line ) )
+			return true;
+
+		++line;
+	} while ( 1 );
+
+	return false;
+}
+
+bool GdsResASE::DecodePOS_TRACK( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	do 
+	{
+		if ( CheckKeyword( "}" , line ) )
+			return true;
+
+		++line;
+	} while ( 1 );
+
+	return false;
+}
+
+
+bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	// skip *TIMEVALUE
+	++line;
+
+	int iCountVertex;
+	GetValue( "*MESH_NUMVERTEX" , line , "\t " , iCountVertex );
+	int iCountTriangle;
+	GetValue( "*MESH_NUMFACES" , line , "\t " , iCountTriangle );
+	
+	if ( CheckKeyword( "*MESH_VERTEX_LIST" , line ) )
+	{
+		DecodeMESH_VERTEX_LIST( line , pNode );
+	}
+
+	if ( CheckKeyword( "*MESH_FACE_LIST" , line ) )
+	{
+		DecodeMESH_FACE_LIST( line , pNode );
+	}
+	
+ 	while(1)
+ 	{
+		int iNumOfTVertex;
+		GetValue( "*MESH_NUMTVERTEX" , line , "\t " , iNumOfTVertex );
+		if ( iNumOfTVertex > 0 )
+			DecodeMESH_TVERTLIST( line , pNode );
+ 	
+		int iNumOfTVFaces;
+		GetValue( "*MESH_NUMTVFACES" , line , "\t " , iNumOfTVFaces );
+		if ( iNumOfTVFaces > 0 )		
+ 			DecodeMESH_TFACELIST( line , pNode );
+
+		int iNumOfCVertex;
+		GetValue( "*MESH_NUMCVERTEX" , line , "\t " , iNumOfCVertex );
+		if ( iNumOfCVertex > 0 )		
+			DecodeMESH_CVERTEX( line , pNode );
+
+		if ( CheckKeyword( "*MESH_NORMALS" , line ) )
+			DecodeMESH_NORMALS( line , pNode );
+ 		
+ 		if( CheckKeyword( "}" , line ) ) 
+			break;
+
+		++line; 
+ 	}
+ 
+	if ( CheckKeyword( "}" , line ) )
+ 		return true;
+
+	return false;
+}
+
+bool GdsResASE::DecodeMESH_TVERTLIST( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	do 
+	{
+		if ( CheckKeyword( "}" , line ) )
+			return true;
+
+		++line;
+	} while ( 1 );
+
+	return false;
+}
+
+bool GdsResASE::DecodeMESH_TFACELIST( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	do 
+	{
+		if ( CheckKeyword( "}" , line ) )
+			return true;
+
+		++line;
+	} while ( 1 );
+
+	return false;
+}
+
+bool GdsResASE::DecodeMESH_CVERTEX( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	do 
+	{
+		if ( CheckKeyword( "}" , line ) )
+			return true;
+
+		++line;
+	} while ( 1 );
+
+	return false;
+}
+
+bool GdsResASE::DecodeMESH_NORMALS( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	do 
+	{
+		if ( CheckKeyword( "}" , line ) )
+			return true;
+
+		++line;
+	} while ( 1 );
+
+	return false;
+}
+
+
+bool GdsResASE::DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	do 
+	{
+		if ( CheckKeyword( "}" , line ) )
+			return true;
+
+		++line;
+	} while ( 1 );
+
+	return false;
+}
+
+bool GdsResASE::DecodeMESH_FACE_LIST( LineContainerA::iterator& line , GdsNodePtr pNode )
+{
+	do 
+	{
+
+		if ( CheckKeyword( "}" , line ) )
+			return true;
+
+		++line;
+	} while ( 1 );
+
+	return false;
+}
+
+
 
 bool GdsResASE::DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode )
 {
@@ -390,4 +610,5 @@ bool GdsResASE::DecodeMap( LineContainerA::iterator& line )
 
 	return true;
 }
+
 

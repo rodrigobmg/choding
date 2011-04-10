@@ -31,7 +31,17 @@ class GdsResASE : public GdsResBase
 
 	bool				DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pNode );
 	bool				DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode );
-
+	bool				DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeMESH_FACE_LIST( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeMESH_TVERTLIST( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeMESH_TFACELIST( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeMESH_CVERTEX( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeMESH_NORMALS( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeANIMATION( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodePOS_TRACK( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeSCALE_TRACK( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeROT_TRACK( LineContainerA::iterator& line , GdsNodePtr pNode );
 
 	bool				CheckKeyword( const char* keyword , LineContainerA::iterator& line );
 //	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , getValue functor );
