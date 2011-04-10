@@ -22,11 +22,15 @@ public:
 	inline HWND GetWinHWND();
 	inline sunCoreBase* GetCore( const tstring& strName );
 	
+	float  GetElapsedTime();
+	int	   GetFPS();
+
 public:
 	sunCoreBase* RegisterCore( const tstring& strName, sunCoreBase* pCoreBase);
 	void		 DestroyCore();
-
-
+	void		 InitTimeLine();
+	void		 CalculateElapsedTimeFPS();
+	
 protected:
 	typedef stdext::hash_map<tstring, sunCoreBase*>				Core_HASHMAP;
 	typedef stdext::hash_map<tstring, sunCoreBase*>::iterator 	Core_HASHMAP_ITERATOR;
@@ -40,7 +44,8 @@ protected:
 	float		m_fFPSAccumulTime;			// 프레임 수치 계산을 위한 누적 시간.
 	float		m_fElapsedTime;				// 1프레임 경과 시간
 	bool		m_bUsingQPF;				// QPF 지원 여부 플래그
-	//LONGLONG	m_i
+	LONGLONG	m_llQPFTicksPerSec;		// 초당 PF
+	LONGLONG	m_llLastElapsedTime;	// 마지막 경과 시간
 
 
 };

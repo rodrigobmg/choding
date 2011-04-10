@@ -301,6 +301,14 @@
 			Name="Object"
 			>
 			<File
+				RelativePath=".\Object\sunAnimation.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Object\sunAnimation.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Object\sunCamera.cpp"
 				>
 			</File>
@@ -348,6 +356,14 @@
 		<Filter
 			Name="Resource"
 			>
+			<File
+				RelativePath=".\Resource\sunMaterial.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Resource\sunMaterial.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Resource\sunMesh.cpp"
 				>

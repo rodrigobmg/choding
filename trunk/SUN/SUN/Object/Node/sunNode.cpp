@@ -16,6 +16,7 @@ sunNode::sunNode():
 {
 	m_ChildList.clear();
 	D3DXMatrixIdentity(&m_matLocal);
+	D3DXMatrixIdentity(&m_matAni);
 	D3DXMatrixIdentity(&m_matWorld);
 	D3DXQuaternionIdentity(&m_qWorldRot);
 	D3DXQuaternionIdentity(&m_qRot);
@@ -165,7 +166,7 @@ void sunNode::UpdateWorldData()
 
 	if(m_pParent)
 	{
-		m_matWorld = m_matLocal * m_pParent->GetWorldMatrix();
+		m_matWorld = m_matLocal * m_matAni * m_pParent->GetWorldMatrix();
 	}
 	else
 	{

@@ -36,6 +36,7 @@ bool TestApp::CreateCoreManager()
 
 	g_pCoreManager = new sunCoreManager(m_hWnd);
 	assert(g_pCoreManager);
+	g_pCoreManager->InitTimeLine();
 
 	m_pGraphicCore = (sunGraphicCore*)g_pCoreManager->RegisterCore( CORENAME_GRAPHIC, new sunGraphicCore );
 	m_pSceneCore   = (sunSceneCore*)g_pCoreManager->RegisterCore( CORENAME_SCENE, new sunSceneCore );
@@ -106,6 +107,8 @@ void TestApp::MsgLoop()
 		}
 		else
 		{
+			g_pCoreManager->CalculateElapsedTimeFPS();
+
 			m_pSceneCore->UpdateCore();
 			m_pGraphicCore->UpdateCore();
 		}

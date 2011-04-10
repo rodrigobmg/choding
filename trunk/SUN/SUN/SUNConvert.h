@@ -33,7 +33,7 @@ inline string _strConvW2M(const wstring& _wsrc)
 inline D3DXVECTOR4 _StrToVector4(const char* str)
 {
 	D3DXVECTOR4		vec4;
-	char*			sep = ",";
+	char*			sep = "[],\n";
 	char*			buff = const_cast<char*>(str);
 	char*			context;
 
@@ -50,7 +50,7 @@ inline D3DXVECTOR4 _StrToVector4(const char* str)
 inline D3DXVECTOR3 _StrToVector3(const char* str)
 {
 	D3DXVECTOR3		vec3;
-	char*			sep = ",";
+	char*			sep = "[],\n";
 	char*			buff = const_cast<char*>(str);
 	char*			context;
 
@@ -75,6 +75,21 @@ inline stVector3f _StrToVector3f(const char* str)
 
 	return vec3;
 }
+
+// 문자열 -> stVector2f
+inline stVector2f _StrToVector2f(const char* str)
+{
+	stVector2f		vec2;
+	char*			sep = "[],\n";
+	char*			buff = const_cast<char*>(str);
+	char*			context;
+
+	vec2.x = (float)atof( strtok_s( buff, sep, &context )) ;
+	vec2.y = (float)atof( strtok_s( NULL, sep, &context )) ;
+
+	return vec2;
+}
+
 
 // 문자열 -> stVector3i
 inline stVector3i _StrToVector3i(const char* str)
@@ -185,5 +200,22 @@ inline stVector4f _StrToVector4f(const char *_pStr )
 
 	return vec4f;
 }
+
+inline stVector3f _StrToColor3f( const char *pStr)
+{
+	stVector3f		vec3f;
+	char*			sep  = " [],\n";
+	char*			buff = const_cast<char*>(pStr);
+	char*			context;
+		
+	strtok_s(buff, sep, &context);
+	vec3f.x = static_cast<float>(atof( strtok_s(NULL, sep ,&context) ) / 255.0f );
+	vec3f.y = static_cast<float>(atof( strtok_s(NULL, sep ,&context) ) / 255.0f );
+	vec3f.z = static_cast<float>(atof( strtok_s(NULL, sep ,&context) ) / 255.0f );
+
+	return vec3f;
+}
+
+
 
 #endif

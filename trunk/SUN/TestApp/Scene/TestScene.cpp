@@ -44,11 +44,12 @@ int TestScene::InitializeScene()
 
 	sunParserXMLPtr spParserXML = new sunParserXML;
 		
-	spParserXML->Load(L"boxbody.xml");
+	spParserXML->Load(L"boxbody_ani.xml");
 
 	AppendScene( SmartPointerCast(sunNode, spParserXML->GetLoadedEntity()) );
 
-	//spParserXML = NULL;
+	spParserXML->Destory();
+	spParserXML = NULL;
 	return true;
 
 }

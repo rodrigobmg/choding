@@ -32,13 +32,16 @@ const D3DXVECTOR3	VECT3_ZERO( 0.0f, 0.0f, 0.0f);
 #include "Object/Node/sunRenderNode.h"
 #include "Object/sunFrustum.h"
 #include "Object/sunCamera.h"
-
+#include "Object/sunAnimation.h"
 
 #include "Resource/sunStream.h"
 #include "Resource/sunResourceFactory.h"
 #include "Resource/sunResource.h"
 #include "Resource/sunMesh.h"
 #include "Resource/sunParserXML.h"
+#include "Resource/sunTexture.h"
+#include "Resource/sunMaterial.h"
+
 
 
 #include "CoreManger/Renderer/sunRenderer.h"

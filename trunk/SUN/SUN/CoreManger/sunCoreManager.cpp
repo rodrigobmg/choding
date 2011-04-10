@@ -11,6 +11,8 @@ m_hWnd(hWnd)
 	m_fFPSAccumulTime	= 0.0f;	
 	m_fElapsedTime		= 0.0f;		
 	m_bUsingQPF			= false;	
+	m_llQPFTicksPerSec	= 0;	
+	m_llLastElapsedTime	= 0;
 }
 
 sunCoreManager::~sunCoreManager()
@@ -57,6 +59,58 @@ sunCoreBase* sunCoreManager::RegisterCore( const tstring& strName, sunCoreBase* 
 
 	return pCore;
 }
+
+float sunCoreManager::GetElapsedTime()
+{
+	return m_fElapsedTime;
+}
+
+int sunCoreManager::GetFPS()
+{
+
+	return m_iFPS;
+}
+
+void sunCoreManager::InitTimeLine()
+{
+
+	LARGE_INTEGER qwTicksPerSec, qwTime;
+	m_bUsingQPF = (bool)(QueryPerformanceFrequency( &qwTicksPerSec ) != 0);
+
+	if( !m_bUsingQPF )
+	{
+		return;
+	}
+
+	m_llQPFTicksPerSec = qwTicksPerSec.QuadPart;
+
+	QueryPerformanceCounter( &qwTime );
+	m_llLastElapsedTime = qwTime.QuadPart;
+
+}
+
+void sunCoreManager::CalculateElapsedTimeFPS()
+{
+	if( !m_bUsingQPF )
+		return;
+
+	LARGE_INTEGER qwTime;
+	QueryPerformanceCounter( &qwTime );
+
+	m_fElapsedTime = (float)((double) ( qwTime.QuadPart - m_llLastElapsedTime ) / (double) m_llQPFTicksPerSec);
+	m_llLastElapsedTime = qwTime.QuadPart;
+
+	++m_iFPSCnt;
+	m_fFPSAccumulTime += m_fElapsedTime;
+
+	if( m_fFPSAccumulTime >= 1.0f )
+	{
+		m_iFPS = m_iFPSCnt;
+		m_iFPSCnt = 0;
+		m_fFPSAccumulTime = 0.0f;
+	}
+}
+
 
 //inline sunCoreBase* sunCoreManager::GetCore( const tstring& strName )
 //{

@@ -26,6 +26,11 @@ public:
 	void SetMesh( sunMeshPtr spMesh );
 	sunMeshPtr GetMesh( void );
 
+	void SetMaterial( sunMaterialPtr spMaterial );
+	sunMaterialPtr GetMaterial( void );
+	
+	void SetTrack( sunTrackPtr spTrack );
+	sunTrackPtr GetTrack( void );
 
 public:
 
@@ -41,10 +46,14 @@ public:
 	
 
 protected:
-	bool		m_bVisible;
-	bool		m_bSelected;
+	bool			m_bVisible;
+	bool			m_bSelected;
 
-	sunMeshPtr  m_spMesh;
+	sunMeshPtr		m_spMesh;
+	sunMaterialPtr  m_spMaterial;
+	sunTrackPtr		m_spTrack;
+
+	float			m_fAccumulationTime;
 
 };
 
@@ -127,6 +136,7 @@ public:
 	bool				m_bUseIndexes;
 	sunIndexData*		m_pIndexData;
 	sunVertexData*		m_pVertexData;
+	sunMaterial*        m_pMaterial;
 
 	bool				m_bUseTexture;
 	LPDIRECT3DTEXTURE9	m_pTexData[5];

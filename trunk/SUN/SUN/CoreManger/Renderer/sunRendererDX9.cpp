@@ -115,6 +115,9 @@ void sunRendererDX9::RenderObject( const vector<sunRenderNodePtr>& RenderList )
 			continue;
 		}
 
+		m_pD3DDevice->SetRenderState( D3DRS_LIGHTING, TRUE );			/// ±¤¿ø¼³Á¤À» ÄÒ´Ù
+		m_pD3DDevice->SetRenderState( D3DRS_AMBIENT, 0x00808080 );		/// È¯°æ±¤¿ø(ambient light)ÀÇ °ª ¼³Á¤
+
 		m_pD3DDevice->SetVertexDeclaration( RenderOp.m_pVertexData->m_pVertexDeclaration );
 		m_pD3DDevice->SetStreamSource(0, RenderOp.m_pVertexData->m_pVB, 0, RenderOp.m_pVertexData->m_iVertexSize);
 
@@ -124,6 +127,14 @@ void sunRendererDX9::RenderObject( const vector<sunRenderNodePtr>& RenderList )
 		m_pD3DDevice->SetTransform( D3DTS_WORLD, &spObject->GetWorldMatrix() );
 		assert( RenderOp.m_dwPrimCount > 0);
 			
+		if(NULL != RenderOp.m_pMaterial)
+		{
+			m_pD3DDevice->SetMaterial(&RenderOp.m_pMaterial->GetMaterial());
+			
+			sunTexturePtr spTexture = RenderOp.m_pMaterial->GetTexture(0);
+			if(spTexture)
+				m_pD3DDevice->SetTexture(0, spTexture->GetDX9Texture());
+		}
 		HRESULT hr;
 		if( RenderOp.m_bUseIndexes )	
 		{

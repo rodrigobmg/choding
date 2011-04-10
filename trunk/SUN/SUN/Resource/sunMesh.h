@@ -7,6 +7,7 @@ typedef struct _stVertex
 {
 	D3DXVECTOR3 vPosition;			// Á¤Á¡À§Ä¡
 	D3DXVECTOR3 vNormal;			// ¹ý¼±º¤ÅÍ
+	D3DXVECTOR2 vUV;				// ÅØ½ºÃÄ ÁÂÇ¥.
 	DWORD		dwColor;			// »ö±ò.
 
 //	D3DXVECTOR3 vTangent;			// Á¢¼±º¤ÅÍ
@@ -20,8 +21,8 @@ typedef struct _stVertex
 	{
 		vPosition	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		vNormal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		dwColor		= D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.0f);
-//		vUV			= D3DXVECTOR2(-1.0f, -1.0f);
+		dwColor		= D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		vUV			= D3DXVECTOR2(-1.0f, -1.0f);
 	}
 
 
@@ -63,7 +64,7 @@ public:
 public:
 	int	 CreateVIB();
 
-	void SetVertexInfo(vector<stVector3f>* vecVertex, vector<stVector3f>* vecVertexNormal);
+	void SetVertexInfo(vector<stVector3f>* vecVertex, vector<stVector3f>* vecVertexNormal, vector<stVector2f>* vecTVertex);
 	void SetIndexInfo(vector<stVector3i>* vecIndex);
 
 

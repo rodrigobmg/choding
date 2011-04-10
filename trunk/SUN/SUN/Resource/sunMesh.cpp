@@ -55,11 +55,12 @@ int sunMesh::CreateVIB()
 
 		{0,0,  D3DDECLTYPE_FLOAT3,	 D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
 		{0,12, D3DDECLTYPE_FLOAT3,	 D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,   0},
-		{0,24, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_COLOR,	   0},
+		{0,24, D3DDECLTYPE_FLOAT2,	 D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,   0},
+//		{0,24, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_COLOR,	   0},
 		D3DDECL_END()
 	};
 
-	m_pVertexData->m_iVertexSize = 28;
+	m_pVertexData->m_iVertexSize = 32;
 	if( FAILED( hr = pD3DDevice->CreateVertexDeclaration(pVertexElements, &m_pVertexData->m_pVertexDeclaration)) )
 	{
 		assert(0 && "CreateVIB - Failed CreateVertexDeclaration");
@@ -86,7 +87,8 @@ int sunMesh::CreateVIB()
 	{
 		*((D3DXVECTOR3*)(pVertex)) = m_vecVertex[i].vPosition; pVertex += sizeof(D3DXVECTOR3);
 		*((D3DXVECTOR3*)(pVertex)) = m_vecVertex[i].vNormal	 ; pVertex += sizeof(D3DXVECTOR3);
-		*((DWORD*)(pVertex))	   = m_vecVertex[i].dwColor	 ; pVertex += sizeof(DWORD);
+		*((D3DXVECTOR2*)(pVertex)) = m_vecVertex[i].vUV	 ; pVertex += sizeof(D3DXVECTOR2);
+	//	*((DWORD*)(pVertex))	   = m_vecVertex[i].dwColor	 ; pVertex += sizeof(DWORD);
 	}		
 	
 	m_pVertexData->m_pVB->Unlock();
@@ -137,27 +139,30 @@ sunIndexData* sunMesh::GetindexData()
 	return 	m_pIndexData;
 }
 
-void sunMesh::SetVertexInfo(vector<stVector3f>* vecVertex, vector<stVector3f>* vecVertexNormal)
+void sunMesh::SetVertexInfo(vector<stVector3f>* vecVertex, vector<stVector3f>* vecVertexNormal, vector<stVector2f>* vecTVertex)
 {
 	assert(vecVertex);
 	assert(vecVertexNormal);
 	
 
-	int iVectexSize = static_cast<int>(vecVertex->size());
+	int iVectexSize		  = static_cast<int>(vecVertex->size());
 	int iVectexNormalSize = static_cast<int>(vecVertexNormal->size());
+	int iTVertexSize	  = static_cast<int>(vecTVertex->size());
 
 	if(iVectexSize != iVectexNormalSize)
 		assert(0 && "VertexSize != VectexNormalSize");
+
+
 
 	for(int i=0; i < (int)vecVertex->size(); ++i)
 	{
 		stVertex kVertex;
 		kVertex.vPosition = D3DXVECTOR3((*vecVertex)[i].x , (*vecVertex)[i].y, (*vecVertex)[i].z);
 		kVertex.vNormal   = D3DXVECTOR3((*vecVertexNormal)[i].x, (*vecVertexNormal)[i].y, (*vecVertexNormal)[i].z);
-
+		if(iTVertexSize > 0)
+			kVertex.vUV		  = D3DXVECTOR2((*vecTVertex)[i].x , (*vecTVertex)[i].y);
 		m_vecVertex.push_back(kVertex);
 	}
-
 }
 
 void sunMesh::SetIndexInfo(vector<stVector3i>* vecIndex)

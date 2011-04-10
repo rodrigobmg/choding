@@ -1,4 +1,3 @@
-
 #ifndef _UNITTEST_GDSFILE_H_
 #define _UNITTEST_GDSFILE_H_
 
@@ -57,7 +56,8 @@ public:
 };
 
 TEST_F( GdsFrameMemoryTest ,  GdsFrameMemory )
-{		
+{
+		
 }
 
 #endif	

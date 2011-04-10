@@ -11,7 +11,8 @@ public:
 	~sunTexture();
 
 public:
-	virtual bool Load();
+	virtual bool Load(const tstring& strFileName);
+
 
 
 public:

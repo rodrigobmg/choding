@@ -28,13 +28,16 @@
 #include <iostream>
 #include <HASH_MAP>
 #include <string>
+#include <vector>
 
 #include <D3D9.h>
 #include <D3DX9.h>
 #include <dinput.h>
 
 
-#include "../Include/tinyxml.h"
+
+#include <stdlib.h>
+#include <tinyxml.h>
 
 //기본 라이브로리
 #pragma comment(lib, "D3D9.lib")

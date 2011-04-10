@@ -39,6 +39,20 @@ typedef struct _stVector3f
 
 } stVector3f;
 
+typedef struct _stVector2f
+{
+	float x;
+	float y;
+
+	_stVector2f():
+	x(0.0f),
+	y(0.0f)
+	{
+
+	}
+
+} stVector2f;
+
 typedef struct _stVector4f
 {
 	float x;
@@ -105,8 +119,8 @@ public:
 	void SetLocalMatrix( const D3DXMATRIX& matLocal );
 	inline void SetLocalFromWorldTransform( const D3DXMATRIX& matWorld );
 
-	void		SetLocalMatrix( const stMat16& Mat4X4 );
 
+	void		SetLocalMatrix( const stMat16& Mat4X4 );
 	void		SetWorldMatrix( const stMat16& Mat4X4 );
 
 public:
@@ -128,6 +142,7 @@ protected:
 
 	D3DXMATRIX			m_matWorld;
 	D3DXMATRIX			m_matLocal;
+	D3DXMATRIX			m_matAni;
 
 	D3DXVECTOR3			m_vPos;
 	D3DXQUATERNION		m_qRot;
