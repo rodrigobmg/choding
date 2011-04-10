@@ -32,7 +32,7 @@ bool CSnowboard::InitModule( HWND hWnd )
 {
 	LOGGER.Init(NULL , NULL , NULL , NULL );
 	FRAMEMEMORY.Init( 1024 * 1024 );
-	LOG_WARNING_F( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
+	LOG_WARNING( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
 
 	InitRenderer( hWnd );
 	InitResource( m_pRenderer->GetDevice() );

@@ -47,7 +47,7 @@ void GdsCameraManagerDX9::DetachAll()
 
 GdsCameraNodePtr GdsCameraManagerDX9::GetCamNode( int iCamIndex )
 {
-	size_t size = m_camaraContainer.size();
+	int size = static_cast<int>( m_camaraContainer.size() );
 
 	if ( iCamIndex < 0 || iCamIndex > size )
 		return GdsCameraNodePtr( (GdsCameraNode*)NULL );
