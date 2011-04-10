@@ -32,7 +32,7 @@ public:
 
 TEST_F( GdsResASETest ,  GdsResASE )
 {		
-	FRAMEMEMORY.Init( 1024*1024 );
+//	FRAMEMEMORY.Init( 1024*1024 );
 	GdsResASEPtr res = GdsResASEPtr( new GdsResASE );
 
 	tstring strpath = L"../../Application/Resource/ASE/woman.ASE";

@@ -1,9 +1,9 @@
-#ifndef _GDS_CORE_PROPERTY_MESH_H_
-#define _GDS_CORE_PROPERTY_MESH_H_
+#ifndef _GDS_CORE_PROPERTY_ANIMATION_H_
+#define _GDS_CORE_PROPERTY_ANIMATION_H_
 
 #include "GdsProperty.h"
 
-class GdsMeshProperty : public GdsProperty
+class GdsAnimationProperty : public GdsProperty
 {
 };
 

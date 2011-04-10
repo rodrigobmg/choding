@@ -346,6 +346,14 @@
 				Name="Property"
 				>
 				<File
+					RelativePath=".\Core\Property\GdsAnimationProperty.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Property\GdsAnimationProperty.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Core\Property\GdsMaterialProperty.cpp"
 					>
 				</File>
