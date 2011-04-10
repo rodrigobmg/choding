@@ -105,9 +105,12 @@ bool GdsResASE::DecodeANIMATION( LineContainerA::iterator& line , GdsNodePtr pNo
 	{
 		std::string name;
 		GetValue( "*NODE_NAME" , line , "\t " , name );
-		tstring tstrname = util::string::mb2wc( name.c_str() );
-		if ( pNode->GetName() != tstrname )
-			return false;
+		if ( name != "" )
+		{
+			tstring tstrname = util::string::mb2wc( name.c_str() );
+			if ( pNode->GetName() != tstrname )
+				return false;
+		}		
 	
 		if ( CheckKeyword( "*CONTROL_ROT_TRACK" , line ) 
 			|| CheckKeyword( "*CONTROL_ROT_TCB" , line ) 
