@@ -99,6 +99,10 @@ void CSnowboard::TestFunc()
 	GdsResMD2Ptr resmesh1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2\\³ª¹«02\\tree2.md2" ) );
 	GdsResASEPtr resASE	= boost::shared_dynamic_cast< GdsResASE >( m_pResMgr->Get( L"ase\\woman.ase" ) );
 
+	GdsNodePtr node = resASE->GetNode();
+	node->SetDrawAxis( true );
+	m_pRenderer->GetRootNode()->AttachChild( node );
+
 	m_pRenderer->GetRootNode()->SetDrawAxis( true );
 
 	if( resmesh )
@@ -111,7 +115,7 @@ void CSnowboard::TestFunc()
 		mesh->SetTranslate( 10 , 2 , 0 );
 		//mesh->SetCullType( GdsNode::CULL_ON );
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
-
+		
 		GdsBillboardNodePtr billboard = GdsBillboardNodePtr( new GdsBillboardNode );
 		billboard->SetDrawAxis( true );
 		billboard->SetTranslate( -20 , 0 , 0 );

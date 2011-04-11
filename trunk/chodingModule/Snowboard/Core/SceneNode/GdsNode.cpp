@@ -27,7 +27,7 @@ void GdsNode::vClear()
 
 }
 
-GdsNodePtr GdsNode::GetObjectbyName( tstring strname )
+GdsNodePtr GdsNode::GetObjectbyName( tstring& strname )
 {
 	if ( !m_ChildNode.empty() )
 	{

@@ -17,6 +17,8 @@ public:
 
 private:
 
+	tstring									m_strParentName;
+
 	typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
 	GdsNodePtr								m_pParentNode;
 
@@ -53,7 +55,10 @@ public:
  		return shared_from_this();
  	}
 
-	GdsNodePtr				GetObjectbyName( tstring strname );
+	void					SetParentName( tstring& strParentName ){ m_strParentName = strParentName; }
+	tstring&				GetParentName(){ return m_strParentName; }
+
+	GdsNodePtr				GetObjectbyName( tstring& strname );
  	
 	void					SetScale( float fvalue ){ m_matLocal.m_fScale = fvalue; }
 	float					GetScale(){ return m_matLocal.m_fScale; }

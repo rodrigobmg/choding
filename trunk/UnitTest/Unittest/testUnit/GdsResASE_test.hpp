@@ -35,8 +35,7 @@ TEST_F( GdsResASETest ,  GdsResASE )
 //	FRAMEMEMORY.Init( 1024*1024 );
 	GdsResASEPtr res = GdsResASEPtr( new GdsResASE );
 
-	tstring strpath = L"../../Application/Resource/ASE/woman.ASE";
-	res->Create( strpath.c_str() , NULL );
+	res->Create( L"../../Application/Resource/ASE/woman.ASE" , NULL );
 }
 
 #endif	

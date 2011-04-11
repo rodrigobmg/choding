@@ -79,6 +79,13 @@ class GdsResASE : public GdsResBase
 	
 	GdsNodePtr			m_RootNode;
 
+	typedef std::vector<GdsNodePtr> NODE_LIST;
+	NODE_LIST			m_vecNodeList;
+
+	bool				attachNode( GdsNodePtr childNode , tstring& parentname );
+	bool				parseNode( NODE_LIST& nodelist );
+	bool				parseMaterial( NODE_LIST& nodelist );
+
 public:
 	GdsResASE();
 	virtual ~GdsResASE();
@@ -86,6 +93,8 @@ public:
 	virtual void		vClear();
 	virtual HRESULT		vRelease();
 	virtual HRESULT		vLoadResource( LPDIRECT3DDEVICE9 device );
+
+	GdsNodePtr			GetNode(){ return m_RootNode; }
 		
 };
 
