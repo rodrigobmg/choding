@@ -8,7 +8,10 @@ m_eTexturingType( DEFAULT )
 	SetType( TEXTURE );
 	Clear();
 	for ( size_t i = 0 ; i < MAX ; i++ )
+	{
 		m_Tex.push_back( NULL );
+		m_TexturePath.push_back( L"" );
+	}
 
 	ZeroMemory( &m_dxMaterial , sizeof(D3DMATERIAL9) );
 	m_dxMaterial.Diffuse.r = m_dxMaterial.Ambient.r = 0.0f;
@@ -97,3 +100,12 @@ LPDIRECT3DTEXTURE9 GdsMaterialProperty::GetTexturePtr( const int num /*= 0 */ )
 	return m_Tex[num];
 }
 
+tstring& GdsMaterialProperty::GetTexturePath( const int index )
+{
+	return m_TexturePath.at(index);
+}
+
+void GdsMaterialProperty::SetTexturePath( tstring& path , const int index /*= 0 */ )
+{
+	m_TexturePath.at(index) = path;
+}

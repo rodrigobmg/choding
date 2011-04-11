@@ -2,7 +2,6 @@
 #define _GDS_CORE_PROPERTY_MATERIAL_H_
 
 #include "GdsProperty.h"
-#include "GdsTextureProperty.h"
 
 class GdsMaterialProperty : public GdsProperty
 {
@@ -20,15 +19,15 @@ public:
 
 private:
 
-	D3DMATERIAL9	m_dxMaterial;
-
-	bool			m_bUseTexture;
-	bool			m_bUseOpacity;
+	D3DMATERIAL9						m_dxMaterial;
 
 	TEXTURE_TYPE						m_eTexturingType;
 	int32_t								m_iCountOfTexture;
 	typedef std::vector< LPDIRECT3DTEXTURE9	>	TEXTURE_CONTAINER;
 	TEXTURE_CONTAINER	m_Tex;
+
+	typedef std::vector< tstring >		TEXTURE_PATH;
+	TEXTURE_PATH						m_TexturePath;
 
 
 public:
@@ -36,7 +35,6 @@ public:
 	GdsMaterialProperty();
 	~GdsMaterialProperty();
 
-	void			SetTexture( GdsTexturePropertyPtr ptex );
 
 	void			SetAmbientColor( float r , float g , float b );
 	void			SetDiffuesColor( float r , float g , float b );
@@ -47,6 +45,9 @@ public:
 	LPDIRECT3DTEXTURE9*		GetTexture( const int num = 0 );
 
 	void			SetTexture( LPDIRECT3DTEXTURE9 texture , const int num = 0 );
+
+	void			SetTexturePath( tstring& path , const int index = 0 );
+	tstring&		GetTexturePath( const int index = 0 );
 
 
 	void			Render( LPDIRECT3DDEVICE9 device );

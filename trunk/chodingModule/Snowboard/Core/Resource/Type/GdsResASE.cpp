@@ -60,9 +60,16 @@ HRESULT GdsResASE::vLoadResource( LPDIRECT3DDEVICE9 device )
 	}
 
 	m_vecNodeList.swap( m_vecNodeList );
-	parseNode( m_vecNodeList );
+	parseNode( m_vecNodeList );	
+	parseMaterial( m_vecNodeList , device );
 	m_vecNodeList.clear();
 
+	return true;
+}
+
+
+bool GdsResASE::parseMaterial( NODE_LIST& nodelist , LPDIRECT3DDEVICE9 device )
+{
 	return true;
 }
 
@@ -478,16 +485,18 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 
 	token = strtok_s( dest_str , SEP ,&context );
 	
+	bool bRet = false;
 	if( _stricmp( keyword , token ) == false )
 	{
 		fvalue = static_cast<float>( atof( context ) );
 		//한줄 점프~
 		++line;
+		bRet = true;
 	}	
 
 	FRAMEMEMORY.Free( len , dest_str );
 	
-	return true;
+	return bRet;
 }
 
 
@@ -500,6 +509,7 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 	char* context = NULL;
 	char* token = NULL;
 
+	bool bRet = false;
 	token = strtok_s( dest_str , SEP , &context );
 	if( _stricmp( keyword , token ) == false )
 	{
@@ -514,11 +524,12 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 
 		//한줄 점프~
 		++line;
+		bRet = true;
 	}
 
 	FRAMEMEMORY.Free( len , dest_str );
 
-	return true;
+	return bRet;
 }
 
 bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , int& ivalue )
@@ -530,16 +541,19 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 	char* context = NULL;
 	char* token = NULL;
 	token = strtok_s( dest_str , SEP ,&context );
+
+	bool bRet = false;
 	if( _stricmp( keyword , token ) == false )
 	{
 		ivalue = static_cast<int>( atoi( context ) );
 		//한줄 점프~
 		++line;
+		bRet = true;
 	}
 
 	FRAMEMEMORY.Free( len , dest_str );
 
-	return true;
+	return bRet;
 }
 
 bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , std::string& const str )
@@ -551,6 +565,7 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 	char* context = NULL;
 	char* token = NULL;
 
+	bool bRet = false;
 	token = strtok_s( dest_str , SEP ,&context );
 	if( _stricmp( keyword , token ) == false )
 	{
@@ -560,32 +575,37 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 		str = token;
 		//한줄 점프~
 		++line;
+		bRet = true;
 	}	
 
 	FRAMEMEMORY.Free( len , dest_str );
 
-	return true;
+	return bRet;
 }
 
 bool GdsResASE::DecodeMATERIAL_LIST( LineContainerA::iterator& line )
 {
-	GetValue( "*MATERIAL_COUNT" , line , " " , m_iCountMaterial );
+	int iCountMaterial;
+	GetValue( "*MATERIAL_COUNT" , line , " " , iCountMaterial );
+	m_vecMaterialList.reserve( iCountMaterial );
 
-	int iCheck = 0;	
 	do
 	{		
-		if( CheckKeyword( "*MATERIAL" , line ) )
+		int iIndex;
+		if ( GetValue( "*MATERIAL" , line , "\t " , iIndex ) )
 		{
-			DecodeMaterial( line );
-			++iCheck;
-			continue;
+			GdsMaterialPropertyPtr material = GdsMaterialPropertyPtr( new GdsMaterialProperty );
+			DecodeMaterial( line , material );
+			m_vecMaterialList.push_back( material );
 		}
-		if( CheckKeyword( "}" , line ) )
+		else if( CheckKeyword( "}" , line ) )
 		{
 			break;
 		}
-
-		++line;
+		else
+		{
+			++line;
+		}	
 	
 	}while ( true );
 
@@ -593,46 +613,57 @@ bool GdsResASE::DecodeMATERIAL_LIST( LineContainerA::iterator& line )
 	return true;
 }
 
-bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line )
+bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPropertyPtr Material )
 {
 	do 
 	{
 		if ( CheckKeyword( "*SUBMATERIAL" , line ) )
 		{
 			GetValue( "*SUBMATERIAL" , line , " " , m_iSubMaterial );
-			DecodeMaterial( line );
+			GdsMaterialPropertyPtr subMaterial = GdsMaterialPropertyPtr( new GdsMaterialProperty );
+			DecodeMaterial( line , subMaterial );
 		}
 
+		float fAmbientR , fAmbientG , fAmbientB;
+		float fDiffuseR , fDiffuseG , fDiffuseB;
+		float fSpecularR , fSpecularG , fSpecularB;
+
 		GetValue( "*NUMSUBMTLS" ,line , "\t " , m_iCountSubMaterial );		
-		GetValue( "*MATERIAL_AMBIENT" ,line , "\t " , m_fAmbientR , m_fAmbientG , m_fAmbientB );
-		GetValue( "*MATERIAL_DIFFUSE" ,line , "\t " , m_fDiffuseR , m_fDiffuseG , m_fDiffuseB );
-		GetValue( "*MATERIAL_SPECULAR" ,line , "\t " , m_fSpecularR , m_fSpecularG , m_fSpecularB );
+
+		if ( GetValue( "*MATERIAL_AMBIENT" ,line , "\t " , fAmbientR , fAmbientG , fAmbientB ) )
+			Material->SetAmbientColor( fAmbientR , fAmbientG , fAmbientB );
+
+		if ( GetValue( "*MATERIAL_DIFFUSE" ,line , "\t " , fDiffuseR , fDiffuseG , fDiffuseB ) )
+			Material->SetDiffuesColor( fDiffuseR , fDiffuseG , fDiffuseB );
+
+		if ( GetValue( "*MATERIAL_SPECULAR" ,line , "\t " , fSpecularR , fSpecularG , fSpecularB ) )
+			Material->SetSpecularColor( fSpecularR , fSpecularG , fSpecularB );		
 
 		if( CheckKeyword( "*MAP_DIFFUSE" , line ) )
 		{
 			//CurMaterial->bUseTexture = true;
-			DecodeMap( line );
+			DecodeMap( line , Material );
 		}
 
 		if( CheckKeyword( "*MAP_OPACITY" , line ) )
 		{
 // 			CurMaterial->bUseTexture = true;
 // 			CurMaterial->bUseOpacity = true;
-			DecodeMap( line );
+			DecodeMap( line , Material );
 		}
 		if( CheckKeyword( "*MAP_SELFILLUM" , line ) )
 		{
-			DecodeMap( line );
+			DecodeMap( line , Material );
 		}
 
 		if( CheckKeyword( "*MAP_REFLECT" , line ) )
 		{
-			DecodeMap( line );
+			DecodeMap( line , Material );
 		}
 
 		if( CheckKeyword( "*MAP_SPECULAR" , line ) )
 		{
-			DecodeMap( line );
+			DecodeMap( line , Material );
 		}
 
 		if( CheckKeyword( "}" , line ) )
@@ -647,11 +678,15 @@ bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line )
 	return true;
 }
 
-bool GdsResASE::DecodeMap( LineContainerA::iterator& line )
+bool GdsResASE::DecodeMap( LineContainerA::iterator& line , GdsMaterialPropertyPtr Material )
 {
 	do{
-
-		GetValue( "*BITMAP" , line , "\t " , m_strTextureName );
+		std::string path;
+		if ( GetValue( "*BITMAP" , line , "\t " , path ) )
+		{
+			tstring strpath = util::string::mb2wc( path.c_str() );
+			Material->SetTexturePath( strpath );
+		}
 
 		if( CheckKeyword( "}" , line ) )
 		{

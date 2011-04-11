@@ -4,6 +4,7 @@
 #include "GdsResBaseType.h"
 #include "..\..\..\System\FileSystem\GdsFile.h"
 #include "../../SceneNode\GdsNode.h"
+#include "../../Property/GdsMaterialProperty.h"
 
 class GdsResASE : public GdsResBase
 {
@@ -26,8 +27,8 @@ class GdsResASE : public GdsResBase
 
 	bool				DecodeSCENE( LineContainerA::iterator& line );
 	bool				DecodeMATERIAL_LIST( LineContainerA::iterator& line );	
-	bool				DecodeMaterial( LineContainerA::iterator& line );
-	bool				DecodeMap( LineContainerA::iterator& line );
+	bool				DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPropertyPtr Material );
+	bool				DecodeMap( LineContainerA::iterator& line, GdsMaterialPropertyPtr Material );
 
 	bool				DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pNode );
 	bool				DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode );
@@ -57,23 +58,8 @@ class GdsResASE : public GdsResBase
 	float				m_fFrameSpeed;
 	float				m_fTickPerFrame;
 
-	int					m_iCountMaterial;
 	int					m_iSubMaterial;
 	int					m_iCountSubMaterial;
-
-	float				m_fAmbientR;
-	float				m_fAmbientG;
-	float				m_fAmbientB;
-
-	float				m_fDiffuseR;
-	float				m_fDiffuseG;
-	float				m_fDiffuseB;
-
-	float				m_fSpecularR;
-	float				m_fSpecularG;
-	float				m_fSpecularB;
-
-	std::string				m_strTextureName;
 
 	int					m_iMeshRef;
 	
@@ -82,9 +68,12 @@ class GdsResASE : public GdsResBase
 	typedef std::vector<GdsNodePtr> NODE_LIST;
 	NODE_LIST			m_vecNodeList;
 
+	typedef std::vector<GdsMaterialPropertyPtr> MATERIAL_LIST;
+	MATERIAL_LIST		m_vecMaterialList;
+
 	bool				attachNode( GdsNodePtr childNode , tstring& parentname );
 	bool				parseNode( NODE_LIST& nodelist );
-	bool				parseMaterial( NODE_LIST& nodelist );
+	bool				parseMaterial( NODE_LIST& nodelist , LPDIRECT3DDEVICE9 device );
 
 public:
 	GdsResASE();
