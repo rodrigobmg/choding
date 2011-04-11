@@ -4,6 +4,7 @@
 #include "../Base/GdsObject.h"
 #include "GdsTextureProperty.h"
 #include "GdsPolygonProperty.h"
+#include "GdsMaterialProperty.h"
 
 class GdsPropertyState : public GdsObject
 {
@@ -17,12 +18,17 @@ public:
 	GdsPolygonPropertyPtr	GetPolygonProperty(){ return m_PolygonProperty; }
 	void					SetPolygonProperty( GdsPolygonPropertyPtr polygon ){ m_PolygonProperty = polygon; }
 
+	GdsMaterialPropertyPtr	GetMaterialProperty(){ return m_MaterialProperty; }
+	void					SetMaterialProperty( GdsMaterialPropertyPtr material ){ m_MaterialProperty = material; }
+
 	void					Render( LPDIRECT3DDEVICE9 device );
 
 private:
 
 	GdsTexturePropertyPtr	m_TextureProperty;
 	GdsPolygonPropertyPtr	m_PolygonProperty;
+
+	GdsMaterialPropertyPtr	m_MaterialProperty;
 
 };
 

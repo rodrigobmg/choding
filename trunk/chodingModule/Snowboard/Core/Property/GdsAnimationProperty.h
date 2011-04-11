@@ -7,5 +7,6 @@ class GdsAnimationProperty : public GdsProperty
 {
 };
 
+typedef boost::shared_ptr< GdsAnimationProperty > GdsAnimationPropertyPtr;
 
 #endif

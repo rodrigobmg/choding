@@ -3,6 +3,7 @@
 
 #include "..\..\..\chodingModule\Snowboard\Core\Resource\Type\GdsResASE.h"
 #include "..\..\..\chodingModule\Snowboard\System\FrameMemory\GdsFrameMemory.h"
+#include "..\..\Snowboard\Core\Renderer\GdsRendererDX9.h"
 
 class GdsResASETest : public ::testing::Test
 {
@@ -35,7 +36,7 @@ TEST_F( GdsResASETest ,  GdsResASE )
 //	FRAMEMEMORY.Init( 1024*1024 );
 	GdsResASEPtr res = GdsResASEPtr( new GdsResASE );
 
-	res->Create( L"../../Application/Resource/ASE/woman.ASE" , NULL );
+	res->Create( L"../../Application/Resource/ASE/woman.ASE" , RENDERER.GetDevice() );
 }
 
 #endif	
