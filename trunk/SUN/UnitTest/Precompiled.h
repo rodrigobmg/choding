@@ -4,7 +4,7 @@
 #include "../SUN/SUNDefine.h"
 #include "../SUN/SUNHeaders.h"
 
-#include "gtest.h"
+#include "gtest/gtest.h"
 
 #ifdef _DEBUG
 #pragma comment (lib, "SUN_d.lib")

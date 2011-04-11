@@ -37,7 +37,7 @@
 
 
 #include <stdlib.h>
-#include <tinyxml.h>
+#include "tinyxml.h"
 
 //기본 라이브로리
 #pragma comment(lib, "D3D9.lib")
