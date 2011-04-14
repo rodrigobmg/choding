@@ -4,7 +4,7 @@
 #include <map>
 #include <list>
 #include <HASH_MAP>
-#include "Type\GdsResBaseType.h"
+#include "GdsResBaseType.h"
 #include "Type\GdsResTexture.h"
 
 // 모든 리소스 파일네임은 소문자로 취급한다.!!!!!!!!!!!!!!!!

@@ -58,7 +58,6 @@ GdsCameraNodePtr GdsCameraManagerDX9::GetCamNode( int iCamIndex )
 void GdsCameraManagerDX9::Update( float fElapsedTime )
 {
 	GdsCameraNodePtr cam = m_camaraContainer[m_iCurCamIndex];
-	cam->SetDevice( m_pDevice );
 	cam->Update(fElapsedTime);
 }
 

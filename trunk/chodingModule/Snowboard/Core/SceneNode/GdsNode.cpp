@@ -8,7 +8,6 @@ m_bDrawAxis( false )
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
-	m_Device = NULL;
 	m_pParentNode = GdsNodePtr( (GdsNode*)NULL );
 	m_matWorld.MakeIdentity();
 	m_matLocal.MakeIdentity();
@@ -120,37 +119,12 @@ HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 
 HRESULT GdsNode::Update( float fElapsedtime )
 {
-	if ( m_Device == NULL )
-		m_Device = GetParent()->GetDevice();
-
-	if ( GetParent() != NULL && ( m_Device != GetParent()->GetDevice() ) )
-		m_Device = GetParent()->GetDevice();
-
-	InitGeometry( fElapsedtime );
-	Render( fElapsedtime );
-
-	if ( !m_ChildNode.empty() )
-	{
-		for( CHILDNODE_CONTAINER::iterator it = m_ChildNode.begin() ; it != m_ChildNode.end() ; ++it )
-		{
-			(*it)->Update(fElapsedtime);
-		}
-	}	
-
-	return TRUE;
-}
-
-
-void GdsNode::InitGeometry( float fElapsedtime )
-{
+	
 	if ( GetParent() == NULL )
 		m_matWorld = m_matLocal;
 	else
 		m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;
 
-	//virtual
-	vInitGeometry(fElapsedtime);
-	
 	m_DXmatWorld._11 = m_matWorld.m_Rotate.GetEntry( 0 , 0 ) * m_matWorld.m_fScale;
 	m_DXmatWorld._12 = m_matWorld.m_Rotate.GetEntry( 1 , 0 ) * m_matWorld.m_fScale;
 	m_DXmatWorld._13 = m_matWorld.m_Rotate.GetEntry( 2 , 0 ) * m_matWorld.m_fScale;
@@ -171,71 +145,57 @@ void GdsNode::InitGeometry( float fElapsedtime )
 	m_DXmatWorld._43 = m_matWorld.m_Translate[2];
 	m_DXmatWorld._44 = 1.0f;
 
-	GetDevice()->SetTransform( D3DTS_WORLD, &m_DXmatWorld );
+	vUpdateGeometry( fElapsedtime );
+
+	if ( !m_ChildNode.empty() )
+	{
+		for( CHILDNODE_CONTAINER::iterator it = m_ChildNode.begin() ; it != m_ChildNode.end() ; ++it )
+		{
+			(*it)->Update(fElapsedtime);
+		}
+	}	
+
+	return TRUE;
 }
 
-void GdsNode::Render( float fElapsedtime )
+
+void GdsNode::vUpdateGeometry( float fElapsedtime )
 {
-	if ( m_bDrawAxis )
-		DrawAxis();
-
-	if ( m_eCull == CULL_ON )
-		return;
-
-	if ( GetDevice() == NULL )
-		return;
-
-	if ( GetPropertyState() == NULL )
-		return;
-
-
-	GetPropertyState()->Render( GetDevice() );
-
-
-	// virtual
-	vRender(fElapsedtime);
-}
-
-void GdsNode::vInitGeometry( float fElapsedtime )
-{
-}
-
-void GdsNode::vRender( float fElapsedtime )
-{	
+	
 }
 
 void GdsNode::DrawAxis()
 {
-	D3DXMATRIXA16 matWorld;
-	D3DXMATRIXA16 matView;
-	D3DXMATRIXA16 matProj;
-	m_Device->GetTransform( D3DTS_WORLD , &matWorld );
-	m_Device->GetTransform( D3DTS_VIEW  , &matView );
-	m_Device->GetTransform( D3DTS_PROJECTION , &matProj );
-
-	D3DXVECTOR3 axisX[2];
-	axisX[0].x = 0.0f; axisX[0].y = 0.0f; axisX[0].z = 0.0f;
-	axisX[1].x = 10.0f; axisX[1].y = 0.0f; axisX[1].z = 0.0f;
-
-	D3DXVECTOR3 axisY[2];
-	axisY[0].x = 0.0f; axisY[0].y = 0.0f; axisY[0].z = 0.0f;
-	axisY[1].x = 0.0f; axisY[1].y = 10.0f; axisY[1].z = 0.0f;
-
-	D3DXVECTOR3 axisZ[2];
-	axisZ[0].x = 0.0f; axisZ[0].y = 0.0f; axisZ[0].z = 0.0f;
-	axisZ[1].x = 0.0f; axisZ[1].y = 0.0f; axisZ[1].z = 10.0f;
-
-	//D3DXMatrixIdentity( &matWorld );
-
-	ID3DXLine* Line;
-	D3DXCreateLine( m_Device , &Line );
-	Line->SetWidth( 1 );
-	Line->SetAntialias( true );
-	Line->Begin();
-	Line->DrawTransform( axisX , 2, &(matWorld*matView*matProj), D3DXCOLOR( 1.0f , 0.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( axisY , 2, &(matWorld*matView*matProj), D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( axisZ , 2, &(matWorld*matView*matProj), D3DXCOLOR( 0.0f , 0.0f , 1.0f , 1.0f ));
-	Line->End();
-	Line->Release();
+// 	D3DXMATRIXA16 matWorld;
+// 	D3DXMATRIXA16 matView;
+// 	D3DXMATRIXA16 matProj;
+// 	m_Device->GetTransform( D3DTS_WORLD , &matWorld );
+// 	m_Device->GetTransform( D3DTS_VIEW  , &matView );
+// 	m_Device->GetTransform( D3DTS_PROJECTION , &matProj );
+// 
+// 	D3DXVECTOR3 axisX[2];
+// 	axisX[0].x = 0.0f; axisX[0].y = 0.0f; axisX[0].z = 0.0f;
+// 	axisX[1].x = 10.0f; axisX[1].y = 0.0f; axisX[1].z = 0.0f;
+// 
+// 	D3DXVECTOR3 axisY[2];
+// 	axisY[0].x = 0.0f; axisY[0].y = 0.0f; axisY[0].z = 0.0f;
+// 	axisY[1].x = 0.0f; axisY[1].y = 10.0f; axisY[1].z = 0.0f;
+// 
+// 	D3DXVECTOR3 axisZ[2];
+// 	axisZ[0].x = 0.0f; axisZ[0].y = 0.0f; axisZ[0].z = 0.0f;
+// 	axisZ[1].x = 0.0f; axisZ[1].y = 0.0f; axisZ[1].z = 10.0f;
+// 
+// 	//D3DXMatrixIdentity( &matWorld );
+// 
+// 	ID3DXLine* Line;
+// 	D3DXCreateLine( m_Device , &Line );
+// 	Line->SetWidth( 1 );
+// 	Line->SetAntialias( true );
+// 	Line->Begin();
+// 	Line->DrawTransform( axisX , 2, &(matWorld*matView*matProj), D3DXCOLOR( 1.0f , 0.0f , 0.0f , 1.0f ));
+// 	Line->DrawTransform( axisY , 2, &(matWorld*matView*matProj), D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+// 	Line->DrawTransform( axisZ , 2, &(matWorld*matView*matProj), D3DXCOLOR( 0.0f , 0.0f , 1.0f , 1.0f ));
+// 	Line->End();
+// 	Line->Release();
 }
 

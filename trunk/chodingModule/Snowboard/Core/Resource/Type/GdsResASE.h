@@ -1,10 +1,10 @@
 #ifndef _GDS_CORE_RESOURCE_TYPE_ASE_H_
 #define _GDS_CORE_RESOURCE_TYPE_ASE_H_
 
-#include "GdsResBaseType.h"
+#include "../GdsResBaseType.h"
 #include "..\..\..\System\FileSystem\GdsFile.h"
 #include "../../SceneNode\GdsNode.h"
-#include "../../Property/GdsMaterialProperty.h"
+#include "../../Property/Type/GdsMaterial.h"
 
 class GdsResASE : public GdsResBase
 {
@@ -27,8 +27,8 @@ class GdsResASE : public GdsResBase
 
 	bool				DecodeSCENE( LineContainerA::iterator& line );
 	bool				DecodeMATERIAL_LIST( LineContainerA::iterator& line );	
-	bool				DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPropertyPtr Material );
-	bool				DecodeMap( LineContainerA::iterator& line, GdsMaterialPropertyPtr Material );
+	bool				DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPtr Material );
+	bool				DecodeMap( LineContainerA::iterator& line, GdsMaterialPtr Material );
 
 	bool				DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pNode );
 	bool				DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode );
@@ -49,7 +49,7 @@ class GdsResASE : public GdsResBase
 	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , float& fvalue );
 	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , float& fvalue1, float& fvalue2, float& fvalue3);
 	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , int& ivalue );
-	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , std::string& const str );
+	bool				GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , std::string& str );
 
 	int					m_iCountBone;
 
@@ -68,7 +68,7 @@ class GdsResASE : public GdsResBase
 	typedef std::vector<GdsNodePtr> NODE_LIST;
 	NODE_LIST			m_vecNodeList;
 
-	typedef std::vector<GdsMaterialPropertyPtr> MATERIAL_LIST;
+	typedef std::vector<GdsMaterialPtr> MATERIAL_LIST;
 	MATERIAL_LIST		m_vecMaterialList;
 
 	bool				attachNode( GdsNodePtr childNode , tstring& parentname );

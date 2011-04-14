@@ -3,7 +3,7 @@
 //ImplementBoostPool( GdsResTexture )
 
 GdsResTexture::GdsResTexture():
-m_TextureProperty( GdsTexturePropertyPtr( new GdsTextureProperty ) )
+m_pTexture( NULL )
 {
 	SetName( OBJECT_RES_TEXTURE );
 	vClear();
@@ -47,10 +47,9 @@ HRESULT GdsResTexture::vLoadResource( LPDIRECT3DDEVICE9 device )
 								D3DPOOL_MANAGED , 
 								D3DX_DEFAULT , D3DX_DEFAULT , 0 ,
 								NULL , NULL , 
-								m_TextureProperty->GetTexture() //&m_pTex 
+								&m_pTexture
 								) ) )
 	{
-		GetPropertyState()->SetTextureProperty( m_TextureProperty );
 		return true;
 	}
 

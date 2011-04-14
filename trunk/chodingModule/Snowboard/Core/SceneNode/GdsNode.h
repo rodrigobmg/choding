@@ -3,7 +3,7 @@
 
 #include "../Base\GdsObject.h"
 #include "../Transform/GdsTransform.h"
-#include "../Property/GdsPropertyState.h"
+#include "../Property/GdsProperty.h"
 
 class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
 {
@@ -25,24 +25,18 @@ private:
 	typedef	 std::list< GdsNodePtr >		CHILDNODE_CONTAINER;
 	CHILDNODE_CONTAINER						m_ChildNode;	
 
-	LPDIRECT3DDEVICE9						m_Device;
-
-	GdsPropertyStatePtr						m_PropertyState;
-
-	CULL_TYPE								m_eCull;
-	bool									m_bDrawAxis;
-
-
+	GdsPropertyPtr							m_Property;
 	D3DXMATRIXA16							m_DXmatWorld;
-
 	GdsTransform							m_matWorld;
 	GdsTransform							m_matLocal;
 
+
+	CULL_TYPE								m_eCull;
+	bool									m_bDrawAxis;	
+
 protected:			
 
-
-	virtual	void							vInitGeometry( float fElapsedtime );
-	virtual void							vRender( float fElapsedtime );
+	virtual	void							vUpdateGeometry( float fElapsedtime );
 	virtual void							vClear();
 
 public:
@@ -66,11 +60,8 @@ public:
 	void					SetCullType( CULL_TYPE eCull ){ m_eCull = eCull; }
 	CULL_TYPE				GetCullType(){ return m_eCull; }
 
-	void					SetDevice( LPDIRECT3DDEVICE9 device ){ m_Device = device; }
-	LPDIRECT3DDEVICE9		GetDevice(){ return m_Device; }
-
-	void					SetPropertyState( GdsPropertyStatePtr pProperty ){ m_PropertyState = pProperty; }
-	GdsPropertyStatePtr		GetPropertyState(){ return m_PropertyState; }
+	void					SetPropertyState( GdsPropertyPtr pProperty ){ m_Property = pProperty; }
+	GdsPropertyPtr			GetPropertyState(){ return m_Property; }
 
 	GdsTransform&			GetTransform(){ return m_matLocal; }
 	void					SetTransform( GdsTransform& mat ){ m_matLocal = mat; }
@@ -108,8 +99,6 @@ public:
 	HRESULT					RemoveAllChild();
 
 	HRESULT					Update( float fElapsedtime );
-	void					InitGeometry( float fElapsedtime );
-	void					Render( float fElapsedtime );
 
 	void					SetDrawAxis( bool bFlag ) { m_bDrawAxis = bFlag; }
 	void					DrawAxis();

@@ -1,8 +1,6 @@
 #include "GdsResBaseType.h"
 
-
-GdsResBase::GdsResBase():
-m_PropertyState( GdsPropertyStatePtr( new GdsPropertyState ) )
+GdsResBase::GdsResBase()
 {
 	SetName( OBJECT_RES_BASE );	
 }

@@ -1,7 +1,7 @@
-#include "GdsMaterialProperty.h"
-#include "..\..\System\Logger\logger.h"
+#include "GdsMaterial.h"
+#include "..\..\..\System\Logger\logger.h"
 
-GdsMaterialProperty::GdsMaterialProperty(void):
+GdsMaterial::GdsMaterial(void):
 m_eTexturingType( DEFAULT )
 {
 	SetName( OBJECT_PROPERTY_TEXTURE );
@@ -9,7 +9,7 @@ m_eTexturingType( DEFAULT )
 	Clear();
 	for ( size_t i = 0 ; i < MAX ; i++ )
 	{
-		m_Tex.push_back( NULL );
+		m_Tex.push_back( GdsResTexturePtr( (GdsResTexture*)NULL ) );
 		m_TexturePath.push_back( L"" );
 	}
 
@@ -21,42 +21,42 @@ m_eTexturingType( DEFAULT )
 
 }
 
-GdsMaterialProperty::~GdsMaterialProperty(void)
+GdsMaterial::~GdsMaterial(void)
 {
-	Clear();
+	vClear();
 }
 
 
-void GdsMaterialProperty::SetAmbientColor( float r , float g , float b )
+void GdsMaterial::SetAmbientColor( float r , float g , float b )
 {
 	m_dxMaterial.Ambient.r = r;
 	m_dxMaterial.Ambient.g = g;
 	m_dxMaterial.Ambient.b = b;
 }
 
-void GdsMaterialProperty::SetDiffuesColor( float r , float g , float b )
+void GdsMaterial::SetDiffuesColor( float r , float g , float b )
 {
 	m_dxMaterial.Diffuse.r = r;
 	m_dxMaterial.Diffuse.g = g;
 	m_dxMaterial.Diffuse.b = b;
 }
 
-void GdsMaterialProperty::SetSpecularColor( float r , float g , float b )
+void GdsMaterial::SetSpecularColor( float r , float g , float b )
 {
 	m_dxMaterial.Specular.r = r;
 	m_dxMaterial.Specular.g = g;
 	m_dxMaterial.Specular.b = b;
 }
 
-void GdsMaterialProperty::Clear()
+void GdsMaterial::vClear()
 {
-	for_each( m_Tex.begin() , m_Tex.end() , functor::release() );
+	m_Tex.clear();
 }
 
-void GdsMaterialProperty::Render( LPDIRECT3DDEVICE9 device )
+void GdsMaterial::Render( LPDIRECT3DDEVICE9 device )
 {
 	if ( m_eTexturingType == DEFAULT )
-		device->SetTexture( 0, m_Tex[0] );  	
+		device->SetTexture( 0, m_Tex[0]->Get() );  	
 	else if ( m_eTexturingType == MULTI_TEXTURE )
 	{
 		LOG_WARNING( "미지원 기능" );
@@ -64,7 +64,7 @@ void GdsMaterialProperty::Render( LPDIRECT3DDEVICE9 device )
 	}
 }
 
-void GdsMaterialProperty::SetTexture( LPDIRECT3DTEXTURE9 texture , const int num /*= 0 */ )
+void GdsMaterial::SetTexture( GdsResTexturePtr texture , const int num /*= 0 */ )
 {
 	if ( ( m_eTexturingType == MULTI_TEXTURE ) && ( num != 0 ) )
 		ASSERT( 0 );
@@ -82,16 +82,7 @@ void GdsMaterialProperty::SetTexture( LPDIRECT3DTEXTURE9 texture , const int num
 	m_iCountOfTexture = m_Tex.size();
 }
 
-LPDIRECT3DTEXTURE9* GdsMaterialProperty::GetTexture( const int num /*= 0 */ )
-{
-	if ( ( m_eTexturingType == MULTI_TEXTURE ) && ( num != 0 ) )
-		ASSERT( 0 );
-	if ( m_Tex.size() < num )
-		ASSERT( 0 );
-	return &(m_Tex[num]);
-}
-
-LPDIRECT3DTEXTURE9 GdsMaterialProperty::GetTexturePtr( const int num /*= 0 */ )
+GdsResTexturePtr GdsMaterial::GetTexture( const int num /*= 0 */ )
 {
 	if ( ( m_eTexturingType == MULTI_TEXTURE ) && ( num != 0 ) )
 		ASSERT( 0 );
@@ -100,12 +91,12 @@ LPDIRECT3DTEXTURE9 GdsMaterialProperty::GetTexturePtr( const int num /*= 0 */ )
 	return m_Tex[num];
 }
 
-tstring& GdsMaterialProperty::GetTexturePath( const int index )
+tstring& GdsMaterial::GetTexturePath( const int index )
 {
 	return m_TexturePath.at(index);
 }
 
-void GdsMaterialProperty::SetTexturePath( tstring& path , const int index /*= 0 */ )
+void GdsMaterial::SetTexturePath( tstring& path , const int index /*= 0 */ )
 {
 	m_TexturePath.at(index) = path;
 }

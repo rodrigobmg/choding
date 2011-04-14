@@ -556,7 +556,7 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 	return bRet;
 }
 
-bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , std::string& const str )
+bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , std::string& str )
 {
 	size_t len = strlen( *line ) + 1;
 	char* dest_str = static_cast< char* >( FRAMEMEMORY.Alloc( len ) );
@@ -594,7 +594,7 @@ bool GdsResASE::DecodeMATERIAL_LIST( LineContainerA::iterator& line )
 		int iIndex;
 		if ( GetValue( "*MATERIAL" , line , "\t " , iIndex ) )
 		{
-			GdsMaterialPropertyPtr material = GdsMaterialPropertyPtr( new GdsMaterialProperty );
+			GdsMaterialPtr material = GdsMaterialPtr( new GdsMaterial );
 			DecodeMaterial( line , material );
 			m_vecMaterialList.push_back( material );
 		}
@@ -613,14 +613,14 @@ bool GdsResASE::DecodeMATERIAL_LIST( LineContainerA::iterator& line )
 	return true;
 }
 
-bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPropertyPtr Material )
+bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPtr Material )
 {
 	do 
 	{
 		if ( CheckKeyword( "*SUBMATERIAL" , line ) )
 		{
 			GetValue( "*SUBMATERIAL" , line , " " , m_iSubMaterial );
-			GdsMaterialPropertyPtr subMaterial = GdsMaterialPropertyPtr( new GdsMaterialProperty );
+			GdsMaterialPtr subMaterial = GdsMaterialPtr( new GdsMaterial );
 			DecodeMaterial( line , subMaterial );
 		}
 
@@ -678,7 +678,7 @@ bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line , GdsMaterialProp
 	return true;
 }
 
-bool GdsResASE::DecodeMap( LineContainerA::iterator& line , GdsMaterialPropertyPtr Material )
+bool GdsResASE::DecodeMap( LineContainerA::iterator& line , GdsMaterialPtr Material )
 {
 	do{
 		std::string path;

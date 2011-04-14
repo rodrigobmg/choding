@@ -16,10 +16,6 @@ void GdsCameraNode::vClear()
 {
 }
 
-void GdsCameraNode::vRender( float fElapsedtime )
-{
-
-}
 
 void GdsCameraNode::vInitGeometry( float fElapsedtime )
 {
@@ -60,7 +56,7 @@ void GdsCameraNode::vInitGeometry( float fElapsedtime )
 // 	D3DXMATRIXA16 matView;
 // 	D3DXMatrixLookAtLH( &matView, &vEyePt, &vLookatPt, &vUpVec );
 
-	GetDevice()->SetTransform( D3DTS_VIEW , &matView );
+//	GetDevice()->SetTransform( D3DTS_VIEW , &matView );
 
 	if ( m_Frustum.m_bOrtho )
 	{
@@ -71,7 +67,7 @@ void GdsCameraNode::vInitGeometry( float fElapsedtime )
 		D3DXMatrixPerspectiveOffCenterLH( &matProj , m_Frustum.m_fLeft , m_Frustum.m_fRight , m_Frustum.m_fBottom , m_Frustum.m_fTop , m_Frustum.m_fZnear , m_Frustum.m_fFar );
 	}
 
-	GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
+//	GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
 }
 
 void GdsCameraNode::SetLootAtLH( GdsVector3& eye , GdsVector3& lookat , GdsVector3& up )

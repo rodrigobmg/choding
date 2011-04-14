@@ -109,7 +109,6 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 void GdsRendererDX9::setRootNodeAndCamNode()
 {
 	m_RootNode = GdsNodePtr( new GdsNode );
-	m_RootNode->SetDevice( m_pd3dDevice );
 	
 	m_RootNode->SetDrawAxis( true );
 	

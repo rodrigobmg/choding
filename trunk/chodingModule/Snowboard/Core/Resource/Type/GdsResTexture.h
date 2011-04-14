@@ -1,13 +1,12 @@
 #ifndef _GDS_H_RESTEXTURE_
 #define _GDS_H_RESTEXTURE_
 
-#include "GdsResBaseType.h"
-#include "../../Property/GdsTextureProperty.h"
+#include "../GdsResBaseType.h"
 
 class GdsResTexture : public GdsResBase{
 private:
 
-	GdsTexturePropertyPtr		m_TextureProperty;
+	LPDIRECT3DTEXTURE9			m_pTexture;
 
 protected:
 	
@@ -18,6 +17,8 @@ protected:
 public:
 	GdsResTexture();
 	virtual ~GdsResTexture();	
+
+	LPDIRECT3DTEXTURE9			Get(){ return m_pTexture; }
 };
 
 typedef boost::shared_ptr< GdsResTexture >	GdsResTexturePtr;

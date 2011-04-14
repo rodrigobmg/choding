@@ -11,7 +11,6 @@ class GdsCameraNode : public GdsNode{
 protected:
 	
 	virtual	void	vInitGeometry( float fElapsedtime );
-	virtual void	vRender( float fElapsedtime );
 	virtual	void	vClear();
 
 	GdsVector3		vEyePt;

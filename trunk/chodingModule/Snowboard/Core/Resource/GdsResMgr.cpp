@@ -5,7 +5,6 @@
 #include <omp.h>
 #include "../../System/Logger/logger.h"
 #include "../../System/PerformanceCheck/Performance.h"
-#include "Type/GdsResMD2.h"
 #include "Type/GdsResASE.h"
 
 /*
@@ -248,12 +247,6 @@ GdsResBasePtr GdsResMgr::resourceFactory( const TCHAR* ext , const TCHAR* filepa
 		GdsResTexturePtr ptex = GdsResTexturePtr( new GdsResTexture );
 		ptex->Create( filepath , m_pDevice );
 		return	ptex;	
-	}
-	else if ( !_tcscmp( ext , L"md2" ) )
-	{
-		GdsResMD2Ptr	pMd2 = GdsResMD2Ptr( new GdsResMD2 );
-		pMd2->Create( filepath , m_pDevice );
-		return pMd2;
 	}
 	else if ( !_tcscmp( ext , L"ase" ) ) 
 	{

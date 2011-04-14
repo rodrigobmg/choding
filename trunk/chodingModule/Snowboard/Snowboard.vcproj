@@ -226,6 +226,14 @@
 				Name="Resource"
 				>
 				<File
+					RelativePath=".\Core\Resource\GdsResBaseType.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Resource\GdsResBaseType.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Core\Resource\GdsResMgr.cpp"
 					>
 				</File>
@@ -242,22 +250,6 @@
 					</File>
 					<File
 						RelativePath=".\Core\Resource\Type\GdsResASE.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Resource\Type\GdsResBaseType.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Resource\Type\GdsResBaseType.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Resource\Type\GdsResMD2.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Resource\Type\GdsResMD2.h"
 						>
 					</File>
 					<File
@@ -346,57 +338,41 @@
 				Name="Property"
 				>
 				<File
-					RelativePath=".\Core\Property\GdsAnimationProperty.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsAnimationProperty.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsMaterialProperty.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsMaterialProperty.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsMeshProperty.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsMeshProperty.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsPolygonProperty.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsPolygonProperty.h"
+					RelativePath=".\Core\Property\GdsProperty.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\Core\Property\GdsProperty.h"
 					>
 				</File>
-				<File
-					RelativePath=".\Core\Property\GdsPropertyState.cpp"
+				<Filter
+					Name="Type"
 					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsPropertyState.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsTextureProperty.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsTextureProperty.h"
-					>
-				</File>
+					<File
+						RelativePath=".\Core\Property\Type\GdsAnimation.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Property\Type\GdsAnimation.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Property\Type\GdsMaterial.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Property\Type\GdsMaterial.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Property\Type\GdsMesh.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Property\Type\GdsMesh.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

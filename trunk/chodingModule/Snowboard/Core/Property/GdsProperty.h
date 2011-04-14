@@ -6,15 +6,8 @@
 class GdsProperty : public GdsObject
 {
 public:
-	GdsProperty(void)
-	{
-		SetName(OBJECT_PROPERTY); 
-		SetType( NONE_TYPE ); 
-	}
-
-	virtual ~GdsProperty(void)
-	{
-	}
+	GdsProperty(void);
+	virtual ~GdsProperty(void);
 
 	enum PROPERTY_TYPE{
 		NONE_TYPE = -1,
@@ -23,16 +16,21 @@ public:
 	};
 
 
-	PROPERTY_TYPE	GetType(){ return m_eType; }	
-
-	virtual void	Clear() = 0;
+	PROPERTY_TYPE		GetType(){ return m_eType; }	
+	void				Clear(){ vClear(); }
+	void				Update( float fElapsedTime ){ vUpdate( fElapsedTime ); }
+	void				Render( LPDIRECT3DDEVICE9 device ){ vRender( device ); }
 
 
 protected:
 
 	void				SetType( PROPERTY_TYPE type ){ m_eType = type; }
-	PROPERTY_TYPE		m_eType;
+	
+	virtual	void		vClear(){};
+	virtual	void		vUpdate( float fElapsedTime ){ ASSERT( fElapsedTime); }
+	virtual void		vRender( LPDIRECT3DDEVICE9 device ){ ASSERT( device); }
 
+	PROPERTY_TYPE		m_eType;
 	LPDIRECT3DDEVICE9	m_pDevice;
 
 };

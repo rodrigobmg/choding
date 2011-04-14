@@ -10,7 +10,6 @@
 #include "SceneNode/GdsBillboardNode.h"
 #include "../System/Time/GdsSystemTime.h"
 #include "../System/FrameMemory/GdsFrameMemory.h"
-#include "Resource/Type/GdsResMD2.h"
 #include "Resource/Type/GdsResASE.h"
 
 CSnowboard::CSnowboard()
@@ -32,7 +31,7 @@ bool CSnowboard::InitModule( HWND hWnd )
 {
 	LOGGER.Init(NULL , NULL , NULL , NULL );
 	FRAMEMEMORY.Init( 1024 * 1024 );
-	LOG_WARNING( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
+	LOG_WARNING_F( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
 
 	InitRenderer( hWnd );
 	InitResource( m_pRenderer->GetDevice() );
@@ -46,7 +45,6 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 {
 	m_pRenderer = boost::shared_dynamic_cast< GdsRendererDX9 >( GdsCoreFactory::CreateCore( CORE_RENDERER ) );
 	m_pRenderer->Create( hWnd );
-	m_pRenderer->GetRootNode()->SetDevice( m_pRenderer->GetDevice() );
 	
 	return TRUE;
 }
@@ -92,11 +90,9 @@ void CSnowboard::TestFunc()
 
 	if ( m_pResMgr )
 	{	 
- 		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"md2;ase;bmp" , true ) );
+ 		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;dds;tga" , true ) );
 	}
 
-	GdsResMD2Ptr resmesh = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2\\나무02\\tree2.md2" ) );
-	GdsResMD2Ptr resmesh1 = boost::shared_dynamic_cast< GdsResMD2 >( m_pResMgr->Get( L"md2\\나무02\\tree2.md2" ) );
 	GdsResASEPtr resASE	= boost::shared_dynamic_cast< GdsResASE >( m_pResMgr->Get( L"ase\\woman.ase" ) );
 
 	GdsNodePtr node = resASE->GetNode();
@@ -105,11 +101,9 @@ void CSnowboard::TestFunc()
 
 	m_pRenderer->GetRootNode()->SetDrawAxis( true );
 
-	if( resmesh )
 	{
 		GdsNodePtr mesh = GdsNodePtr( new GdsNode );		
 		
-		mesh->SetPropertyState( resmesh->GetPropertyState() );
 		mesh->SetDrawAxis( true );
 		//mesh->SetScale( 0.2f );
 		mesh->SetTranslate( 10 , 2 , 0 );
