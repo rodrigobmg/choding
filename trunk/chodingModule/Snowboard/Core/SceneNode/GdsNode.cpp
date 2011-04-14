@@ -9,10 +9,10 @@ m_bDrawAxis( false )
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
 	m_pParentNode = NULL;
+//	m_pParentNode = GdsNodePtr( (GdsNode*)NULL );
 	m_matWorld.MakeIdentity();
 	m_matLocal.MakeIdentity();
-	m_eCull = CULL_OFF;
-	
+	m_eCull = CULL_OFF;	
 }
 
 GdsNode::~GdsNode()
@@ -57,11 +57,13 @@ HRESULT GdsNode::RemoveAllChild()
 }
 
 void GdsNode::SetParent( GdsNode* pNode )
+//void GdsNode::SetParent( GdsNodePtr pNode )
 {
 	m_pParentNode = pNode;
 }
 
 GdsNode*	GdsNode::GetParent()
+//GdsNodePtr	GdsNode::GetParent()
 {
 	return m_pParentNode;
 }
@@ -91,10 +93,11 @@ GdsNodePtr	GdsNode::GetAt( unsigned int index )
 
 HRESULT GdsNode::AttachChild( GdsNodePtr pNode )
 {
-	if ( this == pNode.get() )
+	if ( pNode == NULL )
 		return false;
 
-	//pNode->SetParent( /*shared_ptr_this()*/GdsNodePtr( (GdsNode*)this ) );	
+	//pNode->SetParent( shared_ptr_this() );	
+	//pNode->SetParent( GdsNodePtr( ( GdsNode*)this ) );	
 	pNode->SetParent( pNode.get() );	
 	m_ChildNode.push_back( pNode );
 	return true;
@@ -114,6 +117,8 @@ HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 			break;
 		}
 	}
+
+	pNode->SetParent( NULL );
 
 	return true;
 }

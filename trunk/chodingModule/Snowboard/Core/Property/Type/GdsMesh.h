@@ -5,6 +5,11 @@
 
 class GdsMesh : public GdsProperty
 {
+
+	LPDIRECT3DVERTEXBUFFER9			m_VertexBuffer;
+	LPDIRECT3DINDEXBUFFER9			m_IndexBuffer;
+
+
 public:
 	GdsMesh(){};
 	virtual ~GdsMesh(){};
