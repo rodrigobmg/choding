@@ -16,6 +16,7 @@ GdsResTexture::~GdsResTexture()
 
 void GdsResTexture::vClear()
 {
+	SAFE_RELEASE( m_pTexture );
 }
 
 HRESULT GdsResTexture::vRelease()

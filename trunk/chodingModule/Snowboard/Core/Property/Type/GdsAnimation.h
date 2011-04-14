@@ -5,6 +5,9 @@
 
 class GdsAnimation : public GdsProperty
 {
+public:
+	GdsAnimation(){};
+	virtual ~GdsAnimation(){};
 };
 
 typedef boost::shared_ptr< GdsAnimation > GdsAnimationPtr;

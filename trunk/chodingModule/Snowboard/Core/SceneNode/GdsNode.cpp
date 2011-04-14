@@ -8,7 +8,7 @@ m_bDrawAxis( false )
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
-	m_pParentNode = GdsNodePtr( (GdsNode*)NULL );
+	m_pParentNode = NULL;
 	m_matWorld.MakeIdentity();
 	m_matLocal.MakeIdentity();
 	m_eCull = CULL_OFF;
@@ -56,12 +56,12 @@ HRESULT GdsNode::RemoveAllChild()
 	return TRUE;
 }
 
-void GdsNode::SetParent( GdsNodePtr pNode )
+void GdsNode::SetParent( GdsNode* pNode )
 {
 	m_pParentNode = pNode;
 }
 
-GdsNodePtr	GdsNode::GetParent()
+GdsNode*	GdsNode::GetParent()
 {
 	return m_pParentNode;
 }
@@ -94,7 +94,8 @@ HRESULT GdsNode::AttachChild( GdsNodePtr pNode )
 	if ( this == pNode.get() )
 		return false;
 
-	pNode->SetParent( shared_ptr_this() );	
+	//pNode->SetParent( /*shared_ptr_this()*/GdsNodePtr( (GdsNode*)this ) );	
+	pNode->SetParent( pNode.get() );	
 	m_ChildNode.push_back( pNode );
 	return true;
 }

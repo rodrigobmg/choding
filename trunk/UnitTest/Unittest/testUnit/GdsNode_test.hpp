@@ -4,12 +4,12 @@
 #include "..\..\..\chodingModule\Snowboard\Core\SceneNode\GdsNode.h"
 
 
-TEST( test ,  Module )
+TEST( GdsNodeTest ,  Module )
 {
-	for (size_t t = 0 ; t < 100 ; t++)
-	{
-		GdsNodePtr node = GdsNodePtr( new GdsNode );
-	}
-	
-	GdsNodePtr node2 = GdsNodePtr( new GdsNode );
+	GdsNodePtr parent = GdsNodePtr( new GdsNode );	
+	GdsNodePtr child = GdsNodePtr( new GdsNode );
+
+	parent->AttachChild( child );
+	parent->Update( 0.0f );
 }
+

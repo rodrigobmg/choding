@@ -5,8 +5,7 @@ GdsMaterial::GdsMaterial(void):
 m_eTexturingType( DEFAULT )
 {
 	SetName( OBJECT_PROPERTY_TEXTURE );
-	SetType( TEXTURE );
-	Clear();
+	vClear();
 	for ( size_t i = 0 ; i < MAX ; i++ )
 	{
 		m_Tex.push_back( GdsResTexturePtr( (GdsResTexture*)NULL ) );

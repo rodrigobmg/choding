@@ -53,15 +53,13 @@ public:
 // 		GetCurrentDirectory( MAX_PATH, curpath );
  		TCHAR respath[MAX_PATH];
  		_stprintf_s( respath , L"%s\\%s" , L"D:\\choding\\Application" , L"Resource" );
- 		ASSERT_TRUE( resmgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"md2;ase;bmp;jpg" , true )) );
-// 		ASSERT_TRUE( resmgr->LoadRes( L"md2" ) );
+ 		ASSERT_TRUE( resmgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;jpg;dds;tga" , true )) );
+		GdsResTexturePtr ptex = boost::shared_dynamic_cast< GdsResTexture >( resmgr->Get( L"tex\\banana.bmp" ) );
+		LPDIRECT3DTEXTURE9 tex = ptex->Get();
 	}
 
 	virtual void TearDown()
 	{
-		//¼Ò¸êÀÚ
-// 		resmgr->ReleaseRes( L"md2" );
-// 		resmgr->ReleaseList( L"md2" );
 	}
 
 	virtual void TestBody()

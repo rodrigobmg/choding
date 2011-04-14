@@ -12,6 +12,8 @@ GdsResASE::GdsResASE()
 
 GdsResASE::~GdsResASE()
 {
+	m_vecNodeList.clear();
+	m_vecMaterialList.clear();
 }
 
 void GdsResASE::vClear()
@@ -63,6 +65,7 @@ HRESULT GdsResASE::vLoadResource( LPDIRECT3DDEVICE9 device )
 	parseNode( m_vecNodeList );	
 	parseMaterial( m_vecNodeList , device );
 	m_vecNodeList.clear();
+	m_vecMaterialList.clear();
 
 	return true;
 }
@@ -80,17 +83,21 @@ bool GdsResASE::parseNode( NODE_LIST& nodelist )
 
 	NODE_LIST::iterator it = m_vecNodeList.begin();
 	NODE_LIST::iterator it_end = m_vecNodeList.end();
+	
 	for( ; it != it_end ; ++it )
 	{
 		if ( (*it)->GetName() == L"Bip01" )
 			m_RootNode = *it;
 		else if ( (*it)->GetParentName() != L"" )
+		{
 			attachNode( *it , (*it)->GetParentName() );
+		}
 	}
 }
 
 bool GdsResASE::attachNode( GdsNodePtr childNode , tstring& parentname )
 {
+
 	if ( m_vecNodeList.empty() )
 		return false;
 

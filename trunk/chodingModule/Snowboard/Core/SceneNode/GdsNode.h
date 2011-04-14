@@ -19,9 +19,9 @@ private:
 
 	tstring									m_strParentName;
 
-	typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
-	GdsNodePtr								m_pParentNode;
+	GdsNode*								m_pParentNode;
 
+	typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
 	typedef	 std::list< GdsNodePtr >		CHILDNODE_CONTAINER;
 	CHILDNODE_CONTAINER						m_ChildNode;	
 
@@ -87,8 +87,8 @@ public:
 	void					MakeYRotation( float fAngle ){ m_matLocal.m_Rotate.MakeYRotation( fAngle ); }
 	void					MakeZRotation( float fAngle ){ m_matLocal.m_Rotate.MakeZRotation( fAngle ); }
 
-	GdsNodePtr				GetParent();
-	void					SetParent( GdsNodePtr pNode );
+	GdsNode*				GetParent();
+	void					SetParent( GdsNode* pNode );
 	GdsNodePtr				GetAt( unsigned int index );
 
 	// 구현 예정

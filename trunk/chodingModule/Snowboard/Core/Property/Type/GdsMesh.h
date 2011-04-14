@@ -7,7 +7,7 @@ class GdsMesh : public GdsProperty
 {
 public:
 	GdsMesh(){};
-	~GdsMesh(){};
+	virtual ~GdsMesh(){};
 };
 
 typedef boost::shared_ptr< GdsMesh > GdsMeshPtr;

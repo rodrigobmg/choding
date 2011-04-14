@@ -37,7 +37,7 @@ protected:
 public:
 
 	GdsMaterial();
-	~GdsMaterial();
+	virtual ~GdsMaterial();
 
 
 	void					SetAmbientColor( float r , float g , float b );
