@@ -1,23 +1,23 @@
-#include "GdsCameraNode.h"
+#include "GdsCamera.h"
 #include "Renderer\GdsRendererDX9.h"
 
-GdsCameraNode::GdsCameraNode()
+GdsCamera::GdsCamera()
 {
 	SetName( OBJECT_NODE_CAMERA );
 	vClear();
 }
 
-GdsCameraNode::~GdsCameraNode()
+GdsCamera::~GdsCamera()
 {
 	vClear();
 }
 
-void GdsCameraNode::vClear()
+void GdsCamera::vClear()
 {
 }
 
 
-void GdsCameraNode::vInitGeometry( float fElapsedtime )
+void GdsCamera::vInitGeometry( float fElapsedtime )
 {
 	//카메라 뷰 변환 행렬
 	GdsVector3 n = vLookatPt - GetWorldTanslate();
@@ -70,7 +70,7 @@ void GdsCameraNode::vInitGeometry( float fElapsedtime )
 //	GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
 }
 
-void GdsCameraNode::SetLootAtLH( GdsVector3& eye , GdsVector3& lookat , GdsVector3& up )
+void GdsCamera::SetLootAtLH( GdsVector3& eye , GdsVector3& lookat , GdsVector3& up )
 {
 	vEyePt = eye;
 	vLookatPt = lookat;

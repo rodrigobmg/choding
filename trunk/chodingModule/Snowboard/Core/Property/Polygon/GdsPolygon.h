@@ -1,15 +1,15 @@
-#ifndef _GDS_CORE_PROPERTY_ANIMATION_H_
-#define _GDS_CORE_PROPERTY_ANIMATION_H_
+#ifndef _GDS_CORE_PROPERTY_POLYGON_H_
+#define _GDS_CORE_PROPERTY_POLYGON_H_
 
 #include "../GdsProperty.h"
 
-class GdsAnimation : public GdsProperty
+class GdsPolygon : public GdsProperty
 {
 public:
-	GdsAnimation(){};
-	virtual ~GdsAnimation(){};
+	GdsPolygon(){};
+	virtual ~GdsPolygon(){};
 };
 
-typedef boost::shared_ptr< GdsAnimation > GdsAnimationPtr;
+typedef boost::shared_ptr< GdsPolygon > GdsPolygonPtr;
 
 #endif

@@ -1,12 +1,13 @@
-#ifndef _SNOWBOARD_SCENENODE_CAMERANODE_
-#define _SNOWBOARD_SCENENODE_CAMERANODE_
+#ifndef _GDS_SCENENODE_CAMERA_H_
+#define _GDS_SCENENODE_CAMERA_H_
 
-#include "GdsNode.h"
+#include "../GdsProperty.h"
 #include "../Transform\GdsFrustum.h"
 
 class GdsFrustum;
 
-class GdsCameraNode : public GdsNode{		
+class GdsCamera : public GdsProperty
+{		
 
 protected:
 	
@@ -22,8 +23,8 @@ protected:
 	D3DXMATRIXA16	matProj;
 
 public:
-	GdsCameraNode();
-	virtual ~GdsCameraNode();
+	GdsCamera();
+	virtual ~GdsCamera();
 
 	void			SetLootAtLH( GdsVector3& eye , GdsVector3& lookat , GdsVector3& up );
 	void			SetLookAt( GdsVector3& lookat );
@@ -34,6 +35,6 @@ public:
 	GdsFrustum&		GetFrustum(){ return m_Frustum; }
 };
 
-typedef boost::shared_ptr< GdsCameraNode >	GdsCameraNodePtr;
+typedef boost::shared_ptr< GdsCamera >	GdsCameraPtr;
 
 #endif

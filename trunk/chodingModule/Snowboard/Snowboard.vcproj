@@ -369,6 +369,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\Core\Property\Geometry\GdsCamera.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Property\Geometry\GdsCamera.h"
+						>
+					</File>
+					<File
 						RelativePath=".\Core\Property\Geometry\GdsGeometry.cpp"
 						>
 					</File>
