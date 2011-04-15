@@ -346,30 +346,70 @@
 					>
 				</File>
 				<Filter
-					Name="Type"
+					Name="Animation"
 					>
 					<File
-						RelativePath=".\Core\Property\Type\GdsAnimation.cpp"
+						RelativePath=".\Core\Property\Animation\GdsAnimation.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Core\Property\Type\GdsAnimation.h"
+						RelativePath=".\Core\Property\Animation\GdsAnimation.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Geometry"
+					>
+					<File
+						RelativePath=".\Core\Property\Geometry\GdsBillboard.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Core\Property\Type\GdsMaterial.cpp"
+						RelativePath=".\Core\Property\Geometry\GdsBillboard.h"
 						>
 					</File>
 					<File
-						RelativePath=".\Core\Property\Type\GdsMaterial.h"
+						RelativePath=".\Core\Property\Geometry\GdsGeometry.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Core\Property\Type\GdsMesh.cpp"
+						RelativePath=".\Core\Property\Geometry\GdsGeometry.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Material"
+					>
+					<File
+						RelativePath=".\Core\Property\Material\GdsMaterial.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Core\Property\Type\GdsMesh.h"
+						RelativePath=".\Core\Property\Material\GdsMaterial.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Mesh"
+					>
+					<File
+						RelativePath=".\Core\Property\Mesh\GdsMesh.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Property\Mesh\GdsMesh.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Polygon"
+					>
+					<File
+						RelativePath=".\Core\Property\Polygon\GdsPolygon.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Property\Polygon\GdsPolygon.h"
 						>
 					</File>
 				</Filter>
