@@ -1,9 +1,9 @@
 #ifndef _GDS_CORE_PROPERTY_ANIMATION_H_
 #define _GDS_CORE_PROPERTY_ANIMATION_H_
 
-#include "../GdsProperty.h"
+#include "../Base/GdsBaseProperty.h"
 
-class GdsAnimation : public GdsProperty
+class GdsAnimation : public GdsBaseProperty
 {
 public:
 	GdsAnimation(){};

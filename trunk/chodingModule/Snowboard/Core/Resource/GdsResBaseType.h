@@ -2,7 +2,6 @@
 #define _GDS_H_RESBASETYPE_
 
 #include "../Base/GdsObject.h"
-#include "../Property/GdsProperty.h"
 
 class GdsResBase : public GdsObject
 {

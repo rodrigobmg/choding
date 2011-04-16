@@ -4,7 +4,6 @@
 #include "../GdsResBaseType.h"
 #include "..\..\..\System\FileSystem\GdsFile.h"
 #include "../../SceneNode\GdsNode.h"
-#include "../../Property/Type/GdsMaterial.h"
 
 class GdsResASE : public GdsResBase
 {

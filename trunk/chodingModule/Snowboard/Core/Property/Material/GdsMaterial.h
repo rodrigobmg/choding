@@ -1,10 +1,10 @@
 #ifndef _GDS_CORE_PROPERTY_MATERIAL_H_
 #define _GDS_CORE_PROPERTY_MATERIAL_H_
 
-#include "../GdsProperty.h"
+#include "../Base/GdsBaseProperty.h"
 #include "../../Resource/Type/GdsResTexture.h"
 
-class GdsMaterial : public GdsProperty
+class GdsMaterial : public GdsBaseProperty
 {
 public:
 

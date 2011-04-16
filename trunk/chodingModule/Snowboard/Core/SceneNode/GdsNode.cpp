@@ -6,12 +6,11 @@
 
 GdsNode::GdsNode():
 m_bBillboard( false ),
-m_bDrawAxis( false )
+m_Property( new GdsProperty )
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
 	m_pParentNode = NULL;
-//	m_pParentNode = GdsNodePtr( (GdsNode*)NULL );
 	m_matWorld.MakeIdentity();
 	m_matLocal.MakeIdentity();
 	m_eCull = CULL_OFF;	
@@ -153,7 +152,7 @@ HRESULT GdsNode::Update( float fElapsedtime )
 	m_DXmatWorld._43 = m_matWorld.m_Translate[2];
 	m_DXmatWorld._44 = 1.0f;
 
-	vUpdateGeometry( fElapsedtime );
+	vUpdate( fElapsedtime );
 
 	if ( !m_ChildNode.empty() )
 	{
@@ -167,57 +166,23 @@ HRESULT GdsNode::Update( float fElapsedtime )
 }
 
 
-void GdsNode::vUpdateGeometry( float fElapsedtime )
+void GdsNode::vUpdate( float fElapsedtime )
 {
-	if ( m_bBillboard == false )
-		return;
+	if ( m_bBillboard == true )		
+	{
+		int32_t cur_cam_index = CAMMGR.GetCurCam();
+		GdsCameraNodePtr pCamera = CAMMGR.GetCamNode( cur_cam_index );
+		GdsMatrix3 billboard;
+		billboard.MakeIdentity();
+		GdsMatrix3 camMat = pCamera->GetWorldTransform().m_Rotate;
+		billboard.SetEntry( 0 , 0 , camMat.m_pEntry[0][0] );
+		billboard.SetEntry( 0 , 2 , camMat.m_pEntry[0][2] );
+		billboard.SetEntry( 2 , 0 , camMat.m_pEntry[2][0] );
+		billboard.SetEntry( 2 , 2 , camMat.m_pEntry[2][2] );
+		billboard = billboard.Inverse();
 
-	int32_t cur_cam_index = CAMMGR.GetCurCam();
-	GdsCameraNodePtr pCamera = CAMMGR.GetCamNode( cur_cam_index );
-	GdsMatrix3 billboard;
-	billboard.MakeIdentity();
-	GdsMatrix3 camMat = pCamera->GetWorldTransform().m_Rotate;
-	billboard.SetEntry( 0 , 0 , camMat.m_pEntry[0][0] );
-	billboard.SetEntry( 0 , 2 , camMat.m_pEntry[0][2] );
-	billboard.SetEntry( 2 , 0 , camMat.m_pEntry[2][0] );
-	billboard.SetEntry( 2 , 2 , camMat.m_pEntry[2][2] );
-	billboard = billboard.Inverse();
-
-	GetWorldRotate() = billboard;
+		GetWorldRotate() = billboard;
+	}	
 }
 
-void GdsNode::DrawAxis()
-{
-// 	D3DXMATRIXA16 matWorld;
-// 	D3DXMATRIXA16 matView;
-// 	D3DXMATRIXA16 matProj;
-// 	m_Device->GetTransform( D3DTS_WORLD , &matWorld );
-// 	m_Device->GetTransform( D3DTS_VIEW  , &matView );
-// 	m_Device->GetTransform( D3DTS_PROJECTION , &matProj );
-// 
-// 	D3DXVECTOR3 axisX[2];
-// 	axisX[0].x = 0.0f; axisX[0].y = 0.0f; axisX[0].z = 0.0f;
-// 	axisX[1].x = 10.0f; axisX[1].y = 0.0f; axisX[1].z = 0.0f;
-// 
-// 	D3DXVECTOR3 axisY[2];
-// 	axisY[0].x = 0.0f; axisY[0].y = 0.0f; axisY[0].z = 0.0f;
-// 	axisY[1].x = 0.0f; axisY[1].y = 10.0f; axisY[1].z = 0.0f;
-// 
-// 	D3DXVECTOR3 axisZ[2];
-// 	axisZ[0].x = 0.0f; axisZ[0].y = 0.0f; axisZ[0].z = 0.0f;
-// 	axisZ[1].x = 0.0f; axisZ[1].y = 0.0f; axisZ[1].z = 10.0f;
-// 
-// 	//D3DXMatrixIdentity( &matWorld );
-// 
-// 	ID3DXLine* Line;
-// 	D3DXCreateLine( m_Device , &Line );
-// 	Line->SetWidth( 1 );
-// 	Line->SetAntialias( true );
-// 	Line->Begin();
-// 	Line->DrawTransform( axisX , 2, &(matWorld*matView*matProj), D3DXCOLOR( 1.0f , 0.0f , 0.0f , 1.0f ));
-// 	Line->DrawTransform( axisY , 2, &(matWorld*matView*matProj), D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-// 	Line->DrawTransform( axisZ , 2, &(matWorld*matView*matProj), D3DXCOLOR( 0.0f , 0.0f , 1.0f , 1.0f ));
-// 	Line->End();
-// 	Line->Release();
-}
 

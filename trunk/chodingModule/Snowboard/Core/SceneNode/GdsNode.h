@@ -32,13 +32,12 @@ private:
 	GdsTransform							m_matLocal;
 
 	
-	bool					m_bBillboard;
+	bool									m_bBillboard;
 	CULL_TYPE								m_eCull;
-	bool									m_bDrawAxis;	
 
 protected:			
 
-	virtual	void							vUpdateGeometry( float fElapsedtime );
+	virtual	void							vUpdate( float fElapsedtime );
 	virtual void							vClear();
 
 public:
@@ -52,6 +51,7 @@ public:
  	}
 
 	void					SetBillboard( bool bflag ){ m_bBillboard = bflag; }
+	void					SetDrawAxis( bool bFlag ) { m_Property->GetMesh()->SetDrawAxis( bFlag ); }
 
 	void					SetParentName( tstring& strParentName ){ m_strParentName = strParentName; }
 	tstring&				GetParentName(){ return m_strParentName; }
@@ -93,8 +93,6 @@ public:
 
  	GdsNode*				GetParent();
  	void					SetParent( GdsNode* pNode );
-//  GdsNodePtr				GetParent();
-//  void					SetParent( GdsNodePtr pNode );
 
 	GdsNodePtr				GetAt( unsigned int index );
 
@@ -107,15 +105,6 @@ public:
 
 	HRESULT					Update( float fElapsedtime );
 
-	void					SetDrawAxis( bool bFlag ) { m_bDrawAxis = bFlag; }
-	void					DrawAxis();
-
-	//DeclareBoostPool(GdsNode)
-// 	void*	operator new( size_t s );
-// 	void	operator delete(void* p);
-
-// private:
-// 	static boost::pool<> bpool;
 
 };
 

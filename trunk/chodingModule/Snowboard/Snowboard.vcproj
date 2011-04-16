@@ -350,6 +350,18 @@
 					</File>
 				</Filter>
 				<Filter
+					Name="Base"
+					>
+					<File
+						RelativePath=".\Core\Property\Base\GdsBaseProperty.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Property\Base\GdsBaseProperty.h"
+						>
+					</File>
+				</Filter>
+				<Filter
 					Name="Material"
 					>
 					<File
