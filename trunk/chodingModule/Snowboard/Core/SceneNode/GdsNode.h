@@ -31,7 +31,8 @@ private:
 	GdsTransform							m_matWorld;
 	GdsTransform							m_matLocal;
 
-
+	
+	bool					m_bBillboard;
 	CULL_TYPE								m_eCull;
 	bool									m_bDrawAxis;	
 
@@ -49,6 +50,8 @@ public:
  	{
  		return shared_from_this();
  	}
+
+	void					SetBillboard( bool bflag ){ m_bBillboard = bflag; }
 
 	void					SetParentName( tstring& strParentName ){ m_strParentName = strParentName; }
 	tstring&				GetParentName(){ return m_strParentName; }

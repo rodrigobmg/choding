@@ -7,7 +7,6 @@
 #include "../System/PerformanceCheck/Performance.h"
 
 #include "SceneNode/GdsNode.h"
-#include "SceneNode/GdsBillboardNode.h"
 #include "../System/Time/GdsSystemTime.h"
 #include "../System/FrameMemory/GdsFrameMemory.h"
 #include "Resource/Type/GdsResASE.h"
@@ -110,7 +109,8 @@ void CSnowboard::TestFunc()
 		//mesh->SetCullType( GdsNode::CULL_ON );
 		m_pRenderer->GetRootNode()->AttachChild( mesh );
 		
-		GdsBillboardNodePtr billboard = GdsBillboardNodePtr( new GdsBillboardNode );
+		GdsNodePtr billboard = GdsNodePtr( new GdsNode );
+		billboard->SetBillboard( true );
 		billboard->SetDrawAxis( true );
 		billboard->SetTranslate( -20 , 0 , 0 );
 		mesh->AttachChild( billboard );

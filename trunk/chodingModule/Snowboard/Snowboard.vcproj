@@ -266,14 +266,6 @@
 				Name="SceneNode"
 				>
 				<File
-					RelativePath=".\Core\SceneNode\GdsBillboardNode.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\SceneNode\GdsBillboardNode.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Core\SceneNode\GdsCameraNode.cpp"
 					>
 				</File>
@@ -354,34 +346,6 @@
 					</File>
 					<File
 						RelativePath=".\Core\Property\Animation\GdsAnimation.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Geometry"
-					>
-					<File
-						RelativePath=".\Core\Property\Geometry\GdsBillboard.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Property\Geometry\GdsBillboard.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Property\Geometry\GdsCamera.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Property\Geometry\GdsCamera.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Property\Geometry\GdsGeometry.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Property\Geometry\GdsGeometry.h"
 						>
 					</File>
 				</Filter>
