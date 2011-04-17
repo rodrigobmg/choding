@@ -33,7 +33,7 @@ bool CSnowboard::InitModule( HWND hWnd )
 	LOG_WARNING_F( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
 
 	InitRenderer( hWnd );
-	InitResource( m_pRenderer->GetDevice() );
+	InitResource( RENDERER.GetDevice() );
 
 	TestFunc();
 
@@ -42,8 +42,9 @@ bool CSnowboard::InitModule( HWND hWnd )
 
 bool	CSnowboard::InitRenderer( HWND hWnd )
 {
-	m_pRenderer = boost::shared_dynamic_cast< GdsRendererDX9 >( GdsCoreFactory::CreateCore( CORE_RENDERER ) );
-	m_pRenderer->Create( hWnd );
+	//m_pRenderer = boost::shared_dynamic_cast< GdsRendererDX9 >( GdsCoreFactory::CreateCore( CORE_RENDERER ) );
+	RENDERER.Create( hWnd );
+	//m_pRenderer->Create( hWnd );
 	
 	return TRUE;
 }
@@ -71,11 +72,13 @@ void CSnowboard::OnIdle()
 		return;
 	}
 
-	if ( m_pRenderer )
-	{		
-		m_pRenderer->Update( GDS::GetAccumTime() );
-		m_fFrameRate = 1.0f / GDS::GetFrameTime();
-	}
+// 	if ( m_pRenderer )
+// 	{		
+// 		m_pRenderer->Update( GDS::GetAccumTime() );
+// 		m_fFrameRate = 1.0f / GDS::GetFrameTime();
+// 	}
+	RENDERER.Update( GDS::GetAccumTime() );
+	m_fFrameRate = 1.0f / GDS::GetFrameTime();
 }
 
 
@@ -96,34 +99,38 @@ void CSnowboard::TestFunc()
 
 	GdsNodePtr node = resASE->GetNode();
 	node->SetDrawAxis( true );
-	m_pRenderer->GetRootNode()->AttachChild( node );
+//	m_pRenderer->GetRootNode()->AttachChild( node );
 
-	m_pRenderer->GetRootNode()->SetDrawAxis( true );
+	RENDERER.GetRootNode()->SetDrawAxis( true );
 
 	{
 		GdsNodePtr mesh = GdsNodePtr( new GdsNode );		
 		
 		mesh->SetDrawAxis( true );
-		//mesh->SetScale( 0.2f );
+
 		mesh->SetTranslate( 10 , 2 , 0 );
-		//mesh->SetCullType( GdsNode::CULL_ON );
-		m_pRenderer->GetRootNode()->AttachChild( mesh );
+
+		RENDERER.GetRootNode()->AttachChild( mesh );
 		
 		GdsNodePtr billboard = GdsNodePtr( new GdsNode );
 		billboard->SetBillboard( true );
 		billboard->SetDrawAxis( true );
 		billboard->SetTranslate( -20 , 0 , 0 );
 		mesh->AttachChild( billboard );
-// 		GdsNodePtr mesh1 = GdsNodePtr( new GdsNode );		
-// 		mesh1->SetPropertyState( pProperty );		
-// 		mesh1->SetTranslate( -1 , 0 , -10 );
-// 		mesh1->SetCullType( GdsNode::CULL_ON );
-// 		mesh1->SetDrawAxis( true );
-// 		mesh->AttachChild( mesh1 );
+
 	}	
 }
 
 HRESULT CSnowboard::MsgProc()
 {
 	return true;
+}
+
+GdsNodePtr CSnowboard::MakeHeightMap()
+{
+	GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( m_pResMgr->Get( L"tex\\map128.bmp") );
+	GdsResTexturePtr texcolor = boost::shared_dynamic_cast< GdsResTexture >( m_pResMgr->Get( L"tex\\tile2.tga") );
+
+	GdsNodePtr mapNode = GdsNodePtr( new GdsNode );
+	return mapNode;
 }

@@ -3,7 +3,9 @@
 #include "../../../System/Logger/logger.h"
 #include "../../../System/FrameMemory/GdsFrameMemory.h"
 
-GdsResASE::GdsResASE()
+GdsResASE::GdsResASE():
+m_VertexList(NULL),
+m_TriangleList(NULL)
 {
 	SetName( OBJECT_RES_ASE );
 	vClear();
@@ -14,6 +16,8 @@ GdsResASE::~GdsResASE()
 {
 	m_vecNodeList.clear();
 	m_vecMaterialList.clear();
+	SAFE_DELETE_ARRAY( m_VertexList );
+	SAFE_DELETE_ARRAY( m_TriangleList );
 }
 
 void GdsResASE::vClear()
@@ -93,6 +97,8 @@ bool GdsResASE::parseNode( NODE_LIST& nodelist )
 			attachNode( *it , (*it)->GetParentName() );
 		}
 	}
+
+	return true;
 }
 
 bool GdsResASE::attachNode( GdsNodePtr childNode , tstring& parentname )
@@ -253,18 +259,39 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 	++line;
 
 	int iCountVertex;
-	GetValue( "*MESH_NUMVERTEX" , line , "\t " , iCountVertex );
-	int iCountTriangle;
-	GetValue( "*MESH_NUMFACES" , line , "\t " , iCountTriangle );
+	if ( GetValue( "*MESH_NUMVERTEX" , line , "\t " , iCountVertex ) )
+	{	
+		if ( m_VertexList != NULL)
+			SAFE_DELETE_ARRAY(m_VertexList);
+
+		m_VertexList = new D3DXVECTOR3[iCountVertex];		
+	}
+
 	
+	int iCountTriangle;
+	if ( GetValue( "*MESH_NUMFACES" , line , "\t " , iCountTriangle ) )
+	{
+		sVERTEX* pv = new sVERTEX[iCountTriangle*3];
+		pNode->GetProperty()->GetPolygon()->SetVertexContainer( pv );		
+		pNode->GetProperty()->GetPolygon()->SetCountVertex( iCountTriangle*3 );
+		pNode->GetProperty()->GetPolygon()->SetSizeofVertex( sizeof( sVERTEX ) );
+		pNode->GetProperty()->GetPolygon()->SetFVF( sVERTEX::FVF );
+
+		if ( m_TriangleList != NULL )
+			SAFE_DELETE_ARRAY( m_TriangleList );
+
+		m_TriangleList = new TRIANGLE[iCountTriangle];
+
+	}	
+
 	if ( CheckKeyword( "*MESH_VERTEX_LIST" , line ) )
 	{
-		DecodeMESH_VERTEX_LIST( line , pNode );
+		DecodeMESH_VERTEX_LIST( line , m_VertexList );
 	}
 
 	if ( CheckKeyword( "*MESH_FACE_LIST" , line ) )
 	{
-		DecodeMESH_FACE_LIST( line , pNode );
+		DecodeMESH_FACE_LIST( line , m_TriangleList );
 	}
 	
  	while ( true )
@@ -301,6 +328,38 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 
 bool GdsResASE::DecodeMESH_TVERTLIST( LineContainerA::iterator& line , GdsNodePtr pNode )
 {
+
+// 		int MAXTVERTEX;
+// 	sscanf(m_line, "%s%d", m_string, &MAXTVERTEX);
+// 
+// 	if(MAXTVERTEX <= 0)return 0;
+// 
+// 	m_CurMesh->m_TVert = new TEXCOORDFLOAT[MAXTVERTEX];
+// 	
+// 	m_ilinecount++;
+// 
+// 	float u, v, w;
+// 	fgets(m_line, 256, fp); //*MESH_TVERTLIST
+// 
+// 	int counter = 0;
+// 	int num;
+// 
+// 	while( counter < MAXTVERTEX )
+// 	{
+// 		m_ilinecount++;
+// 		fgets(m_line, 256, fp); //*MESH_TVERT
+// 		sscanf(m_line, "%s%d%f%f%f", m_string, &num, &u, &v, &w);
+// 
+// 		m_CurMesh->m_TVert[num].u = u;
+// 		m_CurMesh->m_TVert[num].v = 1.0f - v;
+// 		counter++;
+// 	}
+// 
+// 	m_ilinecount++;
+// 	fgets(m_line, 256, fp); //}
+// 
+// 	return 0;
+
 	do 
 	{
 		if ( CheckKeyword( "}" , line ) )
@@ -352,10 +411,19 @@ bool GdsResASE::DecodeMESH_NORMALS( LineContainerA::iterator& line , GdsNodePtr 
 }
 
 
-bool GdsResASE::DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , GdsNodePtr pNode )
+bool GdsResASE::DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , D3DXVECTOR3* pVertexList )
 {
 	do 
 	{
+		float x,y,z,index;
+		if ( GetValue( "*MESH_VERTEX" , line , "\t " , index , x , z , y ) )
+		{
+			int i = static_cast<int>( index );
+			m_VertexList[i].x = x;
+			m_VertexList[i].y = y;
+			m_VertexList[i].z = z;
+		}
+
 		if ( CheckKeyword( "}" , line ) )
 			return true;
 
@@ -365,14 +433,30 @@ bool GdsResASE::DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , GdsNode
 	return false;
 }
 
-bool GdsResASE::DecodeMESH_FACE_LIST( LineContainerA::iterator& line , GdsNodePtr pNode )
+bool GdsResASE::DecodeMESH_FACE_LIST( LineContainerA::iterator& line , TRIANGLE* pTriangleList )
 {
+	int iCount = 0;
 	do 
 	{
+		//*MESH_FACE    0:    A:    0 B:    1 C:    2 AB:    1 BC:    1 CA:    1	 *MESH_SMOOTHING 1 	*MESH_MTLID 0
+		int id , indexx , indexy , indexz ;
+		if ( GetValue_FACELIST( "*MESH_FACE" , line , "\t " 
+						, "A:" , indexx 
+						, "B:" , indexz 
+						, "C:" , indexy 
+						, "*MESH_MTLID" , id ) )
+						{
+							pTriangleList[iCount].VertexIndex[0] = indexx;
+							pTriangleList[iCount].VertexIndex[2] = indexy;
+							pTriangleList[iCount].VertexIndex[1] = indexz;
+							m_TriangleList[iCount].MaterialID = id;
+						}
+
 
 		if ( CheckKeyword( "}" , line ) )
 			return true;
 
+		++iCount;
 		++line;
 	} while ( true );
 
@@ -539,6 +623,42 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 	return bRet;
 }
 
+bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , float& fvalue1, float& fvalue2, float& fvalue3 , float& fvalue4 )
+{
+	size_t len = strlen( *line ) + 1;
+	char* dest_str = static_cast< char* >( FRAMEMEMORY.Alloc( len ) );
+	strcpy_s( dest_str , len ,  *line );
+
+	char* context = NULL;
+	char* token = NULL;
+
+	bool bRet = false;
+	token = strtok_s( dest_str , SEP , &context );
+	if( _stricmp( keyword , token ) == false )
+	{
+		token = strtok_s( NULL , SEP , &context );
+		fvalue1 = static_cast<float>( atof( token ) );
+
+		token = strtok_s( NULL , SEP , &context );
+		fvalue2 = static_cast<float>( atof( token ) );
+
+		token = strtok_s( NULL , SEP , &context );
+		fvalue3 = static_cast<float>( atof( token ) );
+
+		token = strtok_s( NULL , SEP , &context );
+		fvalue4 = static_cast<float>( atof( token ) );
+
+		//한줄 점프~
+		++line;
+		bRet = true;
+	}
+
+	FRAMEMEMORY.Free( len , dest_str );
+
+	return bRet;
+}
+
+
 bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , int& ivalue )
 {	
 	size_t len = strlen( *line ) + 1;
@@ -577,6 +697,7 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 	if( _stricmp( keyword , token ) == false )
 	{
 		std::string token( context );
+
 		token.erase(0,1);
 		token.erase( token.length()-1, token.length() );
 		str = token;
@@ -588,6 +709,79 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 	FRAMEMEMORY.Free( len , dest_str );
 
 	return bRet;
+}
+
+bool GdsResASE::GetValue_FACELIST(  const char* keyword , LineContainerA::iterator& line , const char* SEP 						
+						, const char* subkeyword1 , int& ivalue1  
+						, const char* subkeyword2 , int& ivalue2 
+						, const char* subkeyword3 , int& ivalue3
+						, const char* subkeyword4 , int& ivalue4 
+						)
+{
+	size_t len = strlen( *line ) + 1;
+	char* dest_str = static_cast< char* >( FRAMEMEMORY.Alloc( len ) );
+	strcpy_s( dest_str , len ,  *line );
+
+	char* context = NULL;
+	char* token = NULL;
+
+	bool bRet = false;
+	bool bRet1 = false;
+	bool bRet2 = false;
+	bool bRet3 = false;
+	bool bRet4 = false;
+
+	token = strtok_s( dest_str , SEP ,&context );
+	if( _stricmp( keyword , token ) == false )
+	{
+		while( token )
+		{
+			if ( _stricmp( subkeyword1 , token ) == false )
+			{
+				token = strtok_s( NULL , SEP ,&context );
+				ivalue1 = atoi( token );
+
+				bRet1 = true;
+			}
+
+			if ( _stricmp( subkeyword2 , token ) == false )
+			{
+				token = strtok_s( NULL , SEP ,&context );
+				ivalue2 = atoi( token );
+
+				bRet2 = true;
+			}
+
+			if ( _stricmp( subkeyword3 , token ) == false )
+			{
+				token = strtok_s( NULL , SEP ,&context );
+				ivalue3 = atoi( token );
+
+				bRet3 = true;
+			}
+
+			if ( _stricmp( subkeyword4 , token ) == false )
+			{
+				token = strtok_s( NULL , SEP ,&context );
+				ivalue4 = atoi( token );
+
+				bRet4 = true;
+			}
+
+			token = strtok_s( NULL , SEP ,&context );
+		}
+
+		//한줄 점프~
+		++line;
+
+		if ( bRet1 && bRet2 && bRet3 && bRet4 )
+			bRet = true;
+	}	
+
+	FRAMEMEMORY.Free( len , dest_str );
+
+	return bRet;
+
 }
 
 bool GdsResASE::DecodeMATERIAL_LIST( LineContainerA::iterator& line )

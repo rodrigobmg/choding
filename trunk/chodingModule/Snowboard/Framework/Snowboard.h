@@ -1,10 +1,6 @@
 #ifndef _GDS_H_MAIN_
 #define _GDS_H_MAIN_
 
-
-//메모리릭 탐지 체크
-//#define _CRTDBG_MAP_ALLOC
-
 #include "Snowboard_stdafx.h"
 
 #include "../Core/GdsCoreFactory.h"
@@ -29,6 +25,7 @@ public:
 	void		Clear();
 
 	void		TestFunc();
+	GdsNodePtr	MakeHeightMap();
 
 	float		GetFrameRate(){ return m_fFrameRate; }
 
@@ -37,7 +34,7 @@ private:
 	GdsRendererDX9Ptr	m_pRenderer;
 	GdsResMgrPtr		m_pResMgr;
 	
-	float		m_fFrameRate;
+	float				m_fFrameRate;
 };
 
 #endif

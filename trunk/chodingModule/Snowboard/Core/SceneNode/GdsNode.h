@@ -64,8 +64,8 @@ public:
 	void					SetCullType( CULL_TYPE eCull ){ m_eCull = eCull; }
 	CULL_TYPE				GetCullType(){ return m_eCull; }
 
-	void					SetPropertyState( GdsPropertyPtr pProperty ){ m_Property = pProperty; }
-	GdsPropertyPtr			GetPropertyState(){ return m_Property; }
+	void					SetProperty( GdsPropertyPtr pProperty ){ m_Property = pProperty; }
+	GdsPropertyPtr			GetProperty(){ return m_Property; }
 
 	GdsTransform&			GetTransform(){ return m_matLocal; }
 	void					SetTransform( GdsTransform& mat ){ m_matLocal = mat; }

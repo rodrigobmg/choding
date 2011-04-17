@@ -4,9 +4,10 @@
 #include "../Base/GdsObject.h"
 #include "../SceneNode/GdsNode.h"
 
-class GdsRendererBase : public GdsObject{
+class GdsRendererBase : public GdsObject{	
 
 public:
+
 	GdsRendererBase(){ SetName( OBJECT_RENDERBASE ); }
 	virtual ~GdsRendererBase(){};
 

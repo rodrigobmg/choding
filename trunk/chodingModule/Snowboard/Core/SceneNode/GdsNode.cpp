@@ -1,5 +1,6 @@
 #include "GdsNode.h"
 #include "Camera\GdsCameraManagerDX9.h"
+#include "Renderer\GdsRendererDX9.h"
 
 //ImplementBoostPool( GdsNode )
 //boost::pool<> GdsNode::bpool( sizeof( GdsNode ) );
@@ -154,13 +155,15 @@ HRESULT GdsNode::Update( float fElapsedtime )
 
 	vUpdate( fElapsedtime );
 
+	RENDERER.AddRenderToken( m_Property );
+
 	if ( !m_ChildNode.empty() )
 	{
 		for( CHILDNODE_CONTAINER::iterator it = m_ChildNode.begin() ; it != m_ChildNode.end() ; ++it )
 		{
 			(*it)->Update(fElapsedtime);
 		}
-	}	
+	}		
 
 	return TRUE;
 }

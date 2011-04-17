@@ -3,6 +3,7 @@
 
 #include "GdsRendererBase.h"
 #include "../Camera/GdsCameraManagerDX9.h"
+#include "../Property/GdsProperty.h"
 
 class GdsRendererDX9 : public GdsRendererBase
 {
@@ -12,6 +13,8 @@ private:
  	LPDIRECT3D9             m_pD3D;      // = NULL; // Used to create the D3DDevice
  	LPDIRECT3DDEVICE9       m_pd3dDevice;// = NULL; // Our rendering device
 	GdsNodePtr				m_RootNode;
+
+	std::vector< GdsPropertyPtr>	m_RenderList;
 
 	void					setRootNodeAndCamNode();
 protected:
@@ -25,6 +28,8 @@ public:
 	GdsRendererDX9();
 	virtual ~GdsRendererDX9();
 	
+
+
 	void					Clear(){ vClear(); }
 	HRESULT					Create( HWND hWnd ){ return vCreate( hWnd ); }
 	HRESULT					Release(){ return vRelease(); }
@@ -33,8 +38,9 @@ public:
 	GdsNodePtr				GetRootNode() { return m_RootNode; }
 	
 	void					vUpdate( float fAccumTime );
-
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
+
+	void					AddRenderToken( GdsPropertyPtr rendertoken );
 
 };
 

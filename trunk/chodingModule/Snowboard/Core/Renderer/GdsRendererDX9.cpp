@@ -17,7 +17,8 @@ HRESULT GdsRendererDX9::vRelease()
 {
 	SAFE_RELEASE(m_pD3D);
 	SAFE_RELEASE(m_pd3dDevice);
-	m_RootNode->RemoveAllChild();
+	if ( m_RootNode )
+		m_RootNode->RemoveAllChild();
 	return true;
 }
 
@@ -63,23 +64,28 @@ HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 }
 
 void GdsRendererDX9::vUpdate( float fAccumTime )
-{
+{	
+	CAMMGR.Update( fAccumTime );
+
+	if ( m_RootNode )
+		m_RootNode->Update( fAccumTime );			
+
 	m_pd3dDevice->Clear( 0 , NULL , D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER , D3DCOLOR_XRGB( 128, 128, 128 ) , 1.f , 0 );
 	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
-	{
+	{	
 
-		CAMMGR.Update( fAccumTime );
-
-		m_RootNode->MakeYRotation( timeGetTime() / 1000.f );
-
-		if ( m_RootNode )
-			m_RootNode->Update( fAccumTime );			
-
+		std::vector< GdsPropertyPtr >::iterator it = m_RenderList.begin();
+		for ( ; it != m_RenderList.end() ; ++it )
+		{
+			(*it)->Render( m_pd3dDevice );
+		}
+		
 		m_pd3dDevice->EndScene();
 
 	}
 
 	m_pd3dDevice->Present( NULL , NULL , NULL , NULL );
+	m_RenderList.clear();
 }
 
 void GdsRendererDX9::setRootNodeAndCamNode()
@@ -102,4 +108,9 @@ void GdsRendererDX9::setRootNodeAndCamNode()
  	CAMMGR.Create( m_pd3dDevice );
  	CAMMGR.Attach( camnode );
   	CAMMGR.SetCurCam( 0 );
+}
+
+void GdsRendererDX9::AddRenderToken( GdsPropertyPtr rendertoken )
+{
+	m_RenderList.push_back( rendertoken );
 }
