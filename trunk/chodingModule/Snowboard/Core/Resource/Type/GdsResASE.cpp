@@ -5,7 +5,8 @@
 
 GdsResASE::GdsResASE():
 m_VertexList(NULL),
-m_TriangleList(NULL)
+m_TriangleList(NULL),
+m_TVertex(NULL)
 {
 	SetName( OBJECT_RES_ASE );
 	vClear();
@@ -18,6 +19,7 @@ GdsResASE::~GdsResASE()
 	m_vecMaterialList.clear();
 	SAFE_DELETE_ARRAY( m_VertexList );
 	SAFE_DELETE_ARRAY( m_TriangleList );
+	SAFE_DELETE_ARRAY( m_TVertex);
 }
 
 void GdsResASE::vClear()
@@ -297,14 +299,21 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
  	while ( true )
  	{
 		int iNumOfTVertex;
-		GetValue( "*MESH_NUMTVERTEX" , line , "\t " , iNumOfTVertex );
-		if ( iNumOfTVertex > 0 )
-			DecodeMESH_TVERTLIST( line , pNode );
+		if ( GetValue( "*MESH_NUMTVERTEX" , line , "\t " , iNumOfTVertex ) )
+		{
+			if ( iNumOfTVertex > 0 )
+			{
+				if ( m_TVertex != NULL )
+					SAFE_DELETE_ARRAY(m_TVertex);
+				m_TVertex = new TEXCOORDFLOAT[iNumOfTVertex];
+				DecodeMESH_TVERTLIST( line , m_TVertex );
+			}			
+		}			
  	
 		int iNumOfTVFaces;
 		GetValue( "*MESH_NUMTVFACES" , line , "\t " , iNumOfTVFaces );
 		if ( iNumOfTVFaces > 0 )		
- 			DecodeMESH_TFACELIST( line , pNode );
+ 			DecodeMESH_TFACELIST( line );
 
 		int iNumOfCVertex;
 		GetValue( "*MESH_NUMCVERTEX" , line , "\t " , iNumOfCVertex );
@@ -326,60 +335,58 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 	return false;
 }
 
-bool GdsResASE::DecodeMESH_TVERTLIST( LineContainerA::iterator& line , GdsNodePtr pNode )
+bool GdsResASE::DecodeMESH_TVERTLIST( LineContainerA::iterator& line , TEXCOORDFLOAT* pTVertex )
 {
-
-// 		int MAXTVERTEX;
-// 	sscanf(m_line, "%s%d", m_string, &MAXTVERTEX);
-// 
-// 	if(MAXTVERTEX <= 0)return 0;
-// 
-// 	m_CurMesh->m_TVert = new TEXCOORDFLOAT[MAXTVERTEX];
-// 	
-// 	m_ilinecount++;
-// 
-// 	float u, v, w;
-// 	fgets(m_line, 256, fp); //*MESH_TVERTLIST
-// 
-// 	int counter = 0;
-// 	int num;
-// 
-// 	while( counter < MAXTVERTEX )
-// 	{
-// 		m_ilinecount++;
-// 		fgets(m_line, 256, fp); //*MESH_TVERT
-// 		sscanf(m_line, "%s%d%f%f%f", m_string, &num, &u, &v, &w);
-// 
-// 		m_CurMesh->m_TVert[num].u = u;
-// 		m_CurMesh->m_TVert[num].v = 1.0f - v;
-// 		counter++;
-// 	}
-// 
-// 	m_ilinecount++;
-// 	fgets(m_line, 256, fp); //}
-// 
-// 	return 0;
-
-	do 
+	if ( CheckKeyword( "*MESH_TVERTLIST" , line ) ) 
 	{
-		if ( CheckKeyword( "}" , line ) )
-			return true;
+		do 
+		{
+			float index , u , v , w; 
+			if ( GetValue( "*MESH_TVERT" , line , "\t " , index , u , v ,w ) )
+			{
+				int iIndex = static_cast<int>(index);
+				pTVertex[iIndex].u = u;
+				pTVertex[iIndex].v = 1.0f - v;
+			}
+			else if ( CheckKeyword( "}" , line ) )
+				return true;
 
-		++line;
-	} while ( true );
+			++line;
+		}
+		while ( true );
+	} 
 
 	return false;
 }
 
-bool GdsResASE::DecodeMESH_TFACELIST( LineContainerA::iterator& line , GdsNodePtr pNode )
+bool GdsResASE::DecodeMESH_TFACELIST( LineContainerA::iterator& line )
 {
-	do 
+	if ( CheckKeyword( "*MESH_TFACELIST" , line ) )
 	{
-		if ( CheckKeyword( "}" , line ) )
-			return true;
+		do 
+		{
+			float index , x , y , z;
+			if ( GetValue( "*MESH_TFACE" , line , "\t " , index , x , z , y ) )
+			{
+				int iIndex = static_cast<int>( index );
+				int ix = static_cast<int>( x );
+				int iy = static_cast<int>( y );
+				int iz = static_cast<int>( z );
+				m_TriangleList[iIndex].VertexTexture[0].u = m_TVertex[ix].u;
+				m_TriangleList[iIndex].VertexTexture[0].v = m_TVertex[ix].v;
+				m_TriangleList[iIndex].VertexTexture[1].u = m_TVertex[iy].u;
+				m_TriangleList[iIndex].VertexTexture[1].v = m_TVertex[iy].v;
+				m_TriangleList[iIndex].VertexTexture[2].u = m_TVertex[iz].u;
+				m_TriangleList[iIndex].VertexTexture[2].v = m_TVertex[iz].v;
 
-		++line;
-	} while ( true );
+			}
+			else if ( CheckKeyword( "}" , line ) )
+				return true;
+
+		} while ( true );
+	}	
+
+	++line;
 
 	return false;
 }
@@ -399,13 +406,39 @@ bool GdsResASE::DecodeMESH_CVERTEX( LineContainerA::iterator& line , GdsNodePtr 
 
 bool GdsResASE::DecodeMESH_NORMALS( LineContainerA::iterator& line , GdsNodePtr pNode )
 {
-	do 
+	float index , x , y , z;
+	if( GetValue( "*MESH_FACENORMAL" , line , "\t " , index , x , z , y ) )
 	{
-		if ( CheckKeyword( "}" , line ) )
-			return true;
+		m_TriangleList[(int)index].FaceNormal.x = x;
+		m_TriangleList[(int)index].FaceNormal.y = y;
+		m_TriangleList[(int)index].FaceNormal.z = z;
 
-		++line;
-	} while ( true );
+		if ( GetValue( "*MESH_VERTEXNORMAL" , line , "\t " , index , x, z ,y ) )
+		{
+			m_TriangleList[(int)index].VertexNormal[0].x = x;
+			m_TriangleList[(int)index].VertexNormal[0].y = y;
+			m_TriangleList[(int)index].VertexNormal[0].z = z;
+		}
+
+		if ( GetValue( "*MESH_VERTEXNORMAL" , line , "\t " , index , x, z ,y ) )
+		{
+			m_TriangleList[(int)index].VertexNormal[2].x = x;
+			m_TriangleList[(int)index].VertexNormal[2].y = y;
+			m_TriangleList[(int)index].VertexNormal[2].z = z;
+		}
+
+		if ( GetValue( "*MESH_VERTEXNORMAL" , line , "\t " , index , x, z ,y ) )
+		{
+			m_TriangleList[(int)index].VertexNormal[1].x = x;
+			m_TriangleList[(int)index].VertexNormal[1].y = y;
+			m_TriangleList[(int)index].VertexNormal[1].z = z;
+		}
+	}
+	
+	if ( CheckKeyword( "}" , line ) )
+		return true;
+
+	++line;
 
 	return false;
 }
@@ -445,12 +478,12 @@ bool GdsResASE::DecodeMESH_FACE_LIST( LineContainerA::iterator& line , TRIANGLE*
 						, "B:" , indexz 
 						, "C:" , indexy 
 						, "*MESH_MTLID" , id ) )
-						{
-							pTriangleList[iCount].VertexIndex[0] = indexx;
-							pTriangleList[iCount].VertexIndex[2] = indexy;
-							pTriangleList[iCount].VertexIndex[1] = indexz;
-							m_TriangleList[iCount].MaterialID = id;
-						}
+			{
+				pTriangleList[iCount].VertexIndex[0] = indexx;
+				pTriangleList[iCount].VertexIndex[2] = indexy;
+				pTriangleList[iCount].VertexIndex[1] = indexz;
+				m_TriangleList[iCount].MaterialID = id;
+			}
 
 
 		if ( CheckKeyword( "}" , line ) )
@@ -657,7 +690,6 @@ bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line ,
 
 	return bRet;
 }
-
 
 bool GdsResASE::GetValue( const char* keyword , LineContainerA::iterator& line , const char* SEP , int& ivalue )
 {	

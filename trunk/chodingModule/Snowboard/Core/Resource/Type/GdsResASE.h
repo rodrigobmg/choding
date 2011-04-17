@@ -62,6 +62,7 @@ class GdsResASE : public GdsResBase
 
 	D3DXVECTOR3*		m_VertexList;
 	TRIANGLE*			m_TriangleList;
+	TEXCOORDFLOAT*		m_TVertex;
 
 	bool				DecodeSCENE( LineContainerA::iterator& line );
 	bool				DecodeMATERIAL_LIST( LineContainerA::iterator& line );	
@@ -73,8 +74,8 @@ class GdsResASE : public GdsResBase
 	bool				DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode );
 	bool				DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , D3DXVECTOR3* pVertexList );
 	bool				DecodeMESH_FACE_LIST( LineContainerA::iterator& line , TRIANGLE* pTriangleList );
-	bool				DecodeMESH_TVERTLIST( LineContainerA::iterator& line , GdsNodePtr pNode );
-	bool				DecodeMESH_TFACELIST( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeMESH_TVERTLIST( LineContainerA::iterator& line , TEXCOORDFLOAT* pTVertex );
+	bool				DecodeMESH_TFACELIST( LineContainerA::iterator& line );
 	bool				DecodeMESH_CVERTEX( LineContainerA::iterator& line , GdsNodePtr pNode );
 	bool				DecodeMESH_NORMALS( LineContainerA::iterator& line , GdsNodePtr pNode );
 	bool				DecodeANIMATION( LineContainerA::iterator& line , GdsNodePtr pNode );
