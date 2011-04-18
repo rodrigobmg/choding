@@ -32,7 +32,7 @@
 
 #include "SunFileMemory_Test.hpp"
 // #include "Snowboard_test.hpp"
-#include "GdsResMgr_test.hpp"
+//#include "GdsResMgr_test.hpp"
 //#include "GdsNode_test.hpp"
 // #include "GdsTransform_test.hpp"
 // #include "GdsProperty_test.hpp"

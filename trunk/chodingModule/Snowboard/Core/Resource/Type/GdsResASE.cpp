@@ -856,6 +856,7 @@ bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPtr 
 		{
 			GetValue( "*SUBMATERIAL" , line , " " , m_iSubMaterial );
 			GdsMaterialPtr subMaterial = GdsMaterialPtr( new GdsMaterial );
+			Material->AddSubMaterial( subMaterial );
 			DecodeMaterial( line , subMaterial );
 		}
 
