@@ -52,7 +52,7 @@ void GdsMaterial::vClear()
 	m_Tex.clear();
 }
 
-void GdsMaterial::Render( LPDIRECT3DDEVICE9 device )
+void GdsMaterial::vRender( LPDIRECT3DDEVICE9 device )
 {
 	if ( m_eTexturingType == DEFAULT )
 		device->SetTexture( 0, m_Tex[0]->Get() );  	

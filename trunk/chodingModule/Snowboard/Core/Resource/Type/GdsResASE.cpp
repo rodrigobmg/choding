@@ -160,7 +160,9 @@ bool GdsResASE::DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pN
 		}
 
 		if ( CheckKeyword( "}" , line ) )
+		{
 			return true;
+		}
 
 		++line;
 
@@ -480,8 +482,8 @@ bool GdsResASE::DecodeMESH_FACE_LIST( LineContainerA::iterator& line , TRIANGLE*
 						, "*MESH_MTLID" , id ) )
 			{
 				pTriangleList[iCount].VertexIndex[0] = indexx;
-				pTriangleList[iCount].VertexIndex[2] = indexy;
-				pTriangleList[iCount].VertexIndex[1] = indexz;
+				pTriangleList[iCount].VertexIndex[1] = indexy;
+				pTriangleList[iCount].VertexIndex[2] = indexz;
 				m_TriangleList[iCount].MaterialID = id;
 			}
 

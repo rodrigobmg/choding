@@ -40,6 +40,7 @@
 // #include "GdsFile_test.hpp"
 // #include "GdsVectorContainer_test.hpp"
 #include "GdsResASE_test.hpp"
+#include "GdsMaterial_test.hpp"
 
 int main(int argc, char **argv)
 {

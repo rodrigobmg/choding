@@ -64,6 +64,8 @@ class GdsResASE : public GdsResBase
 	TRIANGLE*			m_TriangleList;
 	TEXCOORDFLOAT*		m_TVertex;
 
+	void				MakeVertex();
+
 	bool				DecodeSCENE( LineContainerA::iterator& line );
 	bool				DecodeMATERIAL_LIST( LineContainerA::iterator& line );	
 	bool				DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPtr Material );

@@ -52,7 +52,7 @@ public:
 // 		TCHAR curpath[ MAX_PATH ];
 // 		GetCurrentDirectory( MAX_PATH, curpath );
  		TCHAR respath[MAX_PATH];
- 		_stprintf_s( respath , L"%s\\%s" , L"E:\\Project\\choding\\Application" , L"Resource" );
+ 		_stprintf_s( respath , L"%s\\%s" , L"D:\\choding\\Application" , L"Resource" );
  		ASSERT_TRUE( resmgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;jpg;dds;tga" , true )) );
 		GdsResTexturePtr ptex = boost::shared_dynamic_cast< GdsResTexture >( resmgr->Get( L"tex\\banana.bmp" ) );
 		LPDIRECT3DTEXTURE9 tex = ptex->Get();
