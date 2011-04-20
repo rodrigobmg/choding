@@ -59,13 +59,18 @@ void GdsMaterial::vClear()
 
 void GdsMaterial::vRender( LPDIRECT3DDEVICE9 device )
 {
-	if ( m_eTexturingType == DEFAULT )
-		device->SetTexture( 0, m_Tex[0]->Get() );  	
-	else if ( m_eTexturingType == MULTI_TEXTURE )
-	{
-		LOG_WARNING( "미지원 기능" );
-		ASSERT( 0 );
-	}
+// 	if ( m_eTexturingType == DEFAULT )
+// 		device->SetTexture( 0, m_Tex[0]->Get() );  	
+// 	else if ( m_eTexturingType == MULTI_TEXTURE )
+// 	{
+// 		LOG_WARNING( "미지원 기능" );
+// 		ASSERT( 0 );
+// 	}
+
+	device->SetMaterial( &m_dxMaterial );
+	device->SetStreamSource( 0 , m_vb , 0 , m_VertexSize );
+	device->SetIndices( m_ib );
+	device->DrawIndexedPrimitive( D3DPT_TRIANGLELIST , 0 , 0 , m_Vertex_Maxcount , 0 , m_Index_Maxcount );
 }
 
 void GdsMaterial::SetTexture( GdsResTexturePtr texture , const int num /*= 0 */ )

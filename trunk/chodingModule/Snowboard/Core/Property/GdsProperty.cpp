@@ -45,7 +45,8 @@ void GdsProperty::vUpdate( float fElapsedTime )
 void GdsProperty::vRender( LPDIRECT3DDEVICE9 device )
 {
 	if ( m_Mesh != NULL )
-	{
-		m_Mesh->Render(device);
-	}
+		m_Mesh->Render( device );
+
+	if ( m_Material != NULL )
+		m_Material->Render( device );
 }

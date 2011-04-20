@@ -323,8 +323,13 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
  		
  		if( CheckKeyword( "}" , line ) ) 
 		{
-			MakeVertex( pNode->GetProperty()->GetMaterial()->GetVB() , iCountVertex );
-			MakeIndex( pNode->GetProperty()->GetMaterial()->GetIB() , iCountTriangle );
+			pNode->GetProperty()->GetMaterial()->SetFVF( sizeof( AseVERTEX::FVF ) );
+			pNode->GetProperty()->GetMaterial()->SetVertexSize( sizeof( AseVERTEX ) );
+			pNode->GetProperty()->GetMaterial()->SetVertexMaxCount( iCountVertex );
+			pNode->GetProperty()->GetMaterial()->SetIndexMaxCount( iCountTriangle );
+
+			MakeVertex( pNode->GetProperty()->GetMaterial()->GetVBBuffer() , iCountVertex );
+			MakeIndex( pNode->GetProperty()->GetMaterial()->GetIBBuffer() , iCountTriangle );
 
 			return true;
 		}
@@ -335,35 +340,35 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 	return false;
 }
 
-void GdsResASE::MakeVertex( LPDIRECT3DVERTEXBUFFER9 vb , int icount_vertex )
+void GdsResASE::MakeVertex( LPDIRECT3DVERTEXBUFFER9* vb , int icount_vertex )
 {
 	LPDIRECT3DDEVICE9 device = RENDERER.GetDevice();
 	ASSERT( device );
-	ASSERT( !vb );
+	ASSERT( !(*vb) );
 
 	if( FAILED(device->CreateVertexBuffer( icount_vertex*sizeof(AseVERTEX),0, AseVERTEX::FVF,
-		D3DPOOL_DEFAULT, &vb, NULL)))
+		D3DPOOL_DEFAULT, vb, NULL)))
 	{
 		return;
 	}
 
 	VOID* pVertices;
-	if(FAILED(vb->Lock(0, icount_vertex*sizeof(AseVERTEX), (void**)&pVertices,0)))
+	if(FAILED( (*vb)->Lock(0, icount_vertex*sizeof(AseVERTEX), (void**)&pVertices,0)))
 	{
 		return;
 	}
 
 	memcpy(pVertices, m_VertexList , icount_vertex*sizeof(AseVERTEX));
 
-	vb->Unlock();
+	(*vb)->Unlock();
 
 }
 
-void GdsResASE::MakeIndex( LPDIRECT3DINDEXBUFFER9 ib , int icount_index )
+void GdsResASE::MakeIndex( LPDIRECT3DINDEXBUFFER9* ib , int icount_index )
 {
 	LPDIRECT3DDEVICE9 device = RENDERER.GetDevice();
 	ASSERT( device );
-	ASSERT( !ib );
+	ASSERT( !(*ib) );
 
 	AseINDEX* pIndex = NULL;
 	pIndex = new AseINDEX[icount_index];
@@ -375,7 +380,7 @@ void GdsResASE::MakeIndex( LPDIRECT3DINDEXBUFFER9 ib , int icount_index )
 	}
 
 	if( FAILED( device->CreateIndexBuffer( icount_index*sizeof(AseINDEX),	0,  D3DFMT_INDEX32 ,
-		D3DPOOL_DEFAULT, &ib, NULL ) ) )
+		D3DPOOL_DEFAULT, ib, NULL ) ) )
 	{
 		return;
 	}
@@ -383,12 +388,12 @@ void GdsResASE::MakeIndex( LPDIRECT3DINDEXBUFFER9 ib , int icount_index )
 	/// 정점버퍼를 값으로 채운다. 
 	/// 정점버퍼의 Lock()함수를 호출하여 포인터를 얻어온다.
 	VOID* pIndices;
-	if( FAILED( ib->Lock( 0, icount_index*sizeof(AseINDEX), (void**)&pIndices, 0 ) ) )
+	if( FAILED( (*ib)->Lock( 0, icount_index*sizeof(AseINDEX), (void**)&pIndices, 0 ) ) )
 		return;
 
 	memcpy( pIndices , pIndex , icount_index*sizeof(AseINDEX) );
 
-	ib->Unlock();
+	(*ib)->Unlock();
 }
 
 
@@ -994,6 +999,7 @@ bool GdsResASE::DecodeMap( LineContainerA::iterator& line , GdsMaterialPtr Mater
 		{
 			tstring strpath = util::string::mb2wc( path.c_str() );
 			Material->SetTexturePath( strpath );
+
 		}
 
 		if( CheckKeyword( "}" , line ) )

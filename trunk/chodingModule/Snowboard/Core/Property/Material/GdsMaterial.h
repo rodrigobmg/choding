@@ -39,6 +39,12 @@ private:
 	LPDIRECT3DVERTEXBUFFER9	m_vb;
 	LPDIRECT3DINDEXBUFFER9	m_ib;
 
+	int						m_VertexSize;
+	int						m_FVF;
+	int						m_Vertex_Maxcount;
+
+	int						m_Index_Maxcount;
+
 protected:
 
 	virtual void			vClear();
@@ -54,6 +60,11 @@ public:
 	LPDIRECT3DINDEXBUFFER9*		GetIBBuffer(){ return &m_ib; }
 	LPDIRECT3DVERTEXBUFFER9*	GetVBBuffer(){ return &m_vb; }
 
+	void					SetVertexSize( int isize ){ m_VertexSize = isize; }
+	void					SetVertexMaxCount( int icount ){ m_Vertex_Maxcount = icount; }
+	void					SetFVF( int ifvf ){ m_FVF = ifvf; }
+
+	void					SetIndexMaxCount( int size ){ m_Index_Maxcount = size; }
 
 	void					SetAmbientColor( float r , float g , float b );
 	void					SetDiffuesColor( float r , float g , float b );

@@ -104,20 +104,14 @@ void CSnowboard::TestFunc()
 	RENDERER.GetRootNode()->SetDrawAxis( true );
 
 	{
-		GdsNodePtr mesh = GdsNodePtr( new GdsNode );		
+// 		GdsNodePtr mesh = GdsNodePtr( new GdsNode );		
+// 		
+// 		mesh->SetDrawAxis( true );
+// 
+// 		mesh->SetTranslate( 10 , 2 , 0 );
+
+		RENDERER.GetRootNode()->AttachChild( node );
 		
-		mesh->SetDrawAxis( true );
-
-		mesh->SetTranslate( 10 , 2 , 0 );
-
-		RENDERER.GetRootNode()->AttachChild( mesh );
-		
-		GdsNodePtr billboard = GdsNodePtr( new GdsNode );
-		billboard->SetBillboard( true );
-		billboard->SetDrawAxis( true );
-		billboard->SetTranslate( -20 , 0 , 0 );
-		mesh->AttachChild( billboard );
-
 	}	
 }
 
