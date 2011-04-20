@@ -2,10 +2,11 @@
 #include "../../../System/FileSystem/GdsFile.h"
 #include "../../../System/Logger/logger.h"
 #include "../../../System/FrameMemory/GdsFrameMemory.h"
+#include "Renderer/GdsRendererDX9.h"
 
 GdsResASE::GdsResASE():
 m_VertexList(NULL),
-m_TriangleList(NULL),
+m_FaceList(NULL),
 m_TVertex(NULL)
 {
 	SetName( OBJECT_RES_ASE );
@@ -18,7 +19,7 @@ GdsResASE::~GdsResASE()
 	m_vecNodeList.clear();
 	m_vecMaterialList.clear();
 	SAFE_DELETE_ARRAY( m_VertexList );
-	SAFE_DELETE_ARRAY( m_TriangleList );
+	SAFE_DELETE_ARRAY( m_FaceList );
 	SAFE_DELETE_ARRAY( m_TVertex);
 }
 
@@ -268,23 +269,17 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 		if ( m_VertexList != NULL)
 			SAFE_DELETE_ARRAY(m_VertexList);
 
-		m_VertexList = new D3DXVECTOR3[iCountVertex];		
+		m_VertexList = new AseVERTEX[iCountVertex];		
 	}
 
 	
 	int iCountTriangle;
 	if ( GetValue( "*MESH_NUMFACES" , line , "\t " , iCountTriangle ) )
-	{
-		sVERTEX* pv = new sVERTEX[iCountTriangle*3];
-		pNode->GetProperty()->GetPolygon()->SetVertexContainer( pv );		
-		pNode->GetProperty()->GetPolygon()->SetCountVertex( iCountTriangle*3 );
-		pNode->GetProperty()->GetPolygon()->SetSizeofVertex( sizeof( sVERTEX ) );
-		pNode->GetProperty()->GetPolygon()->SetFVF( sVERTEX::FVF );
+	{		
+		if ( m_FaceList != NULL )
+			SAFE_DELETE_ARRAY( m_FaceList );
 
-		if ( m_TriangleList != NULL )
-			SAFE_DELETE_ARRAY( m_TriangleList );
-
-		m_TriangleList = new TRIANGLE[iCountTriangle];
+		m_FaceList = new AseFACE[iCountTriangle];
 
 	}	
 
@@ -295,7 +290,7 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 
 	if ( CheckKeyword( "*MESH_FACE_LIST" , line ) )
 	{
-		DecodeMESH_FACE_LIST( line , m_TriangleList );
+		DecodeMESH_FACE_LIST( line , m_FaceList );
 	}
 	
  	while ( true )
@@ -305,6 +300,7 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 		{
 			if ( iNumOfTVertex > 0 )
 			{
+				//u v 
 				if ( m_TVertex != NULL )
 					SAFE_DELETE_ARRAY(m_TVertex);
 				m_TVertex = new TEXCOORDFLOAT[iNumOfTVertex];
@@ -317,25 +313,84 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 		if ( iNumOfTVFaces > 0 )		
  			DecodeMESH_TFACELIST( line );
 
-		int iNumOfCVertex;
-		GetValue( "*MESH_NUMCVERTEX" , line , "\t " , iNumOfCVertex );
-		if ( iNumOfCVertex > 0 )		
-			DecodeMESH_CVERTEX( line , pNode );
+// 		int iNumOfCVertex;
+// 		GetValue( "*MESH_NUMCVERTEX" , line , "\t " , iNumOfCVertex );
+// 		if ( iNumOfCVertex > 0 )		
+// 			DecodeMESH_CVERTEX( line , pNode );
 
 		if ( CheckKeyword( "*MESH_NORMALS" , line ) )
-			DecodeMESH_NORMALS( line , pNode );
+			DecodeMESH_NORMALS( line );
  		
  		if( CheckKeyword( "}" , line ) ) 
-			break;
+		{
+			MakeVertex( pNode->GetProperty()->GetMaterial()->GetVB() , iCountVertex );
+			MakeIndex( pNode->GetProperty()->GetMaterial()->GetIB() , iCountTriangle );
+
+			return true;
+		}
 
 		++line; 
  	}
- 
-	if ( CheckKeyword( "}" , line ) )
- 		return true;
 
 	return false;
 }
+
+void GdsResASE::MakeVertex( LPDIRECT3DVERTEXBUFFER9 vb , int icount_vertex )
+{
+	LPDIRECT3DDEVICE9 device = RENDERER.GetDevice();
+	ASSERT( device );
+	ASSERT( !vb );
+
+	if( FAILED(device->CreateVertexBuffer( icount_vertex*sizeof(AseVERTEX),0, AseVERTEX::FVF,
+		D3DPOOL_DEFAULT, &vb, NULL)))
+	{
+		return;
+	}
+
+	VOID* pVertices;
+	if(FAILED(vb->Lock(0, icount_vertex*sizeof(AseVERTEX), (void**)&pVertices,0)))
+	{
+		return;
+	}
+
+	memcpy(pVertices, m_VertexList , icount_vertex*sizeof(AseVERTEX));
+
+	vb->Unlock();
+
+}
+
+void GdsResASE::MakeIndex( LPDIRECT3DINDEXBUFFER9 ib , int icount_index )
+{
+	LPDIRECT3DDEVICE9 device = RENDERER.GetDevice();
+	ASSERT( device );
+	ASSERT( !ib );
+
+	AseINDEX* pIndex = NULL;
+	pIndex = new AseINDEX[icount_index];
+	for ( size_t i=0 ;i < icount_index ; i++ )
+	{
+		pIndex[i]._0 = m_FaceList[i].VertexIndex[0];
+		pIndex[i]._1 = m_FaceList[i].VertexIndex[1];
+		pIndex[i]._2 = m_FaceList[i].VertexIndex[2];
+	}
+
+	if( FAILED( device->CreateIndexBuffer( icount_index*sizeof(AseINDEX),	0,  D3DFMT_INDEX32 ,
+		D3DPOOL_DEFAULT, &ib, NULL ) ) )
+	{
+		return;
+	}
+
+	/// 정점버퍼를 값으로 채운다. 
+	/// 정점버퍼의 Lock()함수를 호출하여 포인터를 얻어온다.
+	VOID* pIndices;
+	if( FAILED( ib->Lock( 0, icount_index*sizeof(AseINDEX), (void**)&pIndices, 0 ) ) )
+		return;
+
+	memcpy( pIndices , pIndex , icount_index*sizeof(AseINDEX) );
+
+	ib->Unlock();
+}
+
 
 bool GdsResASE::DecodeMESH_TVERTLIST( LineContainerA::iterator& line , TEXCOORDFLOAT* pTVertex )
 {
@@ -374,12 +429,25 @@ bool GdsResASE::DecodeMESH_TFACELIST( LineContainerA::iterator& line )
 				int ix = static_cast<int>( x );
 				int iy = static_cast<int>( y );
 				int iz = static_cast<int>( z );
-				m_TriangleList[iIndex].VertexTexture[0].u = m_TVertex[ix].u;
-				m_TriangleList[iIndex].VertexTexture[0].v = m_TVertex[ix].v;
-				m_TriangleList[iIndex].VertexTexture[1].u = m_TVertex[iy].u;
-				m_TriangleList[iIndex].VertexTexture[1].v = m_TVertex[iy].v;
-				m_TriangleList[iIndex].VertexTexture[2].u = m_TVertex[iz].u;
-				m_TriangleList[iIndex].VertexTexture[2].v = m_TVertex[iz].v;
+// 				m_FaceList[iIndex].VertexTexture[0].u = m_TVertex[ix].u;
+// 				m_FaceList[iIndex].VertexTexture[0].v = m_TVertex[ix].v;
+// 				m_FaceList[iIndex].VertexTexture[1].u = m_TVertex[iy].u;
+// 				m_FaceList[iIndex].VertexTexture[1].v = m_TVertex[iy].v;
+// 				m_FaceList[iIndex].VertexTexture[2].u = m_TVertex[iz].u;
+// 				m_FaceList[iIndex].VertexTexture[2].v = m_TVertex[iz].v;
+
+				int vertex_index_x = m_FaceList[iIndex].VertexIndex[0];
+				int vertex_index_y = m_FaceList[iIndex].VertexIndex[1];
+				int vertex_index_z = m_FaceList[iIndex].VertexIndex[2];
+
+				m_VertexList[vertex_index_x].u = m_TVertex[ix].u;
+				m_VertexList[vertex_index_x].v = m_TVertex[ix].v;
+
+				m_VertexList[vertex_index_y].u = m_TVertex[iy].u;
+				m_VertexList[vertex_index_y].v = m_TVertex[iy].v;
+
+				m_VertexList[vertex_index_z].u = m_TVertex[iz].u;
+				m_VertexList[vertex_index_z].v = m_TVertex[iz].v;
 
 			}
 			else if ( CheckKeyword( "}" , line ) )
@@ -406,47 +474,51 @@ bool GdsResASE::DecodeMESH_CVERTEX( LineContainerA::iterator& line , GdsNodePtr 
 	return false;
 }
 
-bool GdsResASE::DecodeMESH_NORMALS( LineContainerA::iterator& line , GdsNodePtr pNode )
+bool GdsResASE::DecodeMESH_NORMALS( LineContainerA::iterator& line )
 {
 	float index , x , y , z;
-	if( GetValue( "*MESH_FACENORMAL" , line , "\t " , index , x , z , y ) )
+
+	do
 	{
-		m_TriangleList[(int)index].FaceNormal.x = x;
-		m_TriangleList[(int)index].FaceNormal.y = y;
-		m_TriangleList[(int)index].FaceNormal.z = z;
-
-		if ( GetValue( "*MESH_VERTEXNORMAL" , line , "\t " , index , x, z ,y ) )
+		if( GetValue( "*MESH_FACENORMAL" , line , "\t " , index , x , z , y ) )
 		{
-			m_TriangleList[(int)index].VertexNormal[0].x = x;
-			m_TriangleList[(int)index].VertexNormal[0].y = y;
-			m_TriangleList[(int)index].VertexNormal[0].z = z;
+			m_FaceList[(int)index].FaceNormal.x = x;
+			m_FaceList[(int)index].FaceNormal.y = y;
+			m_FaceList[(int)index].FaceNormal.z = z;
+
+			if ( GetValue( "*MESH_VERTEXNORMAL" , line , "\t " , index , x, z ,y ) )
+			{
+				// 			m_FaceList[(int)index].VertexNormal[0].x = x;
+				// 			m_FaceList[(int)index].VertexNormal[0].y = y;
+				// 			m_FaceList[(int)index].VertexNormal[0].z = z;
+			}
+
+			if ( GetValue( "*MESH_VERTEXNORMAL" , line , "\t " , index , x, z ,y ) )
+			{
+				// 			m_FaceList[(int)index].VertexNormal[2].x = x;
+				// 			m_FaceList[(int)index].VertexNormal[2].y = y;
+				// 			m_FaceList[(int)index].VertexNormal[2].z = z;
+			}
+
+			if ( GetValue( "*MESH_VERTEXNORMAL" , line , "\t " , index , x, z ,y ) )
+			{
+				// 			m_FaceList[(int)index].VertexNormal[1].x = x;
+				// 			m_FaceList[(int)index].VertexNormal[1].y = y;
+				// 			m_FaceList[(int)index].VertexNormal[1].z = z;
+			}
 		}
 
-		if ( GetValue( "*MESH_VERTEXNORMAL" , line , "\t " , index , x, z ,y ) )
-		{
-			m_TriangleList[(int)index].VertexNormal[2].x = x;
-			m_TriangleList[(int)index].VertexNormal[2].y = y;
-			m_TriangleList[(int)index].VertexNormal[2].z = z;
-		}
+		if ( CheckKeyword( "}" , line ) )
+			return true;
 
-		if ( GetValue( "*MESH_VERTEXNORMAL" , line , "\t " , index , x, z ,y ) )
-		{
-			m_TriangleList[(int)index].VertexNormal[1].x = x;
-			m_TriangleList[(int)index].VertexNormal[1].y = y;
-			m_TriangleList[(int)index].VertexNormal[1].z = z;
-		}
-	}
-	
-	if ( CheckKeyword( "}" , line ) )
-		return true;
-
-	++line;
+	}	
+	while( true );
 
 	return false;
 }
 
 
-bool GdsResASE::DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , D3DXVECTOR3* pVertexList )
+bool GdsResASE::DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , AseVERTEX* pVertexList )
 {
 	do 
 	{
@@ -454,9 +526,9 @@ bool GdsResASE::DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , D3DXVEC
 		if ( GetValue( "*MESH_VERTEX" , line , "\t " , index , x , z , y ) )
 		{
 			int i = static_cast<int>( index );
-			m_VertexList[i].x = x;
-			m_VertexList[i].y = y;
-			m_VertexList[i].z = z;
+			pVertexList[i].p.x = x;
+			pVertexList[i].p.y = y;
+			pVertexList[i].p.z = z;
 		}
 
 		if ( CheckKeyword( "}" , line ) )
@@ -468,7 +540,7 @@ bool GdsResASE::DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , D3DXVEC
 	return false;
 }
 
-bool GdsResASE::DecodeMESH_FACE_LIST( LineContainerA::iterator& line , TRIANGLE* pTriangleList )
+bool GdsResASE::DecodeMESH_FACE_LIST( LineContainerA::iterator& line , AseFACE* pTriangleList )
 {
 	int iCount = 0;
 	do 
@@ -484,7 +556,7 @@ bool GdsResASE::DecodeMESH_FACE_LIST( LineContainerA::iterator& line , TRIANGLE*
 				pTriangleList[iCount].VertexIndex[0] = indexx;
 				pTriangleList[iCount].VertexIndex[1] = indexy;
 				pTriangleList[iCount].VertexIndex[2] = indexz;
-				m_TriangleList[iCount].MaterialID = id;
+				m_FaceList[iCount].MaterialID = id;
 			}
 
 
@@ -492,7 +564,7 @@ bool GdsResASE::DecodeMESH_FACE_LIST( LineContainerA::iterator& line , TRIANGLE*
 			return true;
 
 		++iCount;
-		++line;
+
 	} while ( true );
 
 	return false;
@@ -935,5 +1007,4 @@ bool GdsResASE::DecodeMap( LineContainerA::iterator& line , GdsMaterialPtr Mater
 
 	return true;
 }
-
 

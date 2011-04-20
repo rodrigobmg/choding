@@ -85,7 +85,7 @@ namespace util
 	{
 		wchar_t buff[128];
 		int writen = swprintf_s(buff, 128
-			, L"<font face=\"%s\" size=\"%d\" color=\"#%06x\">\n"
+			, L"<font AseFACE=\"%s\" size=\"%d\" color=\"#%06x\">\n"
 			, szFont
 			, textsize
 			, color);

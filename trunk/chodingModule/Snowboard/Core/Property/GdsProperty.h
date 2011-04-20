@@ -5,14 +5,12 @@
 #include "Animation/GdsAnimation.h"
 #include "Material/GdsMaterial.h"
 #include "Mesh/GdsMesh.h"
-#include "Polygon/GdsPolygon.h"
 
 class GdsProperty : public GdsObject
 {
 	GdsAnimationPtr		m_Animation;
 	GdsMaterialPtr		m_Material;
 	GdsMeshPtr			m_Mesh;
-	GdsPolygonPtr		m_Polygon;
 
 public:
 	GdsProperty(void);
@@ -25,7 +23,6 @@ public:
 	GdsAnimationPtr		GetAnimation();
 	GdsMaterialPtr		GetMaterial();
 	GdsMeshPtr			GetMesh();
-	GdsPolygonPtr		GetPolygon();
 
 protected:
 	

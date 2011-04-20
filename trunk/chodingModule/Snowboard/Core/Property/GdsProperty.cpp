@@ -3,8 +3,7 @@
 GdsProperty::GdsProperty(void):
 m_Animation( GdsAnimationPtr( (GdsAnimation*)NULL ) ),
 m_Material( GdsMaterialPtr( (GdsMaterial*)NULL ) ),
-m_Mesh( GdsMeshPtr( (GdsMesh*)NULL ) ),
-m_Polygon( GdsPolygonPtr( (GdsPolygon*)NULL ) )
+m_Mesh( GdsMeshPtr( (GdsMesh*)NULL ) )
 {
 	SetName( OBJECT_PROPERTY );
 	vClear();
@@ -37,14 +36,6 @@ GdsMeshPtr GdsProperty::GetMesh()
 		m_Mesh = GdsMeshPtr( new GdsMesh );
 
 	return m_Mesh;
-}
-
-GdsPolygonPtr GdsProperty::GetPolygon()
-{
-	if ( m_Polygon == NULL )
-		m_Polygon = GdsPolygonPtr( new GdsPolygon );
-
-	return m_Polygon;
 }
 
 void GdsProperty::vUpdate( float fElapsedTime )

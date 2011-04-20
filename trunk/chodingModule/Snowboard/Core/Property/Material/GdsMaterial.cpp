@@ -2,7 +2,9 @@
 #include "..\..\..\System\Logger\logger.h"
 
 GdsMaterial::GdsMaterial(void):
-m_eTexturingType( DEFAULT )
+m_eTexturingType( DEFAULT ),
+m_ib( NULL ),
+m_vb( NULL )
 {
 	SetName( OBJECT_PROPERTY_TEXTURE );
 	vClear();
@@ -50,6 +52,9 @@ void GdsMaterial::SetSpecularColor( float r , float g , float b )
 void GdsMaterial::vClear()
 {
 	m_Tex.clear();
+	m_SubMaterial.clear();
+	SAFE_RELEASE( m_ib );
+	SAFE_RELEASE( m_vb );
 }
 
 void GdsMaterial::vRender( LPDIRECT3DDEVICE9 device )

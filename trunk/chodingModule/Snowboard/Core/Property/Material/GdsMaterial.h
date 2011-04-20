@@ -33,6 +33,11 @@ private:
 	//sub material
 	typedef boost::shared_ptr< GdsMaterial >	GdsMaterialPtr;
 	std::vector< GdsMaterialPtr >				m_SubMaterial;
+	
+	bool						m_bUseSubMaterial;
+
+	LPDIRECT3DVERTEXBUFFER9	m_vb;
+	LPDIRECT3DINDEXBUFFER9	m_ib;
 
 protected:
 
@@ -42,6 +47,12 @@ public:
 
 	GdsMaterial();
 	virtual ~GdsMaterial();
+
+	LPDIRECT3DINDEXBUFFER9		GetIB(){ return m_ib; }
+	LPDIRECT3DVERTEXBUFFER9		GetVB(){ return m_vb; }
+
+	LPDIRECT3DINDEXBUFFER9*		GetIBBuffer(){ return &m_ib; }
+	LPDIRECT3DVERTEXBUFFER9*	GetVBBuffer(){ return &m_vb; }
 
 
 	void					SetAmbientColor( float r , float g , float b );

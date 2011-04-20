@@ -8,7 +8,7 @@
 class GdsResASE : public GdsResBase
 {
 
-	struct sVERTEX
+	struct AseVERTEX
 	{
 		enum _FVF { FVF= (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 ) };
 
@@ -16,7 +16,7 @@ class GdsResASE : public GdsResBase
 		D3DXVECTOR3 n;
 		float u, v;
 		//	DWORD color;
-		sVERTEX():p(0,0,0),n(0,0,0),u(0),v(0)//,color(0xffffffff)
+		AseVERTEX():p(0,0,0),n(0,0,0),u(0),v(0)//,color(0xffffffff)
 		{
 		}
 	};
@@ -33,38 +33,33 @@ class GdsResASE : public GdsResBase
 		float oz;
 	};
 
-	struct TRIANGLE{
+	struct AseFACE{
 		int VertexIndex[3];
-		DWORD VertexColor[3];
-		D3DXVECTOR3 VertexNormal[3];
 		D3DXVECTOR3 FaceNormal;
-		TEXCOORDFLOAT VertexTexture[3];
 		int MaterialID;
-		bool bView;
 		
 		void Init()
 		{
 			for(int i=0; i < 3; i++)
 			{
 				VertexIndex[i] = 0;
-				VertexColor[i] = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-				VertexNormal[i] = D3DXVECTOR3(0, 0, 0);
 				FaceNormal = D3DXVECTOR3(0, 0, 0);
-				VertexTexture[i].u = 0;
-				VertexTexture[i].v = 0;
 			}
-
 			MaterialID = 0;
-
-			bView = true;
 		}
 	};
 
-	D3DXVECTOR3*		m_VertexList;
-	TRIANGLE*			m_TriangleList;
+	struct AseINDEX
+	{//32bit index buffer 구리구리한 그래픽카드는 꺼져라!!~~
+		DWORD _0 , _1 , _2;
+	};
+
+	AseVERTEX*			m_VertexList;
+	AseFACE*			m_FaceList;
 	TEXCOORDFLOAT*		m_TVertex;
 
-	void				MakeVertex();
+	void				MakeVertex( LPDIRECT3DVERTEXBUFFER9 vb  , int countvertex );
+	void				MakeIndex( LPDIRECT3DINDEXBUFFER9 ib , int countindex );
 
 	bool				DecodeSCENE( LineContainerA::iterator& line );
 	bool				DecodeMATERIAL_LIST( LineContainerA::iterator& line );	
@@ -74,12 +69,12 @@ class GdsResASE : public GdsResBase
 	bool				DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pNode );
 	bool				DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode );
 	bool				DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode );
-	bool				DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , D3DXVECTOR3* pVertexList );
-	bool				DecodeMESH_FACE_LIST( LineContainerA::iterator& line , TRIANGLE* pTriangleList );
+	bool				DecodeMESH_VERTEX_LIST( LineContainerA::iterator& line , AseVERTEX* pVertexList );
+	bool				DecodeMESH_FACE_LIST( LineContainerA::iterator& line , AseFACE* pTriangleList );
 	bool				DecodeMESH_TVERTLIST( LineContainerA::iterator& line , TEXCOORDFLOAT* pTVertex );
 	bool				DecodeMESH_TFACELIST( LineContainerA::iterator& line );
 	bool				DecodeMESH_CVERTEX( LineContainerA::iterator& line , GdsNodePtr pNode );
-	bool				DecodeMESH_NORMALS( LineContainerA::iterator& line , GdsNodePtr pNode );
+	bool				DecodeMESH_NORMALS( LineContainerA::iterator& line );
 	bool				DecodeANIMATION( LineContainerA::iterator& line , GdsNodePtr pNode );
 	bool				DecodePOS_TRACK( LineContainerA::iterator& line , GdsNodePtr pNode );
 	bool				DecodeSCALE_TRACK( LineContainerA::iterator& line , GdsNodePtr pNode );
