@@ -323,13 +323,14 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
  		
  		if( CheckKeyword( "}" , line ) ) 
 		{
-			pNode->GetProperty()->GetMaterial()->SetFVF( sizeof( AseVERTEX::FVF ) );
-			pNode->GetProperty()->GetMaterial()->SetVertexSize( sizeof( AseVERTEX ) );
-			pNode->GetProperty()->GetMaterial()->SetVertexMaxCount( iCountVertex );
-			pNode->GetProperty()->GetMaterial()->SetIndexMaxCount( iCountTriangle );
+			pNode->GetProperty()->GetMesh()->SetMaterial( m_vecMaterialList.at( m_FaceList[0].MaterialID ) );
+			pNode->GetProperty()->GetMesh()->SetFVF( sizeof( AseVERTEX::FVF ) );
+			pNode->GetProperty()->GetMesh()->SetVertexSize( sizeof( AseVERTEX ) );
+			pNode->GetProperty()->GetMesh()->SetVertexMaxCount( iCountVertex );
+			pNode->GetProperty()->GetMesh()->SetIndexMaxCount( iCountTriangle );
 
-			MakeVertex( pNode->GetProperty()->GetMaterial()->GetVBBuffer() , iCountVertex );
-			MakeIndex( pNode->GetProperty()->GetMaterial()->GetIBBuffer() , iCountTriangle );
+			MakeVertex( pNode->GetProperty()->GetMesh()->GetVBBuffer() , iCountVertex );
+			MakeIndex( pNode->GetProperty()->GetMesh()->GetIBBuffer() , iCountTriangle );
 
 			return true;
 		}
@@ -375,8 +376,8 @@ void GdsResASE::MakeIndex( LPDIRECT3DINDEXBUFFER9* ib , int icount_index )
 	for ( size_t i=0 ;i < icount_index ; i++ )
 	{
 		pIndex[i]._0 = m_FaceList[i].VertexIndex[0];
-		pIndex[i]._1 = m_FaceList[i].VertexIndex[1];
-		pIndex[i]._2 = m_FaceList[i].VertexIndex[2];
+		pIndex[i]._1 = m_FaceList[i].VertexIndex[2];
+		pIndex[i]._2 = m_FaceList[i].VertexIndex[1];
 	}
 
 	if( FAILED( device->CreateIndexBuffer( icount_index*sizeof(AseINDEX),	0,  D3DFMT_INDEX32 ,
@@ -394,6 +395,8 @@ void GdsResASE::MakeIndex( LPDIRECT3DINDEXBUFFER9* ib , int icount_index )
 	memcpy( pIndices , pIndex , icount_index*sizeof(AseINDEX) );
 
 	(*ib)->Unlock();
+
+	SAFE_DELETE_ARRAY( pIndex );
 }
 
 

@@ -23,6 +23,7 @@ public:
 	GdsAnimationPtr		GetAnimation();
 	GdsMaterialPtr		GetMaterial();
 	GdsMeshPtr			GetMesh();
+	
 
 protected:
 	

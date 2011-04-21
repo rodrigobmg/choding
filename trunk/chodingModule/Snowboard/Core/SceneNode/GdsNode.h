@@ -22,7 +22,6 @@ private:
 	GdsNode*								m_pParentNode;
 
 	typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
-	//GdsNodePtr								m_pParentNode;
 	typedef	 std::list< GdsNodePtr >		CHILDNODE_CONTAINER;
 	CHILDNODE_CONTAINER						m_ChildNode;	
 

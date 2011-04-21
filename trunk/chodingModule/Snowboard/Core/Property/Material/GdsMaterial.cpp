@@ -2,9 +2,7 @@
 #include "..\..\..\System\Logger\logger.h"
 
 GdsMaterial::GdsMaterial(void):
-m_eTexturingType( DEFAULT ),
-m_ib( NULL ),
-m_vb( NULL )
+m_eTexturingType( DEFAULT )
 {
 	SetName( OBJECT_PROPERTY_TEXTURE );
 	vClear();
@@ -53,8 +51,6 @@ void GdsMaterial::vClear()
 {
 	m_Tex.clear();
 	m_SubMaterial.clear();
-	SAFE_RELEASE( m_ib );
-	SAFE_RELEASE( m_vb );
 }
 
 void GdsMaterial::vRender( LPDIRECT3DDEVICE9 device )
@@ -66,11 +62,6 @@ void GdsMaterial::vRender( LPDIRECT3DDEVICE9 device )
 // 		LOG_WARNING( "미지원 기능" );
 // 		ASSERT( 0 );
 // 	}
-
-	device->SetMaterial( &m_dxMaterial );
-	device->SetStreamSource( 0 , m_vb , 0 , m_VertexSize );
-	device->SetIndices( m_ib );
-	device->DrawIndexedPrimitive( D3DPT_TRIANGLELIST , 0 , 0 , m_Vertex_Maxcount , 0 , m_Index_Maxcount );
 }
 
 void GdsMaterial::SetTexture( GdsResTexturePtr texture , const int num /*= 0 */ )

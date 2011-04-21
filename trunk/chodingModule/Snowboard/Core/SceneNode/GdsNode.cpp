@@ -155,6 +155,7 @@ HRESULT GdsNode::Update( float fElapsedtime )
 
 	vUpdate( fElapsedtime );
 
+	m_Property->GetMesh()->SetMT( m_DXmatWorld );
 	RENDERER.AddRenderToken( m_Property );
 
 	if ( !m_ChildNode.empty() )
