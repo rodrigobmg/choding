@@ -16,10 +16,12 @@ protected:
 	GdsVector3		vEyePt;
 	GdsVector3		vLookatPt;
 	GdsVector3		vUpVec;
-	D3DXMATRIXA16	matView;
+	
 	
 	GdsFrustum		m_Frustum;
+
 	D3DXMATRIXA16	matProj;
+	D3DXMATRIXA16	matView;
 
 public:
 	GdsCameraNode();

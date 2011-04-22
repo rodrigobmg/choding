@@ -22,12 +22,16 @@ void GdsMesh::vRender( LPDIRECT3DDEVICE9 device )
 
 	if ( m_vb || m_ib )
 	{
+		D3DMATERIAL9 mat = m_Material->GetDxMaterial();
+		device->SetMaterial( &mat );	
+		GdsResTexturePtr tex = m_Material->GetTexture();
+		device->SetTexture( 0, tex->Get() );
 		device->SetTransform( D3DTS_WORLD , &m_DXmatWorld );
 		device->SetStreamSource( 0 , m_vb , 0 , m_VertexSize );
 		device->SetIndices( m_ib );
 		device->DrawIndexedPrimitive( D3DPT_TRIANGLELIST , 0 , 0 , m_Vertex_Maxcount , 0 , m_Index_Maxcount );
 	}
-	//device->SetMaterial( &m_dxMaterial );		
+	
 }
 
 void GdsMesh::drawAxis( LPDIRECT3DDEVICE9 device )

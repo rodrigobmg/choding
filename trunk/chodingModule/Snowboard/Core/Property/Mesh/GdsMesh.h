@@ -6,26 +6,27 @@
 
 class GdsMesh : public GdsBaseProperty
 {
-
-	bool					m_bDrawAxis;
-
-	void					drawAxis( LPDIRECT3DDEVICE9 device );
-
 	LPDIRECT3DVERTEXBUFFER9	m_vb;
 	LPDIRECT3DINDEXBUFFER9	m_ib;
 
+	D3DXMATRIXA16		m_DXmatWorld;
+
 	int						m_VertexSize;
 	int						m_FVF;
+	bool					m_bDrawAxis;
 	int						m_Vertex_Maxcount;
-
 	int						m_Index_Maxcount;
 
-
 	GdsMaterialPtr			m_Material;
+
+	void					drawAxis( LPDIRECT3DDEVICE9 device );
 
 public:
 	GdsMesh();
 	virtual ~GdsMesh();
+
+	void				SetMT( D3DXMATRIXA16& mt ){ m_DXmatWorld = mt; }
+	D3DXMATRIXA16		GetMT(){ return m_DXmatWorld; }
 
 	LPDIRECT3DINDEXBUFFER9		GetIB(){ return m_ib; }
 	LPDIRECT3DVERTEXBUFFER9		GetVB(){ return m_vb; }

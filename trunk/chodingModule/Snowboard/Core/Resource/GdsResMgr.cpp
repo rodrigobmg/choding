@@ -79,24 +79,19 @@ GdsResBasePtr	GdsResMgr::Get( const TCHAR* filename )
 
 GdsResBasePtr GdsResMgr::load_res( const TCHAR* filename )
 {
-	tstring strFilepath = m_strResBasePath + L"\\" + filename;
-	for_each( strFilepath.begin() , strFilepath.end() , functor::ToLower() );
+ 	tstring strFilepath(filename);//m_strResBasePath + L"\\" + filename;
+// 	for_each( strFilepath.begin() , strFilepath.end() , functor::ToLower() );
 
-	//FILE_LIST::iterator it = std::find( m_ResFileList.begin() , m_ResFileList.end() , strFilepath );
 	tstring* strpath = m_ResFileList.find( strFilepath );
 	bool bexist = true;
 	if ( strpath == NULL )
 		bexist = false;
 
-// 	bool bSuccess  = true;
-// 	if ( it == m_ResFileList.end() )
-// 		bSuccess = false;
-
 	if ( bexist )
 	{
 		size_t poscomma = strFilepath.rfind( L"." );
 		tstring ext		= strFilepath.substr( poscomma + 1 , strFilepath.length() );
-		GdsResBasePtr pRes = resourceFactory( ext.c_str() , strFilepath.c_str() );
+		GdsResBasePtr pRes = resourceFactory( ext.c_str() , strpath->c_str() );
 		if ( pRes != NULL )
 		{
 			if ( stack_data_to_container( filename , pRes ) )
@@ -143,19 +138,21 @@ bool	GdsResMgr::load_res_dir( const TCHAR* dirpath , FILE_LIST& filelist , std::
 			tstring wstr( fd.cFileName );
 			size_t pos = wstr.find( L"." );
 			if ( pos > 0 )
-			{
-				TCHAR curpath[MAX_PATH];
-				ZeroMemory( curpath , sizeof( curpath ) );
-				_stprintf_s( curpath , L"%s\\%s" , dirpath , fd.cFileName );
-				tstring wstr( curpath );
+			{				
 				for_each( wstr.begin() , wstr.end() , functor::ToLower() );
 				
 				size_t poscomma = wstr.rfind( L"." );
 				tstring ext		= wstr.substr( poscomma + 1 , wstr.length() );
 
 				if ( std::binary_search( tokenlist.begin() , tokenlist.end() , ext ) )
-					//filelist.push_back( wstr );
-					filelist.add( wstr , wstr );
+				{
+					TCHAR curpath[MAX_PATH];
+					ZeroMemory( curpath , sizeof( curpath ) );
+					_stprintf_s( curpath , L"%s\\%s" , dirpath , fd.cFileName );
+					tstring wFullpath( curpath );
+
+					filelist.add( wstr , wFullpath );
+				}
 			}	
 		}
 		

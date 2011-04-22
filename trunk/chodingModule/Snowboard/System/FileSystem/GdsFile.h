@@ -65,7 +65,7 @@ public:
 		bool operator==(const iterator& rhs) const {return m_curr == rhs.m_curr;}
 		bool operator!=(const iterator& rhs) const {return m_curr != rhs.m_curr;}
 
-		int length()const { return (m_next > m_curr) ? (m_next-m_curr) : 0; }
+		int length()const { return (m_next > m_curr) ? static_cast<int>( (m_next-m_curr) ) : 0; }
 		bool empty()const { return m_curr == m_next; }
 
 	private:
@@ -110,7 +110,7 @@ public:
 		bool operator==(const iterator& rhs) const {return m_curr == rhs.m_curr;}
 		bool operator!=(const iterator& rhs) const {return m_curr != rhs.m_curr;}
 
-		int length()const { return (m_next > m_curr) ? (m_next-m_curr) : 0; }
+		int length()const { return (m_next > m_curr) ? static_cast<int>( (m_next-m_curr) ) : 0; }
 		bool empty()const { return m_curr == m_next; }
 
 	private:

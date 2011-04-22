@@ -17,6 +17,8 @@ public:
 
 private:
 
+	D3DXMATRIXA16							m_DXmatWorld;
+
 	tstring									m_strParentName;
 
 	GdsNode*								m_pParentNode;
@@ -26,13 +28,15 @@ private:
 	CHILDNODE_CONTAINER						m_ChildNode;	
 
 	GdsPropertyPtr							m_Property;
-	D3DXMATRIXA16							m_DXmatWorld;
+	
 	GdsTransform							m_matWorld;
 	GdsTransform							m_matLocal;
 
 	
 	bool									m_bBillboard;
 	CULL_TYPE								m_eCull;
+
+	
 
 protected:			
 

@@ -51,8 +51,8 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 
 bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 {
-	m_pResMgr = boost::shared_dynamic_cast< GdsResMgr >( GdsCoreFactory::CreateCore( CORE_RESOURCE ) );
-	m_pResMgr->Create( device );
+	//m_pResMgr = boost::shared_dynamic_cast< GdsResMgr >( GdsCoreFactory::CreateCore( CORE_RESOURCE ) );
+	RESMGR.Create( device );
 	return TRUE;
 }
 
@@ -90,29 +90,16 @@ void CSnowboard::TestFunc()
 	TCHAR respath[MAX_PATH];
 	_stprintf_s( respath , L"%s\\%s" , curpath , L"Resource");
 
-	if ( m_pResMgr )
-	{	 
- 		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;dds;tga" , true ) );
-	}
+	RESMGR.CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;dds;tga;jpg" , true ) );
 
-	GdsResASEPtr resASE	= boost::shared_dynamic_cast< GdsResASE >( m_pResMgr->Get( L"ase\\woman.ase" ) );
+	GdsResASEPtr resASE	= boost::shared_dynamic_cast< GdsResASE >( RESMGR.Get( L"woman.ase" ) );
 
 	GdsNodePtr node = resASE->GetNode();
 	node->SetDrawAxis( true );
-//	m_pRenderer->GetRootNode()->AttachChild( node );
 
 	RENDERER.GetRootNode()->SetDrawAxis( true );
-
-	{
-// 		GdsNodePtr mesh = GdsNodePtr( new GdsNode );		
-// 		
-// 		mesh->SetDrawAxis( true );
-// 
-// 		mesh->SetTranslate( 10 , 2 , 0 );
-
-		RENDERER.GetRootNode()->AttachChild( node );
-		
-	}	
+	RENDERER.GetRootNode()->AttachChild( node );
+			
 }
 
 HRESULT CSnowboard::MsgProc()
@@ -122,8 +109,8 @@ HRESULT CSnowboard::MsgProc()
 
 GdsNodePtr CSnowboard::MakeHeightMap()
 {
-	GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( m_pResMgr->Get( L"tex\\map128.bmp") );
-	GdsResTexturePtr texcolor = boost::shared_dynamic_cast< GdsResTexture >( m_pResMgr->Get( L"tex\\tile2.tga") );
+	GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"map128.bmp") );
+	GdsResTexturePtr texcolor = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"tile2.tga") );
 
 	GdsNodePtr mapNode = GdsNodePtr( new GdsNode );
 	return mapNode;

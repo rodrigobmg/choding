@@ -52,11 +52,11 @@ HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 	}
 
 	m_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
-	//m_pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
+	m_pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
 	//m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
 
 	// Turn off D3D lighting
-	m_pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+	//m_pd3dDevice->SetRenderState( D3DRS_LIGHTING, TRUE );
 
 	setRootNodeAndCamNode();
 

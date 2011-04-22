@@ -3,6 +3,7 @@
 #include "../../../System/Logger/logger.h"
 #include "../../../System/FrameMemory/GdsFrameMemory.h"
 #include "Renderer/GdsRendererDX9.h"
+#include "../GdsResMgr.h"
 
 GdsResASE::GdsResASE():
 m_VertexList(NULL),
@@ -376,8 +377,8 @@ void GdsResASE::MakeIndex( LPDIRECT3DINDEXBUFFER9* ib , int icount_index )
 	for ( size_t i=0 ;i < icount_index ; i++ )
 	{
 		pIndex[i]._0 = m_FaceList[i].VertexIndex[0];
-		pIndex[i]._1 = m_FaceList[i].VertexIndex[2];
-		pIndex[i]._2 = m_FaceList[i].VertexIndex[1];
+		pIndex[i]._1 = m_FaceList[i].VertexIndex[1];
+		pIndex[i]._2 = m_FaceList[i].VertexIndex[2];
 	}
 
 	if( FAILED( device->CreateIndexBuffer( icount_index*sizeof(AseINDEX),	0,  D3DFMT_INDEX32 ,
@@ -1000,8 +1001,16 @@ bool GdsResASE::DecodeMap( LineContainerA::iterator& line , GdsMaterialPtr Mater
 		std::string path;
 		if ( GetValue( "*BITMAP" , line , "\t " , path ) )
 		{
-			tstring strpath = util::string::mb2wc( path.c_str() );
-			Material->SetTexturePath( strpath );
+			for_each( path.begin() , path.end() , functor::ToLowerA() );
+
+			size_t poscomma = path.rfind( "/" );
+			tstring filename= util::string::mb2wc( path.substr( poscomma+1 , path.length() ).c_str() );
+
+			GdsResTexturePtr tex = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( filename.c_str() ) );
+			if ( tex != NULL )
+			{
+				Material->SetTexture( tex );
+			}
 
 		}
 
