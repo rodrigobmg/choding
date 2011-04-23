@@ -12,8 +12,8 @@ m_Property( new GdsProperty )
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
 	m_pParentNode = NULL;
-	m_matWorld.MakeIdentity();
-	m_matLocal.MakeIdentity();
+// 	m_matWorld.MakeIdentity();
+// 	m_matLocal.MakeIdentity();
 	m_eCull = CULL_OFF;	
 }
 
@@ -59,13 +59,11 @@ HRESULT GdsNode::RemoveAllChild()
 }
 
 void GdsNode::SetParent( GdsNode* pNode )
-//void GdsNode::SetParent( GdsNodePtr pNode )
 {
 	m_pParentNode = pNode;
 }
 
 GdsNode*	GdsNode::GetParent()
-//GdsNodePtr	GdsNode::GetParent()
 {
 	return m_pParentNode;
 }
@@ -98,8 +96,6 @@ HRESULT GdsNode::AttachChild( GdsNodePtr pNode )
 	if ( pNode == NULL )
 		return false;
 
-	//pNode->SetParent( shared_ptr_this() );	
-	//pNode->SetParent( GdsNodePtr( ( GdsNode*)this ) );	
 	pNode->SetParent( pNode.get() );	
 	m_ChildNode.push_back( pNode );
 	return true;
@@ -133,29 +129,29 @@ HRESULT GdsNode::Update( float fElapsedtime )
 	else
 		m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;
 
-	m_DXmatWorld._11 = m_matWorld.m_Rotate.GetEntry( 0 , 0 ) * m_matWorld.m_fScale;
-	m_DXmatWorld._12 = m_matWorld.m_Rotate.GetEntry( 1 , 0 ) * m_matWorld.m_fScale;
-	m_DXmatWorld._13 = m_matWorld.m_Rotate.GetEntry( 2 , 0 ) * m_matWorld.m_fScale;
-	m_DXmatWorld._14 = 0.0f;
-
-	m_DXmatWorld._21 = m_matWorld.m_Rotate.GetEntry( 0 , 1 ) * m_matWorld.m_fScale;
-	m_DXmatWorld._22 = m_matWorld.m_Rotate.GetEntry( 1 , 1 ) * m_matWorld.m_fScale;
-	m_DXmatWorld._23 = m_matWorld.m_Rotate.GetEntry( 2 , 1 ) * m_matWorld.m_fScale;
-	m_DXmatWorld._24 = 0.0f;
-
-	m_DXmatWorld._31 = m_matWorld.m_Rotate.GetEntry( 0 , 2 ) * m_matWorld.m_fScale;
-	m_DXmatWorld._32 = m_matWorld.m_Rotate.GetEntry( 1 , 2 ) * m_matWorld.m_fScale;
-	m_DXmatWorld._33 = m_matWorld.m_Rotate.GetEntry( 2 , 2 ) * m_matWorld.m_fScale;
-	m_DXmatWorld._34 = 0.0f;
-
-	m_DXmatWorld._41 = m_matWorld.m_Translate[0];
-	m_DXmatWorld._42 = m_matWorld.m_Translate[1];
-	m_DXmatWorld._43 = m_matWorld.m_Translate[2];
-	m_DXmatWorld._44 = 1.0f;
+// 	m_DXmatWorld._11 = m_matWorld.m_Rotate.GetEntry( 0 , 0 ) * m_matWorld.m_fScale;
+// 	m_DXmatWorld._12 = m_matWorld.m_Rotate.GetEntry( 1 , 0 ) * m_matWorld.m_fScale;
+// 	m_DXmatWorld._13 = m_matWorld.m_Rotate.GetEntry( 2 , 0 ) * m_matWorld.m_fScale;
+// 	m_DXmatWorld._14 = 0.0f;
+// 
+// 	m_DXmatWorld._21 = m_matWorld.m_Rotate.GetEntry( 0 , 1 ) * m_matWorld.m_fScale;
+// 	m_DXmatWorld._22 = m_matWorld.m_Rotate.GetEntry( 1 , 1 ) * m_matWorld.m_fScale;
+// 	m_DXmatWorld._23 = m_matWorld.m_Rotate.GetEntry( 2 , 1 ) * m_matWorld.m_fScale;
+// 	m_DXmatWorld._24 = 0.0f;
+// 
+// 	m_DXmatWorld._31 = m_matWorld.m_Rotate.GetEntry( 0 , 2 ) * m_matWorld.m_fScale;
+// 	m_DXmatWorld._32 = m_matWorld.m_Rotate.GetEntry( 1 , 2 ) * m_matWorld.m_fScale;
+// 	m_DXmatWorld._33 = m_matWorld.m_Rotate.GetEntry( 2 , 2 ) * m_matWorld.m_fScale;
+// 	m_DXmatWorld._34 = 0.0f;
+// 
+// 	m_DXmatWorld._41 = m_matWorld.m_Translate[0];
+// 	m_DXmatWorld._42 = m_matWorld.m_Translate[1];
+// 	m_DXmatWorld._43 = m_matWorld.m_Translate[2];
+// 	m_DXmatWorld._44 = 1.0f;
 
 	vUpdate( fElapsedtime );
 
-	m_Property->GetMesh()->SetMT( m_DXmatWorld );
+//	m_Property->GetMesh()->SetMT( m_DXmatWorld );
 	RENDERER.AddRenderToken( m_Property );
 
 	if ( !m_ChildNode.empty() )
@@ -176,16 +172,16 @@ void GdsNode::vUpdate( float fElapsedtime )
 	{
 		int32_t cur_cam_index = CAMMGR.GetCurCam();
 		GdsCameraNodePtr pCamera = CAMMGR.GetCamNode( cur_cam_index );
-		GdsMatrix3 billboard;
-		billboard.MakeIdentity();
-		GdsMatrix3 camMat = pCamera->GetWorldTransform().m_Rotate;
-		billboard.SetEntry( 0 , 0 , camMat.m_pEntry[0][0] );
-		billboard.SetEntry( 0 , 2 , camMat.m_pEntry[0][2] );
-		billboard.SetEntry( 2 , 0 , camMat.m_pEntry[2][0] );
-		billboard.SetEntry( 2 , 2 , camMat.m_pEntry[2][2] );
-		billboard = billboard.Inverse();
+		D3DXMATRIXA16 billboard;
+		//billboard.MakeIdentity();
+		//D3DXMATRIXA16 camMat = pCamera->GetWorldTransform().m_Rotate;
+// 		billboard.SetEntry( 0 , 0 , camMat.m_pEntry[0][0] );
+// 		billboard.SetEntry( 0 , 2 , camMat.m_pEntry[0][2] );
+// 		billboard.SetEntry( 2 , 0 , camMat.m_pEntry[2][0] );
+// 		billboard.SetEntry( 2 , 2 , camMat.m_pEntry[2][2] );
+// 		billboard = billboard.Inverse();
 
-		GetWorldRotate() = billboard;
+//		GetWorldRotate() = billboard;
 	}	
 }
 

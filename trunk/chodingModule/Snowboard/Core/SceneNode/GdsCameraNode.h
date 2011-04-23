@@ -10,27 +10,26 @@ class GdsCameraNode : public GdsNode{
 
 protected:
 	
-	virtual	void	vInitGeometry( float fElapsedtime );
-	virtual	void	vClear();
+	D3DXMATRIXA16	matProj;
+	D3DXMATRIXA16	matView;
 
-	GdsVector3		vEyePt;
-	GdsVector3		vLookatPt;
-	GdsVector3		vUpVec;
-	
+	D3DXVECTOR3		vEyePt;
+	D3DXVECTOR3		vLookatPt;
+	D3DXVECTOR3		vUpVec;
 	
 	GdsFrustum		m_Frustum;
 
-	D3DXMATRIXA16	matProj;
-	D3DXMATRIXA16	matView;
+	virtual	void	vInitGeometry( float fElapsedtime );
+	virtual	void	vClear();
 
 public:
 	GdsCameraNode();
 	virtual ~GdsCameraNode();
 
-	void			SetLootAtLH( GdsVector3& eye , GdsVector3& lookat , GdsVector3& up );
-	void			SetLookAt( GdsVector3& lookat );
-	void			SetEye( GdsVector3& eye );
-	void			SetUp( GdsVector3& up );
+	void			SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR3& up );
+	void			SetLookAt( D3DXVECTOR3& lookat );
+	void			SetEye( D3DXVECTOR3& eye );
+	void			SetUp( D3DXVECTOR3& up );
 	
 	void			SetFrustum( GdsFrustum& Frustum ){ m_Frustum = Frustum; }
 	GdsFrustum&		GetFrustum(){ return m_Frustum; }

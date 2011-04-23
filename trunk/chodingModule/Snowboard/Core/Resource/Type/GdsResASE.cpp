@@ -330,7 +330,7 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 			pNode->GetProperty()->GetMesh()->SetVertexMaxCount( iCountVertex );
 			pNode->GetProperty()->GetMesh()->SetIndexMaxCount( iCountTriangle );
 
-			MakeVertex( pNode->GetProperty()->GetMesh()->GetVBBuffer() , iCountVertex );
+			MakeVertex( pNode->GetProperty()->GetMesh()->GetVBBuffer() , pNode->GetTransform() , iCountVertex );
 			MakeIndex( pNode->GetProperty()->GetMesh()->GetIBBuffer() , iCountTriangle );
 
 			return true;
@@ -342,8 +342,29 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 	return false;
 }
 
-void GdsResASE::MakeVertex( LPDIRECT3DVERTEXBUFFER9* vb , int icount_vertex )
+void GdsResASE::MakeVertex( LPDIRECT3DVERTEXBUFFER9* vb , D3DXMATRIXA16& localTransform , int icount_vertex )
 {
+ 	D3DXMATRIXA16 tm;
+// 	D3DXMATRIXA16 gdstm = localTransform.m_Rotate;
+// 	D3DXVECTOR3	gdspos = localTransform.m_Translate;
+	
+	D3DXMatrixIdentity( &tm );
+// 	tm._11 = gdstm.m_pEntry[0][0]; tm._12 = gdstm.m_pEntry[0][1]; tm._12 = gdstm.m_pEntry[0][2];
+// 	tm._21 = gdstm.m_pEntry[1][0]; tm._22 = gdstm.m_pEntry[1][1]; tm._22 = gdstm.m_pEntry[2][1];
+// 	tm._31 = gdstm.m_pEntry[2][0]; tm._32 = gdstm.m_pEntry[2][1]; tm._31 = gdstm.m_pEntry[2][2];
+// 	tm._41 = gdspos.x; tm._42 = gdspos.y; tm._43 = gdspos.z;
+
+	D3DXMATRIXA16 mat;
+	D3DXVECTOR3 vTemp;
+	D3DXVECTOR3 vTemp2;
+	D3DXMatrixInverse(&mat, 0, &tm );
+	for ( int i = 0 ; i< icount_vertex ; i++ )
+	{
+		vTemp = m_VertexList[i].p;
+		D3DXVec3TransformCoord(&vTemp2,&vTemp, &mat);
+		m_VertexList[i].p = vTemp2;
+	}
+
 	LPDIRECT3DDEVICE9 device = RENDERER.GetDevice();
 	ASSERT( device );
 	ASSERT( !(*vb) );
@@ -374,7 +395,7 @@ void GdsResASE::MakeIndex( LPDIRECT3DINDEXBUFFER9* ib , int icount_index )
 
 	AseINDEX* pIndex = NULL;
 	pIndex = new AseINDEX[icount_index];
-	for ( size_t i=0 ;i < icount_index ; i++ )
+	for ( int i=0 ;i < icount_index ; i++ )
 	{
 		pIndex[i]._0 = m_FaceList[i].VertexIndex[0];
 		pIndex[i]._1 = m_FaceList[i].VertexIndex[1];
@@ -601,13 +622,18 @@ bool GdsResASE::DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode )
 
 		if ( CheckKeyword( "}" , line ) )
 		{
-			pNode->GetRotate().SetRow( 0 , dxMat._11 , dxMat._12 , dxMat._13 );
-			pNode->GetRotate().SetRow( 1 , dxMat._21 , dxMat._22 , dxMat._23 );
-			pNode->GetRotate().SetRow( 2 , dxMat._31 , dxMat._32 , dxMat._33 );
-			pNode->GetTranslate().x = dxMat._41;
-			pNode->GetTranslate().y = dxMat._42;
-			pNode->GetTranslate().z = dxMat._43;
-			pNode->SetScale( fScale );
+// 			pNode->GetRotate().SetRow( 0 , dxMat._12 , dxMat._22 , dxMat._32 );
+// 			pNode->GetRotate().SetRow( 1 , dxMat._11 , dxMat._21 , dxMat._31 );
+// 			pNode->GetRotate().SetRow( 2 , dxMat._13 , dxMat._23 , dxMat._33 );
+// 			pNode->GetTranslate().x = dxMat._41;
+// 			pNode->GetTranslate().y = dxMat._42;
+// 			pNode->GetTranslate().z = dxMat._43;
+// 			pNode->SetScale( fScale );
+
+// 			D3DXMATRIXA16 inv;
+// 			inv = pNode->GetRotate().Inverse();
+// 			inv = inv * pNode->GetRotate();
+// 			pNode->SetRotate( inv );
 			break;
 		}
 
@@ -649,15 +675,17 @@ bool GdsResASE::CheckKeyword( const char* keyword , LineContainerA::iterator& li
 
 	sscanf_s( in_str , "%s" , str , len );
 	
-	bool bflag = static_cast<bool>( _stricmp( keyword , str ) );
+	bool bret = false;
+	if ( _stricmp( keyword , str ) == 0 )
+	{
+		bret = true;
+		++line;
+	}
 	
 	FRAMEMEMORY.Free( len , str );
 
-	//찾으면 한줄 점프
-	if ( bflag == false )
-		++line;
 
-	return !bflag;
+	return bret;
 }
 
 bool GdsResASE::DecodeSCENE( LineContainerA::iterator& line )

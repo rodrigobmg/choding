@@ -2,7 +2,6 @@
 #define _SNOWBOARD_SCENENODE_BASE_
 
 #include "../Base\GdsObject.h"
-#include "../Transform/GdsTransform.h"
 #include "../Property/GdsProperty.h"
 
 class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
@@ -17,7 +16,12 @@ public:
 
 private:
 
-	D3DXMATRIXA16							m_DXmatWorld;
+	D3DXMATRIXA16							m_matWorld;
+	D3DXMATRIXA16							m_matLocal;
+
+	float									m_ScaleX;
+	float									m_ScaleY;
+	float									m_ScaleZ;
 
 	tstring									m_strParentName;
 
@@ -28,11 +32,7 @@ private:
 	CHILDNODE_CONTAINER						m_ChildNode;	
 
 	GdsPropertyPtr							m_Property;
-	
-	GdsTransform							m_matWorld;
-	GdsTransform							m_matLocal;
-
-	
+		
 	bool									m_bBillboard;
 	CULL_TYPE								m_eCull;
 
@@ -61,8 +61,8 @@ public:
 
 	GdsNodePtr				GetObjectbyName( tstring& strname );
  	
-	void					SetScale( float fvalue ){ m_matLocal.m_fScale = fvalue; }
-	float					GetScale(){ return m_matLocal.m_fScale; }
+	void					SetScale( D3DXVECTOR3& scale );
+	float					GetScale();
 
 	void					SetCullType( CULL_TYPE eCull ){ m_eCull = eCull; }
 	CULL_TYPE				GetCullType(){ return m_eCull; }
@@ -70,29 +70,19 @@ public:
 	void					SetProperty( GdsPropertyPtr pProperty ){ m_Property = pProperty; }
 	GdsPropertyPtr			GetProperty(){ return m_Property; }
 
-	GdsTransform&			GetTransform(){ return m_matLocal; }
-	void					SetTransform( GdsTransform& mat ){ m_matLocal = mat; }
+	D3DXMATRIXA16&			GetTransform(){ return m_matLocal; }
+	void					SetTransform( D3DXMATRIXA16& mat ){ m_matLocal = mat; }
 
-	GdsTransform&			GetWorldTransform(){ return m_matWorld; }
-	void					SetWorldTransform( GdsTransform& mat ){ m_matWorld = mat; }
+	D3DXMATRIXA16&			GetWorldTransform(){ return m_matWorld; }
+	void					SetWorldTransform( D3DXMATRIXA16& mat ){ m_matWorld = mat; }
 
-	void					SetTranslate( GdsVector3& pos ){ m_matLocal.m_Translate = pos; }
-	void					SetTranslate( float x , float y , float z )
-									{
-										m_matLocal.m_Translate.x = x ; 
-										m_matLocal.m_Translate.y = y ; 
-										m_matLocal.m_Translate.z = z; 
-									}
-	GdsVector3&				GetTranslate() { return m_matLocal.m_Translate; }
-	GdsVector3&				GetWorldTanslate(){ return m_matWorld.m_Translate; }
+	void					SetTranslate( D3DXVECTOR3& pos );
+	D3DXVECTOR3&			GetTranslate();
 
-	void					SetRotate( GdsMatrix3& matRot ){ m_matLocal.m_Rotate = matRot; }
-	GdsMatrix3&				GetRotate(){ return m_matLocal.m_Rotate; }
-	GdsMatrix3&				GetWorldRotate(){ return m_matWorld.m_Rotate; }
+	D3DXVECTOR3&			GetWorldTanslate();
 
-	void					MakeXRotation( float fAngle ){ m_matLocal.m_Rotate.MakeXRotation( fAngle ); }
-	void					MakeYRotation( float fAngle ){ m_matLocal.m_Rotate.MakeYRotation( fAngle ); }
-	void					MakeZRotation( float fAngle ){ m_matLocal.m_Rotate.MakeZRotation( fAngle ); }
+	void					SetRotate( D3DXMATRIXA16& matRot );
+	D3DXMATRIXA16&			GetRotate();
 
  	GdsNode*				GetParent();
  	void					SetParent( GdsNode* pNode );
