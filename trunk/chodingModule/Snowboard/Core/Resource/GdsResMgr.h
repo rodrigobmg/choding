@@ -82,6 +82,4 @@ public:
 
 typedef	boost::shared_ptr< GdsResMgr >	GdsResMgrPtr;
 
-#define RESMGR	singleton_holder< GdsResMgr >::instance()
-
 #endif

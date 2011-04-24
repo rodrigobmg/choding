@@ -5,6 +5,14 @@
 
 class GdsBaseProperty : public GdsObject
 {
+protected:
+
+	D3DXMATRIXA16		m_DXmatWorld;
+
+	virtual	void		vClear(){};
+	virtual	void		vUpdate( float fElapsedTime ){ ASSERT( fElapsedTime); }
+	virtual void		vRender( LPDIRECT3DDEVICE9 device ){ ASSERT( device); }
+
 public:
 	GdsBaseProperty(void);
 	virtual ~GdsBaseProperty(void);
@@ -13,12 +21,10 @@ public:
 	void				Update( float fElapsedTime ){ vUpdate( fElapsedTime ); }
 	void				Render( LPDIRECT3DDEVICE9 device ){ vRender( device ); }
 
-protected:
-	
-	virtual	void		vClear(){};
-	virtual	void		vUpdate( float fElapsedTime ){ ASSERT( fElapsedTime); }
-	virtual void		vRender( LPDIRECT3DDEVICE9 device ){ ASSERT( device); }
+	void				SetMT( D3DXMATRIXA16& mt ){ m_DXmatWorld = mt; }
+	D3DXMATRIXA16		GetMT(){ return m_DXmatWorld; }
 
+	
 };
 
 #endif

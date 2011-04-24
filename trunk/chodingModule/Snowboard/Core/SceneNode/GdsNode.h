@@ -15,13 +15,17 @@ public:
 	};
 
 private:
-
-	D3DXMATRIXA16							m_matWorld;
+	
 	D3DXMATRIXA16							m_matLocal;
+	D3DXMATRIXA16							m_matWorld;
 
-	float									m_ScaleX;
-	float									m_ScaleY;
-	float									m_ScaleZ;
+	D3DXQUATERNION							m_qRotate;
+	D3DXQUATERNION							m_qWorldRotate;
+
+	D3DXVECTOR3								m_vTranslate;
+	D3DXVECTOR3								m_vWorldTranslate;
+
+	D3DXVECTOR3								m_vScale;
 
 	tstring									m_strParentName;
 
@@ -35,8 +39,6 @@ private:
 		
 	bool									m_bBillboard;
 	CULL_TYPE								m_eCull;
-
-	
 
 protected:			
 
@@ -61,28 +63,34 @@ public:
 
 	GdsNodePtr				GetObjectbyName( tstring& strname );
  	
-	void					SetScale( D3DXVECTOR3& scale );
-	float					GetScale();
-
 	void					SetCullType( CULL_TYPE eCull ){ m_eCull = eCull; }
 	CULL_TYPE				GetCullType(){ return m_eCull; }
 
 	void					SetProperty( GdsPropertyPtr pProperty ){ m_Property = pProperty; }
 	GdsPropertyPtr			GetProperty(){ return m_Property; }
 
-	D3DXMATRIXA16&			GetTransform(){ return m_matLocal; }
-	void					SetTransform( D3DXMATRIXA16& mat ){ m_matLocal = mat; }
 
-	D3DXMATRIXA16&			GetWorldTransform(){ return m_matWorld; }
-	void					SetWorldTransform( D3DXMATRIXA16& mat ){ m_matWorld = mat; }
 
-	void					SetTranslate( D3DXVECTOR3& pos );
-	D3DXVECTOR3&			GetTranslate();
+	D3DXVECTOR3&	GetTranslate();
+	void					SetTranslate( const D3DXVECTOR3& vPos );
+	void					SetTranslate( float fX, float fY, float fZ);
 
-	D3DXVECTOR3&			GetWorldTanslate();
+	const	D3DXQUATERNION& GetRotate();
+	void					SetRotate( const D3DXVECTOR3& vAxis, float fAngle );
+	void					SetRotate( const D3DXQUATERNION& qRot );
 
-	void					SetRotate( D3DXMATRIXA16& matRot );
-	D3DXMATRIXA16&			GetRotate();
+	const	D3DXVECTOR3&	GetScale() const;
+	void					SetScale( float fScale );
+	void					SetScale( float fScaleX, float fScaleY, float fScaleZ);
+
+	const	D3DXVECTOR3&	GetWorldTranslate() const;
+	const	D3DXQUATERNION& GetWorldRotate() const;
+
+	const	D3DXMATRIXA16&	GetLocalMatrix() const;
+	const	D3DXMATRIXA16	GetWorldMatrix() const;
+
+	void					SetLocalMatrix( const D3DXMATRIXA16& matLocal );
+	void					SetLocalFromWorldTransform( const D3DXMATRIXA16& matWorld );
 
  	GdsNode*				GetParent();
  	void					SetParent( GdsNode* pNode );

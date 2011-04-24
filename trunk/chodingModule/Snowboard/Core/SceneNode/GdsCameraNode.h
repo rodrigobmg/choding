@@ -10,16 +10,19 @@ class GdsCameraNode : public GdsNode{
 
 protected:
 	
-	D3DXMATRIXA16	matProj;
 	D3DXMATRIXA16	matView;
+	D3DXMATRIXA16	matProj;
 
-	D3DXVECTOR3		vEyePt;
-	D3DXVECTOR3		vLookatPt;
-	D3DXVECTOR3		vUpVec;
+
+ 	D3DXVECTOR3		vEyePt;
+ 	D3DXVECTOR3		vLookatPt;
+ 	D3DXVECTOR3		vUpVec;
+	
 	
 	GdsFrustum		m_Frustum;
+	
 
-	virtual	void	vInitGeometry( float fElapsedtime );
+	virtual	void	vUpdate( float fElapsedtime );
 	virtual	void	vClear();
 
 public:

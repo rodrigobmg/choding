@@ -293,6 +293,38 @@
 					RelativePath=".\Core\Transform\GdsFrustum.h"
 					>
 				</File>
+				<File
+					RelativePath=".\Core\Transform\GdsMatrix.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Transform\GdsMatrix.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Transform\GdsMatrix.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Transform\GdsTransform.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Transform\GdsTransform.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Transform\GdsVector.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Transform\GdsVector.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Transform\GdsVector.inl"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Property"

@@ -58,7 +58,7 @@ class GdsResASE : public GdsResBase
 	AseFACE*			m_FaceList;
 	TEXCOORDFLOAT*		m_TVertex;
 
-	void				MakeVertex( LPDIRECT3DVERTEXBUFFER9* vb  , D3DXMATRIXA16&  localTransform , int countvertex );
+	void				MakeVertex( LPDIRECT3DVERTEXBUFFER9* vb  , int countvertex );
 	void				MakeIndex( LPDIRECT3DINDEXBUFFER9* ib , int countindex );
 
 	bool				DecodeSCENE( LineContainerA::iterator& line );

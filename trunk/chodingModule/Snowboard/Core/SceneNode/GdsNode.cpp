@@ -7,13 +7,20 @@
 
 GdsNode::GdsNode():
 m_bBillboard( false ),
-m_Property( new GdsProperty )
+m_Property( new GdsProperty ),
+m_vTranslate(0.0f, 0.0f, 0.0f),
+m_vWorldTranslate(0.0f, 0.0f, 0.0f),
+m_vScale( 1.0f, 1.0f, 1.0f)
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
 	m_pParentNode = NULL;
 // 	m_matWorld.MakeIdentity();
 // 	m_matLocal.MakeIdentity();
+	D3DXMatrixIdentity( &m_matWorld );
+	D3DXMatrixIdentity( &m_matLocal );
+	D3DXQuaternionIdentity(&m_qWorldRotate);
+	D3DXQuaternionIdentity(&m_qRotate);
 	m_eCull = CULL_OFF;	
 }
 
@@ -21,6 +28,99 @@ GdsNode::~GdsNode()
 {
 	vClear();
 	RemoveAllChild();
+}
+
+D3DXVECTOR3& GdsNode::GetTranslate()
+{
+	return m_vTranslate;
+}
+
+void GdsNode::SetTranslate( const D3DXVECTOR3& vPos )
+{
+	m_vTranslate = vPos;
+}
+
+void GdsNode::SetTranslate( float fX, float fY, float fZ)
+{
+	m_vTranslate = D3DXVECTOR3( fX, fY, fZ );
+}
+
+void GdsNode::SetRotate( const D3DXQUATERNION& qRot )
+{
+	m_qRotate = qRot;
+}
+
+void GdsNode::SetRotate( const D3DXVECTOR3& vAxis, float fAngle )
+{
+	D3DXQuaternionRotationAxis( &m_qRotate, &vAxis, fAngle);
+}
+
+const D3DXVECTOR3& GdsNode::GetScale() const
+{	
+	return m_vScale;
+}
+
+void GdsNode::SetScale( float fScale )
+{
+	assert( fScale >= 0.0f );
+	float f = fabs(fScale);
+	m_vScale = D3DXVECTOR3( f, f, f);
+}
+
+void GdsNode::SetScale(float fScaleX, float fScaleY, float fScaleZ)
+{
+	assert( fScaleX >= 0.0f);
+	assert( fScaleY >= 0.0f);
+	assert( fScaleZ >= 0.0f);
+
+	float fX = fabs(fScaleX);
+	float fY = fabs(fScaleY);
+	float fZ = fabs(fScaleZ);
+
+	m_vScale = D3DXVECTOR3( fX, fY, fZ);
+}
+
+const D3DXVECTOR3& GdsNode::GetWorldTranslate() const
+{
+	return m_vWorldTranslate;
+}
+
+const D3DXQUATERNION& GdsNode::GetWorldRotate() const
+{
+	return m_qWorldRotate;
+}
+
+const D3DXMATRIXA16& GdsNode::GetLocalMatrix() const
+{
+	return m_matLocal;
+}
+
+const D3DXMATRIXA16 GdsNode::GetWorldMatrix() const
+{
+	return m_matWorld;
+}
+
+void GdsNode::SetLocalMatrix( const D3DXMATRIXA16& matLocal )
+{
+	m_matLocal = matLocal;
+}
+
+
+void GdsNode::SetLocalFromWorldTransform( const D3DXMATRIXA16& matWorld )
+{
+	if(m_pParentNode)
+	{
+		D3DXMATRIXA16 matParentWorldInv;
+		D3DXMatrixInverse( &matParentWorldInv, NULL, &m_pParentNode->GetWorldMatrix());
+		D3DXMATRIXA16 matLocal = matParentWorldInv * matWorld;
+		SetLocalMatrix( matLocal );
+
+	}
+	else
+	{
+		SetLocalMatrix( matWorld );
+	}
+
 }
 
 void GdsNode::vClear()
@@ -96,7 +196,7 @@ HRESULT GdsNode::AttachChild( GdsNodePtr pNode )
 	if ( pNode == NULL )
 		return false;
 
-	pNode->SetParent( pNode.get() );	
+	pNode->SetParent( this );	
 	m_ChildNode.push_back( pNode );
 	return true;
 }
@@ -124,34 +224,38 @@ HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 HRESULT GdsNode::Update( float fElapsedtime )
 {
 	
-	if ( GetParent() == NULL )
-		m_matWorld = m_matLocal;
+	D3DXMATRIXA16 matTrans, matScale, matRot;
+	D3DXMatrixIdentity( &matTrans );
+	D3DXMatrixIdentity( &matScale );
+	D3DXMatrixIdentity( &matRot );
+
+	D3DXMatrixTranslation(&matTrans, m_vTranslate.x, m_vTranslate.y, m_vTranslate.z);
+	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
+	D3DXMatrixRotationQuaternion(&matRot, &m_qRotate);
+
+	m_matLocal = matTrans * matRot * matScale;
+
+	if( GetParent() )
+	{
+		D3DXMATRIXA16 parTM;
+		parTM = GetParent()->GetWorldMatrix();
+		//m_matWorld = m_matLocal * m_matAni * m_pParent->GetWorldMatrix();
+		m_matWorld = m_matLocal * parTM;
+
+	}
 	else
-		m_matWorld = GetParent()->GetWorldTransform() * m_matLocal;
+	{
+		m_matWorld = m_matLocal;
+	}
 
-// 	m_DXmatWorld._11 = m_matWorld.m_Rotate.GetEntry( 0 , 0 ) * m_matWorld.m_fScale;
-// 	m_DXmatWorld._12 = m_matWorld.m_Rotate.GetEntry( 1 , 0 ) * m_matWorld.m_fScale;
-// 	m_DXmatWorld._13 = m_matWorld.m_Rotate.GetEntry( 2 , 0 ) * m_matWorld.m_fScale;
-// 	m_DXmatWorld._14 = 0.0f;
-// 
-// 	m_DXmatWorld._21 = m_matWorld.m_Rotate.GetEntry( 0 , 1 ) * m_matWorld.m_fScale;
-// 	m_DXmatWorld._22 = m_matWorld.m_Rotate.GetEntry( 1 , 1 ) * m_matWorld.m_fScale;
-// 	m_DXmatWorld._23 = m_matWorld.m_Rotate.GetEntry( 2 , 1 ) * m_matWorld.m_fScale;
-// 	m_DXmatWorld._24 = 0.0f;
-// 
-// 	m_DXmatWorld._31 = m_matWorld.m_Rotate.GetEntry( 0 , 2 ) * m_matWorld.m_fScale;
-// 	m_DXmatWorld._32 = m_matWorld.m_Rotate.GetEntry( 1 , 2 ) * m_matWorld.m_fScale;
-// 	m_DXmatWorld._33 = m_matWorld.m_Rotate.GetEntry( 2 , 2 ) * m_matWorld.m_fScale;
-// 	m_DXmatWorld._34 = 0.0f;
-// 
-// 	m_DXmatWorld._41 = m_matWorld.m_Translate[0];
-// 	m_DXmatWorld._42 = m_matWorld.m_Translate[1];
-// 	m_DXmatWorld._43 = m_matWorld.m_Translate[2];
-// 	m_DXmatWorld._44 = 1.0f;
+	
 
+	m_vWorldTranslate = D3DXVECTOR3(m_matWorld._41, m_matWorld._42, m_matWorld._43 ) ;
+	D3DXQuaternionRotationMatrix(&m_qWorldRotate, &m_matWorld);
+	
 	vUpdate( fElapsedtime );
 
-//	m_Property->GetMesh()->SetMT( m_DXmatWorld );
+	m_Property->GetMesh()->SetMT( m_matWorld );
 	RENDERER.AddRenderToken( m_Property );
 
 	if ( !m_ChildNode.empty() )
@@ -170,18 +274,18 @@ void GdsNode::vUpdate( float fElapsedtime )
 {
 	if ( m_bBillboard == true )		
 	{
-		int32_t cur_cam_index = CAMMGR.GetCurCam();
-		GdsCameraNodePtr pCamera = CAMMGR.GetCamNode( cur_cam_index );
-		D3DXMATRIXA16 billboard;
-		//billboard.MakeIdentity();
-		//D3DXMATRIXA16 camMat = pCamera->GetWorldTransform().m_Rotate;
+// 		int32_t cur_cam_index = CAMMGR.GetCurCam();
+// 		GdsCameraNodePtr pCamera = CAMMGR.GetCamNode( cur_cam_index );
+// 		GdsMatrix3 billboard;
+// 		billboard.MakeIdentity();
+// 		GdsMatrix3 camMat = pCamera->GetWorldTransform().m_Rotate;
 // 		billboard.SetEntry( 0 , 0 , camMat.m_pEntry[0][0] );
 // 		billboard.SetEntry( 0 , 2 , camMat.m_pEntry[0][2] );
 // 		billboard.SetEntry( 2 , 0 , camMat.m_pEntry[2][0] );
 // 		billboard.SetEntry( 2 , 2 , camMat.m_pEntry[2][2] );
 // 		billboard = billboard.Inverse();
-
-//		GetWorldRotate() = billboard;
+// 
+// 		GetWorldRotate() = billboard;
 	}	
 }
 

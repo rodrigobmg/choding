@@ -90,3 +90,13 @@ GdsResTexturePtr GdsMaterial::GetTexture( const int num /*= 0 */ )
 		ASSERT( 0 );
 	return m_Tex[num];
 }
+
+tstring& GdsMaterial::GetTexturePath( const int index )
+{
+	return m_TexturePath.at(index);
+}
+
+void GdsMaterial::SetTexturePath( tstring& path , const int index /*= 0 */ )
+{
+	m_TexturePath.at(index) = path;
+}

@@ -187,10 +187,15 @@ namespace util
 		{
 			ASSERT( m_isSorted );	
 			CONTAINER::iterator i = lower_bound( m_vecData.begin() , m_vecData.end() , key , DataCompare() );
-			if ( i == m_vecData.end() || i->first != key )
+			if ( i != m_vecData.end() )
+			{
+				//return &m_vecData[ distance( m_vecData.begin() , i ) ].second;
+				return &(i->second);
+			}
+			else
+			{
 				return NULL;
-
-			return &(i->second);
+			}		
 		}
 
 		void sort()
@@ -259,11 +264,6 @@ namespace functor
 	struct ToLower{ 
 		void operator() (TCHAR& c) const { c = static_cast<TCHAR>(tolower(c)); }
 	};
-
-	struct ToLowerA{ 
-		void operator() (char& c) const { c = static_cast<char>(tolower(c)); }
-	};
-
 }// end of namespace functor
 
 using namespace util;
