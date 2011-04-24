@@ -23,7 +23,7 @@ HRESULT GdsCameraManagerDX9::Create( LPDIRECT3DDEVICE9 device )
 	return true;
 }
 
-void GdsCameraManagerDX9::Attach( GdsCameraNodePtr camnode )
+void GdsCameraManagerDX9::Attach( GdsCameraPtr camnode )
 {
 	m_camaraContainer.push_back( camnode );
 }
@@ -45,19 +45,19 @@ void GdsCameraManagerDX9::DetachAll()
 	m_camaraContainer.clear();
 }
 
-GdsCameraNodePtr GdsCameraManagerDX9::GetCamNode( int iCamIndex )
+GdsCameraPtr GdsCameraManagerDX9::GetCamNode( int iCamIndex )
 {
 	int size = static_cast<int>( m_camaraContainer.size() );
 
 	if ( iCamIndex < 0 || iCamIndex > size )
-		return GdsCameraNodePtr( (GdsCameraNode*)NULL );
+		return GdsCameraPtr( (GdsCamera*)NULL );
 
 	return m_camaraContainer[iCamIndex];
 }
 
 void GdsCameraManagerDX9::Update( float fElapsedTime )
 {
-	GdsCameraNodePtr cam = m_camaraContainer[m_iCurCamIndex];
+	GdsCameraPtr cam = m_camaraContainer[m_iCurCamIndex];
 	cam->Update(fElapsedTime);
 }
 

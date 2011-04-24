@@ -51,17 +51,17 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 
 bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 {
-	m_pResMgr = boost::shared_dynamic_cast< GdsResMgr >( GdsCoreFactory::CreateCore( CORE_RESOURCE ) );
-	m_pResMgr->Create( device );
+	//m_pResMgr = boost::shared_dynamic_cast< GdsResMgr >( GdsCoreFactory::CreateCore( CORE_RESOURCE ) );
+	RESMGR.Create( device );
 	return TRUE;
 }
 
 void CSnowboard::DestroyModule()
 {
-	if ( m_pRenderer )
-		m_pRenderer->Release();
-	if ( m_pResMgr )
-		m_pResMgr->Release();	
+// 	if ( m_pRenderer )
+// 		m_pRenderer->Release();
+// 	if ( m_pResMgr )
+// 		m_pResMgr->Release();	
 }
 
 
@@ -90,12 +90,9 @@ void CSnowboard::TestFunc()
 	TCHAR respath[MAX_PATH];
 	_stprintf_s( respath , L"%s\\%s" , curpath , L"Resource");
 
-	if ( m_pResMgr )
-	{	 
- 		m_pResMgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;dds;tga" , true ) );
-	}
+	RESMGR.CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;dds;tga;jpg" , true ) );
 
-	GdsResASEPtr resASE	= boost::shared_dynamic_cast< GdsResASE >( m_pResMgr->Get( L"ase\\woman.ase" ) );
+	GdsResASEPtr resASE	= boost::shared_dynamic_cast< GdsResASE >( RESMGR.Get( L"woman.ase" ) );
 
 	GdsNodePtr node = resASE->GetNode();
 //	GdsNodePtr node = GdsNodePtr( new GdsNode );

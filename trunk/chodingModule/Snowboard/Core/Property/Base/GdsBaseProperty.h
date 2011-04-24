@@ -7,7 +7,8 @@ class GdsBaseProperty : public GdsObject
 {
 protected:
 
-	D3DXMATRIXA16		m_DXmatWorld;
+	D3DXMATRIX		m_DXmatWorld;
+	
 
 	virtual	void		vClear(){};
 	virtual	void		vUpdate( float fElapsedTime ){ ASSERT( fElapsedTime); }
@@ -21,8 +22,8 @@ public:
 	void				Update( float fElapsedTime ){ vUpdate( fElapsedTime ); }
 	void				Render( LPDIRECT3DDEVICE9 device ){ vRender( device ); }
 
-	void				SetMT( D3DXMATRIXA16& mt ){ m_DXmatWorld = mt; }
-	D3DXMATRIXA16		GetMT(){ return m_DXmatWorld; }
+	void				SetMT( D3DXMATRIX& mt ){ m_DXmatWorld = mt; }
+	D3DXMATRIX		GetMT(){ return m_DXmatWorld; }
 
 	
 };

@@ -24,6 +24,11 @@ void GdsMesh::vRender( LPDIRECT3DDEVICE9 device )
 
 	if ( m_vb || m_ib )
 	{
+		if ( m_Material )
+		{
+			device->SetMaterial( &m_Material->GetDxMaterial() );
+			device->SetTexture( 0 , m_Material->GetTexture()->Get() );		
+		}
 		
 		device->SetStreamSource( 0 , m_vb , 0 , m_VertexSize );
 		device->SetIndices( m_ib );
@@ -34,9 +39,9 @@ void GdsMesh::vRender( LPDIRECT3DDEVICE9 device )
 
 void GdsMesh::drawAxis( LPDIRECT3DDEVICE9 device )
 {
- 	D3DXMATRIXA16 matWorld;
- 	D3DXMATRIXA16 matView;
- 	D3DXMATRIXA16 matProj;
+ 	D3DXMATRIX matWorld;
+ 	D3DXMATRIX matView;
+ 	D3DXMATRIX matProj;
  	device->GetTransform( D3DTS_WORLD , &matWorld );
  	device->GetTransform( D3DTS_VIEW  , &matView );
  	device->GetTransform( D3DTS_PROJECTION , &matProj );

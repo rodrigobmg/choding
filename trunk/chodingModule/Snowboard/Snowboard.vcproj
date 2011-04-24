@@ -210,7 +210,11 @@
 				Name="Camera"
 				>
 				<File
-					RelativePath=".\Core\Camera\GdsCameraBase.h"
+					RelativePath=".\Core\Camera\GdsCamera.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Camera\GdsCamera.h"
 					>
 				</File>
 				<File
@@ -219,6 +223,14 @@
 				</File>
 				<File
 					RelativePath=".\Core\Camera\GdsCameraManagerDX9.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Camera\GdsFrustum.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Camera\GdsFrustum.h"
 					>
 				</File>
 			</Filter>
@@ -266,14 +278,6 @@
 				Name="SceneNode"
 				>
 				<File
-					RelativePath=".\Core\SceneNode\GdsCameraNode.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\SceneNode\GdsCameraNode.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Core\SceneNode\GdsNode.cpp"
 					>
 				</File>
@@ -285,14 +289,6 @@
 			<Filter
 				Name="Transform"
 				>
-				<File
-					RelativePath=".\Core\Transform\GdsFrustum.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Transform\GdsFrustum.h"
-					>
-				</File>
 				<File
 					RelativePath=".\Core\Transform\GdsMatrix.cpp"
 					>

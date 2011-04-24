@@ -16,8 +16,8 @@ public:
 
 private:
 	
-	D3DXMATRIXA16							m_matLocal;
-	D3DXMATRIXA16							m_matWorld;
+	D3DXMATRIX							m_matLocal;
+	D3DXMATRIX							m_matWorld;
 
 	D3DXQUATERNION							m_qRotate;
 	D3DXQUATERNION							m_qWorldRotate;
@@ -86,11 +86,11 @@ public:
 	const	D3DXVECTOR3&	GetWorldTranslate() const;
 	const	D3DXQUATERNION& GetWorldRotate() const;
 
-	const	D3DXMATRIXA16&	GetLocalMatrix() const;
-	const	D3DXMATRIXA16	GetWorldMatrix() const;
+	const	D3DXMATRIX&	GetLocalMatrix() const;
+	const	D3DXMATRIX&	GetWorldMatrix() const;
 
-	void					SetLocalMatrix( const D3DXMATRIXA16& matLocal );
-	void					SetLocalFromWorldTransform( const D3DXMATRIXA16& matWorld );
+	void					SetLocalMatrix( const D3DXMATRIX& matLocal );
+	void					SetLocalFromWorldTransform( const D3DXMATRIX& matWorld );
 
  	GdsNode*				GetParent();
  	void					SetParent( GdsNode* pNode );

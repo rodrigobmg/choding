@@ -79,7 +79,7 @@ GdsResBasePtr	GdsResMgr::Get( const TCHAR* filename )
 
 GdsResBasePtr GdsResMgr::load_res( const TCHAR* filename )
 {
-	tstring strFilepath = m_strResBasePath + L"\\" + filename;
+	tstring strFilepath( filename );
 	for_each( strFilepath.begin() , strFilepath.end() , functor::ToLower() );
 
 	//FILE_LIST::iterator it = std::find( m_ResFileList.begin() , m_ResFileList.end() , strFilepath );
@@ -88,15 +88,11 @@ GdsResBasePtr GdsResMgr::load_res( const TCHAR* filename )
 	if ( strpath == NULL )
 		bexist = false;
 
-// 	bool bSuccess  = true;
-// 	if ( it == m_ResFileList.end() )
-// 		bSuccess = false;
-
 	if ( bexist )
 	{
 		size_t poscomma = strFilepath.rfind( L"." );
 		tstring ext		= strFilepath.substr( poscomma + 1 , strFilepath.length() );
-		GdsResBasePtr pRes = resourceFactory( ext.c_str() , strFilepath.c_str() );
+		GdsResBasePtr pRes = resourceFactory( ext.c_str() , strpath->c_str() );
 		if ( pRes != NULL )
 		{
 			if ( stack_data_to_container( filename , pRes ) )
@@ -147,7 +143,7 @@ bool	GdsResMgr::load_res_dir( const TCHAR* dirpath , FILE_LIST& filelist , std::
 				TCHAR curpath[MAX_PATH];
 				ZeroMemory( curpath , sizeof( curpath ) );
 				_stprintf_s( curpath , L"%s\\%s" , dirpath , fd.cFileName );
-				tstring wstr( curpath );
+				tstring wfilepath( curpath );
 				for_each( wstr.begin() , wstr.end() , functor::ToLower() );
 				
 				size_t poscomma = wstr.rfind( L"." );
@@ -155,7 +151,7 @@ bool	GdsResMgr::load_res_dir( const TCHAR* dirpath , FILE_LIST& filelist , std::
 
 				if ( std::binary_search( tokenlist.begin() , tokenlist.end() , ext ) )
 					//filelist.push_back( wstr );
-					filelist.add( wstr , wstr );
+					filelist.add( wstr , wfilepath );
 			}	
 		}
 		

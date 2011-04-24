@@ -1,23 +1,23 @@
-#include "GdsCameraNode.h"
+#include "GdsCamera.h"
 #include "Renderer\GdsRendererDX9.h"
 
-GdsCameraNode::GdsCameraNode()
+GdsCamera::GdsCamera()
 {
 	SetName( OBJECT_NODE_CAMERA );
 	vClear();
 }
 
-GdsCameraNode::~GdsCameraNode()
+GdsCamera::~GdsCamera()
 {
 	vClear();
 }
 
-void GdsCameraNode::vClear()
+void GdsCamera::vClear()
 {
 }
 
 
-void GdsCameraNode::vUpdate( float fElapsedtime )
+void GdsCamera::vUpdate( float fElapsedtime )
 {
 	//카메라 뷰 변환 행렬
 // 	D3DXVECTOR3 n = vLookatPt - GetWorldTanslate();
@@ -53,7 +53,7 @@ void GdsCameraNode::vUpdate( float fElapsedtime )
 //  	D3DXVECTOR3 vEyePt   ( 0.0f, 3.0f,-5.0f );
 //  	D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
 //  	D3DXVECTOR3 vUpVec   ( 0.0f, 1.0f, 0.0f );
- 	D3DXMATRIXA16 matView;
+ 	D3DXMATRIX matView;
  	D3DXMatrixLookAtLH( &matView, &vEyePt, &vLookatPt, &vUpVec );
 
 	RENDERER.GetDevice()->SetTransform( D3DTS_VIEW , &matView );
@@ -70,12 +70,9 @@ void GdsCameraNode::vUpdate( float fElapsedtime )
 	RENDERER.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
 }
 
-void GdsCameraNode::SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR3& up )
+void GdsCamera::SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR3& up )
 {
 	vEyePt = eye;
 	vLookatPt = lookat;
 	vUpVec	= up;
-	GetTranslate().x = eye.x;
-	GetTranslate().y = eye.y;
-	GetTranslate().z = eye.z;
 }

@@ -1,16 +1,16 @@
 #ifndef _GDS_CAMERAMANAGERDX9_H_
 #define _GDS_CAMERAMANAGERDX9_H_
 
-#include "GdsCameraBase.h"
-#include "../SceneNode/GdsCameraNode.h"
+#include "GdsCamera.h"
+#include "../Base/GdsObject.h"
 
-class GdsCameraManagerDX9 : public GdsCameraBase
+class GdsCameraManagerDX9 : public GdsObject
 {
 
 private:
 
 	LPDIRECT3DDEVICE9		m_pDevice;
-	typedef std::vector< GdsCameraNodePtr >		CAM_CONTAINER;	
+	typedef std::vector< GdsCameraPtr >		CAM_CONTAINER;	
 	CAM_CONTAINER			m_camaraContainer;
 	int32_t					m_iCurCamIndex;
 
@@ -25,9 +25,9 @@ public:
 	virtual ~GdsCameraManagerDX9(void);
 
 	virtual	HRESULT		Create( LPDIRECT3DDEVICE9 device );
-	GdsCameraNodePtr	GetCamNode( int iCamIndex );
+	GdsCameraPtr		GetCamNode( int iCamIndex );
 
-	void				Attach( GdsCameraNodePtr camnode );
+	void				Attach( GdsCameraPtr camnode );
 	void				Detach( int32_t index );
 	void				DetachAll();
 

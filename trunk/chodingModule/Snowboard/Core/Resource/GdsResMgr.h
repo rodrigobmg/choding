@@ -1,9 +1,7 @@
 #ifndef _SNOWBOARD_RESMGR_
 #define _SNOWBOARD_RESMGR_
 
-#include <map>
-#include <list>
-#include <HASH_MAP>
+#include "../Base/GdsObject.h"
 #include "GdsResBaseType.h"
 #include "Type\GdsResTexture.h"
 
@@ -81,5 +79,7 @@ public:
 };
 
 typedef	boost::shared_ptr< GdsResMgr >	GdsResMgrPtr;
+
+#define RESMGR	singleton_holder< GdsResMgr >::instance()
 
 #endif

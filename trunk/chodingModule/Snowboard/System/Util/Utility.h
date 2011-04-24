@@ -187,7 +187,7 @@ namespace util
 		{
 			ASSERT( m_isSorted );	
 			CONTAINER::iterator i = lower_bound( m_vecData.begin() , m_vecData.end() , key , DataCompare() );
-			if ( i != m_vecData.end() )
+			if ( i != m_vecData.end() && i->first == key )
 			{
 				//return &m_vecData[ distance( m_vecData.begin() , i ) ].second;
 				return &(i->second);

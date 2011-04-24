@@ -1,24 +1,21 @@
-#ifndef _SNOWBOARD_SCENENODE_CAMERANODE_
-#define _SNOWBOARD_SCENENODE_CAMERANODE_
+#ifndef _SNOWBOARD_SCENENODE_CAMERA_H_
+#define _SNOWBOARD_SCENENODE_CAMERA_H_
 
-#include "GdsNode.h"
-#include "../Transform\GdsFrustum.h"
+#include "GdsFrustum.h"
 
 class GdsFrustum;
 
-class GdsCameraNode : public GdsNode{		
-
+class GdsCamera : public GdsObject
+{	
 protected:
-	
-	D3DXMATRIXA16	matView;
-	D3DXMATRIXA16	matProj;
-
-
+		
  	D3DXVECTOR3		vEyePt;
  	D3DXVECTOR3		vLookatPt;
  	D3DXVECTOR3		vUpVec;
 	
-	
+	D3DXMATRIX	matView;
+	D3DXMATRIX	matProj;
+
 	GdsFrustum		m_Frustum;
 	
 
@@ -26,8 +23,8 @@ protected:
 	virtual	void	vClear();
 
 public:
-	GdsCameraNode();
-	virtual ~GdsCameraNode();
+	GdsCamera();
+	virtual ~GdsCamera();
 
 	void			SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR3& up );
 	void			SetLookAt( D3DXVECTOR3& lookat );
@@ -36,8 +33,9 @@ public:
 	
 	void			SetFrustum( GdsFrustum& Frustum ){ m_Frustum = Frustum; }
 	GdsFrustum&		GetFrustum(){ return m_Frustum; }
+	void			Update( float fElapsedtime){ vUpdate( fElapsedtime ); }
 };
 
-typedef boost::shared_ptr< GdsCameraNode >	GdsCameraNodePtr;
+typedef boost::shared_ptr< GdsCamera >	GdsCameraPtr;
 
 #endif

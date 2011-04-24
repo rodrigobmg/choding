@@ -3,6 +3,7 @@
 #include "../../../System/Logger/logger.h"
 #include "../../../System/FrameMemory/GdsFrameMemory.h"
 #include "Renderer/GdsRendererDX9.h"
+#include "../GdsResMgr.h"
 
 GdsResASE::GdsResASE():
 m_VertexList(NULL),
@@ -328,8 +329,9 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 			pNode->GetProperty()->GetMesh()->SetVertexSize( sizeof( AseVERTEX ) );
 			pNode->GetProperty()->GetMesh()->SetVertexMaxCount( iCountVertex );
 			pNode->GetProperty()->GetMesh()->SetIndexMaxCount( iCountTriangle );
-
-			MakeVertex( pNode->GetProperty()->GetMesh()->GetVBBuffer() , iCountVertex );
+			
+			D3DXMATRIX tm = pNode->GetLocalMatrix();
+			MakeVertex( pNode->GetProperty()->GetMesh()->GetVBBuffer() , tm , iCountVertex );
 			MakeIndex( pNode->GetProperty()->GetMesh()->GetIBBuffer() , iCountTriangle );
 
 			return true;
@@ -341,11 +343,24 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 	return false;
 }
 
-void GdsResASE::MakeVertex( LPDIRECT3DVERTEXBUFFER9* vb , int icount_vertex )
+void GdsResASE::MakeVertex( LPDIRECT3DVERTEXBUFFER9* vb , D3DXMATRIX& tm , int icount_vertex )
 {
 	LPDIRECT3DDEVICE9 device = RENDERER.GetDevice();
 	ASSERT( device );
 	ASSERT( !(*vb) );
+
+	D3DXVECTOR3 vTemp;
+	D3DXVECTOR3 vTemp2;
+	D3DXMATRIX mat;
+
+	D3DXMatrixInverse(&mat, 0, &tm );
+	//Mesh->m_InvTm = mat;
+	for(int i = 0; i < icount_vertex ; i++)
+	{
+		vTemp = m_VertexList[i].p;
+		D3DXVec3TransformCoord(&vTemp2,&vTemp, &mat);
+		m_VertexList[i].p = vTemp2;
+	}
 
 	if( FAILED(device->CreateVertexBuffer( icount_vertex*sizeof(AseVERTEX),0, AseVERTEX::FVF,
 		D3DPOOL_DEFAULT, vb, NULL)))
@@ -587,7 +602,7 @@ bool GdsResASE::DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode )
 // 	fgets(m_line, 256, fp); //*INHERIT_ROT
 // 	fgets(m_line, 256, fp); //*INHERIT_SCL
 // 	fgets(m_line, 256, fp); //*TM_ROW0
-	D3DXMATRIXA16 dxMat;
+	D3DXMATRIX dxMat;
 	D3DXMatrixIdentity( &dxMat );
 
 	float fScale;
@@ -1003,8 +1018,13 @@ bool GdsResASE::DecodeMap( LineContainerA::iterator& line , GdsMaterialPtr Mater
 		std::string path;
 		if ( GetValue( "*BITMAP" , line , "\t " , path ) )
 		{
-			tstring strpath = util::string::mb2wc( path.c_str() );
-			Material->SetTexturePath( strpath );
+			size_t poscomma = path.rfind( "/" );
+			tstring name	= util::string::mb2wc( path.substr( poscomma + 1 , path.length() ).c_str() );
+			GdsResTexturePtr pTex = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( name.c_str() ) );
+			Material->SetTexture( pTex );
+			//Material->SetTexturePath( strpath );
+		//	GdsResTexturePtr ptex = REMGR
+		//	Material->SetTexture( )
 
 		}
 

@@ -15,6 +15,7 @@
 #include <map>
 #include <algorithm>
 #include <stdlib.h>
+#include <hash_map>
 
 #include <boost/pool/pool.hpp>
 #include <boost/pool/poolfwd.hpp>

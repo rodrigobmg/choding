@@ -90,29 +90,29 @@ const D3DXQUATERNION& GdsNode::GetWorldRotate() const
 	return m_qWorldRotate;
 }
 
-const D3DXMATRIXA16& GdsNode::GetLocalMatrix() const
+const D3DXMATRIX& GdsNode::GetLocalMatrix() const
 {
 	return m_matLocal;
 }
 
-const D3DXMATRIXA16 GdsNode::GetWorldMatrix() const
+const D3DXMATRIX& GdsNode::GetWorldMatrix() const
 {
 	return m_matWorld;
 }
 
-void GdsNode::SetLocalMatrix( const D3DXMATRIXA16& matLocal )
+void GdsNode::SetLocalMatrix( const D3DXMATRIX& matLocal )
 {
 	m_matLocal = matLocal;
 }
 
 
-void GdsNode::SetLocalFromWorldTransform( const D3DXMATRIXA16& matWorld )
+void GdsNode::SetLocalFromWorldTransform( const D3DXMATRIX& matWorld )
 {
 	if(m_pParentNode)
 	{
-		D3DXMATRIXA16 matParentWorldInv;
+		D3DXMATRIX matParentWorldInv;
 		D3DXMatrixInverse( &matParentWorldInv, NULL, &m_pParentNode->GetWorldMatrix());
-		D3DXMATRIXA16 matLocal = matParentWorldInv * matWorld;
+		D3DXMATRIX matLocal = matParentWorldInv * matWorld;
 		SetLocalMatrix( matLocal );
 
 	}
@@ -224,7 +224,7 @@ HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 HRESULT GdsNode::Update( float fElapsedtime )
 {
 	
-	D3DXMATRIXA16 matTrans, matScale, matRot;
+	D3DXMATRIX matTrans, matScale, matRot;
 	D3DXMatrixIdentity( &matTrans );
 	D3DXMatrixIdentity( &matScale );
 	D3DXMatrixIdentity( &matRot );
@@ -237,7 +237,7 @@ HRESULT GdsNode::Update( float fElapsedtime )
 
 	if( GetParent() )
 	{
-		D3DXMATRIXA16 parTM;
+		D3DXMATRIX parTM;
 		parTM = GetParent()->GetWorldMatrix();
 		//m_matWorld = m_matLocal * m_matAni * m_pParent->GetWorldMatrix();
 		m_matWorld = m_matLocal * parTM;
