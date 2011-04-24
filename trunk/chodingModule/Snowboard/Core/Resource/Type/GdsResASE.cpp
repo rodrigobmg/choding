@@ -117,6 +117,18 @@ bool GdsResASE::attachNode( GdsNodePtr childNode , tstring& parentname )
 	{
 		if ( (*it)->GetName() == parentname )
 		{
+			D3DXMATRIX parent_tm = (*it)->GetLocalMatrix();
+			D3DXMATRIX child_tm = childNode->GetLocalMatrix();
+			D3DXMATRIX inv_parent ,mat2;
+			D3DXMatrixIdentity( &inv_parent );
+			D3DXMatrixIdentity( &mat2 );
+			
+			D3DXMatrixInverse( &inv_parent , 0, &parent_tm );
+			
+			D3DXMatrixMultiply( &mat2, &child_tm , &inv_parent);
+			childNode->SetLocalMatrix( mat2 );
+			//D3DXMatrixMultiply(&m_CalcMatrix, &mat2, &m_pParents->m_CalcMatrix);
+
 			(*it)->AttachChild( childNode );
 			break;
 		}
@@ -353,14 +365,14 @@ void GdsResASE::MakeVertex( LPDIRECT3DVERTEXBUFFER9* vb , D3DXMATRIX& tm , int i
 	D3DXVECTOR3 vTemp2;
 	D3DXMATRIX mat;
 
-	D3DXMatrixInverse(&mat, 0, &tm );
-	//Mesh->m_InvTm = mat;
-	for(int i = 0; i < icount_vertex ; i++)
-	{
-		vTemp = m_VertexList[i].p;
-		D3DXVec3TransformCoord(&vTemp2,&vTemp, &mat);
-		m_VertexList[i].p = vTemp2;
-	}
+// 	D3DXMatrixInverse(&mat, 0, &tm );
+// 	//Mesh->m_InvTm = mat;
+// 	for(int i = 0; i < icount_vertex ; i++)
+// 	{
+// 		vTemp = m_VertexList[i].p;
+// 		D3DXVec3TransformCoord(&vTemp2,&vTemp, &mat);
+// 		m_VertexList[i].p = vTemp2;
+// 	}
 
 	if( FAILED(device->CreateVertexBuffer( icount_vertex*sizeof(AseVERTEX),0, AseVERTEX::FVF,
 		D3DPOOL_DEFAULT, vb, NULL)))
