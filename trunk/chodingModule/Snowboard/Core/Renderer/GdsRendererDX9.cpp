@@ -96,7 +96,7 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 	
 	GdsCameraNodePtr	camnode = GdsCameraNodePtr( new GdsCameraNode );
 
-	D3DXVECTOR3 vEyePt( 1.0f, 50.0f,-200.0f );
+	D3DXVECTOR3 vEyePt( 1.0f, 10.0f,-10.0f );
 	D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
 	D3DXVECTOR3 vUpVec( 0.0f, 1.0f, 0.0f );
 

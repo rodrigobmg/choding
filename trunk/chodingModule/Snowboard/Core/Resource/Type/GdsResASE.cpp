@@ -588,6 +588,8 @@ bool GdsResASE::DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode )
 // 	fgets(m_line, 256, fp); //*INHERIT_SCL
 // 	fgets(m_line, 256, fp); //*TM_ROW0
 	D3DXMATRIXA16 dxMat;
+	D3DXMatrixIdentity( &dxMat );
+
 	float fScale;
 
 	do 
@@ -600,6 +602,7 @@ bool GdsResASE::DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode )
 
 		if ( CheckKeyword( "}" , line ) )
 		{
+			pNode->SetLocalMatrix( dxMat );
 // 			pNode->GetRotate().SetRow( 0 , dxMat._11 , dxMat._12 , dxMat._13 );
 // 			pNode->GetRotate().SetRow( 1 , dxMat._21 , dxMat._22 , dxMat._23 );
 // 			pNode->GetRotate().SetRow( 2 , dxMat._31 , dxMat._32 , dxMat._33 );
