@@ -45,6 +45,8 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_BASE			L"Base"
 #define OBJECT_BASE_CORE	L"CoreBase"
 #define OBJECT_RENDERBASE	L"RenderBase"
+#define OBJECT_RENDEROBJECT	L"RenderObject"
+#define OBJECT_RENDERFRAME	L"RenderFrame"
 #define OBJECT_RENDERERDX9	L"RendererDX9"
 #define OBJECT_COREMGR		L"CoreMgr"
 #define OBJECT_RES_BASE		L"ResBase"

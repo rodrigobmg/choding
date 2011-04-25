@@ -13,9 +13,9 @@ m_eTexturingType( DEFAULT )
 	}
 
 	ZeroMemory( &m_dxMaterial , sizeof(D3DMATERIAL9) );
-	m_dxMaterial.Diffuse.r = m_dxMaterial.Ambient.r = 0.0f;
-	m_dxMaterial.Diffuse.g = m_dxMaterial.Ambient.g = 0.0f;
-	m_dxMaterial.Diffuse.b = m_dxMaterial.Ambient.b = 0.0f;
+	m_dxMaterial.Diffuse.r = m_dxMaterial.Ambient.r = 1.0f;
+	m_dxMaterial.Diffuse.g = m_dxMaterial.Ambient.g = 1.0f;
+	m_dxMaterial.Diffuse.b = m_dxMaterial.Ambient.b = 1.0f;
 	m_dxMaterial.Diffuse.a = m_dxMaterial.Ambient.a = 1.0f;
 
 }
@@ -55,8 +55,8 @@ void GdsMaterial::vClear()
 
 void GdsMaterial::vRender( LPDIRECT3DDEVICE9 device )
 {
-// 	if ( m_eTexturingType == DEFAULT )
-// 		device->SetTexture( 0, m_Tex[0]->Get() );  	
+ 	if ( m_eTexturingType == DEFAULT )
+ 		device->SetTexture( 0, m_Tex[0]->Get() );  	
 // 	else if ( m_eTexturingType == MULTI_TEXTURE )
 // 	{
 // 		LOG_WARNING( "미지원 기능" );
@@ -89,14 +89,4 @@ GdsResTexturePtr GdsMaterial::GetTexture( const int num /*= 0 */ )
 	if ( m_Tex.size() < num )
 		ASSERT( 0 );
 	return m_Tex[num];
-}
-
-tstring& GdsMaterial::GetTexturePath( const int index )
-{
-	return m_TexturePath.at(index);
-}
-
-void GdsMaterial::SetTexturePath( tstring& path , const int index /*= 0 */ )
-{
-	m_TexturePath.at(index) = path;
 }

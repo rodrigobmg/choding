@@ -58,9 +58,6 @@ public:
 	GdsResTexturePtr		GetTexture( const int num = 0 );
 	void					SetTexture( GdsResTexturePtr texture , const int num = 0 );
 
-	void					SetTexturePath( tstring& path , const int index = 0 );
-	tstring&				GetTexturePath( const int index = 0 );
-
 	void					AddSubMaterial( GdsMaterialPtr material ){ m_SubMaterial.push_back( material ); }
 	size_t					GetCountSubMaterial(){ return m_SubMaterial.size(); }
 	GdsMaterialPtr			GetSubMaterial( int index ) { ASSERT( index < m_SubMaterial.size() ); return m_SubMaterial.at(index); }
