@@ -25,7 +25,7 @@ class GdsRenderFrame : public GdsObject
 public:
 
 	GdsRenderFrame(){ SetName( OBJECT_RENDERFRAME ); }
-	virtual ~GdsRenderFrame(){};
+	virtual ~GdsRenderFrame();
 
 	void			AddRenderObject( GdsRenderObjectPtr pRenderObject );
 	void			SetRenderState( int renderstste_key , int renderstate_value );	

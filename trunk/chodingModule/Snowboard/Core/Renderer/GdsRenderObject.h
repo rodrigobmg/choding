@@ -29,7 +29,7 @@ class GdsRenderObject : public GdsObject
 public:
 
 	GdsRenderObject();
-	virtual ~GdsRenderObject(){};
+	virtual ~GdsRenderObject();
 
 	virtual void			vRender( LPDIRECT3DDEVICE9 device );
 	

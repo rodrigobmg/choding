@@ -16,6 +16,11 @@ GdsRenderObject::GdsRenderObject()
 	m_ib = NULL;
 }
 
+GdsRenderObject::~GdsRenderObject()
+{
+	SAFE_RELEASE( m_ib );
+	SAFE_RELEASE( m_vb );
+}
 
 void GdsRenderObject::vRender( LPDIRECT3DDEVICE9 device )
 {

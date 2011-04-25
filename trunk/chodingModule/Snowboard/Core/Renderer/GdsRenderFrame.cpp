@@ -1,5 +1,11 @@
 #include "GdsRenderFrame.h"
 
+
+GdsRenderFrame::~GdsRenderFrame()
+{
+	m_RenderFrame.clear();
+}
+
 void GdsRenderFrame::AddRenderObject( GdsRenderObjectPtr pRenderObject )
 {
 	m_RenderFrame.push_back( pRenderObject );

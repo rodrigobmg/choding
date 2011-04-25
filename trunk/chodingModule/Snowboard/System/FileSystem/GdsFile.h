@@ -61,11 +61,11 @@ public:
 		const char* operator*() const {ASSERT(!empty()); return m_curr;}
 
 		iterator& operator++() { forward(); return *this; }
-		iterator operator++(int i) { iterator temp = *this; ++*this; return temp; }
+		iterator operator++(int i) { i=i; iterator temp = *this; ++*this; return temp; }
 		bool operator==(const iterator& rhs) const {return m_curr == rhs.m_curr;}
 		bool operator!=(const iterator& rhs) const {return m_curr != rhs.m_curr;}
 
-		int length()const { return (m_next > m_curr) ? (m_next-m_curr) : 0; }
+		int length()const { return (m_next > m_curr) ? static_cast<int>( (m_next-m_curr) ) : 0; }
 		bool empty()const { return m_curr == m_next; }
 
 	private:
@@ -106,11 +106,11 @@ public:
 		const wchar_t* operator*() const {ASSERT(!empty()); return m_curr;}
 
 		iterator& operator++() { forward(); return *this; }
-		iterator operator++(int i) { iterator temp = *this; ++*this; return temp; }
+		iterator operator++(int i) { i=i; iterator temp = *this; ++*this; return temp; }
 		bool operator==(const iterator& rhs) const {return m_curr == rhs.m_curr;}
 		bool operator!=(const iterator& rhs) const {return m_curr != rhs.m_curr;}
 
-		int length()const { return (m_next > m_curr) ? (m_next-m_curr) : 0; }
+		int length()const { return (m_next > m_curr) ? static_cast<int>( (m_next-m_curr) ) : 0; }
 		bool empty()const { return m_curr == m_next; }
 
 	private:
