@@ -11,6 +11,20 @@ void GdsRenderFrame::SetRenderState( int renderstste_key , int renderstate_value
 	m_Opt_RenderState.push_back( opt );
 }
 
+void GdsRenderFrame::SetTextureStageState( int index , int iop1 , int iop2 )
+{
+	VALUE val( iop1 , iop2 );
+	MULTI_VALUE multi_value( index , val );
+	m_Opt_MultiTexturing.push_back( multi_value );
+}
+
+void GdsRenderFrame::SetSamplerState( int index , int iop1 , int iop2 )
+{	
+	VALUE val( iop1 , iop2 );
+	MULTI_VALUE multi_value( index , val );
+	m_Opt_SamplerState.push_back( multi_value );
+}
+
 void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
 {
 	OPT_RENDERSTATE::iterator	it = m_Opt_RenderState.begin();
@@ -41,16 +55,3 @@ void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
 	} 
 }
 
-void GdsRenderFrame::SetTextureStageState( int index , int iop1 , int iop2 )
-{
-	VALUE val( iop1 , iop2 );
-	MULTI_VALUE multi_value( index , val );
-	m_Opt_MultiTexturing.push_back( multi_value );
-}
-
-void GdsRenderFrame::SetSamplerState( int index , int iop1 , int iop2 )
-{	
-	VALUE val( iop1 , iop2 );
-	MULTI_VALUE multi_value( index , val );
-	m_Opt_SamplerState.push_back( multi_value );
-}
