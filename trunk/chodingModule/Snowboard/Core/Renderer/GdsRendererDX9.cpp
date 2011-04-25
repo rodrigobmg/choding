@@ -56,7 +56,7 @@ HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 	//m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
 
 	// Turn off D3D lighting
-	m_pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+	m_pd3dDevice->SetRenderState( D3DRS_LIGHTING, TRUE );
 
 	setRootNodeAndCamNode();
 
@@ -79,7 +79,8 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 		{
 			(*it)->Render( m_pd3dDevice );
 		}
-		
+			
+
 		m_pd3dDevice->EndScene();
 
 	}
@@ -96,7 +97,7 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 	
 	GdsCameraPtr	camnode = GdsCameraPtr( new GdsCamera );
 
-	D3DXVECTOR3 vEyePt( 1.0f, 10.0f,-10.0f );
+	D3DXVECTOR3 vEyePt( 1.0f, 100.0f,-100.0f );
 	D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
 	D3DXVECTOR3 vUpVec( 0.0f, 1.0f, 0.0f );
 
