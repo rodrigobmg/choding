@@ -32,15 +32,17 @@
 
 #include "SunFileMemory_Test.hpp"
 // #include "Snowboard_test.hpp"
-#include "GdsResMgr_test.hpp"
+//#include "GdsResMgr_test.hpp"
 //#include "GdsNode_test.hpp"
 // #include "GdsTransform_test.hpp"
 // #include "GdsProperty_test.hpp"
 // #include "GdsSingleton_test.hpp"
 // #include "GdsFile_test.hpp"
 // #include "GdsVectorContainer_test.hpp"
-#include "GdsResASE_test.hpp"
-#include "GdsMaterial_test.hpp"
+//#include "GdsResASE_test.hpp"
+//#include "GdsMaterial_test.hpp"
+#include "GdsRenderFrame_test.hpp"
+
 
 int main(int argc, char **argv)
 {

@@ -27,7 +27,7 @@ void GdsMesh::vRender( LPDIRECT3DDEVICE9 device )
 		if ( m_Material )
 		{
 			device->SetMaterial( &m_Material->GetDxMaterial() );
-			device->SetTexture( 0 , m_Material->GetTexture()->Get() );		
+		//	device->SetTexture( 0 , m_Material->GetTexture()->Get() );		
 			device->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );	/// 0번 텍스처 스테이지의 확대 필터
 			device->SetTextureStageState( 0, D3DTSS_TEXCOORDINDEX, 0 );		/// 0번 텍스처 : 0번 텍스처 인덱스 사용
 

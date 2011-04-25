@@ -120,6 +120,8 @@ void CSnowboard::TestFunc()
 	mapNode->SetName( L"height Map" );
 	MakeHeightMap( mapNode );
 	RENDERER.GetRootNode()->AttachChild( mapNode );
+
+	RENDERER.SetWireFrame( true );
 }
 
 HRESULT CSnowboard::MsgProc()
@@ -229,9 +231,35 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	}
 	(*g_pIB)->Unlock();
 
-	pNode->GetProperty()->GetMesh()->SetVertexMaxCount(g_cxHeight*g_czHeight);
-	pNode->GetProperty()->GetMesh()->SetVertexSize(sizeof(CUSTOMVERTEX));
-	pNode->GetProperty()->GetMesh()->SetFVF( D3DFVF_CUSTOMVERTEX );
-	pNode->GetProperty()->GetMesh()->SetIndexMaxCount( (g_cxHeight-1)*(g_czHeight-1)*2 );
+// 	pNode->GetProperty()->GetMesh()->SetVertexMaxCount(g_cxHeight*g_czHeight);
+// 	pNode->GetProperty()->GetMesh()->SetVertexSize(sizeof(CUSTOMVERTEX));
+// 	pNode->GetProperty()->GetMesh()->SetFVF( D3DFVF_CUSTOMVERTEX );
+// 	pNode->GetProperty()->GetMesh()->SetIndexMaxCount( (g_cxHeight-1)*(g_czHeight-1)*2 );
 
+	GdsRenderObjectPtr renderObject = GdsRenderObjectPtr( new GdsRenderObject );
+	renderObject->SetVertexMaxCount( g_cxHeight*g_czHeight );
+	renderObject->SetVertexSize( sizeof( CUSTOMVERTEX ) );
+	renderObject->SetFVF( D3DFVF_CUSTOMVERTEX );
+	renderObject->SetIndexMaxCount( (g_cxHeight-1)*(g_czHeight-1)*2 );
+	renderObject->SetIndexBuffer( *g_pIB );
+	renderObject->SetVertexBuffer( *g_pVB );
+	renderObject->SetStartIndex( 0 );
+	renderObject->SetEndIndex( (g_cxHeight-1)*(g_czHeight-1)*2 );
+	renderObject->SetStartVertexIndex( 0 );
+	renderObject->SetEndVertexIndex( g_cxHeight*g_czHeight );
+	renderObject->SetTexture( texcolor->Get() );
+
+	RENDERER.GetRenderFrame()->AddRenderObject( renderObject );
+
+	RENDERER.GetRenderFrame()->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );	/// 0번 텍스처 스테이지의 확대 필터
+	
+	RENDERER.GetRenderFrame()->SetTextureStageState( 0, D3DTSS_TEXCOORDINDEX, 0 );		/// 0번 텍스처 : 0번 텍스처 인덱스 사용
+	RENDERER.GetRenderFrame()->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE);
+	RENDERER.GetRenderFrame()->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+	RENDERER.GetRenderFrame()->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
+
+	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_ZENABLE, TRUE );
+	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
+	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_LIGHTING, FALSE );
+	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
 }

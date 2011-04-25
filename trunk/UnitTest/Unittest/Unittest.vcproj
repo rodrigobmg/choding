@@ -211,6 +211,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\testUnit\GdsRenderFrame_test.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\testUnit\GdsResASE_test.hpp"
 				>
 			</File>
