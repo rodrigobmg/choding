@@ -53,12 +53,11 @@ HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 		return E_FAIL;
 	}
 
-// 	m_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
-// 	m_pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
-	//m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
+ 	m_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
+ 	m_pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
 
 	// Turn off D3D lighting
-//	m_pd3dDevice->SetRenderState( D3DRS_LIGHTING, TRUE );
+	m_pd3dDevice->SetRenderState( D3DRS_LIGHTING, TRUE );
 
 	setRootNodeAndCamNode();
 
@@ -75,20 +74,20 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 	
 
 	m_pd3dDevice->Clear( 0 , NULL , D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER , D3DCOLOR_XRGB( 128, 128, 128 ) , 1.f , 0 );
-//	m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, m_bIsWireFrame? D3DFILL_WIREFRAME : D3DFILL_SOLID);
+	m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, m_bIsWireFrame? D3DFILL_WIREFRAME : D3DFILL_SOLID);
 	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
 	{	
 
-		m_RenderFrame->Render( RENDERER.GetDevice() );		
+//		m_RenderFrame->Render( RENDERER.GetDevice() );		
 
-// 		std::vector< GdsPropertyPtr >::iterator it = m_RenderList.begin();
-// 		for ( ; it != m_RenderList.end() ; ++it )
-// 		{
-// 			(*it)->Render( m_pd3dDevice );
-// 		}
-// 			
-// 
-// 		m_pd3dDevice->EndScene();
+ 		std::vector< GdsPropertyPtr >::iterator it = m_RenderList.begin();
+ 		for ( ; it != m_RenderList.end() ; ++it )
+ 		{
+ 			(*it)->Render( m_pd3dDevice );
+ 		}
+ 			
+ 
+ 		m_pd3dDevice->EndScene();
 
 	}
 
