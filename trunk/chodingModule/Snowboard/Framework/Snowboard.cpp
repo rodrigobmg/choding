@@ -96,13 +96,11 @@ void CSnowboard::TestFunc()
 
 	GdsNodePtr node = resASE->GetNode();
 //	GdsNodePtr node = GdsNodePtr( new GdsNode );
-	node->SetDrawAxis( true );
 	node->SetName( L"Child" );
 	//RENDERER.GetRootNode()->AttachChild( node );
 
 	//node->SetTranslate( 11.0 , 0, 0  );
 
-	RENDERER.GetRootNode()->SetDrawAxis( false );
 	RENDERER.GetRootNode()->SetName( L"ROOT" );
 
 	{
@@ -121,7 +119,6 @@ void CSnowboard::TestFunc()
 	MakeHeightMap( mapNode );
 	RENDERER.GetRootNode()->AttachChild( mapNode );
 
-	RENDERER.SetWireFrame( true );
 }
 
 HRESULT CSnowboard::MsgProc()
@@ -133,10 +130,6 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 {
 	GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"map128.bmp") );
 	GdsResTexturePtr texcolor = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"tile2.tga") );
-
-	GdsMaterialPtr material = GdsMaterialPtr( new GdsMaterial );
-	material->SetTexture( texcolor );
-	pNode->GetProperty()->GetMesh()->SetMaterial( material );
 
 	struct CUSTOMVERTEX
 	{
@@ -161,11 +154,11 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	g_cxHeight = ddsd.Width;				/// 텍스처의 가로크기
 	g_czHeight = ddsd.Height;				/// 텍스처의 세로크기
 
-	LPDIRECT3DVERTEXBUFFER9* g_pVB = pNode->GetProperty()->GetMesh()->GetVBBuffer();
+	LPDIRECT3DVERTEXBUFFER9 g_pVB;
 	LOG_WARNING_F( "Texture Size:[%d,%d]", g_cxHeight, g_czHeight );
 	if( FAILED( RENDERER.GetDevice()->CreateVertexBuffer( ddsd.Width*ddsd.Height*sizeof(CUSTOMVERTEX),
 		0, D3DFVF_CUSTOMVERTEX,
-		D3DPOOL_DEFAULT, g_pVB, NULL ) ) )
+		D3DPOOL_DEFAULT, &g_pVB, NULL ) ) )
 	{
 		return;
 	}
@@ -174,7 +167,7 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	texheight->Get()->LockRect( 0, &d3drc, NULL, D3DLOCK_READONLY );
 	VOID* pVertices;
 	/// 정점버퍼 락!
-	if( FAILED( (*g_pVB)->Lock( 0, g_cxHeight*g_czHeight*sizeof(CUSTOMVERTEX), (void**)&pVertices, 0 ) ) )
+	if( FAILED( g_pVB->Lock( 0, g_cxHeight*g_czHeight*sizeof(CUSTOMVERTEX), (void**)&pVertices, 0 ) ) )
 		return;
 
 	CUSTOMVERTEX	v;
@@ -197,14 +190,14 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 		}
 	}
 
-	(*g_pVB)->Unlock();
+	g_pVB->Unlock();
 	texheight->Get()->UnlockRect( 0 );
 
 
-	LPDIRECT3DINDEXBUFFER9* g_pIB = pNode->GetProperty()->GetMesh()->GetIBBuffer();
+	LPDIRECT3DINDEXBUFFER9 g_pIB;
 
 	if( FAILED( RENDERER.GetDevice()->CreateIndexBuffer( (g_cxHeight-1)*(g_czHeight-1)*2 * sizeof(MYINDEX), 0, 
-														D3DFMT_INDEX16, D3DPOOL_DEFAULT,g_pIB, NULL ) ) )
+														D3DFMT_INDEX16, D3DPOOL_DEFAULT, &g_pIB, NULL ) ) )
 	{
 		return;
 	}
@@ -212,7 +205,7 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	MYINDEX		i;
 	MYINDEX*	pI;
 	
-	if( FAILED( (*g_pIB)->Lock( 0, (g_cxHeight-1)*(g_czHeight-1)*2 * sizeof(MYINDEX), (void**)&pI, 0 ) ) )
+	if( FAILED( g_pIB->Lock( 0, (g_cxHeight-1)*(g_czHeight-1)*2 * sizeof(MYINDEX), (void**)&pI, 0 ) ) )
 		return;
 
 	for( DWORD z = 0 ; z < g_czHeight-1 ; z++ )
@@ -229,14 +222,7 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 			*pI++ = i;
 		}
 	}
-	(*g_pIB)->Unlock();
-// 
-//  	pNode->GetProperty()->GetMesh()->SetVertexMaxCount(g_cxHeight*g_czHeight);
-//  	pNode->GetProperty()->GetMesh()->SetVertexSize(sizeof(CUSTOMVERTEX));
-//  	pNode->GetProperty()->GetMesh()->SetFVF( D3DFVF_CUSTOMVERTEX );
-//  	pNode->GetProperty()->GetMesh()->SetIndexMaxCount( (g_cxHeight-1)*(g_czHeight-1)*2 );
-// 	
-// 	
+	g_pIB->Unlock();
 
 
 	GdsRenderObjectPtr renderObject = GdsRenderObjectPtr( new GdsRenderObject );
@@ -244,8 +230,8 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	renderObject->SetVertexSize( sizeof( CUSTOMVERTEX ) );
 	renderObject->SetFVF( D3DFVF_CUSTOMVERTEX );
 	renderObject->SetIndexMaxCount( (g_cxHeight-1)*(g_czHeight-1)*2 );
-	renderObject->SetIndexBuffer( *g_pIB );
-	renderObject->SetVertexBuffer( *g_pVB );
+	renderObject->SetIndexBuffer( g_pIB );
+	renderObject->SetVertexBuffer( g_pVB );
 	renderObject->SetStartIndex( 0 );
 	renderObject->SetEndIndex( (g_cxHeight-1)*(g_czHeight-1)*2 );
 	renderObject->SetStartVertexIndex( 0 );
@@ -266,5 +252,5 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_ZENABLE, TRUE );
 	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
 	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_LIGHTING, FALSE );
-	//RENDERER.GetRenderFrame()->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
+	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
 }

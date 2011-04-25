@@ -338,66 +338,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="Property"
-				>
-				<File
-					RelativePath=".\Core\Property\GdsProperty.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Property\GdsProperty.h"
-					>
-				</File>
-				<Filter
-					Name="Animation"
-					>
-					<File
-						RelativePath=".\Core\Property\Animation\GdsAnimation.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Property\Animation\GdsAnimation.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Base"
-					>
-					<File
-						RelativePath=".\Core\Property\Base\GdsBaseProperty.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Property\Base\GdsBaseProperty.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Material"
-					>
-					<File
-						RelativePath=".\Core\Property\Material\GdsMaterial.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Property\Material\GdsMaterial.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Mesh"
-					>
-					<File
-						RelativePath=".\Core\Property\Mesh\GdsMesh.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Property\Mesh\GdsMesh.h"
-						>
-					</File>
-				</Filter>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="System"
