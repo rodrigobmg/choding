@@ -33,18 +33,12 @@ void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
 								, static_cast< D3DTEXTUREFILTERTYPE >( it_samplerstate->second.second )
 								);
 	}
- 	
- 	
- 	//if( SUCCEEDED( device->BeginScene() ) )
- 	{	  
-		RENDEROBJECT::iterator it_render = m_RenderFrame.begin();
-		for ( ; it_render != m_RenderFrame.end() ; ++it_render )
-		{
-			(*it_render)->vRender( device );
-		}
- 	}
- 
- 	//device->Present( NULL , NULL , NULL , NULL );
+ 	 	
+	RENDEROBJECT::iterator it_render = m_RenderFrame.begin();
+	for ( ; it_render != m_RenderFrame.end() ; ++it_render )
+	{
+		(*it_render)->vRender( device );
+	} 
 }
 
 void GdsRenderFrame::SetTextureStageState( int index , int iop1 , int iop2 )

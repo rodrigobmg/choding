@@ -31,6 +31,7 @@ public:
 	void			SetRenderState( int renderstste_key , int renderstate_value );	
 	void			SetTextureStageState( int index , int iop1 , int iop2 );
 	void			SetSamplerState( int index , int iop1 , int iop2 );
+
 	void			Render( LPDIRECT3DDEVICE9 device ){ vRender( device ); }
 
 protected:

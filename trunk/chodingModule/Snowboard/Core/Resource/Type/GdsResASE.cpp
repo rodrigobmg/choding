@@ -18,7 +18,6 @@ m_TVertex(NULL)
 GdsResASE::~GdsResASE()
 {
 	m_vecNodeList.clear();
-	m_vecMaterialList.clear();
 	SAFE_DELETE_ARRAY( m_VertexList );
 	SAFE_DELETE_ARRAY( m_FaceList );
 	SAFE_DELETE_ARRAY( m_TVertex);
@@ -58,7 +57,7 @@ HRESULT GdsResASE::vLoadResource( LPDIRECT3DDEVICE9 device )
 		else if ( CheckKeyword( "*GEOMOBJECT" , it ) )
 		{
 			GdsNodePtr pNode = GdsNodePtr( new GdsNode );
-			pNode->SetDrawAxis( true );
+			//pNode->SetDrawAxis( true );
 			m_vecNodeList.push_back( pNode );
 			DecodeGEOMOBJECT( it , pNode );
 			++m_iCountBone;
@@ -73,7 +72,7 @@ HRESULT GdsResASE::vLoadResource( LPDIRECT3DDEVICE9 device )
 	parseNode( m_vecNodeList );	
 	parseMaterial( m_vecNodeList , device );
 	m_vecNodeList.clear();
-	m_vecMaterialList.clear();
+//	m_vecMaterialList.clear();
 
 	return true;
 }
@@ -336,15 +335,15 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
  		
  		if( CheckKeyword( "}" , line ) ) 
 		{
-			pNode->GetProperty()->GetMesh()->SetMaterial( m_vecMaterialList.at( m_FaceList[0].MaterialID ) );
-			pNode->GetProperty()->GetMesh()->SetFVF( sizeof( AseVERTEX::FVF ) );
-			pNode->GetProperty()->GetMesh()->SetVertexSize( sizeof( AseVERTEX ) );
-			pNode->GetProperty()->GetMesh()->SetVertexMaxCount( iCountVertex );
-			pNode->GetProperty()->GetMesh()->SetIndexMaxCount( iCountTriangle );
-			
-			D3DXMATRIX tm = pNode->GetLocalMatrix();
-			MakeVertex( pNode->GetProperty()->GetMesh()->GetVBBuffer() , tm , iCountVertex );
-			MakeIndex( pNode->GetProperty()->GetMesh()->GetIBBuffer() , iCountTriangle );
+// 			pNode->GetProperty()->GetMesh()->SetMaterial( m_vecMaterialList.at( m_FaceList[0].MaterialID ) );
+// 			pNode->GetProperty()->GetMesh()->SetFVF( sizeof( AseVERTEX::FVF ) );
+// 			pNode->GetProperty()->GetMesh()->SetVertexSize( sizeof( AseVERTEX ) );
+// 			pNode->GetProperty()->GetMesh()->SetVertexMaxCount( iCountVertex );
+// 			pNode->GetProperty()->GetMesh()->SetIndexMaxCount( iCountTriangle );
+// 			
+// 			D3DXMATRIX tm = pNode->GetLocalMatrix();
+// 			MakeVertex( pNode->GetProperty()->GetMesh()->GetVBBuffer() , tm , iCountVertex );
+// 			MakeIndex( pNode->GetProperty()->GetMesh()->GetIBBuffer() , iCountTriangle );
 
 			return true;
 		}
@@ -932,16 +931,16 @@ bool GdsResASE::DecodeMATERIAL_LIST( LineContainerA::iterator& line )
 {
 	int iCountMaterial;
 	GetValue( "*MATERIAL_COUNT" , line , " " , iCountMaterial );
-	m_vecMaterialList.reserve( iCountMaterial );
+//	m_vecMaterialList.reserve( iCountMaterial );
 
 	do
 	{		
 		int iIndex;
 		if ( GetValue( "*MATERIAL" , line , "\t " , iIndex ) )
 		{
-			GdsMaterialPtr material = GdsMaterialPtr( new GdsMaterial );
-			DecodeMaterial( line , material );
-			m_vecMaterialList.push_back( material );
+		//	GdsMaterialPtr material = GdsMaterialPtr( new GdsMaterial );
+			DecodeMaterial( line /*, material */);
+	//		m_vecMaterialList.push_back( material );
 		}
 		else if( CheckKeyword( "}" , line ) )
 		{
@@ -958,16 +957,16 @@ bool GdsResASE::DecodeMATERIAL_LIST( LineContainerA::iterator& line )
 	return true;
 }
 
-bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPtr Material )
+bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line/* , GdsMaterialPtr Material*/ )
 {
 	do 
 	{
 		if ( CheckKeyword( "*SUBMATERIAL" , line ) )
 		{
-			GetValue( "*SUBMATERIAL" , line , " " , m_iSubMaterial );
-			GdsMaterialPtr subMaterial = GdsMaterialPtr( new GdsMaterial );
-			Material->AddSubMaterial( subMaterial );
-			DecodeMaterial( line , subMaterial );
+// 			GetValue( "*SUBMATERIAL" , line , " " , m_iSubMaterial );
+// 			GdsMaterialPtr subMaterial = GdsMaterialPtr( new GdsMaterial );
+// 			Material->AddSubMaterial( subMaterial );
+// 			DecodeMaterial( line , subMaterial );
 		}
 
 		float fAmbientR , fAmbientG , fAmbientB;
@@ -977,39 +976,39 @@ bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPtr 
 		GetValue( "*NUMSUBMTLS" ,line , "\t " , m_iCountSubMaterial );		
 
 		if ( GetValue( "*MATERIAL_AMBIENT" ,line , "\t " , fAmbientR , fAmbientG , fAmbientB ) )
-			Material->SetAmbientColor( fAmbientR , fAmbientG , fAmbientB );
+		//	Material->SetAmbientColor( fAmbientR , fAmbientG , fAmbientB );
 
 		if ( GetValue( "*MATERIAL_DIFFUSE" ,line , "\t " , fDiffuseR , fDiffuseG , fDiffuseB ) )
-			Material->SetDiffuesColor( fDiffuseR , fDiffuseG , fDiffuseB );
+		//	Material->SetDiffuesColor( fDiffuseR , fDiffuseG , fDiffuseB );
 
 		if ( GetValue( "*MATERIAL_SPECULAR" ,line , "\t " , fSpecularR , fSpecularG , fSpecularB ) )
-			Material->SetSpecularColor( fSpecularR , fSpecularG , fSpecularB );		
+		//	Material->SetSpecularColor( fSpecularR , fSpecularG , fSpecularB );		
 
 		if( CheckKeyword( "*MAP_DIFFUSE" , line ) )
 		{
 			//CurMaterial->bUseTexture = true;
-			DecodeMap( line , Material );
+			DecodeMap( line/* , Material */);
 		}
 
 		if( CheckKeyword( "*MAP_OPACITY" , line ) )
 		{
 // 			CurMaterial->bUseTexture = true;
 // 			CurMaterial->bUseOpacity = true;
-			DecodeMap( line , Material );
+			DecodeMap( line /*, Material*/ );
 		}
 		if( CheckKeyword( "*MAP_SELFILLUM" , line ) )
 		{
-			DecodeMap( line , Material );
+			DecodeMap( line /*, Material*/ );
 		}
 
 		if( CheckKeyword( "*MAP_REFLECT" , line ) )
 		{
-			DecodeMap( line , Material );
+			DecodeMap( line/* , Material*/ );
 		}
 
 		if( CheckKeyword( "*MAP_SPECULAR" , line ) )
 		{
-			DecodeMap( line , Material );
+			DecodeMap( line /*, Material */);
 		}
 
 		if( CheckKeyword( "}" , line ) )
@@ -1024,7 +1023,7 @@ bool GdsResASE::DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPtr 
 	return true;
 }
 
-bool GdsResASE::DecodeMap( LineContainerA::iterator& line , GdsMaterialPtr Material )
+bool GdsResASE::DecodeMap( LineContainerA::iterator& line /*, GdsMaterialPtr Material*/ )
 {
 	do{
 		std::string path;
@@ -1033,7 +1032,7 @@ bool GdsResASE::DecodeMap( LineContainerA::iterator& line , GdsMaterialPtr Mater
 			size_t poscomma = path.rfind( "/" );
 			tstring name	= util::string::mb2wc( path.substr( poscomma + 1 , path.length() ).c_str() );
 			GdsResTexturePtr pTex = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( name.c_str() ) );
-			Material->SetTexture( pTex );
+		//	Material->SetTexture( pTex );
 			//Material->SetTexturePath( strpath );
 		//	GdsResTexturePtr ptex = REMGR
 		//	Material->SetTexture( )

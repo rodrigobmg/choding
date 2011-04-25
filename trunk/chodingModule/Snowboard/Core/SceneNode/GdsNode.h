@@ -2,7 +2,6 @@
 #define _SNOWBOARD_SCENENODE_BASE_
 
 #include "../Base\GdsObject.h"
-#include "../Property/GdsProperty.h"
 
 class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
 {
@@ -35,7 +34,6 @@ private:
 	typedef	 std::list< GdsNodePtr >		CHILDNODE_CONTAINER;
 	CHILDNODE_CONTAINER						m_ChildNode;	
 
-	GdsPropertyPtr							m_Property;
 		
 	bool									m_bBillboard;
 	CULL_TYPE								m_eCull;
@@ -56,7 +54,6 @@ public:
  	}
 
 	void					SetBillboard( bool bflag ){ m_bBillboard = bflag; }
-	void					SetDrawAxis( bool bFlag ) { m_Property->GetMesh()->SetDrawAxis( bFlag ); }
 
 	void					SetParentName( tstring& strParentName ){ m_strParentName = strParentName; }
 	tstring&				GetParentName(){ return m_strParentName; }
@@ -65,10 +62,6 @@ public:
  	
 	void					SetCullType( CULL_TYPE eCull ){ m_eCull = eCull; }
 	CULL_TYPE				GetCullType(){ return m_eCull; }
-
-	void					SetProperty( GdsPropertyPtr pProperty ){ m_Property = pProperty; }
-	GdsPropertyPtr			GetProperty(){ return m_Property; }
-
 
 
 	D3DXVECTOR3&	GetTranslate();

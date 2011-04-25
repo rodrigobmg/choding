@@ -63,8 +63,8 @@ class GdsResASE : public GdsResBase
 
 	bool				DecodeSCENE( LineContainerA::iterator& line );
 	bool				DecodeMATERIAL_LIST( LineContainerA::iterator& line );	
-	bool				DecodeMaterial( LineContainerA::iterator& line , GdsMaterialPtr Material );
-	bool				DecodeMap( LineContainerA::iterator& line, GdsMaterialPtr Material );
+	bool				DecodeMaterial( LineContainerA::iterator& line /*, GdsMaterialPtr Material*/ );
+	bool				DecodeMap( LineContainerA::iterator& line/*, GdsMaterialPtr Material*/ );
 
 	bool				DecodeGEOMOBJECT( LineContainerA::iterator& line , GdsNodePtr pNode );
 	bool				DecodeTM( LineContainerA::iterator& line , GdsNodePtr pNode );
@@ -110,8 +110,8 @@ class GdsResASE : public GdsResBase
 	typedef std::vector<GdsNodePtr> NODE_LIST;
 	NODE_LIST			m_vecNodeList;
 
-	typedef std::vector<GdsMaterialPtr> MATERIAL_LIST;
-	MATERIAL_LIST		m_vecMaterialList;
+	//typedef std::vector<GdsMaterialPtr> MATERIAL_LIST;
+//	MATERIAL_LIST		m_vecMaterialList;
 
 	bool				attachNode( GdsNodePtr childNode , tstring& parentname );
 	bool				parseNode( NODE_LIST& nodelist );

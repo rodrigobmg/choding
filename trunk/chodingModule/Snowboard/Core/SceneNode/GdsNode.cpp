@@ -7,7 +7,6 @@
 
 GdsNode::GdsNode():
 m_bBillboard( false ),
-m_Property( new GdsProperty ),
 m_vTranslate(0.0f, 0.0f, 0.0f),
 m_vWorldTranslate(0.0f, 0.0f, 0.0f),
 m_vScale( 1.0f, 1.0f, 1.0f)
@@ -255,8 +254,6 @@ HRESULT GdsNode::Update( float fElapsedtime )
 	
 	vUpdate( fElapsedtime );
 
-	m_Property->GetMesh()->SetMT( m_matWorld );
-	RENDERER.AddRenderToken( m_Property );
 
 	if ( !m_ChildNode.empty() )
 	{
