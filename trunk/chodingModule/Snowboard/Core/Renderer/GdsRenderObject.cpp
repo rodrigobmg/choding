@@ -15,13 +15,15 @@ GdsRenderObject::GdsRenderObject()
 
 void GdsRenderObject::vRender( LPDIRECT3DDEVICE9 device )
 {
+	device->SetTransform( D3DTS_WORLD , &m_TM );
+
 	device->SetMaterial( &m_Material );
 	device->SetTexture( m_iTextureIndex , m_Texture );		
- 	device->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );	/// 0번 텍스처 스테이지의 확대 필터
- 	device->SetTextureStageState( 0, D3DTSS_TEXCOORDINDEX, 0 );		/// 0번 텍스처 : 0번 텍스처 인덱스 사용 
- 	device->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE);
- 	device->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
- 	device->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
+//  	device->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );	/// 0번 텍스처 스테이지의 확대 필터
+//  	device->SetTextureStageState( 0, D3DTSS_TEXCOORDINDEX, 0 );		/// 0번 텍스처 : 0번 텍스처 인덱스 사용 
+//  	device->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE);
+//  	device->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+//  	device->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
 
 	// 			D3DXVECTOR3 vecDir;									/// 방향성 광원(directional light)이 향할 빛의 방향
 	// 			D3DLIGHT9 light;									/// 광원 구조체

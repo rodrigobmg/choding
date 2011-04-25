@@ -26,14 +26,14 @@ void GdsMesh::vRender( LPDIRECT3DDEVICE9 device )
 	{
 		if ( m_Material )
 		{
-			device->SetMaterial( &m_Material->GetDxMaterial() );
+	//		device->SetMaterial( &m_Material->GetDxMaterial() );
 		//	device->SetTexture( 0 , m_Material->GetTexture()->Get() );		
-			device->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );	/// 0번 텍스처 스테이지의 확대 필터
-			device->SetTextureStageState( 0, D3DTSS_TEXCOORDINDEX, 0 );		/// 0번 텍스처 : 0번 텍스처 인덱스 사용
-
-			device->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE);
-			device->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-			device->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
+// 			device->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );	/// 0번 텍스처 스테이지의 확대 필터
+// 			device->SetTextureStageState( 0, D3DTSS_TEXCOORDINDEX, 0 );		/// 0번 텍스처 : 0번 텍스처 인덱스 사용
+// 
+// 			device->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE);
+// 			device->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+// 			device->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
 
 // 			D3DXVECTOR3 vecDir;									/// 방향성 광원(directional light)이 향할 빛의 방향
 // 			D3DLIGHT9 light;									/// 광원 구조체
@@ -50,16 +50,16 @@ void GdsMesh::vRender( LPDIRECT3DDEVICE9 device )
 // 			light.Range       = 1000.0f;									/// 광원이 다다를수 있는 최대거리
 // 			device->SetLight( 0, &light );							/// 디바이스에 0번 광원 설치
 // 			device->LightEnable( 0, TRUE );							/// 0번 광원을 켠다
- 			device->SetRenderState( D3DRS_LIGHTING, FALSE );			/// 광원설정을 켠다
+ 	//		device->SetRenderState( D3DRS_LIGHTING, FALSE );			/// 광원설정을 켠다
 // 
 // 			device->SetRenderState( D3DRS_AMBIENT, 0x00909090 );		/// 환경광원(ambient light)의 값 설정
 
 		}
 
-		device->SetFVF( m_FVF );
-		device->SetStreamSource( 0 , m_vb , 0 , m_VertexSize );
-		device->SetIndices( m_ib );
-		device->DrawIndexedPrimitive( D3DPT_TRIANGLELIST , 0 , 0 , m_Vertex_Maxcount , 0 , m_Index_Maxcount );
+// 		device->SetFVF( m_FVF );
+// 		device->SetStreamSource( 0 , m_vb , 0 , m_VertexSize );
+// 		device->SetIndices( m_ib );
+// 		device->DrawIndexedPrimitive( D3DPT_TRIANGLELIST , 0 , 0 , m_Vertex_Maxcount , 0 , m_Index_Maxcount );
 
 		
 	}

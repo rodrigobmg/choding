@@ -230,13 +230,13 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 		}
 	}
 	(*g_pIB)->Unlock();
-
- 	pNode->GetProperty()->GetMesh()->SetVertexMaxCount(g_cxHeight*g_czHeight);
- 	pNode->GetProperty()->GetMesh()->SetVertexSize(sizeof(CUSTOMVERTEX));
- 	pNode->GetProperty()->GetMesh()->SetFVF( D3DFVF_CUSTOMVERTEX );
- 	pNode->GetProperty()->GetMesh()->SetIndexMaxCount( (g_cxHeight-1)*(g_czHeight-1)*2 );
-	
-	
+// 
+//  	pNode->GetProperty()->GetMesh()->SetVertexMaxCount(g_cxHeight*g_czHeight);
+//  	pNode->GetProperty()->GetMesh()->SetVertexSize(sizeof(CUSTOMVERTEX));
+//  	pNode->GetProperty()->GetMesh()->SetFVF( D3DFVF_CUSTOMVERTEX );
+//  	pNode->GetProperty()->GetMesh()->SetIndexMaxCount( (g_cxHeight-1)*(g_czHeight-1)*2 );
+// 	
+// 	
 
 
 	GdsRenderObjectPtr renderObject = GdsRenderObjectPtr( new GdsRenderObject );
@@ -251,6 +251,8 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	renderObject->SetStartVertexIndex( 0 );
 	renderObject->SetEndVertexIndex( g_cxHeight*g_czHeight );
 	renderObject->SetTexture( texcolor->Get() );
+	D3DXMATRIX tm = pNode->GetLocalMatrix();
+	renderObject->SetMatrix( tm );
 
 	RENDERER.GetRenderFrame()->AddRenderObject( renderObject );
 
@@ -264,5 +266,5 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_ZENABLE, TRUE );
 	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
 	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_LIGHTING, FALSE );
-	RENDERER.GetRenderFrame()->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
+	//RENDERER.GetRenderFrame()->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
 }
