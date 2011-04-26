@@ -8,6 +8,7 @@ class GdsFrustum : public GdsObject
 
 	D3DXVECTOR3 m_vtx[8];
 	D3DXPLANE	m_plane[6];
+
 public:
 
 	float		m_fZnear;
@@ -26,6 +27,7 @@ public:
 	void		UpdatePlane( const D3DXMATRIX& viewprojMat );
 	bool		VertexIsInFrustum( const D3DXVECTOR3& v );
 	bool		SphereIsInFrustum( const D3DXVECTOR3& v, float fradius ) ;
+
 };
 
 #endif

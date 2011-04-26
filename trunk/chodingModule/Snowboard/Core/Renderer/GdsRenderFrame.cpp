@@ -4,71 +4,70 @@
 GdsRenderFrame::~GdsRenderFrame()
 {
 	m_RenderFrame.clear();
+	m_RenderStateList.clear();
 }
 
-void GdsRenderFrame::AttachRenderObject( GdsRenderObjectPtr pRenderObject )
+void GdsRenderFrame::AttachRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateGroupID )
 {
-	m_RenderFrame.push_back( pRenderObject );
-}
-
-void GdsRenderFrame::SetRenderState( int renderstste_key , int renderstate_value )
-{
-	VALUE opt( renderstste_key , renderstate_value );
-	m_Opt_RenderState.push_back( opt );
-}
-
-void GdsRenderFrame::SetTextureStageState( int index , int iop1 , int iop2 )
-{
-	VALUE val( iop1 , iop2 );
-	MULTI_VALUE multi_value( index , val );
-	m_Opt_MultiTexturing.push_back( multi_value );
-}
-
-void GdsRenderFrame::SetSamplerState( int index , int iop1 , int iop2 )
-{	
-	VALUE val( iop1 , iop2 );
-	MULTI_VALUE multi_value( index , val );
-	m_Opt_SamplerState.push_back( multi_value );
-}
-
-void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
-{
-	OPT_RENDERSTATE::iterator	it = m_Opt_RenderState.begin();
-	for ( ; it != m_Opt_RenderState.end() ; ++it )
+	if ( iRenderStateGroupID < 0 )
 	{
-		device->SetRenderState( static_cast< D3DRENDERSTATETYPE>( it->first ) , it->second );
+		iRenderStateGroupID = 0;
+		ASSERT( 0 );
 	}
 
-	OPT_MULTITEXTURE::iterator	it_tex = m_Opt_MultiTexturing.begin();
-	for ( ; it_tex != m_Opt_MultiTexturing.end() ; ++it_tex )
-	{		
-		device->SetTextureStageState( it_tex->first , static_cast<D3DTEXTURESTAGESTATETYPE>( it_tex->second.first ) , it_tex->second.second );
-	}
-
-	OPT_MULTITEXTURE::iterator	it_samplerstate = m_Opt_SamplerState.begin();
-	for ( ; it_samplerstate != m_Opt_SamplerState.end() ; ++it_samplerstate )
-	{		
-		device->SetSamplerState( it_samplerstate->first 
-								, static_cast< D3DSAMPLERSTATETYPE >( it_samplerstate->second.first ) 								
-								, static_cast< D3DTEXTUREFILTERTYPE >( it_samplerstate->second.second )
-								);
-	}
- 	 	
-	RENDEROBJECT::iterator it_render = m_RenderFrame.begin();
-	for ( ; it_render != m_RenderFrame.end() ; ++it_render )
+	if ( m_RenderStateList.size() < iRenderStateGroupID )
 	{
-		(*it_render)->vRender( device );
-	} 
+		ASSERT( 0 && "렌더스테이트인덱스보다 작은것을 참조하세요");
+		iRenderStateGroupID = 0;
+	}
+
+	RENDEROBEJCT renderobj( iRenderStateGroupID , pRenderObject );
+	m_RenderFrame.push_back( renderobj );
+// 	if ( m_RenderFrame.empty() )
+// 	{		
+// 		m_RenderFrame.push_back( renderobj );
+// 	}
+// 	else
+// 	{
+// 		if ( iRenderStateGroupID < m_RenderFrame.front().first )
+// 		{
+// 			m_RenderFrame.push_front( renderobj );
+// 		}
+// 		else if ( iRenderStateGroupID > m_RenderFrame.end().first )
+// 		{
+// 			m_RenderFrame.push_back( renderobj );
+// 		}
+// 		else
+// 		{
+// 			std::lower_bound( renderobj)
+// 		}
+// 	}
 }
 
 void GdsRenderFrame::DetachRenderObject( GdsRenderObjectPtr pRenderObject )
 {
-	RENDEROBJECT::iterator it = m_RenderFrame.begin();
+	RENDER_CONTAINER::iterator it = m_RenderFrame.begin();
 	for ( ; it != m_RenderFrame.end() ; ++it )
 	{
-		if ( *it == pRenderObject )
+		m_RenderFrame.erase( it );
+	}
+}
+
+void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
+{ 	 
+	RENDER_CONTAINER::iterator it = m_RenderFrame.begin();
+	for ( ; it != m_RenderFrame.end() ; ++it )
+	{
+		RENDERSTATEGROUP::iterator it_state = m_RenderStateList.find( it->first );
+		if ( it_state != m_RenderStateList.end() )
 		{
-			m_RenderFrame.erase( it );
+			it_state->second->SetRenderState( device );
+			it->second->vRender( device );
 		}
 	}
+}
+
+void GdsRenderFrame::AddRenderStateGroup( GdsRenderStateGroupPtr renderstategroup , int iRenderStateGroupID )
+{
+	m_RenderStateList.insert( std::pair<int , GdsRenderStateGroupPtr>(  iRenderStateGroupID , renderstategroup ) );
 }

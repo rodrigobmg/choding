@@ -221,6 +221,14 @@
 					RelativePath=".\Core\Renderer\GdsRenderObject.h"
 					>
 				</File>
+				<File
+					RelativePath=".\Core\Renderer\GdsRenderStateGroup.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Renderer\GdsRenderStateGroup.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Camera"

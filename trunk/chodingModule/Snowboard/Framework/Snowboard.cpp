@@ -46,17 +46,20 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 	RENDERER.Create( hWnd );
 	//m_pRenderer->Create( hWnd );
 	
-	RENDERER.GetRenderFrame(0)->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );	/// 0번 텍스처 스테이지의 확대 필터
+	GdsRenderStateGroupPtr renderstate = GdsRenderStateGroupPtr( new GdsRenderStateGroup );
+	renderstate->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );	/// 0번 텍스처 스테이지의 확대 필터
 
-	RENDERER.GetRenderFrame(0)->SetTextureStageState( 0, D3DTSS_TEXCOORDINDEX, 0 );		/// 0번 텍스처 : 0번 텍스처 인덱스 사용
-	RENDERER.GetRenderFrame(0)->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE);
-	RENDERER.GetRenderFrame(0)->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-	RENDERER.GetRenderFrame(0)->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
+	renderstate->SetTextureStageState( 0, D3DTSS_TEXCOORDINDEX, 0 );		/// 0번 텍스처 : 0번 텍스처 인덱스 사용
+	renderstate->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE);
+	renderstate->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+	renderstate->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
 
-	RENDERER.GetRenderFrame(0)->SetRenderState( D3DRS_ZENABLE, TRUE );
-	RENDERER.GetRenderFrame(0)->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
-	RENDERER.GetRenderFrame(0)->SetRenderState( D3DRS_LIGHTING, FALSE );
-	RENDERER.GetRenderFrame(0)->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
+	renderstate->SetRenderState( D3DRS_ZENABLE, TRUE );
+	renderstate->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
+	renderstate->SetRenderState( D3DRS_LIGHTING, FALSE );
+	renderstate->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
+
+	RENDERER.GetRenderFrame()->AddRenderStateGroup( renderstate , 0 );
 
 	return TRUE;
 }
@@ -254,5 +257,5 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 
 	pNode->AddRenderObject( renderObject );
 
-	RENDERER.GetRenderFrame(0)->AttachRenderObject( renderObject );
+	RENDERER.GetRenderFrame()->AttachRenderObject( renderObject , 0 );
 }

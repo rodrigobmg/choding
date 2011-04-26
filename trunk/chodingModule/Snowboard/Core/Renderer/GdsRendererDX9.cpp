@@ -52,8 +52,8 @@ HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 	}
 
 	setRootNodeAndCamNode();
-
-	makeRenderFrame( 10 );
+	
+	m_RenderFrameList = GdsRenderFramePtr( new GdsRenderFrame );
 
 	return true;
 }
@@ -74,12 +74,7 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 
 	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
 	{	
-		RENDERFRAME::iterator it = m_RenderFrameList.begin();
-		for ( ; it != m_RenderFrameList.end() ; ++it )
-		{
-			(*it)->Render( m_pd3dDevice );
-		}
-
+		m_RenderFrameList->Render( m_pd3dDevice );
  		m_pd3dDevice->EndScene();
 	}
 
@@ -105,20 +100,4 @@ void GdsRendererDX9::setRootNodeAndCamNode()
   	CAMMGR.SetCurCam( 0 );
 
 	SetCamera( CAMMGR.GetCurCam() );
-}
-
-GdsRenderFramePtr GdsRendererDX9::GetRenderFrame( int index )
-{
-	if ( index < m_RenderFrameList.size() )
-		return m_RenderFrameList.at( index );
-
-	return GdsRenderFramePtr( (GdsRenderFrame*)NULL );
-
-}
-
-void GdsRendererDX9::makeRenderFrame( int count )
-{
-	m_RenderFrameList.reserve( count );
-	for ( size_t i =0 ; i< count ; ++i )
-		m_RenderFrameList.push_back( GdsRenderFramePtr( new GdsRenderFrame ) );
 }

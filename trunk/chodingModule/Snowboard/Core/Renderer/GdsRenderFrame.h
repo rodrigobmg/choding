@@ -3,50 +3,36 @@
 
 #include "../Base/GdsObject.h"
 #include "GdsRenderObject.h"
-#include "boost/tuple/tuple.hpp"
+#include "GdsRenderStateGroup.h"
 
 class GdsRenderFrame : public GdsObject
 {	
-	typedef std::pair< int , int >				VALUE;
-	typedef std::vector< VALUE >				OPT_RENDERSTATE;
-	//typedef tuple< int , int , int >			VALUE_MULTITEXTURE;
-
-	typedef std::pair< int , VALUE >			MULTI_VALUE;
-	typedef std::vector< MULTI_VALUE >			OPT_MULTITEXTURE;
+	typedef std::pair< int , GdsRenderObjectPtr >	RENDEROBEJCT;
+	typedef std::vector< RENDEROBEJCT >				RENDER_CONTAINER;
 	
-	typedef std::list< GdsRenderObjectPtr >		RENDEROBJECT;
+	RENDER_CONTAINER		m_RenderFrame;
 
-	OPT_RENDERSTATE								m_Opt_RenderState;	
-	RENDEROBJECT								m_RenderFrame;
-
-	OPT_MULTITEXTURE							m_Opt_MultiTexturing;
-	OPT_MULTITEXTURE							m_Opt_SamplerState;
+	typedef std::map< int , GdsRenderStateGroupPtr >	RENDERSTATEGROUP;
+	RENDERSTATEGROUP		m_RenderStateList;
 
 public:
 
 	GdsRenderFrame(){ SetName( OBJECT_RENDERFRAME ); }
 	virtual ~GdsRenderFrame();
 
-	GdsRenderObjectPtr	AllocRenderObject();
-	void				FreeRenderObejct();
+	GdsRenderObjectPtr		AllocRenderObject();
+	void					FreeRenderObejct();
 
-	void			AttachRenderObject( GdsRenderObjectPtr pRenderObject );
-	void			DetachRenderObject( GdsRenderObjectPtr pRenderObject );
+	void					AttachRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateGroupID );
+	void					DetachRenderObject( GdsRenderObjectPtr pRenderObject );
 
-	void			SetRenderState( int renderstste_key , int renderstate_value );	
-	void			ClearRenderStateOpt(){ m_Opt_RenderState.clear(); }
+	void					AddRenderStateGroup( GdsRenderStateGroupPtr renderstategroup , int iRenderStateGroupID );
 
-	void			SetTextureStageState( int index , int iop1 , int iop2 );
-	void			ClearTextureStageStateOpt(){ m_Opt_MultiTexturing.clear(); }
-
-	void			SetSamplerState( int index , int iop1 , int iop2 );
-	void			ClearSamplerState(){ m_Opt_SamplerState.clear(); }
-
-	void			Render( LPDIRECT3DDEVICE9 device ){ vRender( device ); }
+	void					Render( LPDIRECT3DDEVICE9 device ){ vRender( device ); }
 
 protected:
 
-	virtual	void	vRender( LPDIRECT3DDEVICE9 device );
+	virtual	void			vRender( LPDIRECT3DDEVICE9 device );
 
 };
 
