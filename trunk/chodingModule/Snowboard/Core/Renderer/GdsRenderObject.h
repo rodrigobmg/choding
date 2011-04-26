@@ -2,7 +2,6 @@
 #define _GDS_H_RENDEROBJECT_H_
 
 #include "../Base/GdsObject.h"
-#include "../SceneNode/GdsNode.h"
 
 class GdsRenderObject : public GdsObject
 {	

@@ -1,7 +1,6 @@
 #include "GdsCameraManagerDX9.h"
 
-GdsCameraManagerDX9::GdsCameraManagerDX9( void ):
-m_pDevice(NULL)
+GdsCameraManagerDX9::GdsCameraManagerDX9( void )
 {
 	SetName( OBJECT_CAMMGR_DX9 );
 	vClear();
@@ -15,12 +14,6 @@ GdsCameraManagerDX9::~GdsCameraManagerDX9( void )
 void GdsCameraManagerDX9::vClear()
 {
 	m_camaraContainer.clear();
-}
-
-HRESULT GdsCameraManagerDX9::Create( LPDIRECT3DDEVICE9 device )
-{
-	m_pDevice = device;
-	return true;
 }
 
 void GdsCameraManagerDX9::Attach( GdsCameraPtr camnode )
@@ -54,10 +47,3 @@ GdsCameraPtr GdsCameraManagerDX9::GetCamNode( int iCamIndex )
 
 	return m_camaraContainer[iCamIndex];
 }
-
-void GdsCameraManagerDX9::Update( float fElapsedTime )
-{
-	GdsCameraPtr cam = m_camaraContainer[m_iCurCamIndex];
-	cam->Update(fElapsedTime);
-}
-

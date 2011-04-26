@@ -2,8 +2,9 @@
 #define _SNOWBOARD_SCENENODE_BASE_
 
 #include "../Base\GdsObject.h"
+#include "../Renderer/GdsRenderObject.h"
 
-class GdsNode : public GdsObject , public boost::enable_shared_from_this< GdsNode >
+class GdsNode : public GdsObject //, public boost::enable_shared_from_this< GdsNode >
 {
 
 public:
@@ -34,6 +35,8 @@ private:
 	typedef	 std::list< GdsNodePtr >		CHILDNODE_CONTAINER;
 	CHILDNODE_CONTAINER						m_ChildNode;	
 
+	typedef std::vector< GdsRenderObjectPtr >	RENDER_OBJECT_CONTAINER;
+	RENDER_OBJECT_CONTAINER					m_list_RenderObject;
 		
 	bool									m_bBillboard;
 	CULL_TYPE								m_eCull;
@@ -48,10 +51,12 @@ public:
 	GdsNode();
 	virtual ~GdsNode();
  	
- 	boost::shared_ptr< GdsNode > shared_ptr_this()
- 	{
- 		return shared_from_this();
- 	}
+	void					AddRenderObject( GdsRenderObjectPtr pRenderObject ){ m_list_RenderObject.push_back( pRenderObject ); }
+	GdsRenderObjectPtr		GetRenderObject( int index ){ m_list_RenderObject.at(index); }
+//  	boost::shared_ptr< GdsNode > shared_ptr_this()
+//  	{
+//  		return shared_from_this();
+//  	}
 
 	void					SetBillboard( bool bflag ){ m_bBillboard = bflag; }
 
@@ -64,7 +69,7 @@ public:
 	CULL_TYPE				GetCullType(){ return m_eCull; }
 
 
-	D3DXVECTOR3&	GetTranslate();
+	D3DXVECTOR3&			GetTranslate();
 	void					SetTranslate( const D3DXVECTOR3& vPos );
 	void					SetTranslate( float fX, float fY, float fZ);
 

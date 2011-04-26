@@ -27,10 +27,20 @@ public:
 	GdsRenderFrame(){ SetName( OBJECT_RENDERFRAME ); }
 	virtual ~GdsRenderFrame();
 
-	void			AddRenderObject( GdsRenderObjectPtr pRenderObject );
+	GdsRenderObjectPtr	AllocRenderObject();
+	void				FreeRenderObejct();
+
+	void			AttachRenderObject( GdsRenderObjectPtr pRenderObject );
+	void			DetachRenderObject( GdsRenderObjectPtr pRenderObject );
+
 	void			SetRenderState( int renderstste_key , int renderstate_value );	
+	void			ClearRenderStateOpt(){ m_Opt_RenderState.clear(); }
+
 	void			SetTextureStageState( int index , int iop1 , int iop2 );
+	void			ClearTextureStageStateOpt(){ m_Opt_MultiTexturing.clear(); }
+
 	void			SetSamplerState( int index , int iop1 , int iop2 );
+	void			ClearSamplerState(){ m_Opt_SamplerState.clear(); }
 
 	void			Render( LPDIRECT3DDEVICE9 device ){ vRender( device ); }
 

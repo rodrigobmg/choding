@@ -5,8 +5,7 @@ GdsRendererDX9::GdsRendererDX9()
 {
 	SetName( OBJECT_RENDERERDX9 );
 	m_pd3dDevice	= NULL;
-	m_pD3D			= NULL;
-	m_RenderFrame = GdsRenderFramePtr( new GdsRenderFrame );
+	m_pD3D			= NULL;		
 }
 
 GdsRendererDX9::~GdsRendererDX9()
@@ -54,6 +53,8 @@ HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 
 	setRootNodeAndCamNode();
 
+	makeRenderFrame( 10 );
+
 	return true;
 }
 
@@ -62,17 +63,24 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 	if ( m_RootNode )
 		m_RootNode->Update( fAccumTime );			
 	
-	CAMMGR.Update( fAccumTime );
+	if ( GetCamera() )
+	{
+		GetCamera()->Update(fAccumTime);
+		m_pd3dDevice->SetTransform( D3DTS_VIEW , &(GetCamera()->GetViewMat()));
+		m_pd3dDevice->SetTransform( D3DTS_PROJECTION, &(GetCamera()->GetProjMat()) );
+	}
 
 	m_pd3dDevice->Clear( 0 , NULL , D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER , D3DCOLOR_XRGB( 128, 128, 128 ) , 1.f , 0 );
 
 	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
 	{	
-
-		m_RenderFrame->Render( m_pd3dDevice );		
+		RENDERFRAME::iterator it = m_RenderFrameList.begin();
+		for ( ; it != m_RenderFrameList.end() ; ++it )
+		{
+			(*it)->Render( m_pd3dDevice );
+		}
 
  		m_pd3dDevice->EndScene();
-
 	}
 
 	m_pd3dDevice->Present( NULL , NULL , NULL , NULL );
@@ -93,7 +101,24 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 	GdsFrustum frustum( -0.5 , 0.5 , -0.5 , 0.5 , 1.f , 1000.f , false );
 	camnode->SetFrustum( frustum );
 
- 	CAMMGR.Create( m_pd3dDevice );
  	CAMMGR.Attach( camnode );
   	CAMMGR.SetCurCam( 0 );
+
+	SetCamera( CAMMGR.GetCurCam() );
+}
+
+GdsRenderFramePtr GdsRendererDX9::GetRenderFrame( int index )
+{
+	if ( index < m_RenderFrameList.size() )
+		return m_RenderFrameList.at( index );
+
+	return GdsRenderFramePtr( (GdsRenderFrame*)NULL );
+
+}
+
+void GdsRendererDX9::makeRenderFrame( int count )
+{
+	m_RenderFrameList.reserve( count );
+	for ( size_t i =0 ; i< count ; ++i )
+		m_RenderFrameList.push_back( GdsRenderFramePtr( new GdsRenderFrame ) );
 }

@@ -7,16 +7,20 @@ class GdsFrustum;
 
 class GdsCamera : public GdsObject
 {	
+private:
+
 protected:
 		
  	D3DXVECTOR3		vEyePt;
  	D3DXVECTOR3		vLookatPt;
  	D3DXVECTOR3		vUpVec;
 	
-	D3DXMATRIX	matView;
-	D3DXMATRIX	matProj;
+	D3DXMATRIX		matView;
+	D3DXMATRIX		matProj;
 
 	GdsFrustum		m_Frustum;
+
+	bool			m_bVisibleFrustum;
 	
 
 	virtual	void	vUpdate( float fElapsedtime );
@@ -34,6 +38,11 @@ public:
 	void			SetFrustum( GdsFrustum& Frustum ){ m_Frustum = Frustum; }
 	GdsFrustum&		GetFrustum(){ return m_Frustum; }
 	void			Update( float fElapsedtime){ vUpdate( fElapsedtime ); }
+
+	D3DXMATRIX&		GetViewMat(){ return matView; }
+	D3DXMATRIX&		GetProjMat(){ return matProj; }
+
+	void			SetVisibleFrustum( bool bflag );
 };
 
 typedef boost::shared_ptr< GdsCamera >	GdsCameraPtr;

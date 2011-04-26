@@ -14,9 +14,13 @@ private:
  	LPDIRECT3DDEVICE9       m_pd3dDevice;// = NULL; // Our rendering device
 	GdsNodePtr				m_RootNode;
 
-	GdsRenderFramePtr		m_RenderFrame;
+	typedef std::vector< GdsRenderFramePtr > RENDERFRAME;
+
+	RENDERFRAME				m_RenderFrameList;
 
 	void					setRootNodeAndCamNode();
+	void					makeRenderFrame( int count );
+
 protected:
 
 	virtual	void			vClear();
@@ -38,7 +42,7 @@ public:
 	void					vUpdate( float fAccumTime );
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
 
-	GdsRenderFramePtr		GetRenderFrame(){ return m_RenderFrame; }
+	GdsRenderFramePtr		GetRenderFrame( int index );
 
 };
 

@@ -5,6 +5,7 @@ GdsCamera::GdsCamera()
 {
 	SetName( OBJECT_NODE_CAMERA );
 	vClear();
+	m_bVisibleFrustum = false;
 }
 
 GdsCamera::~GdsCamera()
@@ -53,10 +54,8 @@ void GdsCamera::vUpdate( float fElapsedtime )
 //  	D3DXVECTOR3 vEyePt   ( 0.0f, 3.0f,-5.0f );
 //  	D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
 //  	D3DXVECTOR3 vUpVec   ( 0.0f, 1.0f, 0.0f );
- 	D3DXMATRIX matView;
  	D3DXMatrixLookAtLH( &matView, &vEyePt, &vLookatPt, &vUpVec );
 
-	RENDERER.GetDevice()->SetTransform( D3DTS_VIEW , &matView );
 
 	if ( m_Frustum.m_bOrtho )
 	{
@@ -67,7 +66,12 @@ void GdsCamera::vUpdate( float fElapsedtime )
 		D3DXMatrixPerspectiveOffCenterLH( &matProj , m_Frustum.m_fLeft , m_Frustum.m_fRight , m_Frustum.m_fBottom , m_Frustum.m_fTop , m_Frustum.m_fZnear , m_Frustum.m_fFar );
 	}
 
-	RENDERER.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
+	m_Frustum.UpdatePlane( matView * matProj );
+
+	if ( m_bVisibleFrustum )
+	{
+
+	}
 }
 
 void GdsCamera::SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR3& up )
@@ -75,4 +79,9 @@ void GdsCamera::SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR
 	vEyePt = eye;
 	vLookatPt = lookat;
 	vUpVec	= up;
+}
+
+void GdsCamera::SetVisibleFrustum( bool bflag )
+{
+	m_bVisibleFrustum = bflag;
 }

@@ -27,6 +27,7 @@ GdsNode::~GdsNode()
 {
 	vClear();
 	RemoveAllChild();
+	m_list_RenderObject.clear();
 }
 
 D3DXVECTOR3& GdsNode::GetTranslate()

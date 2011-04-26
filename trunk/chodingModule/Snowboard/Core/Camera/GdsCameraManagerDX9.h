@@ -9,7 +9,6 @@ class GdsCameraManagerDX9 : public GdsObject
 
 private:
 
-	LPDIRECT3DDEVICE9		m_pDevice;
 	typedef std::vector< GdsCameraPtr >		CAM_CONTAINER;	
 	CAM_CONTAINER			m_camaraContainer;
 	int32_t					m_iCurCamIndex;
@@ -24,7 +23,6 @@ public:
 	GdsCameraManagerDX9(void);
 	virtual ~GdsCameraManagerDX9(void);
 
-	virtual	HRESULT		Create( LPDIRECT3DDEVICE9 device );
 	GdsCameraPtr		GetCamNode( int iCamIndex );
 
 	void				Attach( GdsCameraPtr camnode );
@@ -32,9 +30,8 @@ public:
 	void				DetachAll();
 
 	void				SetCurCam( int32_t index ){ m_iCurCamIndex = index; }
-	int32_t				GetCurCam(){ return m_iCurCamIndex; }
+	GdsCameraPtr		GetCurCam(){ return m_camaraContainer.at( m_iCurCamIndex); }
 
-	void				Update( float fElapsedTime );
 };
 
 typedef boost::shared_ptr< GdsCameraManagerDX9 > GdsCameraManagerDX9Ptr;

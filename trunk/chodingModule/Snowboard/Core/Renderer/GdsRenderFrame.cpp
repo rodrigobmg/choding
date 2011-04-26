@@ -6,7 +6,7 @@ GdsRenderFrame::~GdsRenderFrame()
 	m_RenderFrame.clear();
 }
 
-void GdsRenderFrame::AddRenderObject( GdsRenderObjectPtr pRenderObject )
+void GdsRenderFrame::AttachRenderObject( GdsRenderObjectPtr pRenderObject )
 {
 	m_RenderFrame.push_back( pRenderObject );
 }
@@ -61,3 +61,14 @@ void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
 	} 
 }
 
+void GdsRenderFrame::DetachRenderObject( GdsRenderObjectPtr pRenderObject )
+{
+	RENDEROBJECT::iterator it = m_RenderFrame.begin();
+	for ( ; it != m_RenderFrame.end() ; ++it )
+	{
+		if ( *it == pRenderObject )
+		{
+			m_RenderFrame.erase( it );
+		}
+	}
+}

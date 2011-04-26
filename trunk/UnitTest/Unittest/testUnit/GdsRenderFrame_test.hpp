@@ -7,7 +7,7 @@ TEST( GdsRenderFrameTest ,  GdsRenderFrameTest )
 	GdsRenderFramePtr renderframe = GdsRenderFramePtr( new GdsRenderFrame );
 	GdsRenderObjectPtr renderobject = GdsRenderObjectPtr( new GdsRenderObject );
 
-	renderframe->AddRenderObject( renderobject );
+	renderframe->AttachRenderObject( renderobject );
 	renderframe->SetRenderState( D3DRS_LIGHTING, FALSE );
 }
 
