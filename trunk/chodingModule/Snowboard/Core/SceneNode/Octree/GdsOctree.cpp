@@ -1,6 +1,6 @@
 #include "GdsOctree.h"
 
-GdsOctree::GdsOctree( D3DXVECTOR3& minVec , D3DXVECTOR3& maxVec , int iDepth )
+GdsOctree::GdsOctree( D3DXVECTOR3* vBuffer , size_t buffer_size , int iMaxDepth )
 {
 
 }
