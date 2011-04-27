@@ -30,7 +30,7 @@
 
 #include "gtest/gtest.h"
 
-#include "SunFileMemory_Test.hpp"
+//#include "SunFileMemory_Test.hpp"
 // #include "Snowboard_test.hpp"
 //#include "GdsResMgr_test.hpp"
 //#include "GdsNode_test.hpp"

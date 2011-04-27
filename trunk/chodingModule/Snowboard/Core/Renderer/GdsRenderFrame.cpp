@@ -21,35 +21,52 @@ void GdsRenderFrame::AttachRenderObject( GdsRenderObjectPtr pRenderObject , int 
 		iRenderStateGroupID = 0;
 	}
 
-	RENDEROBEJCT renderobj( iRenderStateGroupID , pRenderObject );
-	m_RenderFrame.push_back( renderobj );
-// 	if ( m_RenderFrame.empty() )
-// 	{		
-// 		m_RenderFrame.push_back( renderobj );
-// 	}
-// 	else
-// 	{
-// 		if ( iRenderStateGroupID < m_RenderFrame.front().first )
-// 		{
-// 			m_RenderFrame.push_front( renderobj );
-// 		}
-// 		else if ( iRenderStateGroupID > m_RenderFrame.end().first )
-// 		{
-// 			m_RenderFrame.push_back( renderobj );
-// 		}
-// 		else
-// 		{
-// 			std::lower_bound( renderobj)
-// 		}
-// 	}
+ 	RENDEROBEJCT renderobj( iRenderStateGroupID , pRenderObject );
+// 	m_RenderFrame.push_back( renderobj );
+ 	if ( m_RenderFrame.empty() )
+ 	{		
+ 		m_RenderFrame.push_back( renderobj );
+ 	}
+ 	else
+ 	{
+ 		if ( iRenderStateGroupID <= m_RenderFrame.front().first )
+ 		{
+ 			m_RenderFrame.push_front( renderobj );
+ 		}
+ 		else if ( iRenderStateGroupID >= m_RenderFrame.back().first )
+ 		{
+ 			m_RenderFrame.push_back( renderobj );
+ 		}
+ 		else
+ 		{
+ 			RENDER_CONTAINER::iterator i = lower_bound( m_RenderFrame.begin() , m_RenderFrame.end() , iRenderStateGroupID , DataCompare() );
+			if ( i != m_RenderFrame.end() )
+			{
+				size_t dis = std::distance( m_RenderFrame.begin() , i );
+				m_RenderFrame.insert( i , renderobj );
+			}
+			else
+			{
+				ASSERT( 0 && "·»´õ¸®½ºÆ® ²¿ÀÓ.¤Ñ¤Ñ;;" );
+				return;
+			}		
+ 		}
+ 	}
 }
 
 void GdsRenderFrame::DetachRenderObject( GdsRenderObjectPtr pRenderObject )
 {
 	RENDER_CONTAINER::iterator it = m_RenderFrame.begin();
-	for ( ; it != m_RenderFrame.end() ; ++it )
+	for ( ; it != m_RenderFrame.end() ;  )
 	{
-		m_RenderFrame.erase( it );
+		if ( it->second == pRenderObject )
+		{
+			m_RenderFrame.erase( it++ );			
+		}
+		else
+		{
+			++it;
+		}
 	}
 }
 

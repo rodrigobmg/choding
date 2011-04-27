@@ -8,7 +8,26 @@
 class GdsRenderFrame : public GdsObject
 {	
 	typedef std::pair< int , GdsRenderObjectPtr >	RENDEROBEJCT;
-	typedef std::vector< RENDEROBEJCT >				RENDER_CONTAINER;
+
+	struct DataCompare
+	{
+	public:
+		bool operator()( const RENDEROBEJCT& lhs , const RENDEROBEJCT& rhs ) const
+		{
+			return lhs.first < rhs.first;
+		}
+		bool operator()( const RENDEROBEJCT& lhs , const int& rhs ) const 
+		{
+			return lhs.first < rhs;
+		}
+		bool operator()( const int& lhs , const RENDEROBEJCT& rhs ) const
+		{
+			return lhs < rhs.first;
+		}
+	};
+
+	
+	typedef std::list< RENDEROBEJCT >				RENDER_CONTAINER;
 	
 	RENDER_CONTAINER		m_RenderFrame;
 

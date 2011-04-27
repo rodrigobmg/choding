@@ -25,8 +25,17 @@ m_vScale( 1.0f, 1.0f, 1.0f)
 
 GdsNode::~GdsNode()
 {
-	vClear();
+	vClear();	
+}
+
+void GdsNode::vClear()
+{
 	RemoveAllChild();
+	RENDER_OBJECT_CONTAINER::iterator it = m_list_RenderObject.begin();
+	for ( ; it != m_list_RenderObject.end() ; ++it )
+	{
+		RENDERER.GetRenderFrame()->DetachRenderObject( *it );
+	}
 	m_list_RenderObject.clear();
 }
 
@@ -123,10 +132,6 @@ void GdsNode::SetLocalFromWorldTransform( const D3DXMATRIX& matWorld )
 
 }
 
-void GdsNode::vClear()
-{
-
-}
 
 GdsNodePtr GdsNode::GetObjectbyName( tstring& strname )
 {
