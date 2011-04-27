@@ -195,38 +195,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\testUnit\GdsFile_test.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\testUnit\GdsMaterial_test.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\testUnit\GdsNode_test.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\testUnit\GdsProperty_test.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\testUnit\GdsRenderFrame_test.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\testUnit\GdsResASE_test.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\testUnit\GdsResMgr_test.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\testUnit\GdsSingleton_test.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\testUnit\GdsTransform_test.hpp"
 				>
 			</File>
@@ -238,6 +206,62 @@
 				RelativePath=".\testUnit\Snowboard_test.hpp"
 				>
 			</File>
+			<Filter
+				Name="File"
+				>
+				<File
+					RelativePath=".\testUnit\GdsFile_test.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="RenderFrame"
+				>
+				<File
+					RelativePath=".\testUnit\GdsRenderFrame_test.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="ASE"
+				>
+				<File
+					RelativePath=".\testUnit\GdsResASE_test.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Node"
+				>
+				<File
+					RelativePath=".\testUnit\GdsNode_test.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="ResourceMgr"
+				>
+				<File
+					RelativePath=".\testUnit\GdsResMgr_test.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Singleton"
+				>
+				<File
+					RelativePath=".\testUnit\GdsSingleton_test.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Terrain"
+				>
+				<File
+					RelativePath=".\testUnit\GdsTerrain_test.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="리소스 파일"
