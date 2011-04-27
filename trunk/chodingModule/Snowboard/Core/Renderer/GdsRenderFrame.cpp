@@ -56,18 +56,7 @@ void GdsRenderFrame::AttachRenderObject( GdsRenderObjectPtr pRenderObject , int 
 
 void GdsRenderFrame::DetachRenderObject( GdsRenderObjectPtr pRenderObject )
 {
-	RENDER_CONTAINER::iterator it = m_RenderFrame.begin();
-	for ( ; it != m_RenderFrame.end() ;  )
-	{
-		if ( it->second == pRenderObject )
-		{
-			m_RenderFrame.erase( it++ );			
-		}
-		else
-		{
-			++it;
-		}
-	}
+	m_DelObjectList.push_back( pRenderObject );
 }
 
 void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
@@ -81,6 +70,27 @@ void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
 			it_state->second->SetRenderState( device );
 			it->second->vRender( device );
 		}
+	}
+
+	if ( !m_DelObjectList.empty() )
+	{
+		RENDEROBJECT_LIST::iterator delit = m_DelObjectList.begin();
+		for( ; delit != m_DelObjectList.end() ; ++delit )
+		{
+			RENDER_CONTAINER::iterator it = m_RenderFrame.begin();
+			for ( ; it != m_RenderFrame.end() ;  )
+			{
+				if ( it->second == *delit )
+				{
+					m_RenderFrame.erase( it++ );			
+				}
+				else
+				{
+					++it;
+				}
+			}
+		}
+		m_DelObjectList.clear();
 	}
 }
 

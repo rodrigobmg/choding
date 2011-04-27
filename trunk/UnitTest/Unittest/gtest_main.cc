@@ -42,6 +42,7 @@
 //#include "GdsResASE_test.hpp"
 //#include "GdsMaterial_test.hpp"
 #include "GdsRenderFrame_test.hpp"
+#include "GdsTerrain_test.hpp"
 
 
 int main(int argc, char **argv)

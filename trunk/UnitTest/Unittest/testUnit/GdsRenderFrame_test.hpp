@@ -24,6 +24,6 @@ TEST( GdsRenderFrameTest ,  GdsRenderFrameTest )
 		renderframe->AttachRenderObject( renderobject , 10);
 	}
 	
-	//renderframe->DetachRenderObject( renderobject );
+	renderframe->DetachRenderObject( renderobject );
 }
 

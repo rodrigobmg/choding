@@ -34,6 +34,9 @@ class GdsRenderFrame : public GdsObject
 	typedef std::map< int , GdsRenderStateGroupPtr >	RENDERSTATEGROUP;
 	RENDERSTATEGROUP		m_RenderStateList;
 
+	typedef std::list< GdsRenderObjectPtr >			RENDEROBJECT_LIST;
+	RENDEROBJECT_LIST		m_DelObjectList;
+
 public:
 
 	GdsRenderFrame(){ SetName( OBJECT_RENDERFRAME ); }

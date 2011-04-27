@@ -25,6 +25,8 @@ class GdsRenderObject : public GdsObject
 	int						m_iStartIndex;
 	int						m_iEndIndex;
 
+	bool					m_bCull;
+
 public:
 
 	GdsRenderObject();
@@ -51,6 +53,9 @@ public:
 	void					SetIndexMaxCount( int count ){ m_Index_Maxcount = count; }
 	void					SetStartIndex( int index ){ m_iStartIndex = index; }
 	void					SetEndIndex( int index ){ m_iEndIndex = index; }
+
+	void					SetCull( bool flag ){ m_bCull = flag; }
+	bool					GetCull(){ return m_bCull; }
 
 protected:		
 

@@ -14,6 +14,7 @@ GdsRenderObject::GdsRenderObject()
 	D3DXMatrixIdentity( &m_TM );
 	m_vb = NULL;
 	m_ib = NULL;
+	m_bCull = false;
 }
 
 GdsRenderObject::~GdsRenderObject()
@@ -24,6 +25,9 @@ GdsRenderObject::~GdsRenderObject()
 
 void GdsRenderObject::vRender( LPDIRECT3DDEVICE9 device )
 {
+	if ( m_bCull )
+		return;
+
 	device->SetTransform( D3DTS_WORLD , &m_TM );
 
 	device->SetMaterial( &m_Material );
@@ -57,6 +61,6 @@ void GdsRenderObject::vRender( LPDIRECT3DDEVICE9 device )
 	if ( m_ib )
 	{
 		device->SetIndices( m_ib );
-		device->DrawIndexedPrimitive( D3DPT_TRIANGLELIST , 0 , 0 , m_Vertex_Maxcount , 0 , m_Index_Maxcount );
+		device->DrawIndexedPrimitive( D3DPT_TRIANGLELIST , 0 , m_iStartVertexIndex , m_Vertex_Maxcount , m_iStartIndex , m_Index_Maxcount );
 	}	
 }
