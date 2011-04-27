@@ -9,7 +9,8 @@ class GdsOctree : public GdsObject
 	bool				buildNode( int iCurDepth );		
 
 public:
-	GdsOctree( D3DXVECTOR3& minVec , D3DXVECTOR3& maxVec , int iMaxDepth );
+
+	GdsOctree( D3DXVECTOR3* vBuffer , size_t buffer_size , int iMaxDepth );
 	virtual ~GdsOctree();
 
 	void				Build();

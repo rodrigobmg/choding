@@ -56,6 +56,9 @@ public:
 
 	void					SetCull( bool flag ){ m_bCull = flag; }
 	bool					GetCull(){ return m_bCull; }
+	// 컬링은 오브젝트를 렌더를 못하게 하기때문에 락커 용으로 쓸수 있다.
+	void					SetLock( bool flag ){ m_bCull = flag; }
+	bool					GetLock(){ return m_bCull; }
 
 protected:		
 

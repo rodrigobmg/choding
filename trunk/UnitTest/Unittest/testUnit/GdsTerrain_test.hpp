@@ -33,10 +33,14 @@ public:
 
 TEST_F( GdsOctreeTest,  inittest )
 {		
-	D3DXVECTOR3 minVec( 0 , 0 , 0 );
-	D3DXVECTOR3 maxVec( 10 , 10 , 10 );
+	size_t buffersize = 10;
+	D3DXVECTOR3* vBuffer = new D3DXVECTOR3[buffersize];
+	for ( size_t i=0 ; i < buffersize ; i++)
+	{
+		vBuffer[i] = D3DXVECTOR3( rand()%10 , rand()%10 , rand()%10 );
+	}	
 
 	//분할할 볼륨을 설정해줌 세번째 인자는 부모의 포인터
-	GdsOctree test( minVec , maxVec , 3 );
+	GdsOctree test( vBuffer , buffersize , 3 );
 	test.Build();
 }
