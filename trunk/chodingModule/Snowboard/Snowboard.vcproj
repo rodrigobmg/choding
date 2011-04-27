@@ -309,6 +309,18 @@
 					RelativePath=".\Core\SceneNode\GdsNode.h"
 					>
 				</File>
+				<Filter
+					Name="Octree"
+					>
+					<File
+						RelativePath=".\Core\SceneNode\Octree\GdsOctree.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\SceneNode\Octree\GdsOctree.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Transform"
@@ -343,18 +355,6 @@
 				</File>
 				<File
 					RelativePath=".\Core\Transform\GdsVector.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Terrain"
-				>
-				<File
-					RelativePath=".\Core\Terrain\GdsTerrain.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Core\Terrain\GdsTerrain.h"
 					>
 				</File>
 			</Filter>

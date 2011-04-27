@@ -52,6 +52,8 @@ public:
 
 	void					Render( LPDIRECT3DDEVICE9 device ){ vRender( device ); }
 
+	size_t					GetRenderObjectCount(){ return m_RenderFrame.size(); }
+
 protected:
 
 	virtual	void			vRender( LPDIRECT3DDEVICE9 device );

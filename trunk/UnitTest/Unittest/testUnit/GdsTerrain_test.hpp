@@ -1,13 +1,16 @@
+
 #pragma once
 
-class GdsTerrainTest : public ::testing::Test
+#include "..\..\..\chodingModule\Snowboard\Core\SceneNode\Octree\GdsOctree.h"
+
+class GdsOctreeTest : public ::testing::Test
 {
 public:
-	GdsTerrainTest()
+	GdsOctreeTest()
 	{
 	}
 
-	virtual ~GdsTerrainTest()
+	virtual ~GdsOctreeTest()
 	{
 	}
 
@@ -28,7 +31,12 @@ public:
 	}
 };
 
-TEST_F( GdsTerrainTest,  inittest )
+TEST_F( GdsOctreeTest,  inittest )
 {		
-	GdsTerrainTest test;
+	D3DXVECTOR3 minVec( 0 , 0 , 0 );
+	D3DXVECTOR3 maxVec( 10 , 10 , 10 );
+
+	//분할할 볼륨을 설정해줌 세번째 인자는 부모의 포인터
+	GdsOctree test( minVec , maxVec , 3 );
+	test.Build();
 }

@@ -12,7 +12,7 @@ TEST( GdsRenderFrameTest ,  GdsRenderFrameTest )
 		renderframe->AddRenderStateGroup( stategroup , i );
 	}
 	
-	for ( int i = 0 ; i< 100 ; i++ )
+	for ( int i = 0 ; i< 10 ; i++ )
 	{
 		renderframe->AttachRenderObject( renderobject , 5);
 		renderframe->AttachRenderObject( renderobject , 2);
@@ -25,5 +25,8 @@ TEST( GdsRenderFrameTest ,  GdsRenderFrameTest )
 	}
 	
 	renderframe->DetachRenderObject( renderobject );
+	EXPECT_EQ( 80 , static_cast<int>( renderframe->GetRenderObjectCount() ) );
+	renderframe->Render( NULL );
+	EXPECT_EQ( 0 , static_cast<int>( renderframe->GetRenderObjectCount() ) );
 }
 

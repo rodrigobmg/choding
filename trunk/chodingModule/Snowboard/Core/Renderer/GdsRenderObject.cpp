@@ -25,7 +25,7 @@ GdsRenderObject::~GdsRenderObject()
 
 void GdsRenderObject::vRender( LPDIRECT3DDEVICE9 device )
 {
-	if ( m_bCull )
+	if ( m_bCull || !device )
 		return;
 
 	device->SetTransform( D3DTS_WORLD , &m_TM );
