@@ -6,11 +6,14 @@
 class GdsOctree : public GdsObject
 {	
 
-	bool				buildNode( int iCurDepth );		
+	bool				devide( int iCurDepth );		
+
+	D3DXVECTOR3			m_minPos;
+	D3DXVECTOR3			m_maxPos;
 
 public:
 
-	GdsOctree( D3DXVECTOR3* vBuffer , size_t buffer_size , int iMaxDepth );
+	GdsOctree( D3DXVECTOR3* pBuffer , size_t buffer_size , int iMaxDepth );
 	virtual ~GdsOctree();
 
 	void				Build();
