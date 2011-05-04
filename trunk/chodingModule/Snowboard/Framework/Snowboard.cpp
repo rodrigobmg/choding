@@ -61,6 +61,8 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 
 	RENDERER.GetRenderFrame()->AddRenderStateGroup( renderstate , 0 );
 
+	GDS::SetMaxFrameRate( 0 );
+
 	return TRUE;
 }
 
@@ -146,21 +148,6 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"map128.bmp") );
 	GdsResTexturePtr texcolor = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"tile2.tga") );
 
-	struct CUSTOMVERTEX
-	{
-		D3DXVECTOR3		p;
-		D3DXVECTOR3		n;
-		D3DXVECTOR2		t;
-	};
-
-	/// 사용자 정점 구조체에 관한 정보를 나타내는 FVF값
-	#define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1)
-
-	struct MYINDEX
-	{
-		WORD	_0, _1, _2;		/// WORD, 16비트 인덱스
-	};
-
 	D3DSURFACE_DESC		ddsd;
 	D3DLOCKED_RECT		d3drc;
 	int g_cxHeight , g_czHeight;
@@ -171,8 +158,8 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 
 	LPDIRECT3DVERTEXBUFFER9 g_pVB;
 	LOG_WARNING_F( "Texture Size:[%d,%d]", g_cxHeight, g_czHeight );
-	if( FAILED( RENDERER.GetDevice()->CreateVertexBuffer( ddsd.Width*ddsd.Height*sizeof(CUSTOMVERTEX),
-		0, D3DFVF_CUSTOMVERTEX,
+	if( FAILED( RENDERER.GetDevice()->CreateVertexBuffer( ddsd.Width*ddsd.Height*sizeof( GDSVERTEX ),
+		0, GDSVERTEX::FVF,
 		D3DPOOL_DEFAULT, &g_pVB, NULL ) ) )
 	{
 		return;
@@ -182,11 +169,11 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	texheight->Get()->LockRect( 0, &d3drc, NULL, D3DLOCK_READONLY );
 	VOID* pVertices;
 	/// 정점버퍼 락!
-	if( FAILED( g_pVB->Lock( 0, g_cxHeight*g_czHeight*sizeof(CUSTOMVERTEX), (void**)&pVertices, 0 ) ) )
+	if( FAILED( g_pVB->Lock( 0, g_cxHeight*g_czHeight*sizeof(GDSVERTEX), (void**)&pVertices, 0 ) ) )
 		return;
 
-	CUSTOMVERTEX	v;
-	CUSTOMVERTEX*	pV = (CUSTOMVERTEX*)pVertices;
+	GDSVERTEX	v;
+	GDSVERTEX*	pV = (GDSVERTEX*)pVertices;
 	for( DWORD z = 0 ; z < g_czHeight ; z++ )
 	{
 		for( DWORD x = 0 ; x < g_cxHeight ; x++ )
@@ -211,16 +198,16 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 
 	LPDIRECT3DINDEXBUFFER9 g_pIB;
 
-	if( FAILED( RENDERER.GetDevice()->CreateIndexBuffer( (g_cxHeight-1)*(g_czHeight-1)*2 * sizeof(MYINDEX), 0, 
+	if( FAILED( RENDERER.GetDevice()->CreateIndexBuffer( (g_cxHeight-1)*(g_czHeight-1)*2 * sizeof(GDSINDEX), 0, 
 														D3DFMT_INDEX16, D3DPOOL_DEFAULT, &g_pIB, NULL ) ) )
 	{
 		return;
 	}
 
-	MYINDEX		i;
-	MYINDEX*	pI;
+	GDSINDEX		i;
+	GDSINDEX*	pI;
 	
-	if( FAILED( g_pIB->Lock( 0, (g_cxHeight-1)*(g_czHeight-1)*2 * sizeof(MYINDEX), (void**)&pI, 0 ) ) )
+	if( FAILED( g_pIB->Lock( 0, (g_cxHeight-1)*(g_czHeight-1)*2 * sizeof(GDSINDEX), (void**)&pI, 0 ) ) )
 		return;
 
 	for( DWORD z = 0 ; z < g_czHeight-1 ; z++ )
@@ -242,8 +229,8 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 
 	GdsRenderObjectPtr renderObject = GdsRenderObjectPtr( new GdsRenderObject );
 	renderObject->SetVertexMaxCount( g_cxHeight*g_czHeight );
-	renderObject->SetVertexSize( sizeof( CUSTOMVERTEX ) );
-	renderObject->SetFVF( D3DFVF_CUSTOMVERTEX );
+	renderObject->SetVertexSize( sizeof( GDSVERTEX ) );
+	renderObject->SetFVF( GDSVERTEX::FVF );
 	renderObject->SetIndexMaxCount( (g_cxHeight-1)*(g_czHeight-1)*2 );
 	renderObject->SetIndexBuffer( g_pIB );
 	renderObject->SetVertexBuffer( g_pVB );

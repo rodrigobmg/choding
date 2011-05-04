@@ -41,6 +41,6 @@ TEST_F( GdsOctreeTest,  inittest )
 	}	
 
 	//분할할 볼륨을 설정해줌 세번째 인자는 부모의 포인터
-	GdsOctree test( vBuffer , buffersize , 3 );
-	test.Build();
+	GdsOctree test(/* vBuffer , buffersize , 3 */);
+	//test.Build();
 }
