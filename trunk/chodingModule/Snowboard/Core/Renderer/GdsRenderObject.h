@@ -50,6 +50,8 @@ public:
 	void					SetEndVertexIndex( int index ){ m_iEndVertexIndex = index; }
 
 	void					SetIndexBuffer( LPDIRECT3DINDEXBUFFER9	ib ){ m_ib = ib; }
+	LPDIRECT3DINDEXBUFFER9	GetIndexBuffer(){ return m_ib; }
+
 	void					SetIndexMaxCount( int count ){ m_Index_Maxcount = count; }
 	void					SetStartIndex( int index ){ m_iStartIndex = index; }
 	void					SetEndIndex( int index ){ m_iEndIndex = index; }

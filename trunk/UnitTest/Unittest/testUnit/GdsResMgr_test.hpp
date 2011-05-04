@@ -34,9 +34,9 @@ public:
  		
  		UpdateWindow( hWnd );
  
- 		resmgr = GdsResMgrPtr( new GdsResMgr );
+ 		//resmgr = GdsResMgrPtr( new GdsResMgr );
  		RENDERER.Create( hWnd );
- 		resmgr->Create( RENDERER.GetDevice() );
+ 		RESMGR.Create( RENDERER.GetDevice() );
  
  		UnregisterClass( L"Choding" , wc.hInstance );
 	}
@@ -53,8 +53,8 @@ public:
 // 		GetCurrentDirectory( MAX_PATH, curpath );
  		TCHAR respath[MAX_PATH];
  		_stprintf_s( respath , L"%s\\%s" , L"D:\\choding\\Application" , L"Resource" );
- 		ASSERT_TRUE( resmgr->CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;jpg;dds;tga" , true )) );
-		GdsResTexturePtr ptex = boost::shared_dynamic_cast< GdsResTexture >( resmgr->Get( L"banana.bmp" ) );
+ 		ASSERT_TRUE( RESMGR.CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;jpg;dds;tga" , true )) );
+		GdsResTexturePtr ptex = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"banana.bmp" ) );
 		LPDIRECT3DTEXTURE9 tex = ptex->Get();
 	}
 
@@ -68,7 +68,6 @@ public:
 
 	//WNDCLASSEX wc;
  	HWND hWnd;
- 	GdsResMgrPtr resmgr;
  	//GdsRendererDX9Ptr	renderer;
 };
 

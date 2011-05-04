@@ -4,45 +4,48 @@
 #include "../../Base/GdsObject.h"
 #include "../../Renderer/GdsRendererDX9.h"
 
+class OcNode
+{
+	D3DXVECTOR3			m_minPos;
+	D3DXVECTOR3			m_maxPos;
+	D3DXVECTOR3			m_cenPos;
 
-class GdsOctree : public GdsObject
-{	
-	enum {
-		CORNER_T_L_F = 0, // T는 위 L은 왼쪽 F는 전면
-		CORNER_T_L_B,
-		CORNER_T_R_F,
-		CORNER_T_R_B,
-		CORNER_B_L_F,
-		CORNER_B_L_B,
-		CORNER_B_R_F,
-		CORNER_B_R_B,
-	};	
-
-	struct OcNode
-	{
-		D3DXVECTOR3			m_minPos;
-		D3DXVECTOR3			m_maxPos;
-
-		GDSINDEX*			m_pIndex;
-	};
-
+	GDSINDEX*			m_pIndex;
+	OcNode*				m_pChild;
 	OcNode*				m_Parent;
+	int					m_iLimitedIndexCountPerNode;
+
+public:
+	OcNode(){};
+	~OcNode(){};
 
 	bool				devide( int iCurDepth );		
 	void				build( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos );
+	
+};
+
+class GdsOctree : public GdsObject
+{	
+	OcNode*				m_pNode;	
+	
+	void				clear();
 
 public:
 
-	GdsOctree();
-	virtual ~GdsOctree();
+	GdsOctree(){ m_pNode = NULL; clear(); }
+	virtual ~GdsOctree(){ clear(); }
 
+	OcNode*				GetNode(){ return m_pNode; }
 	void				Build( GDSVERTEX* pVertexBuffer , int iSizeVertexBuffer , GDSINDEX* pIndexBuffer , int iSizeIndexBuffer );
+
 };
 
 typedef boost::shared_ptr< GdsOctree >	GdsOctreePtr;
 
 void GdsOctree::Build( GDSVERTEX* pVertexBuffer , int iSizeVertexBuffer , GDSINDEX* pIndexBuffer , int iSizeIndexBuffer )
 {
+	m_pNode = new OcNode;
+
 	D3DXVECTOR3 minPos( 0,0,0 );
 	D3DXVECTOR3 maxPos( 0,0,0 );
 	for ( int i=0; i< iSizeVertexBuffer; i++ )
@@ -66,6 +69,70 @@ void GdsOctree::Build( GDSVERTEX* pVertexBuffer , int iSizeVertexBuffer , GDSIND
 			maxPos.z = pVertexBuffer[i].p.z;
 	}
 	D3DXVECTOR3 cenPos = ( maxPos + minPos ) * 0.5;
+
+	D3DXVECTOR3 p0;
+	D3DXVECTOR3 p1;
+	D3DXVECTOR3 p2;
+
+	int iFaceCount0 = 0, iFaceCount1 = 0, iFaceCount2 = 0, iFaceCount3 = 0;
+	int iFaceCount4 = 0, iFaceCount5 = 0, iFaceCount6 = 0, iFaceCount7 = 0, iFaceCount8 = 0;
+	for (int i = 0 ; i < iSizeIndexBuffer ; i++ )
+	{
+		p0 = pVertexBuffer[pIndexBuffer[i]._0].p;
+		p1 = pVertexBuffer[pIndexBuffer[i]._1].p;
+		p2 = pVertexBuffer[pIndexBuffer[i]._2].p;
+		// 아래 왼쪽 뒤
+		if( (p0.x <= cenPos.x && p0.y <= cenPos.y && p0.z <= cenPos.z) &&
+			(p1.x <= cenPos.x && p1.y <= cenPos.y && p1.z <= cenPos.z) &&
+			(p2.x <= cenPos.x && p2.y <= cenPos.y && p2.z <= cenPos.z)
+			) ++iFaceCount0;
+		else if(
+			// 아래 오른쪽 뒤
+			(p0.x >= cenPos.x && p0.y <= cenPos.y && p0.z <= cenPos.z) &&
+			(p1.x >= cenPos.x && p1.y <= cenPos.y && p1.z <= cenPos.z) &&
+			(p2.x >= cenPos.x && p2.y <= cenPos.y && p2.z <= cenPos.z)
+			) ++iFaceCount1;
+		else if(
+			// 아래 왼쪽 앞
+			(p0.x <= cenPos.x && p0.y <= cenPos.y && p0.z >= cenPos.z) &&
+			(p1.x <= cenPos.x && p1.y <= cenPos.y && p1.z >= cenPos.z) &&
+			(p2.x <= cenPos.x && p2.y <= cenPos.y && p2.z >= cenPos.z)
+			) ++iFaceCount2;
+		else if(
+			// 아래 오른쪽 앞
+			(p0.x >= cenPos.x && p0.y <= cenPos.y && p0.z >= cenPos.z) &&
+			(p1.x >= cenPos.x && p1.y <= cenPos.y && p1.z >= cenPos.z) &&
+			(p2.x >= cenPos.x && p2.y <= cenPos.y && p2.z >= cenPos.z)
+			) ++iFaceCount3;
+		else if(
+			// 위 왼쪽 뒤
+			(p0.x <= cenPos.x && p0.y >= cenPos.y && p0.z <= cenPos.z) &&
+			(p1.x <= cenPos.x && p1.y >= cenPos.y && p1.z <= cenPos.z) &&
+			(p2.x <= cenPos.x && p2.y >= cenPos.y && p2.z <= cenPos.z)
+			) ++iFaceCount4;
+		else if(
+			// 위 오른쪽 뒤
+			(p0.x >= cenPos.x && p0.y >= cenPos.y && p0.z <= cenPos.z) &&
+			(p1.x >= cenPos.x && p1.y >= cenPos.y && p1.z <= cenPos.z) &&
+			(p2.x >= cenPos.x && p2.y >= cenPos.y && p2.z <= cenPos.z)
+			) ++iFaceCount5;
+		else if(
+			// 위 왼쪽 앞
+			(p0.x <= cenPos.x && p0.y >= cenPos.y && p0.z >= cenPos.z) &&
+			(p1.x <= cenPos.x && p1.y >= cenPos.y && p1.z >= cenPos.z) &&
+			(p2.x <= cenPos.x && p2.y >= cenPos.y && p2.z >= cenPos.z)
+			) ++iFaceCount6;
+		else if(
+			// 위 오른쪽 앞
+			(p0.x >= cenPos.x && p0.y >= cenPos.y && p0.z >= cenPos.z) &&
+			(p1.x >= cenPos.x && p1.y >= cenPos.y && p1.z >= cenPos.z) &&
+			(p2.x >= cenPos.x && p2.y >= cenPos.y && p2.z >= cenPos.z)
+			) ++iFaceCount7;
+		else{
+			// 여러 자식에 걸쳐있는 평면
+			++iFaceCount8;
+		}
+	}
 }
 /*
 

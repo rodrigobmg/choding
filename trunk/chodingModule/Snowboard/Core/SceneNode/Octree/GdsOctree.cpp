@@ -1,11 +1,7 @@
 #include "GdsOctree.h"
 
-//oc-tree manager 
-GdsOctree::GdsOctree()
-{	
-}
-
-GdsOctree::~GdsOctree()
+void GdsOctree::clear()
 {
-
+	if ( m_pNode )
+		SAFE_DELETE( m_pNode );
 }
