@@ -5,32 +5,61 @@
 #include "../../Renderer/GdsRendererDX9.h"
 
 // 옥트리 노드
-class GdsOctreeNode
+class GdsOctree
 {
-public:
-	
-	GdsOctreeNode(int iNumFaces, D3DXVECTOR3& vMin, D3DXVECTOR3& vMax);
-	virtual ~GdsOctreeNode(){ Empty(); }
+	struct Node
+	{
 
-	void    Empty();
-	void    Build();
-	void    Draw();
+		Node*		m_pChild[8];
+		int			m_iNumOfChild;
+		GDSINDEX*	m_pFace;
+		int			m_iCountOfFace;
+		D3DXVECTOR3	m_minPos;
+		D3DXVECTOR3	m_maxPos;
+		D3DXVECTOR3	m_cenPos;
 
+		Node(int iNumFaces, D3DXVECTOR3& vMin, D3DXVECTOR3& vMax)
+			: m_iCountOfFace( iNumFaces ) , m_minPos(vMin) , m_maxPos(vMax) , m_cenPos((vMin+vMax)*0.5 )
+		{
+			for (int i=0 ; i<8 ; i++)
+				m_pChild[i] = NULL;
+			
+			m_pFace = new GDSINDEX[m_iCountOfFace];
+		}
+
+		~Node()
+		{			
+			Clear();
+		}
+
+		void Clear()
+		{
+			for (int i=0 ; i<8 ; i++)
+				SAFE_DELETE( m_pChild[i] );
+
+			SAFE_DELETE( m_pFace );
+		}
+
+	};
+
+	void			build( Node* node );
+public:	
+
+	GdsOctree(int iNumFaces, D3DXVECTOR3& vMin, D3DXVECTOR3& vMax , GDSVERTEX* pV , GDSINDEX* pI );
+	virtual ~GdsOctree(){ Empty(); }
+
+	void   			Empty();
+	void   			Build(){ build( m_pRootNode ); }
+	//void   			Draw();
+
+	void			SetLimitedFacePerNode( int iCount ){ ms_iLimitedCountOfFacePerNode = iCount; }
 
 private:
-	static int			ms_iLimitedCountOfFacePerNode;      // 노드당 최소 평면 수
-	static GDSVERTEX*   _pVert;         // 정점 배열
+	int				ms_iLimitedCountOfFacePerNode;      // 노드당 최소 평면 수
+	GDSVERTEX*		m_pVert;							// 정점 배열
 
-	// 자식 옥트리 노드
-	GdsOctreeNode*    _pChild[8];     // 자식 노드
-	int     _iNumChildren;      // 자식 노드 수
-	// 평면
-	GDSINDEX*      m_pFace;         // 평면 배열
-	int        m_iCountIndexBuffer;     // 평면 수
-	// 바운딩 박스
-	D3DXVECTOR3     m_minPos;          // 최소점
-	D3DXVECTOR3     m_maxPos;          // 최대점
-	D3DXVECTOR3     m_cenPos;       // 중심점
+	Node*			m_pRootNode;
+
 };
 
 #endif

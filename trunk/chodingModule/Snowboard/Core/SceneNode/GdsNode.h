@@ -51,7 +51,7 @@ public:
 	GdsNode();
 	virtual ~GdsNode();
  	
-	void					AddRenderObject( GdsRenderObjectPtr pRenderObject ){ m_list_RenderObject.push_back( pRenderObject ); }
+	void					AddRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateIndex );
 	GdsRenderObjectPtr		GetRenderObject( int index ){ m_list_RenderObject.at(index); }
 //  	boost::shared_ptr< GdsNode > shared_ptr_this()
 //  	{

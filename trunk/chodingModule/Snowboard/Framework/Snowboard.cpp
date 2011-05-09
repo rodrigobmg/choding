@@ -242,7 +242,5 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	D3DXMATRIX tm = pNode->GetLocalMatrix();
 	renderObject->SetMatrix( tm );
 
-	pNode->AddRenderObject( renderObject );
-
-	RENDERER.GetRenderFrame()->AttachRenderObject( renderObject , 0 );
+	pNode->AddRenderObject( renderObject , 0 );	
 }

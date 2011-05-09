@@ -292,4 +292,9 @@ void GdsNode::vUpdate( float fElapsedtime )
 	}	
 }
 
+void GdsNode::AddRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateIndex )
+{
+	m_list_RenderObject.push_back( pRenderObject );
+	RENDERER.GetRenderFrame()->AttachRenderObject( pRenderObject , iRenderStateIndex );
+}
 

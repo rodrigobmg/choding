@@ -41,7 +41,7 @@
 // #include "GdsVectorContainer_test.hpp"
 //#include "GdsResASE_test.hpp"
 //#include "GdsMaterial_test.hpp"
-#include "GdsRenderFrame_test.hpp"
+//#include "GdsRenderFrame_test.hpp"
 #include "GdsTerrain_test.hpp"
 
 
