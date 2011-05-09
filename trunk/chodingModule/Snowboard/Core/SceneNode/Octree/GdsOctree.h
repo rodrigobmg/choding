@@ -37,7 +37,7 @@ class GdsOctree
 			for (int i=0 ; i<8 ; i++)
 				SAFE_DELETE( m_pChild[i] );
 
-			SAFE_DELETE( m_pFace );
+			//SAFE_DELETE( m_pFace );
 		}
 
 	};
