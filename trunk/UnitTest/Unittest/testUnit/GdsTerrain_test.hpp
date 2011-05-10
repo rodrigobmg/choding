@@ -132,7 +132,7 @@ public:
 		m_iNumFaces = (g_cxHeight-1)*(g_czHeight-1)*2 ;
 
 		GdsOctree ocTree( m_iNumFaces , minPos , maxPos , pV , pStart );
-		ocTree.SetLimitedFacePerNode( 150 );
+		ocTree.SetLimitedFacePerNode( 10 );
 		ocTree.Build();
 
 

@@ -20,6 +20,7 @@ class GdsOctree
 
 		Node(int iNumFaces, D3DXVECTOR3& vMin, D3DXVECTOR3& vMax)
 			: m_iCountOfFace( iNumFaces ) , m_minPos(vMin) , m_maxPos(vMax) , m_cenPos((vMin+vMax)*0.5 )
+			, m_iNumOfChild( 0 )
 		{
 			for (int i=0 ; i<8 ; i++)
 				m_pChild[i] = NULL;
@@ -37,7 +38,7 @@ class GdsOctree
 			for (int i=0 ; i<8 ; i++)
 				SAFE_DELETE( m_pChild[i] );
 
-			//SAFE_DELETE( m_pFace );
+			SAFE_DELETE( m_pFace );
 		}
 
 	};
