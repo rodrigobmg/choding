@@ -221,6 +221,7 @@ void GdsOctree::build( Node* node )
 	for (int i=0;i<8 ;i++)
 		node->m_pChild[i] = m_pChild[i];
 
+	node->m_iNumOfChild = m_iNumChildren;
 	// 리프 노드가 아니므로 평면 제거
 	if(node->m_pFace)
 	{
