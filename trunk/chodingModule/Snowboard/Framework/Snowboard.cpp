@@ -109,11 +109,11 @@ void CSnowboard::TestFunc()
 
 	RESMGR.CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;dds;tga;jpg" , true ) );
 
-	GdsResASEPtr resASE	= boost::shared_dynamic_cast< GdsResASE >( RESMGR.Get( L"woman.ase" ) );
+	//GdsResASEPtr resASE	= boost::shared_dynamic_cast< GdsResASE >( RESMGR.Get( L"woman.ase" ) );
 
-	GdsNodePtr node = resASE->GetNode();
+	//GdsNodePtr node = resASE->GetNode();
 //	GdsNodePtr node = GdsNodePtr( new GdsNode );
-	node->SetName( L"Child" );
+	//node->SetName( L"Child" );
 	//RENDERER.GetRootNode()->AttachChild( node );
 
 	//node->SetTranslate( 11.0 , 0, 0  );
