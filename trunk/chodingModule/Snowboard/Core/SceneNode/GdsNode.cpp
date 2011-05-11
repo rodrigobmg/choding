@@ -50,7 +50,7 @@ void GdsNode::GenOctreeFaceIndex()
 		LPDWORD pIB;
 		GdsRenderObjectPtr rendertoken = it->first;
 		LPDIRECT3DINDEXBUFFER9 pI = rendertoken->GetIndexBuffer();
-		if ( pI->Lock( 0 , rendertoken->GetIndexMaxCount() * sizeof( GDSINDEX ) , (void**)&pIB , 0 ) )
+		if( ( pI->Lock( 0 , rendertoken->GetIndexMaxCount() * sizeof( GDSINDEX ) , (void**)&pIB , 0 ) ) == false )
 		{
 			int iMaxCountIndex = genTriIndex( m_pOctreeRootNode , pIB , 0 );
 			rendertoken->SetIndexMaxCount( iMaxCountIndex );
@@ -62,6 +62,9 @@ void GdsNode::GenOctreeFaceIndex()
 
 int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
 {
+	if ( CAMMGR.GetCurCam()->GetFrustum().VertexIsInFrustum( node->m_cenPos ) == false )
+		return iCurIndexCount;
+
 	if ( node->m_iCountOfFace > 0 )
 	{
 		for ( int i = 0 ; i < node->m_iCountOfFace ; i++ )
@@ -577,7 +580,7 @@ HRESULT GdsNode::Update( float fElapsedtime )
 	{
 		if ( m_bUseOctree )
 		{
-			//m_pOctreeRootNode->
+			GenOctreeFaceIndex();
 		}
 
 		if ( !m_list_RenderObject.empty() )

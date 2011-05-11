@@ -47,7 +47,7 @@ void GdsRenderFrame::AttachRenderObject( GdsRenderObjectPtr pRenderObject , int 
  			RENDER_CONTAINER::iterator i = lower_bound( m_RenderFrame.begin() , m_RenderFrame.end() , iRenderStateGroupID , DataCompare() );
 			if ( i != m_RenderFrame.end() )
 			{
-				size_t dis = std::distance( m_RenderFrame.begin() , i );
+				//size_t dis = std::distance( m_RenderFrame.begin() , i );
 				m_RenderFrame.insert( i , renderobj );
 			}
 			else

@@ -50,7 +50,7 @@ public:
 	void			CreateOctree();
 	void			ReleaseOctree(){ m_bUseOctree = false; Empty(); }
 
-	void				GenOctreeFaceIndex();
+	void			GenOctreeFaceIndex();
 
 	void   			Empty(){ SAFE_DELETE( m_pOctreeRootNode ); }
 	//void   			Draw();
