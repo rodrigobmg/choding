@@ -243,4 +243,6 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	renderObject->SetMatrix( tm );
 
 	pNode->AddRenderObject( renderObject , 0 );	
+
+	pNode->CreateOctree();
 }

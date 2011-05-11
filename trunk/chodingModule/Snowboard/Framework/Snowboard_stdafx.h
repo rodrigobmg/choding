@@ -84,6 +84,19 @@ typedef unsigned __int64	uint64_t;
 #include "Snowboard_macro.h"
 #include "../System/Util/Utility.h"
 
+struct GDSVERTEX
+{
+	enum _FVF { FVF=(D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1) };
+	D3DXVECTOR3		p;
+	D3DXVECTOR3		n;
+	D3DXVECTOR2		t;
+};
+
+struct GDSINDEX
+{
+	WORD _0 , _1, _2;
+};
+
 //메모리 릭 탐지
 #define _CRTDBG_MAP_ALLOC
 

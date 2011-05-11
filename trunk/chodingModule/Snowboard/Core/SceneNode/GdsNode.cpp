@@ -10,6 +10,9 @@ m_bBillboard( false ),
 m_vTranslate(0.0f, 0.0f, 0.0f),
 m_vWorldTranslate(0.0f, 0.0f, 0.0f),
 m_vScale( 1.0f, 1.0f, 1.0f)
+, m_bUseOctree( false )
+, m_pOctreeRootNode( NULL )
+, m_iLimitedCountOfFacePerNode( 300 )
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
@@ -30,44 +33,358 @@ GdsNode::~GdsNode()
 
 void GdsNode::vClear()
 {
-	RemoveAllChild();
+	RemoveAllChild();	
+	m_list_RenderObject.clear();
+	ReleaseOctree();
+}
+
+
+void GdsNode::GenOctreeFaceIndex()
+{
+	if ( !m_bUseOctree )
+		return;
+
 	RENDER_OBJECT_CONTAINER::iterator it = m_list_RenderObject.begin();
 	for ( ; it != m_list_RenderObject.end() ; ++it )
 	{
-		RENDERER.GetRenderFrame()->DetachRenderObject( *it );
+		LPDWORD pIB;
+		GdsRenderObjectPtr rendertoken = it->first;
+		LPDIRECT3DINDEXBUFFER9 pI = rendertoken->GetIndexBuffer();
+		if ( pI->Lock( 0 , rendertoken->GetIndexMaxCount() * sizeof( GDSINDEX ) , (void**)&pIB , 0 ) )
+		{
+			int iMaxCountIndex = genTriIndex( m_pOctreeRootNode , pIB , 0 );
+			rendertoken->SetIndexMaxCount( iMaxCountIndex );
+		}		
+		pI->Unlock();
 	}
-	m_list_RenderObject.clear();
 }
 
-D3DXVECTOR3& GdsNode::GetTranslate()
+
+int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
 {
-	return m_vTranslate;
+	if ( node->m_iCountOfFace > 0 )
+	{
+		for ( int i = 0 ; i < node->m_iCountOfFace ; i++ )
+		{
+			GDSINDEX* p = ((GDSINDEX*)pIB) + iCurIndexCount;
+			p->_0 = node->m_pFace[i]._0;
+			p->_1 = node->m_pFace[i]._1;
+			p->_2 = node->m_pFace[i]._2;			
+			*p++;
+			iCurIndexCount++;
+		}		
+	}
+
+	if(node->m_pChild[0]) iCurIndexCount = genTriIndex( node->m_pChild[0] , pIB , iCurIndexCount );
+	if(node->m_pChild[1]) iCurIndexCount = genTriIndex( node->m_pChild[1] , pIB , iCurIndexCount );
+	if(node->m_pChild[2]) iCurIndexCount = genTriIndex( node->m_pChild[2] , pIB , iCurIndexCount );
+	if(node->m_pChild[3]) iCurIndexCount = genTriIndex( node->m_pChild[3] , pIB , iCurIndexCount );
+	if(node->m_pChild[4]) iCurIndexCount = genTriIndex( node->m_pChild[4] , pIB , iCurIndexCount );
+	if(node->m_pChild[5]) iCurIndexCount = genTriIndex( node->m_pChild[5] , pIB , iCurIndexCount );
+	if(node->m_pChild[6]) iCurIndexCount = genTriIndex( node->m_pChild[6] , pIB , iCurIndexCount );
+	if(node->m_pChild[7]) iCurIndexCount = genTriIndex( node->m_pChild[7] , pIB , iCurIndexCount );
+
+	return iCurIndexCount;
 }
 
-void GdsNode::SetTranslate( const D3DXVECTOR3& vPos )
+void GdsNode::CreateOctree()
 {
-	m_vTranslate = vPos;
+	RENDER_OBJECT_CONTAINER::iterator it = m_list_RenderObject.begin();
+	for ( ; it != m_list_RenderObject.end() ; ++it )
+	{
+		VOID* pVB;
+		GdsRenderObjectPtr rendertoken = it->first;
+		LPDIRECT3DVERTEXBUFFER9 vb = rendertoken->GetVertexBuffer();
+		if (  ( vb->Lock( 0 , rendertoken->GetVertexMaxCount() * sizeof( GDSVERTEX ) , (void**)&pVB , 0 ) ) == false )
+		{
+			D3DXVECTOR3 minPos( 0,0,0 );
+			D3DXVECTOR3 maxPos( 0,0,0 );
+			for ( int i=0 ; i < rendertoken->GetVertexMaxCount() ; i++ )
+			{				
+				GDSVERTEX* v = (GDSVERTEX*)pVB + i;
+
+				if ( minPos.x > v->p.x )
+					minPos.x = v->p.x;
+
+				if ( minPos.y > v->p.y )
+					minPos.y = v->p.y;
+
+				if ( minPos.z > v->p.z )
+					minPos.z = v->p.z;
+
+				if ( maxPos.x < v->p.x )
+					maxPos.x = v->p.x;
+				if ( maxPos.y < v->p.y )
+					maxPos.y = v->p.y;
+				if ( maxPos.z < v->p.z )
+					maxPos.z = v->p.z;
+			}
+
+			m_pOctreeRootNode = NULL;
+			m_pVert = (GDSVERTEX*)pVB;
+			if ( m_pOctreeRootNode == NULL )
+				m_pOctreeRootNode = new Node( rendertoken->GetIndexMaxCount() , minPos , maxPos );
+
+			VOID* pI;
+			LPDIRECT3DINDEXBUFFER9 pIB = rendertoken->GetIndexBuffer();
+			pIB->Lock( 0 , rendertoken->GetIndexMaxCount() * sizeof( GDSINDEX ) , (void**)&pI , 0 );
+			memcpy( m_pOctreeRootNode->m_pFace , pI , sizeof( GDSINDEX ) * rendertoken->GetIndexMaxCount() );
+			pIB->Unlock();
+			m_pOctreeRootNode->m_iNumOfChild = 0;	
+
+			build( m_pOctreeRootNode );
+			
+		}		
+		vb->Unlock();
+	}
+
+	m_bUseOctree = true;
+	m_iCountOfOctreeNode = 0;
 }
 
-void GdsNode::SetTranslate( float fX, float fY, float fZ)
+void GdsNode::build( Node* node )
 {
-	m_vTranslate = D3DXVECTOR3( fX, fY, fZ );
+	int iNumChildren = 0;
+	int iCountOfFace = node->m_iCountOfFace;
+
+	Node* pChild[8];
+	for (int i=0;i<8 ;i++)
+		pChild[i] = NULL;//node->pChild[i];
+
+	// 리프 노드는 바로 리턴
+	if( iCountOfFace <= m_iLimitedCountOfFacePerNode)
+		return;
+
+	// 각 자식에 속하는 평면의 개수 셈
+	D3DXVECTOR3 p0, p1, p2;
+	int iFaceCount0 = 0, iFaceCount1 = 0, iFaceCount2 = 0, iFaceCount3 = 0;
+	int iFaceCount4 = 0, iFaceCount5 = 0, iFaceCount6 = 0, iFaceCount7 = 0, iFaceCount8 = 0;
+	GDSINDEX* pTempFace = NULL;
+
+	D3DXVECTOR3 m_cenPos = node->m_cenPos;
+	D3DXVECTOR3 m_minPos = node->m_minPos;
+	D3DXVECTOR3 m_maxPos = node->m_maxPos;
+	//GDSINDEX* m_pFace	 = node->m_pFace;
+
+	for(int i = 0; i < iCountOfFace ; ++i)
+	{
+		p0 = D3DXVECTOR3(&m_pVert[node->m_pFace[i]._0].p.x);
+		p1 = D3DXVECTOR3(&m_pVert[node->m_pFace[i]._1].p.x);
+		p2 = D3DXVECTOR3(&m_pVert[node->m_pFace[i]._2].p.x);
+
+		if(
+			// 아래 왼쪽 뒤
+			(p0.x <= m_cenPos.x && p0.y <= m_cenPos.y && p0.z <= m_cenPos.z) &&
+			(p1.x <= m_cenPos.x && p1.y <= m_cenPos.y && p1.z <= m_cenPos.z) &&
+			(p2.x <= m_cenPos.x && p2.y <= m_cenPos.y && p2.z <= m_cenPos.z)
+			) 
+			++iFaceCount0;
+		else if(
+			// 아래 오른쪽 뒤
+			(p0.x >= m_cenPos.x && p0.y <= m_cenPos.y && p0.z <= m_cenPos.z) &&
+			(p1.x >= m_cenPos.x && p1.y <= m_cenPos.y && p1.z <= m_cenPos.z) &&
+			(p2.x >= m_cenPos.x && p2.y <= m_cenPos.y && p2.z <= m_cenPos.z)
+			)
+			++iFaceCount1;
+		else if(
+			// 아래 왼쪽 앞
+			(p0.x <= m_cenPos.x && p0.y <= m_cenPos.y && p0.z >= m_cenPos.z) &&
+			(p1.x <= m_cenPos.x && p1.y <= m_cenPos.y && p1.z >= m_cenPos.z) &&
+			(p2.x <= m_cenPos.x && p2.y <= m_cenPos.y && p2.z >= m_cenPos.z)
+			)
+			++iFaceCount2;
+		else if(
+			// 아래 오른쪽 앞
+			(p0.x >= m_cenPos.x && p0.y <= m_cenPos.y && p0.z >= m_cenPos.z) &&
+			(p1.x >= m_cenPos.x && p1.y <= m_cenPos.y && p1.z >= m_cenPos.z) &&
+			(p2.x >= m_cenPos.x && p2.y <= m_cenPos.y && p2.z >= m_cenPos.z)
+			) 
+			++iFaceCount3;
+		else if(
+			// 위 왼쪽 뒤
+			(p0.x <= m_cenPos.x && p0.y >= m_cenPos.y && p0.z <= m_cenPos.z) &&
+			(p1.x <= m_cenPos.x && p1.y >= m_cenPos.y && p1.z <= m_cenPos.z) &&
+			(p2.x <= m_cenPos.x && p2.y >= m_cenPos.y && p2.z <= m_cenPos.z)
+			) 
+			++iFaceCount4;
+		else if(
+			// 위 오른쪽 뒤
+			(p0.x >= m_cenPos.x && p0.y >= m_cenPos.y && p0.z <= m_cenPos.z) &&
+			(p1.x >= m_cenPos.x && p1.y >= m_cenPos.y && p1.z <= m_cenPos.z) &&
+			(p2.x >= m_cenPos.x && p2.y >= m_cenPos.y && p2.z <= m_cenPos.z)
+			) 
+			++iFaceCount5;
+		else if(
+			// 위 왼쪽 앞
+			(p0.x <= m_cenPos.x && p0.y >= m_cenPos.y && p0.z >= m_cenPos.z) &&
+			(p1.x <= m_cenPos.x && p1.y >= m_cenPos.y && p1.z >= m_cenPos.z) &&
+			(p2.x <= m_cenPos.x && p2.y >= m_cenPos.y && p2.z >= m_cenPos.z)
+			) 
+			++iFaceCount6;
+		else if(
+			// 위 오른쪽 앞
+			(p0.x >= m_cenPos.x && p0.y >= m_cenPos.y && p0.z >= m_cenPos.z) &&
+			(p1.x >= m_cenPos.x && p1.y >= m_cenPos.y && p1.z >= m_cenPos.z) &&
+			(p2.x >= m_cenPos.x && p2.y >= m_cenPos.y && p2.z >= m_cenPos.z)
+			) 
+			++iFaceCount7;
+		else{
+			// 여러 자식에 걸쳐있는 평면
+			++iFaceCount8;
+		}
+	}
+
+	// 평면을 가진 자식만 생성
+	if(iFaceCount0 > 0)
+	{
+		++iNumChildren;
+		pChild[0] = new Node(iFaceCount0, m_minPos, m_cenPos);
+	}
+	if(iFaceCount1 > 0)
+	{
+		++iNumChildren;
+		D3DXVECTOR3 minPos = D3DXVECTOR3(m_cenPos.x, m_minPos.y, m_minPos.z);
+		D3DXVECTOR3 maxPos = D3DXVECTOR3(m_maxPos.x, m_cenPos.y, m_cenPos.z);
+		pChild[1] = new Node(iFaceCount1, minPos , maxPos );
+	}
+	if(iFaceCount2 > 0)
+	{
+		++iNumChildren;
+		D3DXVECTOR3 minPos = D3DXVECTOR3(m_minPos.x, m_minPos.y, m_cenPos.z);
+		D3DXVECTOR3 maxPos = D3DXVECTOR3(m_cenPos.x, m_cenPos.y, m_maxPos.z);
+		pChild[2] = new Node(iFaceCount2, minPos , maxPos );
+	}
+	if(iFaceCount3 > 0)
+	{
+		++iNumChildren;
+		D3DXVECTOR3 minPos = D3DXVECTOR3(m_cenPos.x, m_minPos.y, m_cenPos.z);
+		D3DXVECTOR3 maxPos = D3DXVECTOR3(m_maxPos.x, m_cenPos.y, m_maxPos.z);
+		pChild[3] = new Node(iFaceCount3, minPos, maxPos);
+	}
+	if(iFaceCount4 > 0)
+	{
+		++iNumChildren;
+		D3DXVECTOR3 minPos = D3DXVECTOR3(m_minPos.x, m_cenPos.y, m_minPos.z);
+		D3DXVECTOR3 maxPos = D3DXVECTOR3(m_cenPos.x, m_maxPos.y, m_cenPos.z);
+		pChild[4] = new Node(iFaceCount4, minPos, maxPos);
+	}
+	if(iFaceCount5 > 0)
+	{
+		++iNumChildren;
+		D3DXVECTOR3 minPos = D3DXVECTOR3(m_cenPos.x, m_cenPos.y, m_minPos.z);
+		D3DXVECTOR3 maxPos = D3DXVECTOR3(m_maxPos.x, m_maxPos.y, m_cenPos.z);
+		pChild[5] = new Node(iFaceCount5, minPos, maxPos);
+	}
+	if(iFaceCount6 > 0)
+	{
+		++iNumChildren;
+		D3DXVECTOR3 minPos = D3DXVECTOR3(m_minPos.z, m_cenPos.y, m_cenPos.z);
+		D3DXVECTOR3 maxPos = D3DXVECTOR3(m_cenPos.x, m_maxPos.y, m_maxPos.z);
+		pChild[6] = new Node(iFaceCount6, minPos, maxPos);
+	}
+	if(iFaceCount7 > 0)
+	{
+		++iNumChildren;
+		pChild[7] = new Node(iFaceCount7, m_cenPos, m_maxPos);
+	}
+	if(iFaceCount8 > 0)
+	{
+		pTempFace = new GDSINDEX[iFaceCount8];
+	}
+
+	// 자식에 속하는 평면을 모두 추가
+	iFaceCount0 = 0, iFaceCount1 = 0, iFaceCount2 = 0, iFaceCount3 = 0;
+	iFaceCount4 = 0, iFaceCount5 = 0, iFaceCount6 = 0, iFaceCount7 = 0, iFaceCount8 = 0;
+
+	for(int i = 0; i < iCountOfFace; ++i)
+	{
+		p0 = D3DXVECTOR3(&m_pVert[node->m_pFace[i]._0].p.x);
+		p1 = D3DXVECTOR3(&m_pVert[node->m_pFace[i]._1].p.x);
+		p2 = D3DXVECTOR3(&m_pVert[node->m_pFace[i]._2].p.x);
+
+		if(pChild[0] &&
+			(p0.x <= m_cenPos.x && p0.y <= m_cenPos.y && p0.z <= m_cenPos.z) &&
+			(p1.x <= m_cenPos.x && p1.y <= m_cenPos.y && p1.z <= m_cenPos.z) &&
+			(p2.x <= m_cenPos.x && p2.y <= m_cenPos.y && p2.z <= m_cenPos.z)
+			) 
+			pChild[0]->m_pFace[iFaceCount0++] = node->m_pFace[i];
+		else if(pChild[1] &&
+			(p0.x >= m_cenPos.x && p0.y <= m_cenPos.y && p0.z <= m_cenPos.z) &&
+			(p1.x >= m_cenPos.x && p1.y <= m_cenPos.y && p1.z <= m_cenPos.z) &&
+			(p2.x >= m_cenPos.x && p2.y <= m_cenPos.y && p2.z <= m_cenPos.z)
+			)
+			pChild[1]->m_pFace[iFaceCount1++] = node->m_pFace[i];
+		else if(pChild[2] &&
+			(p0.x <= m_cenPos.x && p0.y <= m_cenPos.y && p0.z >= m_cenPos.z) &&
+			(p1.x <= m_cenPos.x && p1.y <= m_cenPos.y && p1.z >= m_cenPos.z) &&
+			(p2.x <= m_cenPos.x && p2.y <= m_cenPos.y && p2.z >= m_cenPos.z)
+			)
+			pChild[2]->m_pFace[iFaceCount2++] = node->m_pFace[i];
+		else if(pChild[3] &&
+			(p0.x >= m_cenPos.x && p0.y <= m_cenPos.y && p0.z >= m_cenPos.z) &&
+			(p1.x >= m_cenPos.x && p1.y <= m_cenPos.y && p1.z >= m_cenPos.z) &&
+			(p2.x >= m_cenPos.x && p2.y <= m_cenPos.y && p2.z >= m_cenPos.z)
+			)
+			pChild[3]->m_pFace[iFaceCount3++] = node->m_pFace[i];
+		else if(pChild[4] &&
+			(p0.x <= m_cenPos.x && p0.y >= m_cenPos.y && p0.z <= m_cenPos.z) &&
+			(p1.x <= m_cenPos.x && p1.y >= m_cenPos.y && p1.z <= m_cenPos.z) &&
+			(p2.x <= m_cenPos.x && p2.y >= m_cenPos.y && p2.z <= m_cenPos.z)
+			)
+			pChild[4]->m_pFace[iFaceCount4++] = node->m_pFace[i];
+		else if(pChild[5] &&
+			(p0.x >= m_cenPos.x && p0.y >= m_cenPos.y && p0.z <= m_cenPos.z) &&
+			(p1.x >= m_cenPos.x && p1.y >= m_cenPos.y && p1.z <= m_cenPos.z) &&
+			(p2.x >= m_cenPos.x && p2.y >= m_cenPos.y && p2.z <= m_cenPos.z)
+			)
+			pChild[5]->m_pFace[iFaceCount5++] = node->m_pFace[i];
+		else if(pChild[6] &&
+			(p0.x <= m_cenPos.x && p0.y >= m_cenPos.y && p0.z >= m_cenPos.z) &&
+			(p1.x <= m_cenPos.x && p1.y >= m_cenPos.y && p1.z >= m_cenPos.z) &&
+			(p2.x <= m_cenPos.x && p2.y >= m_cenPos.y && p2.z >= m_cenPos.z)
+			)
+			pChild[6]->m_pFace[iFaceCount6++] = node->m_pFace[i];
+		else if(pChild[7] &&
+			(p0.x >= m_cenPos.x && p0.y >= m_cenPos.y && p0.z >= m_cenPos.z) &&
+			(p1.x >= m_cenPos.x && p1.y >= m_cenPos.y && p1.z >= m_cenPos.z) &&
+			(p2.x >= m_cenPos.x && p2.y >= m_cenPos.y && p2.z >= m_cenPos.z)
+			)
+			pChild[7]->m_pFace[iFaceCount7++] = node->m_pFace[i];
+		else
+		{
+			pTempFace[iFaceCount8] = node->m_pFace[i];
+			++iFaceCount8;
+		}
+	}
+
+	for (int i=0;i<8 ;i++)
+		node->m_pChild[i] = pChild[i];
+	m_iCountOfOctreeNode += iNumChildren;
+	node->m_iNumOfChild = iNumChildren;
+	// 리프 노드가 아니므로 평면 제거
+	if(node->m_pFace)
+	{
+		SAFE_DELETE( node->m_pFace );
+		iCountOfFace = 0;
+	}
+	if(pTempFace)
+	{
+		node->m_pFace = pTempFace;
+		iCountOfFace = iFaceCount8;
+	}
+	node->m_iCountOfFace = iCountOfFace;
+
+	// 자식 노드 재귀 호출
+	if(node->m_pChild[0]) build( node->m_pChild[0] );
+	if(node->m_pChild[1]) build( node->m_pChild[1] );
+	if(node->m_pChild[2]) build( node->m_pChild[2] );
+	if(node->m_pChild[3]) build( node->m_pChild[3] );
+	if(node->m_pChild[4]) build( node->m_pChild[4] );
+	if(node->m_pChild[5]) build( node->m_pChild[5] );
+	if(node->m_pChild[6]) build( node->m_pChild[6] );
+	if(node->m_pChild[7]) build( node->m_pChild[7] );
 }
 
-void GdsNode::SetRotate( const D3DXQUATERNION& qRot )
-{
-	m_qRotate = qRot;
-}
-
-void GdsNode::SetRotate( const D3DXVECTOR3& vAxis, float fAngle )
-{
-	D3DXQuaternionRotationAxis( &m_qRotate, &vAxis, fAngle);
-}
-
-const D3DXVECTOR3& GdsNode::GetScale() const
-{	
-	return m_vScale;
-}
 
 void GdsNode::SetScale( float fScale )
 {
@@ -227,8 +544,7 @@ HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 }
 
 HRESULT GdsNode::Update( float fElapsedtime )
-{
-	
+{	
 	D3DXMATRIX matTrans, matScale, matRot;
 	D3DXMatrixIdentity( &matTrans );
 	D3DXMatrixIdentity( &matScale );
@@ -253,11 +569,31 @@ HRESULT GdsNode::Update( float fElapsedtime )
 		m_matWorld = m_matLocal;
 	}
 
-	
-
 	m_vWorldTranslate = D3DXVECTOR3(m_matWorld._41, m_matWorld._42, m_matWorld._43 ) ;
 	D3DXQuaternionRotationMatrix(&m_qWorldRotate, &m_matWorld);
-	
+
+	// 뷰 판정
+	if ( CAMMGR.GetCurCam()->GetFrustum().VertexIsInFrustum( m_vWorldTranslate ) )	
+	{
+		if ( m_bUseOctree )
+		{
+			//m_pOctreeRootNode->
+		}
+
+		if ( !m_list_RenderObject.empty() )
+		{
+			RENDER_OBJECT_CONTAINER::iterator it = m_list_RenderObject.begin();
+			for ( ; it != m_list_RenderObject.end() ; ++it )
+			{
+				RENDERER.GetRenderFrame()->AttachRenderObject( it->first , it->second );
+			}			
+		}		
+	}
+	else
+	{
+
+	}
+
 	vUpdate( fElapsedtime );
 
 
@@ -292,9 +628,11 @@ void GdsNode::vUpdate( float fElapsedtime )
 	}	
 }
 
+
 void GdsNode::AddRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateIndex )
 {
-	m_list_RenderObject.push_back( pRenderObject );
-	RENDERER.GetRenderFrame()->AttachRenderObject( pRenderObject , iRenderStateIndex );
+	RENDERTOKEN rendertoken( pRenderObject , iRenderStateIndex );
+	m_list_RenderObject.push_back( rendertoken );	
 }
+
 

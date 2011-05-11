@@ -41,11 +41,15 @@ public:
 	void					SetTextureIndex( int index ){ m_iTextureIndex = index; }
 
 	void					SetMatrix( D3DXMATRIX& tm ){ m_TM = tm; }
+	D3DXMATRIX				GetMatrix(){ return m_TM; }
 
 	void					SetVertexBuffer( LPDIRECT3DVERTEXBUFFER9 vb ){ m_vb = vb; }
+	LPDIRECT3DVERTEXBUFFER9	GetVertexBuffer(){ return m_vb; }
+
 	void					SetVertexSize( int ivertexsize ){ m_VertexSize = ivertexsize; }
 	void					SetFVF( int ifvf ){ m_FVF = ifvf; }
 	void					SetVertexMaxCount( int icount ){ m_Vertex_Maxcount = icount; }
+	int						GetVertexMaxCount(){ return m_Vertex_Maxcount; }
 	void					SetStartVertexIndex( int index ){ m_iStartVertexIndex = index; }
 	void					SetEndVertexIndex( int index ){ m_iEndVertexIndex = index; }
 
@@ -53,6 +57,7 @@ public:
 	LPDIRECT3DINDEXBUFFER9	GetIndexBuffer(){ return m_ib; }
 
 	void					SetIndexMaxCount( int count ){ m_Index_Maxcount = count; }
+	int						GetIndexMaxCount(){ return m_Index_Maxcount; }
 	void					SetStartIndex( int index ){ m_iStartIndex = index; }
 	void					SetEndIndex( int index ){ m_iEndIndex = index; }
 

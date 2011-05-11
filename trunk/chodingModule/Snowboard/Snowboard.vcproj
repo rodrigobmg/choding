@@ -287,6 +287,14 @@
 					<File
 						RelativePath=".\Core\Resource\Type\GdsResASE.h"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\Core\Resource\Type\GdsResTexture.cpp"
@@ -309,18 +317,6 @@
 					RelativePath=".\Core\SceneNode\GdsNode.h"
 					>
 				</File>
-				<Filter
-					Name="Octree"
-					>
-					<File
-						RelativePath=".\Core\SceneNode\Octree\GdsOctree.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\SceneNode\Octree\GdsOctree.h"
-						>
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="Transform"

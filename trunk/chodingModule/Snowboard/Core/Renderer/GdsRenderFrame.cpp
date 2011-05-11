@@ -1,6 +1,11 @@
 #include "GdsRenderFrame.h"
 
 
+GdsRenderFrame::GdsRenderFrame()
+{
+	SetName( OBJECT_RENDERFRAME );
+}
+
 GdsRenderFrame::~GdsRenderFrame()
 {
 	m_RenderFrame.clear();
@@ -54,44 +59,49 @@ void GdsRenderFrame::AttachRenderObject( GdsRenderObjectPtr pRenderObject , int 
  	}
 }
 
-void GdsRenderFrame::DetachRenderObject( GdsRenderObjectPtr pRenderObject )
-{
-	m_DelObjectList.push_back( pRenderObject );
-}
-
 void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
 { 	 
+	int iPreRenderStateIndex = -1;
 	RENDER_CONTAINER::iterator it = m_RenderFrame.begin();
 	for ( ; it != m_RenderFrame.end() ; ++it )
 	{
-		RENDERSTATEGROUP::iterator it_state = m_RenderStateList.find( it->first );
+		int iRenderStateIndex = it->first;
+		
+		RENDERSTATEGROUP::iterator it_state = m_RenderStateList.find( iRenderStateIndex );
 		if ( it_state != m_RenderStateList.end() )
 		{
-			it_state->second->SetRenderState( device );
+			if ( iPreRenderStateIndex != iRenderStateIndex )
+			{
+				it_state->second->SetRenderState( device );
+				iPreRenderStateIndex = iRenderStateIndex;
+			}
+
 			it->second->vRender( device );
 		}
 	}
 
-	if ( !m_DelObjectList.empty() )
-	{
-		RENDEROBJECT_LIST::iterator delit = m_DelObjectList.begin();
-		for( ; delit != m_DelObjectList.end() ; ++delit )
-		{
-			RENDER_CONTAINER::iterator it = m_RenderFrame.begin();
-			for ( ; it != m_RenderFrame.end() ;  )
-			{
-				if ( it->second == *delit )
-				{
-					m_RenderFrame.erase( it++ );			
-				}
-				else
-				{
-					++it;
-				}
-			}
-		}
-		m_DelObjectList.clear();
-	}
+	m_RenderFrame.clear();
+
+// 	if ( !m_DelObjectList.empty() )
+// 	{
+// 		RENDEROBJECT_LIST::iterator delit = m_DelObjectList.begin();
+// 		for( ; delit != m_DelObjectList.end() ; ++delit )
+// 		{
+// 			RENDER_CONTAINER::iterator it = m_RenderFrame.begin();
+// 			for ( ; it != m_RenderFrame.end() ;  )
+// 			{
+// 				if ( it->second == *delit )
+// 				{
+// 					m_RenderFrame.erase( it++ );			
+// 				}
+// 				else
+// 				{
+// 					++it;
+// 				}
+// 			}
+// 		}
+// 		m_DelObjectList.clear();
+// 	}
 }
 
 void GdsRenderFrame::AddRenderStateGroup( GdsRenderStateGroupPtr renderstategroup , int iRenderStateGroupID )

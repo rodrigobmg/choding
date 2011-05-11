@@ -39,14 +39,13 @@ class GdsRenderFrame : public GdsObject
 
 public:
 
-	GdsRenderFrame(){ SetName( OBJECT_RENDERFRAME ); }
+	GdsRenderFrame();
 	virtual ~GdsRenderFrame();
 
 	GdsRenderObjectPtr		AllocRenderObject();
 	void					FreeRenderObejct();
 
 	void					AttachRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateGroupID );
-	void					DetachRenderObject( GdsRenderObjectPtr pRenderObject );
 
 	void					AddRenderStateGroup( GdsRenderStateGroupPtr renderstategroup , int iRenderStateGroupID );
 

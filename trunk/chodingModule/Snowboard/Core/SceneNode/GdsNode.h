@@ -6,6 +6,64 @@
 
 class GdsNode : public GdsObject //, public boost::enable_shared_from_this< GdsNode >
 {
+	// oc-tree
+	struct Node
+	{
+
+		Node*		m_pChild[8];
+		int			m_iNumOfChild;
+		GDSINDEX*	m_pFace;
+		int			m_iCountOfFace;
+		D3DXVECTOR3	m_minPos;
+		D3DXVECTOR3	m_maxPos;
+		D3DXVECTOR3	m_cenPos;
+
+		Node(int iNumFaces, D3DXVECTOR3& vMin, D3DXVECTOR3& vMax)
+			: m_iCountOfFace( iNumFaces ) , m_minPos(vMin) , m_maxPos(vMax) , m_cenPos((vMin+vMax)*0.5 )
+			, m_iNumOfChild( 0 )
+		{
+			for (int i=0 ; i<8 ; i++)
+				m_pChild[i] = NULL;
+
+			m_pFace = new GDSINDEX[m_iCountOfFace];
+		}
+
+		~Node()
+		{			
+			Clear();
+		}
+
+		void Clear()
+		{
+			for (int i=0 ; i<8 ; i++)
+				SAFE_DELETE( m_pChild[i] );
+
+			SAFE_DELETE( m_pFace );
+		}
+
+	};
+
+	void			build( Node* node );
+	int				genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount );
+public:	
+
+	void			CreateOctree();
+	void			ReleaseOctree(){ m_bUseOctree = false; Empty(); }
+
+	void				GenOctreeFaceIndex();
+
+	void   			Empty(){ SAFE_DELETE( m_pOctreeRootNode ); }
+	//void   			Draw();
+
+	void			SetLimitedFacePerNode( int iCount ){ m_iLimitedCountOfFacePerNode = iCount; }
+	int				GetTotalOctreenode(){ return m_iCountOfOctreeNode; }
+
+private:
+	int				m_iCountOfOctreeNode;
+	int				m_iLimitedCountOfFacePerNode;      // 노드당 최소 평면 수
+	GDSVERTEX*		m_pVert;							// 정점 배열
+
+	Node*			m_pOctreeRootNode;	
 
 public:
 	enum CULL_TYPE{
@@ -16,6 +74,8 @@ public:
 
 private:
 	
+	bool								m_bUseOctree;
+
 	D3DXMATRIX							m_matLocal;
 	D3DXMATRIX							m_matWorld;
 
@@ -35,7 +95,8 @@ private:
 	typedef	 std::list< GdsNodePtr >		CHILDNODE_CONTAINER;
 	CHILDNODE_CONTAINER						m_ChildNode;	
 
-	typedef std::vector< GdsRenderObjectPtr >	RENDER_OBJECT_CONTAINER;
+	typedef std::pair< GdsRenderObjectPtr , int > RENDERTOKEN;
+	typedef std::vector< RENDERTOKEN >	RENDER_OBJECT_CONTAINER;
 	RENDER_OBJECT_CONTAINER					m_list_RenderObject;
 		
 	bool									m_bBillboard;
@@ -69,15 +130,15 @@ public:
 	CULL_TYPE				GetCullType(){ return m_eCull; }
 
 
-	D3DXVECTOR3&			GetTranslate();
-	void					SetTranslate( const D3DXVECTOR3& vPos );
-	void					SetTranslate( float fX, float fY, float fZ);
+	D3DXVECTOR3&			GetTranslate(){ return m_vTranslate; }
+	void					SetTranslate( const D3DXVECTOR3& vPos ){ m_vTranslate = vPos; }
+	void					SetTranslate( float fX, float fY, float fZ){ m_vTranslate = D3DXVECTOR3( fX , fY , fZ ); }
 
-	const	D3DXQUATERNION& GetRotate();
-	void					SetRotate( const D3DXVECTOR3& vAxis, float fAngle );
-	void					SetRotate( const D3DXQUATERNION& qRot );
+	const	D3DXQUATERNION& GetRotate(){ return m_qRotate; }
+	void					SetRotate( const D3DXVECTOR3& vAxis, float fAngle ){ D3DXQuaternionRotationAxis( &m_qRotate, &vAxis, fAngle); }
+	void					SetRotate( const D3DXQUATERNION& qRot ){ m_qRotate = qRot; }
 
-	const	D3DXVECTOR3&	GetScale() const;
+	const	D3DXVECTOR3&	GetScale() const { return m_vScale; }
 	void					SetScale( float fScale );
 	void					SetScale( float fScaleX, float fScaleY, float fScaleZ);
 
@@ -94,22 +155,12 @@ public:
  	void					SetParent( GdsNode* pNode );
 
 	GdsNodePtr				GetAt( unsigned int index );
-
-	// 구현 예정
-	void					Deepcopy( GdsNodePtr pResource );
 	
 	HRESULT					AttachChild( GdsNodePtr pNode );
 	HRESULT					DetachChild( GdsNodePtr pNode );
 	HRESULT					RemoveAllChild();
-
 	HRESULT					Update( float fElapsedtime );
-
-
 };
-
-// 
-
-
 
 typedef boost::shared_ptr< GdsNode >	GdsNodePtr;
 

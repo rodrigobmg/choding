@@ -1,11 +1,11 @@
 
 #pragma once
 
-#include "..\..\..\chodingModule\Snowboard\Core\SceneNode\Octree\GdsOctree.h"
 #include "..\..\..\chodingModule\Snowboard\Core\Resource\Type\GdsResTexture.h"
 #include "..\..\..\chodingModule\Snowboard\Core\Resource\GdsResMgr.h"
 #include "..\..\..\chodingModule\Snowboard\System\Logger\logger.h"
 #include "..\..\..\chodingModule\Snowboard\Core\Renderer\GdsRendererDX9.h"
+#include "..\..\..\chodingModule\Snowboard\Core\SceneNode\GdsNode.h"
 
 class GdsOctreeTest : public ::testing::Test
 {
@@ -26,7 +26,7 @@ public:
 	virtual void SetUp()
 	{
 		//»ý¼ºÀÚ
-		GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"height8.bmp") );
+		GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"height128.bmp") );
 		GdsResTexturePtr texcolor = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"tile2.tga") );
 
 		D3DSURFACE_DESC		ddsd;
@@ -131,9 +131,12 @@ public:
 
 		m_iNumFaces = (g_cxHeight-1)*(g_czHeight-1)*2 ;
 
-		GdsOctree ocTree( m_iNumFaces , minPos , maxPos , pV , pStart );
-		ocTree.SetLimitedFacePerNode( 10 );
-		ocTree.Build();
+		GdsNodePtr pNode = GdsNodePtr( new GdsNode );
+		pNode->CreateOctree();
+
+// 		GdsOctree ocTree( m_iNumFaces , minPos , maxPos , pV , pStart );
+// 		ocTree.SetLimitedFacePerNode( 10 );
+// 		ocTree.Build();
 
 
 	}

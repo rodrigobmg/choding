@@ -24,9 +24,7 @@ TEST( GdsRenderFrameTest ,  GdsRenderFrameTest )
 		renderframe->AttachRenderObject( renderobject , 10);
 	}
 	
-	renderframe->DetachRenderObject( renderobject );
 	EXPECT_EQ( 80 , static_cast<int>( renderframe->GetRenderObjectCount() ) );
 	renderframe->Render( NULL );
-	EXPECT_EQ( 0 , static_cast<int>( renderframe->GetRenderObjectCount() ) );
 }
 

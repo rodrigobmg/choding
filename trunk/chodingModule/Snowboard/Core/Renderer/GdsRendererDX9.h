@@ -5,19 +5,6 @@
 #include "../Camera/GdsCameraManagerDX9.h"
 #include "GdsRenderFrame.h"
 
-struct GDSVERTEX
-{
-	enum _FVF { FVF=(D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1) };
-	D3DXVECTOR3		p;
-	D3DXVECTOR3		n;
-	D3DXVECTOR2		t;
-};
-
-struct GDSINDEX
-{
-	WORD _0 , _1, _2;
-};
-
 class GdsRendererDX9 : public GdsRendererBase
 {
 
