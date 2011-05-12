@@ -16,6 +16,7 @@ m_vScale( 1.0f, 1.0f, 1.0f)
 , m_bShowBox( false )
 , m_bShowAxis( false )
 , m_bShowOctreenodeBox( false )
+, m_bCull( false )
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
@@ -146,7 +147,7 @@ void GdsNode::drawBoxLine( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos )
 
 	ID3DXLine* Line;
 	D3DXCreateLine( RENDERER.GetDevice() , &Line );
-	Line->SetWidth( 1 );
+	Line->SetWidth( 10 );
 	Line->SetAntialias( true );
 	Line->Begin();
 	Line->DrawTransform( lineLBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));

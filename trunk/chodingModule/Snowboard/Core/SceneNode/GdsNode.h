@@ -59,7 +59,6 @@ public:
 	void			SetLimitedFacePerNode( int iCount ){ m_iLimitedCountOfFacePerNode = iCount; }
 	int				GetTotalOctreenode(){ return m_iCountOfOctreeNode; }
 
-	void			SetOctreeNOdeShowBox( bool flag ){ m_bShowBox = flag; }
 private:
 	int				m_iCountOfOctreeNode;
 	int				m_iLimitedCountOfFacePerNode;      // 노드당 최소 평면 수
@@ -119,6 +118,10 @@ public:
 //  		return shared_from_this();
 //  	}
 
+	void					SetDrawAxis( bool bShow ){ m_bShowAxis = bShow; }
+	void					SetDrawBoxLine( bool bShow ){ m_bShowBox = bShow; }
+	void					SetDrawOctreeNodeBoxLine( bool bShow ){ m_bShowOctreenodeBox = bShow; }
+	
 	void					SetBillboard( bool bflag ){ m_bBillboard = bflag; }
 
 	void					SetParentName( tstring& strParentName ){ m_strParentName = strParentName; }
