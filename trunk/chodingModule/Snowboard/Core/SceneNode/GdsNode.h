@@ -45,6 +45,7 @@ class GdsNode : public GdsObject //, public boost::enable_shared_from_this< GdsN
 
 	void			build( Node* node );
 	int				genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount );
+	
 public:	
 
 	void			CreateOctree();
@@ -58,19 +59,15 @@ public:
 	void			SetLimitedFacePerNode( int iCount ){ m_iLimitedCountOfFacePerNode = iCount; }
 	int				GetTotalOctreenode(){ return m_iCountOfOctreeNode; }
 
+	void			SetOctreeNOdeShowBox( bool flag ){ m_bShowBox = flag; }
 private:
 	int				m_iCountOfOctreeNode;
 	int				m_iLimitedCountOfFacePerNode;      // 노드당 최소 평면 수
 	GDSVERTEX*		m_pVert;							// 정점 배열
-
+	bool			m_bShowBox;
+	bool			m_bShowOctreenodeBox;
+	bool			m_bShowAxis;
 	Node*			m_pOctreeRootNode;	
-
-public:
-	enum CULL_TYPE{
-		CULL_ON = 0,
-		CULL_OFF,
-		CULL_OFF_ALL_CHILD,
-	};
 
 private:
 	
@@ -100,7 +97,10 @@ private:
 	RENDER_OBJECT_CONTAINER					m_list_RenderObject;
 		
 	bool									m_bBillboard;
-	CULL_TYPE								m_eCull;
+	bool									m_bCull;
+
+	void									drawBoxLine( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos );
+	void									drawAxis();
 
 protected:			
 
@@ -126,8 +126,8 @@ public:
 
 	GdsNodePtr				GetObjectbyName( tstring& strname );
  	
-	void					SetCullType( CULL_TYPE eCull ){ m_eCull = eCull; }
-	CULL_TYPE				GetCullType(){ return m_eCull; }
+	void					SetCull( bool bCull ){ m_bCull = bCull; }
+	bool					GetCull(){ return m_bCull; }
 
 
 	D3DXVECTOR3&			GetTranslate(){ return m_vTranslate; }
@@ -139,16 +139,25 @@ public:
 	void					SetRotate( const D3DXQUATERNION& qRot ){ m_qRotate = qRot; }
 
 	const	D3DXVECTOR3&	GetScale() const { return m_vScale; }
-	void					SetScale( float fScale );
-	void					SetScale( float fScaleX, float fScaleY, float fScaleZ);
+	void					SetScale( float fScale )
+							{
+								ASSERT( fScale >= 0.0f );
+								float f = fabs(fScale);
+								m_vScale = D3DXVECTOR3( f, f, f);
+							}
+	void					SetScale( float fScaleX, float fScaleY, float fScaleZ)
+							{
+								ASSERT( fScaleX >= 0.0f); ASSERT( fScaleY >= 0.0f); ASSERT( fScaleZ >= 0.0f);
+								float fX = fabs(fScaleX); float fY = fabs(fScaleY); float fZ = fabs(fScaleZ);
+								m_vScale = D3DXVECTOR3( fX, fY, fZ);
+							}
 
-	const	D3DXVECTOR3&	GetWorldTranslate() const;
-	const	D3DXQUATERNION& GetWorldRotate() const;
+	const	D3DXVECTOR3&	GetWorldTranslate() const{ return m_vWorldTranslate; }
+	const	D3DXQUATERNION& GetWorldRotate() const{	return m_qWorldRotate; }
+	const	D3DXMATRIX&	GetLocalMatrix() const{	return m_matLocal; }
+	const	D3DXMATRIX&	GetWorldMatrix() const{	return m_matWorld; }
 
-	const	D3DXMATRIX&	GetLocalMatrix() const;
-	const	D3DXMATRIX&	GetWorldMatrix() const;
-
-	void					SetLocalMatrix( const D3DXMATRIX& matLocal );
+	void					SetLocalMatrix( const D3DXMATRIX& matLocal ){m_matLocal = matLocal;}
 	void					SetLocalFromWorldTransform( const D3DXMATRIX& matWorld );
 
  	GdsNode*				GetParent();

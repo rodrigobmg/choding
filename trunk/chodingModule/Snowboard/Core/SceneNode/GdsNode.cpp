@@ -13,6 +13,9 @@ m_vScale( 1.0f, 1.0f, 1.0f)
 , m_bUseOctree( false )
 , m_pOctreeRootNode( NULL )
 , m_iLimitedCountOfFacePerNode( 300 )
+, m_bShowBox( false )
+, m_bShowAxis( false )
+, m_bShowOctreenodeBox( false )
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
@@ -23,7 +26,6 @@ m_vScale( 1.0f, 1.0f, 1.0f)
 	D3DXMatrixIdentity( &m_matLocal );
 	D3DXQuaternionIdentity(&m_qWorldRotate);
 	D3DXQuaternionIdentity(&m_qRotate);
-	m_eCull = CULL_OFF;	
 }
 
 GdsNode::~GdsNode()
@@ -50,7 +52,7 @@ void GdsNode::GenOctreeFaceIndex()
 		LPDWORD pIB;
 		GdsRenderObjectPtr rendertoken = it->first;
 		LPDIRECT3DINDEXBUFFER9 pI = rendertoken->GetIndexBuffer();
-		if( ( pI->Lock( 0 , rendertoken->GetIndexMaxCount() * sizeof( GDSINDEX ) , (void**)&pIB , 0 ) ) == false )
+		if( ( pI->Lock( 0 , 0 , (void**)&pIB , 0 ) ) == false )
 		{
 			int iMaxCountIndex = genTriIndex( m_pOctreeRootNode , pIB , 0 );
 			rendertoken->SetIndexMaxCount( iMaxCountIndex );
@@ -59,6 +61,105 @@ void GdsNode::GenOctreeFaceIndex()
 	}
 }
 
+void GdsNode::drawAxis()
+{
+	if ( RENDERER.GetDevice() == NULL )
+		return;
+
+	D3DXMATRIXA16 matWorld;
+	D3DXMATRIXA16 matView;
+	D3DXMATRIXA16 matProj;
+	RENDERER.GetDevice()->GetTransform( D3DTS_WORLD , &matWorld );
+	RENDERER.GetDevice()->GetTransform( D3DTS_VIEW  , &matView );
+	RENDERER.GetDevice()->GetTransform( D3DTS_PROJECTION , &matProj );
+	D3DXMATRIXA16 mat = matWorld*matView*matProj;
+
+	D3DXVECTOR3 lineLBN[2];
+	lineLBN[0].x = 0.0f; lineLBN[0].y = 0.0f; lineLBN[0].z = 0.0f;
+	lineLBN[1].x = 10.0f; lineLBN[1].y = 0.0f; lineLBN[1].z = 0.0f;
+
+	D3DXVECTOR3 lineLTN[2];
+	lineLTN[0].x = 0.0f; lineLTN[0].y = 0.0f; lineLTN[0].z = 0.0f;
+	lineLTN[1].x = 0.0f; lineLTN[1].y = 10.0f; lineLTN[1].z = 0.0f;
+
+	D3DXVECTOR3 lineLBF[2];
+	lineLBF[0].x = 0.0f; lineLBF[0].y = 0.0f; lineLBF[0].z = 0.0f;
+	lineLBF[1].x = 0.0f; lineLBF[1].y = 0.0f; lineLBF[1].z = 10.0f;
+
+
+	ID3DXLine* Line;
+	D3DXCreateLine( RENDERER.GetDevice() , &Line );
+	Line->SetWidth( 1 );
+	Line->SetAntialias( true );
+	Line->Begin();
+	Line->DrawTransform( lineLBN , 2, &mat, D3DXCOLOR( 1.0f , 0.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineLTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineLBF , 2, &mat, D3DXCOLOR( 0.0f , 0.0f , 1.0f , 1.0f ));
+	Line->End();
+	Line->Release();
+}
+
+void GdsNode::drawBoxLine( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos )
+{
+	if ( RENDERER.GetDevice() == NULL )
+		return;
+
+	D3DXMATRIXA16 matWorld;
+	D3DXMATRIXA16 matView;
+	D3DXMATRIXA16 matProj;
+	RENDERER.GetDevice()->GetTransform( D3DTS_WORLD , &matWorld );
+	RENDERER.GetDevice()->GetTransform( D3DTS_VIEW  , &matView );
+	RENDERER.GetDevice()->GetTransform( D3DTS_PROJECTION , &matProj );
+	D3DXMATRIXA16 mat = matWorld*matView*matProj;
+
+	D3DXVECTOR3 lineLBN[2];
+	lineLBN[0] = minPos;
+	lineLBN[1].x = minPos.x; lineLBN[1].y = maxPos.y; lineLBN[1].z = minPos.z;
+
+	D3DXVECTOR3 lineLTN[2];
+	lineLTN[0] = lineLBN[1];
+	lineLTN[1].x = minPos.x; lineLTN[1].y = maxPos.y; lineLTN[1].z = maxPos.z;
+
+	D3DXVECTOR3 lineLBF[2];
+	lineLBF[0] = lineLTN[1];
+	lineLBF[1].x = minPos.x; lineLBF[1].y = minPos.y; lineLBF[1].z = maxPos.z;
+
+	D3DXVECTOR3 lineLTF[2];
+	lineLTF[0] = lineLBF[1];
+	lineLTF[1] = minPos;
+
+	D3DXVECTOR3 lineRBN[2];
+	lineRBN[0].x = maxPos.x; lineRBN[0].y = minPos.y; lineRBN[0].z = minPos.z;
+	lineRBN[1].x = maxPos.x; lineRBN[1].y = maxPos.y; lineRBN[1].z = minPos.z;
+
+	D3DXVECTOR3 lineRTN[2];
+	lineRTN[0] = lineRBN[1];
+	lineRTN[1].x = maxPos.x; lineRTN[1].y = maxPos.y; lineRTN[1].z = maxPos.z;
+
+	D3DXVECTOR3 lineRBF[2];
+	lineRBF[0] = lineRTN[1];
+	lineRBF[1].x = maxPos.x; lineRBF[1].y = minPos.y; lineRBF[1].z = maxPos.z;
+
+	D3DXVECTOR3 lineRTF[2];
+	lineRTF[0] = lineRBF[1];
+	lineRTF[1] = lineRBN[0];
+
+	ID3DXLine* Line;
+	D3DXCreateLine( RENDERER.GetDevice() , &Line );
+	Line->SetWidth( 1 );
+	Line->SetAntialias( true );
+	Line->Begin();
+	Line->DrawTransform( lineLBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineLTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineLBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineLTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineRBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineRTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineRBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineRTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->End();
+	Line->Release();	
+}
 
 int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
 {
@@ -77,6 +178,9 @@ int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
 			iCurIndexCount++;
 		}		
 	}
+
+	if ( m_bShowOctreenodeBox )
+		drawBoxLine( node->m_minPos , node->m_maxPos );
 
 	if(node->m_pChild[0]) iCurIndexCount = genTriIndex( node->m_pChild[0] , pIB , iCurIndexCount );
 	if(node->m_pChild[1]) iCurIndexCount = genTriIndex( node->m_pChild[1] , pIB , iCurIndexCount );
@@ -389,52 +493,6 @@ void GdsNode::build( Node* node )
 }
 
 
-void GdsNode::SetScale( float fScale )
-{
-	assert( fScale >= 0.0f );
-	float f = fabs(fScale);
-	m_vScale = D3DXVECTOR3( f, f, f);
-}
-
-void GdsNode::SetScale(float fScaleX, float fScaleY, float fScaleZ)
-{
-	assert( fScaleX >= 0.0f);
-	assert( fScaleY >= 0.0f);
-	assert( fScaleZ >= 0.0f);
-
-	float fX = fabs(fScaleX);
-	float fY = fabs(fScaleY);
-	float fZ = fabs(fScaleZ);
-
-	m_vScale = D3DXVECTOR3( fX, fY, fZ);
-}
-
-const D3DXVECTOR3& GdsNode::GetWorldTranslate() const
-{
-	return m_vWorldTranslate;
-}
-
-const D3DXQUATERNION& GdsNode::GetWorldRotate() const
-{
-	return m_qWorldRotate;
-}
-
-const D3DXMATRIX& GdsNode::GetLocalMatrix() const
-{
-	return m_matLocal;
-}
-
-const D3DXMATRIX& GdsNode::GetWorldMatrix() const
-{
-	return m_matWorld;
-}
-
-void GdsNode::SetLocalMatrix( const D3DXMATRIX& matLocal )
-{
-	m_matLocal = matLocal;
-}
-
-
 void GdsNode::SetLocalFromWorldTransform( const D3DXMATRIX& matWorld )
 {
 	if(m_pParentNode)
@@ -548,6 +606,9 @@ HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 
 HRESULT GdsNode::Update( float fElapsedtime )
 {	
+	if ( m_bCull )
+		return TRUE;
+
 	D3DXMATRIX matTrans, matScale, matRot;
 	D3DXMatrixIdentity( &matTrans );
 	D3DXMatrixIdentity( &matScale );
@@ -565,7 +626,6 @@ HRESULT GdsNode::Update( float fElapsedtime )
 		parTM = GetParent()->GetWorldMatrix();
 		//m_matWorld = m_matLocal * m_matAni * m_pParent->GetWorldMatrix();
 		m_matWorld = m_matLocal * parTM;
-
 	}
 	else
 	{

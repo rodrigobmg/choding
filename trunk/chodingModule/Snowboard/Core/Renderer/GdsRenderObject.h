@@ -25,8 +25,6 @@ class GdsRenderObject : public GdsObject
 	int						m_iStartIndex;
 	int						m_iEndIndex;
 
-	bool					m_bCull;
-
 public:
 
 	GdsRenderObject();
@@ -60,14 +58,6 @@ public:
 	int						GetIndexMaxCount(){ return m_Index_Maxcount; }
 	void					SetStartIndex( int index ){ m_iStartIndex = index; }
 	void					SetEndIndex( int index ){ m_iEndIndex = index; }
-
-	void					SetCull( bool flag ){ m_bCull = flag; }
-	bool					GetCull(){ return m_bCull; }
-	// 컬링은 오브젝트를 렌더를 못하게 하기때문에 락커 용으로 쓸수 있다.
-	void					SetLock( bool flag ){ m_bCull = flag; }
-	bool					GetLock(){ return m_bCull; }
-
-protected:		
 
 };
 

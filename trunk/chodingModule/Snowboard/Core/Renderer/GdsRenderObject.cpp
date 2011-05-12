@@ -14,7 +14,6 @@ GdsRenderObject::GdsRenderObject()
 	D3DXMatrixIdentity( &m_TM );
 	m_vb = NULL;
 	m_ib = NULL;
-	m_bCull = false;
 }
 
 GdsRenderObject::~GdsRenderObject()
@@ -25,7 +24,7 @@ GdsRenderObject::~GdsRenderObject()
 
 void GdsRenderObject::vRender( LPDIRECT3DDEVICE9 device )
 {
-	if ( m_bCull || !device )
+	if ( !device )
 		return;
 
 	device->SetTransform( D3DTS_WORLD , &m_TM );
