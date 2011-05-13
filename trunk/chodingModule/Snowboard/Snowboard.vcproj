@@ -354,6 +354,34 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="InputSystem"
+				>
+				<File
+					RelativePath=".\Core\InputSystem\GdsInputSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\InputSystem\GdsInputSystem.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\InputSystem\GdsKeyboard.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\InputSystem\GdsKeyboard.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\InputSystem\GdsMouse.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\InputSystem\GdsMouse.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="System"

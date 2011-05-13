@@ -10,6 +10,7 @@
 #include "../System/Time/GdsSystemTime.h"
 #include "../System/FrameMemory/GdsFrameMemory.h"
 #include "Resource/Type/GdsResASE.h"
+#include "InputSystem/GdsInputSystem.h"
 
 CSnowboard::CSnowboard()
 {
@@ -57,8 +58,7 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 	renderstate->SetRenderState( D3DRS_ZENABLE, TRUE );
 	renderstate->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
 	renderstate->SetRenderState( D3DRS_LIGHTING, FALSE );
-	renderstate->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
-
+	
 	RENDERER.GetRenderFrame()->AddRenderStateGroup( renderstate , 0 );
 
 	GDS::SetMaxFrameRate( 0 );
@@ -109,27 +109,7 @@ void CSnowboard::TestFunc()
 
 	RESMGR.CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;dds;tga;jpg" , true ) );
 
-	//GdsResASEPtr resASE	= boost::shared_dynamic_cast< GdsResASE >( RESMGR.Get( L"woman.ase" ) );
-
-	//GdsNodePtr node = resASE->GetNode();
-//	GdsNodePtr node = GdsNodePtr( new GdsNode );
-	//node->SetName( L"Child" );
-	//RENDERER.GetRootNode()->AttachChild( node );
-
-	//node->SetTranslate( 11.0 , 0, 0  );
-
 	RENDERER.GetRootNode()->SetName( L"ROOT" );
-
-	{
-// 		GdsNodePtr mesh = GdsNodePtr( new GdsNode );		
-// 		
-// 		mesh->SetDrawAxis( true );
-// 
-// 		mesh->SetTranslate( 10 , 2 , 0 );
-
-	//	RENDERER.GetRootNode()->AttachChild( node );
-		
-	}
 
 	GdsNodePtr mapNode = GdsNodePtr( new GdsNode );
 	mapNode->SetName( L"height Map" );
@@ -138,8 +118,9 @@ void CSnowboard::TestFunc()
 
 }
 
-HRESULT CSnowboard::MsgProc()
+HRESULT CSnowboard::MsgProc(  HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
 {
+	INPUTSYSTEM.Record( msg , wParam , lParam );
 	return true;
 }
 

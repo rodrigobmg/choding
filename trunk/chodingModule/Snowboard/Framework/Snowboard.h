@@ -17,7 +17,7 @@ public:
 	void		DestroyModule();
 	
 	void		OnIdle();
-	HRESULT		MsgProc();
+	HRESULT		MsgProc(  HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam  );
 
 	bool		InitRenderer( HWND hWnd );
 	bool		InitResource( LPDIRECT3DDEVICE9 device );

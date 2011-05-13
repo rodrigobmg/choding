@@ -1,5 +1,6 @@
 #include "GdsRendererDX9.h"
 #include "../Camera/GdsCameraManagerDX9.h"
+#include "InputSystem/GdsInputSystem.h"
 
 GdsRendererDX9::GdsRendererDX9()
 {
@@ -60,20 +61,31 @@ HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 
 void GdsRendererDX9::vUpdate( float fAccumTime )
 {	
-	if ( m_RootNode )
-		m_RootNode->Update( fAccumTime );			
-	
-	if ( GetCamera() )
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_I ) )
 	{
-		GetCamera()->Update(fAccumTime);
-		m_pd3dDevice->SetTransform( D3DTS_VIEW , &(GetCamera()->GetViewMat()));
-		m_pd3dDevice->SetTransform( D3DTS_PROJECTION, &(GetCamera()->GetProjMat()) );
+		DWORD iflag;
+		m_pd3dDevice->GetRenderState( D3DRS_FILLMODE , &iflag );
+		if ( iflag == D3DFILL_WIREFRAME )
+			m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
+		else
+			m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
 	}
 
 	m_pd3dDevice->Clear( 0 , NULL , D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER , D3DCOLOR_XRGB( 128, 128, 128 ) , 1.f , 0 );
 
 	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
 	{	
+		if ( CAMMGR.GetCurCam() )
+		{
+			CAMMGR.Update( fAccumTime );
+			m_pd3dDevice->SetTransform( D3DTS_VIEW , &(CAMMGR.GetCurCam()->GetViewMat()));
+			m_pd3dDevice->SetTransform( D3DTS_PROJECTION, &(CAMMGR.GetCurCam()->GetProjMat()) );
+		}
+
+		if ( m_RootNode )
+			m_RootNode->Update( fAccumTime );					
+
 		m_RenderFrameList->Render( m_pd3dDevice );
  		m_pd3dDevice->EndScene();
 	}
@@ -98,6 +110,4 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 
  	CAMMGR.Attach( camnode );
   	CAMMGR.SetCurCam( 0 );
-
-	SetCamera( CAMMGR.GetCurCam() );
 }

@@ -33,7 +33,7 @@ LRESULT WINAPI MsgProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
 		PostQuitMessage(0);
 		return 0;
 	default:
-		g_pSnowboard->MsgProc();
+		g_pSnowboard->MsgProc( hWnd , msg , wParam , lParam );
 	}
 
 	return DefWindowProc( hWnd , msg , wParam , lParam );

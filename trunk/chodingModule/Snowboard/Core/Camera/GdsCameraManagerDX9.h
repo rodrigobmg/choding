@@ -32,6 +32,8 @@ public:
 	void				SetCurCam( int32_t index ){ m_iCurCamIndex = index; }
 	GdsCameraPtr		GetCurCam(){ return m_camaraContainer.at( m_iCurCamIndex); }
 
+	void				Update( float fElapsedtime );
+
 };
 
 typedef boost::shared_ptr< GdsCameraManagerDX9 > GdsCameraManagerDX9Ptr;

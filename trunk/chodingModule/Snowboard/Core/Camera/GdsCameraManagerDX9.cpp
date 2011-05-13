@@ -1,4 +1,5 @@
 #include "GdsCameraManagerDX9.h"
+#include "InputSystem\GdsInputSystem.h"
 
 GdsCameraManagerDX9::GdsCameraManagerDX9( void )
 {
@@ -46,4 +47,33 @@ GdsCameraPtr GdsCameraManagerDX9::GetCamNode( int iCamIndex )
 		return GdsCameraPtr( (GdsCamera*)NULL );
 
 	return m_camaraContainer[iCamIndex];
+}
+
+void GdsCameraManagerDX9::Update( float fElapsedtime )
+{
+	if ( GetCurCam() == NULL )
+		return;
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_W ) )
+	{
+
+	}
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_S ) )
+	{
+
+	}
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_A ) )
+	{
+
+	}
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_D ) )
+	{
+
+	}
+
+	GetCurCam()->Update(fElapsedtime);
+
 }

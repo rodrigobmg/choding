@@ -262,6 +262,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="InputSystem"
+				>
+				<File
+					RelativePath=".\testUnit\GdsInputSystem_test.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="리소스 파일"
