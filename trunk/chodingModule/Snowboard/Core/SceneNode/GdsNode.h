@@ -63,9 +63,6 @@ private:
 	int				m_iCountOfOctreeNode;
 	int				m_iLimitedCountOfFacePerNode;      // 노드당 최소 평면 수
 	GDSVERTEX*		m_pVert;							// 정점 배열
-	bool			m_bShowBox;
-	bool			m_bShowOctreenodeBox;
-	bool			m_bShowAxis;
 	Node*			m_pOctreeRootNode;	
 
 private:
@@ -98,9 +95,6 @@ private:
 	bool									m_bBillboard;
 	bool									m_bCull;
 
-	void									drawBoxLine( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos );
-	void									drawAxis();
-
 protected:			
 
 	virtual	void							vUpdate( float fElapsedtime );
@@ -118,9 +112,8 @@ public:
 //  		return shared_from_this();
 //  	}
 
-	void					SetDrawAxis( bool bShow ){ m_bShowAxis = bShow; }
-	void					SetDrawBoxLine( bool bShow ){ m_bShowBox = bShow; }
-	void					SetDrawOctreeNodeBoxLine( bool bShow ){ m_bShowOctreenodeBox = bShow; }
+	void					SetDrawAxis( bool bShow );
+	void					SetDrawBox( bool bShow );
 	
 	void					SetBillboard( bool bflag ){ m_bBillboard = bflag; }
 

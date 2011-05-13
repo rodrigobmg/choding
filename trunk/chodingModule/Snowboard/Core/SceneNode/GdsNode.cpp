@@ -13,9 +13,6 @@ m_vScale( 1.0f, 1.0f, 1.0f)
 , m_bUseOctree( false )
 , m_pOctreeRootNode( NULL )
 , m_iLimitedCountOfFacePerNode( 300 )
-, m_bShowBox( false )
-, m_bShowAxis( false )
-, m_bShowOctreenodeBox( false )
 , m_bCull( false )
 {
 	SetName( OBJECT_NODE );
@@ -53,113 +50,13 @@ void GdsNode::GenOctreeFaceIndex()
 		LPDWORD pIB;
 		GdsRenderObjectPtr rendertoken = it->first;
 		LPDIRECT3DINDEXBUFFER9 pI = rendertoken->GetIndexBuffer();
-		if( ( pI->Lock( 0 , 0 , (void**)&pIB , 0 ) ) == false )
+		if( SUCCEEDED( pI->Lock( 0 , 0 , (void**)&pIB , 0 ) ) )
 		{
 			int iMaxCountIndex = genTriIndex( m_pOctreeRootNode , pIB , 0 );
 			rendertoken->SetIndexMaxCount( iMaxCountIndex );
 		}		
 		pI->Unlock();
 	}
-}
-
-void GdsNode::drawAxis()
-{
-	if ( RENDERER.GetDevice() == NULL )
-		return;
-
-	D3DXMATRIXA16 matWorld;
-	D3DXMATRIXA16 matView;
-	D3DXMATRIXA16 matProj;
-	RENDERER.GetDevice()->GetTransform( D3DTS_WORLD , &matWorld );
-	RENDERER.GetDevice()->GetTransform( D3DTS_VIEW  , &matView );
-	RENDERER.GetDevice()->GetTransform( D3DTS_PROJECTION , &matProj );
-	D3DXMATRIXA16 mat = matWorld*matView*matProj;
-
-	D3DXVECTOR3 lineLBN[2];
-	lineLBN[0].x = 0.0f; lineLBN[0].y = 0.0f; lineLBN[0].z = 0.0f;
-	lineLBN[1].x = 10.0f; lineLBN[1].y = 0.0f; lineLBN[1].z = 0.0f;
-
-	D3DXVECTOR3 lineLTN[2];
-	lineLTN[0].x = 0.0f; lineLTN[0].y = 0.0f; lineLTN[0].z = 0.0f;
-	lineLTN[1].x = 0.0f; lineLTN[1].y = 10.0f; lineLTN[1].z = 0.0f;
-
-	D3DXVECTOR3 lineLBF[2];
-	lineLBF[0].x = 0.0f; lineLBF[0].y = 0.0f; lineLBF[0].z = 0.0f;
-	lineLBF[1].x = 0.0f; lineLBF[1].y = 0.0f; lineLBF[1].z = 10.0f;
-
-
-	ID3DXLine* Line;
-	D3DXCreateLine( RENDERER.GetDevice() , &Line );
-	Line->SetWidth( 1 );
-	Line->SetAntialias( true );
-	Line->Begin();
-	Line->DrawTransform( lineLBN , 2, &mat, D3DXCOLOR( 1.0f , 0.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineLTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineLBF , 2, &mat, D3DXCOLOR( 0.0f , 0.0f , 1.0f , 1.0f ));
-	Line->End();
-	Line->Release();
-}
-
-void GdsNode::drawBoxLine( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos )
-{
-	if ( RENDERER.GetDevice() == NULL )
-		return;
-
-	D3DXMATRIXA16 matWorld;
-	D3DXMATRIXA16 matView;
-	D3DXMATRIXA16 matProj;
-	RENDERER.GetDevice()->GetTransform( D3DTS_WORLD , &matWorld );
-	RENDERER.GetDevice()->GetTransform( D3DTS_VIEW  , &matView );
-	RENDERER.GetDevice()->GetTransform( D3DTS_PROJECTION , &matProj );
-	D3DXMATRIXA16 mat = matWorld*matView*matProj;
-
-	D3DXVECTOR3 lineLBN[2];
-	lineLBN[0] = minPos;
-	lineLBN[1].x = minPos.x; lineLBN[1].y = maxPos.y; lineLBN[1].z = minPos.z;
-
-	D3DXVECTOR3 lineLTN[2];
-	lineLTN[0] = lineLBN[1];
-	lineLTN[1].x = minPos.x; lineLTN[1].y = maxPos.y; lineLTN[1].z = maxPos.z;
-
-	D3DXVECTOR3 lineLBF[2];
-	lineLBF[0] = lineLTN[1];
-	lineLBF[1].x = minPos.x; lineLBF[1].y = minPos.y; lineLBF[1].z = maxPos.z;
-
-	D3DXVECTOR3 lineLTF[2];
-	lineLTF[0] = lineLBF[1];
-	lineLTF[1] = minPos;
-
-	D3DXVECTOR3 lineRBN[2];
-	lineRBN[0].x = maxPos.x; lineRBN[0].y = minPos.y; lineRBN[0].z = minPos.z;
-	lineRBN[1].x = maxPos.x; lineRBN[1].y = maxPos.y; lineRBN[1].z = minPos.z;
-
-	D3DXVECTOR3 lineRTN[2];
-	lineRTN[0] = lineRBN[1];
-	lineRTN[1].x = maxPos.x; lineRTN[1].y = maxPos.y; lineRTN[1].z = maxPos.z;
-
-	D3DXVECTOR3 lineRBF[2];
-	lineRBF[0] = lineRTN[1];
-	lineRBF[1].x = maxPos.x; lineRBF[1].y = minPos.y; lineRBF[1].z = maxPos.z;
-
-	D3DXVECTOR3 lineRTF[2];
-	lineRTF[0] = lineRBF[1];
-	lineRTF[1] = lineRBN[0];
-
-	ID3DXLine* Line;
-	D3DXCreateLine( RENDERER.GetDevice() , &Line );
-	Line->SetWidth( 10 );
-	Line->SetAntialias( true );
-	Line->Begin();
-	Line->DrawTransform( lineLBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineLTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineLBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineLTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineRBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineRTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineRBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineRTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->End();
-	Line->Release();	
 }
 
 int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
@@ -178,10 +75,7 @@ int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
 			*p++;
 			iCurIndexCount++;
 		}		
-	}
-
-	if ( m_bShowOctreenodeBox )
-		drawBoxLine( node->m_minPos , node->m_maxPos );
+	}	
 
 	if(node->m_pChild[0]) iCurIndexCount = genTriIndex( node->m_pChild[0] , pIB , iCurIndexCount );
 	if(node->m_pChild[1]) iCurIndexCount = genTriIndex( node->m_pChild[1] , pIB , iCurIndexCount );
@@ -203,7 +97,7 @@ void GdsNode::CreateOctree()
 		VOID* pVB;
 		GdsRenderObjectPtr rendertoken = it->first;
 		LPDIRECT3DVERTEXBUFFER9 vb = rendertoken->GetVertexBuffer();
-		if (  ( vb->Lock( 0 , rendertoken->GetVertexMaxCount() * sizeof( GDSVERTEX ) , (void**)&pVB , 0 ) ) == false )
+		if (  SUCCEEDED( vb->Lock( 0 , rendertoken->GetVertexMaxCount() * sizeof( GDSVERTEX ) , (void**)&pVB , 0 ) ) )
 		{
 			D3DXVECTOR3 minPos( 0,0,0 );
 			D3DXVECTOR3 maxPos( 0,0,0 );
@@ -502,7 +396,6 @@ void GdsNode::SetLocalFromWorldTransform( const D3DXMATRIX& matWorld )
 		D3DXMatrixInverse( &matParentWorldInv, NULL, &m_pParentNode->GetWorldMatrix());
 		D3DXMATRIX matLocal = matParentWorldInv * matWorld;
 		SetLocalMatrix( matLocal );
-
 	}
 	else
 	{
@@ -699,4 +592,22 @@ void GdsNode::AddRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderSta
 	m_list_RenderObject.push_back( rendertoken );	
 }
 
+void GdsNode::SetDrawAxis( bool bShow )
+{
+	RENDER_OBJECT_CONTAINER::iterator it = m_list_RenderObject.begin();
+	RENDER_OBJECT_CONTAINER::iterator it_end = m_list_RenderObject.end();
+	for ( ; it != it_end ; ++it )
+	{
+		it->first->SetDrawAxis( true );
+	}
+}
 
+void GdsNode::SetDrawBox( bool bShow )
+{
+	RENDER_OBJECT_CONTAINER::iterator it = m_list_RenderObject.begin();
+	RENDER_OBJECT_CONTAINER::iterator it_end = m_list_RenderObject.end();
+	for ( ; it != it_end ; ++it )
+	{
+		it->first->SetDrawBox( true );
+	}
+}

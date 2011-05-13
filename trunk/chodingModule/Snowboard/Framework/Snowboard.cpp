@@ -246,4 +246,6 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 
 	pNode->CreateOctree();
 //	pNode->SetDrawOctreeNodeBoxLine( true );
+	pNode->SetDrawAxis( true );
+	pNode->SetDrawBox( true );
 }
