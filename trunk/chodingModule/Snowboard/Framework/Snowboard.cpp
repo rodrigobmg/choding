@@ -149,41 +149,55 @@ HRESULT CSnowboard::MsgProc(  HWND hWnd , UINT msg , WPARAM wParam , LPARAM lPar
 		CAMMGR.MoveDownEye( 2.0f );
 
 	
-// 	if ( m_bMouseDrag )
-// 	{
-// 		int x ,y ,z;
-// 		INPUTSYSTEM.GetMousePosDelta( x, y, z );
-// 		LOG_WARNING_F( "Mouse DeltaPos %d %d %d\n" , x ,y,z );
-// 		CAMMGR.MoveLeftLookat( 2.0f );
-// 	}
-// 
-// 	if ( INPUTSYSTEM.GetMouseIsDown( VM_LBTN ) )
-// 	{
-// 		m_bMouseDrag = true;
-// 	}	
-// 
-// 	if ( INPUTSYSTEM.GetMouseIsUp( VM_LBTN ) )
-// 	{
-// 		m_bMouseDrag = false;
-// 	}
+ 	if ( m_bMouseDrag )
+ 	{
+ 		int x ,y ,z;
+ 		INPUTSYSTEM.GetMousePosDelta( x, y, z );
+ 		LOG_WARNING_F( "Mouse DeltaPos %d %d %d\n" , x ,y,z );
+ 		//CAMMGR.MoveLeftLookat( 2.0f );
+		if ( x > 0 )
+			CAMMGR.MoveRightLookat( 1 );
+		else
+			CAMMGR.MoveLeftLookat( 1 );
+
+		if ( y > 0 )
+			CAMMGR.MoveDownLookat( 1 );
+		else
+			CAMMGR.MoveUpLookat( 1 );
+
+		if ( z > 0 )
+			CAMMGR.MoveForwardLookat( 1 );
+		else
+			CAMMGR.MoveBackLookat( 1 );
+ 	}
+ 
+ 	if ( INPUTSYSTEM.GetMouseIsDown( VM_LBTN ) )
+ 	{
+ 		m_bMouseDrag = true;
+ 	}	
+ 
+ 	if ( INPUTSYSTEM.GetMouseIsUp( VM_LBTN ) )
+ 	{
+ 		m_bMouseDrag = false;
+ 	}
 	
-// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_I ) )
-// 		CAMMGR.MoveForwardLookat( 2.0f );
-// 
-// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_J ) )
-// 		CAMMGR.MoveLeftLookat( 2.0f );
-// 
-// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_L ) )
-// 		CAMMGR.MoveRightLookat( 2.0f );
-// 
-// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_K ) )
-// 		CAMMGR.MoveBackLookat( 2.0f );
-// 
-// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_U ) )
-// 		CAMMGR.MoveUpLookat( 2.0f );
-// 
-// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_O ) )
-// 		CAMMGR.MoveDownLookat( 2.0f );
+ 	if ( INPUTSYSTEM.GetKeyIsDown( VK_I ) )
+ 		CAMMGR.MoveForwardLookat( 2.0f );
+ 
+ 	if ( INPUTSYSTEM.GetKeyIsDown( VK_J ) )
+ 		CAMMGR.MoveLeftLookat( 2.0f );
+ 
+ 	if ( INPUTSYSTEM.GetKeyIsDown( VK_L ) )
+ 		CAMMGR.MoveRightLookat( 2.0f );
+ 
+ 	if ( INPUTSYSTEM.GetKeyIsDown( VK_K ) )
+ 		CAMMGR.MoveBackLookat( 2.0f );
+ 
+ 	if ( INPUTSYSTEM.GetKeyIsDown( VK_U ) )
+ 		CAMMGR.MoveUpLookat( 2.0f );
+ 
+ 	if ( INPUTSYSTEM.GetKeyIsDown( VK_O ) )
+ 		CAMMGR.MoveDownLookat( 2.0f );
 
 	return true;
 }

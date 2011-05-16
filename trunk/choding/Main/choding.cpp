@@ -9,10 +9,6 @@ CSnowboard* g_pSnowboard = NULL;
 
 bool InitModule( HWND hWnd )
 {
-	//모듈 할당및 초기화
-	g_pSnowboard = new CSnowboard;
-	g_pSnowboard->DestroyModule();
-
 	if ( !g_pSnowboard->InitModule( hWnd ) )
 		return false;
 
@@ -61,6 +57,10 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 					L"Choding" ,NULL };
 
 	RegisterClassEx( &wc );
+
+	//모듈 할당및 초기화
+	g_pSnowboard = new CSnowboard;
+	g_pSnowboard->DestroyModule();
 
 	HWND hWnd = CreateWindow( L"Choding" , L"Choding" , WS_OVERLAPPEDWINDOW , 100 , 100,
 								800 , 600,
