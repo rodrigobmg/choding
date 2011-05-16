@@ -22,35 +22,49 @@ void GdsInputSystem::MappingEvent( int ikey , int ievent )
 
 void GdsInputSystem::Record( UINT msg , WPARAM wParam , LPARAM lParam )
 {
-	if ( msg == WM_KEYDOWN )
-	{
-		m_EventData.msg = msg;
-		m_EventData.wParam = wParam;
-		m_EventData.lParam = lParam;
-	}
-
 	if ( msg == WM_KEYUP )
 	{
-		m_EventData.msg = 0;
-		m_EventData.wParam = 0;
-		m_EventData.lParam = 0;
+		m_EventDataUp.msg = msg;
+		m_EventDataUp.wParam = wParam;
+		m_EventDataUp.lParam = lParam;
+	}
+
+	if ( msg == WM_KEYDOWN )
+	{
+		m_EventDataDown.msg = msg;
+		m_EventDataDown.wParam = wParam;
+		m_EventDataDown.lParam = lParam;
 	}
 	
 }
 
 bool GdsInputSystem::GetKeyIsUp( int ikey )
 {
-	return false;
+	bool ret = false;
+	if ( m_EventDataUp.msg == WM_KEYUP )
+	{
+		if ( m_EventDataUp.wParam == ikey )
+			ret = true;
+	}
+
+	clear( m_EventDataUp );
+	return ret;
 }
 
 bool GdsInputSystem::GetKeyIsDown( int ikey )
 {
-	if ( m_EventData.msg == WM_KEYDOWN )
+	bool ret = false;
+	if ( m_EventDataDown.msg == WM_KEYDOWN )
 	{
-		if ( m_EventData.wParam == ikey )
-			return true;
+		if ( m_EventDataDown.wParam == ikey )
+			ret = true;
 	}
 
+	clear( m_EventDataDown );
+	return ret;
+}
 
-	return false;
+void GdsInputSystem::clear( EVENT& token )
+{
+	token.msg = 0; token.wParam = 0; token.lParam = 0;
 }

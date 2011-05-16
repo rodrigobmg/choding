@@ -56,10 +56,14 @@ private:
 		LPARAM lParam;
 	};
 
-	EVENT				m_EventData;
+	EVENT				m_EventDataUp;
+	EVENT				m_EventDataDown;
+	EVENT				m_EventDataMouse;
 
 	typedef GdsLookupTable< int , int >	MAP_EVENT;
 	MAP_EVENT					m_mapEvent;
+
+	void			clear( EVENT& token );
 
 // 	GdsMouse		m_Mouse;
 // 	GdsKeyboard		m_Keyboard;
