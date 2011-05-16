@@ -2,11 +2,12 @@
 #include "../Camera/GdsCameraManagerDX9.h"
 #include "InputSystem/GdsInputSystem.h"
 
-GdsRendererDX9::GdsRendererDX9()
+GdsRendererDX9::GdsRendererDX9() :
+m_bWireMode( false ) ,
+m_pd3dDevice( NULL ) ,
+m_pD3D( NULL )
 {
 	SetName( OBJECT_RENDERERDX9 );
-	m_pd3dDevice	= NULL;
-	m_pD3D			= NULL;		
 }
 
 GdsRendererDX9::~GdsRendererDX9()
@@ -61,16 +62,10 @@ HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 
 void GdsRendererDX9::vUpdate( float fAccumTime )
 {	
-
-	if ( INPUTSYSTEM.GetKeyIsDown( VK_I ) )
-	{
-		DWORD iflag;
-		m_pd3dDevice->GetRenderState( D3DRS_FILLMODE , &iflag );
-		if ( iflag == D3DFILL_WIREFRAME )
-			m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
-		else
-			m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
-	}
+	if ( m_bWireMode )
+		m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
+	else
+		m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
 
 	m_pd3dDevice->Clear( 0 , NULL , D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER , D3DCOLOR_XRGB( 128, 128, 128 ) , 1.f , 0 );
 

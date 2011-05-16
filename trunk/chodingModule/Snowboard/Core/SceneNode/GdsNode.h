@@ -45,7 +45,7 @@ class GdsNode : public GdsObject //, public boost::enable_shared_from_this< GdsN
 
 	void			build( Node* node );
 	int				genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount );
-	
+	void			octreeDrawBox( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos );
 public:	
 
 	void			CreateOctree();
@@ -58,8 +58,11 @@ public:
 
 	void			SetLimitedFacePerNode( int iCount ){ m_iLimitedCountOfFacePerNode = iCount; }
 	int				GetTotalOctreenode(){ return m_iCountOfOctreeNode; }
+	
+	void			SetOctreeDrawBox( bool flag ){ m_bDrawOctreeBox = flag; }
 
 private:
+	bool			m_bDrawOctreeBox;
 	int				m_iCountOfOctreeNode;
 	int				m_iLimitedCountOfFacePerNode;      // 노드당 최소 평면 수
 	GDSVERTEX*		m_pVert;							// 정점 배열

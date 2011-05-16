@@ -120,7 +120,48 @@ void CSnowboard::TestFunc()
 
 HRESULT CSnowboard::MsgProc(  HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
 {
-	INPUTSYSTEM.Record( msg , wParam , lParam );
+	INPUTSYSTEM.Record( hWnd , msg , wParam , lParam );
+	
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_P ) )
+		RENDERER.ToggleWireMode();
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_W ) )
+		CAMMGR.MoveForwardEye( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_A ) )
+		CAMMGR.MoveLeftEye( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_D ) )
+		CAMMGR.MoveRightEye( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_S ) )
+		CAMMGR.MoveBackEye( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_Q ) )
+		CAMMGR.MoveUpEye( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_E ) )
+		CAMMGR.MoveDownEye( 2.0f );
+
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_I ) )
+		CAMMGR.MoveForwardLookat( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_J ) )
+		CAMMGR.MoveLeftLookat( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_L ) )
+		CAMMGR.MoveRightLookat( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_K ) )
+		CAMMGR.MoveBackLookat( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_U ) )
+		CAMMGR.MoveUpLookat( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_O ) )
+		CAMMGR.MoveDownLookat( 2.0f );
+
 	return true;
 }
 

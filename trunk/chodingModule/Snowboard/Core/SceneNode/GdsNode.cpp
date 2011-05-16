@@ -14,6 +14,7 @@ m_vScale( 1.0f, 1.0f, 1.0f)
 , m_pOctreeRootNode( NULL )
 , m_iLimitedCountOfFacePerNode( 300 )
 , m_bCull( false )
+, m_bDrawOctreeBox( false )
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
@@ -75,7 +76,12 @@ int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
 			*p++;
 			iCurIndexCount++;
 		}		
-	}	
+
+		if ( m_bDrawOctreeBox )
+		{
+			octreeDrawBox( node->m_minPos , node->m_maxPos );
+		}
+	}		
 
 	if(node->m_pChild[0]) iCurIndexCount = genTriIndex( node->m_pChild[0] , pIB , iCurIndexCount );
 	if(node->m_pChild[1]) iCurIndexCount = genTriIndex( node->m_pChild[1] , pIB , iCurIndexCount );
@@ -611,3 +617,84 @@ void GdsNode::SetDrawBox( bool bShow )
 		it->first->SetDrawBox( true );
 	}
 }
+
+void GdsNode::octreeDrawBox( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos )
+{
+	D3DXMATRIXA16 matWorld;
+	D3DXMATRIXA16 matView;
+	D3DXMATRIXA16 matProj;
+	RENDERER.GetDevice()->GetTransform( D3DTS_WORLD , &matWorld );
+	RENDERER.GetDevice()->GetTransform( D3DTS_VIEW  , &matView );
+	RENDERER.GetDevice()->GetTransform( D3DTS_PROJECTION , &matProj );
+	D3DXMATRIXA16 mat = matWorld*matView*matProj;
+
+	D3DXVECTOR3 lineLBN[2];
+	lineLBN[0] = minPos;
+	lineLBN[1].x = minPos.x; lineLBN[1].y = maxPos.y; lineLBN[1].z = minPos.z;
+
+	D3DXVECTOR3 lineLTN[2];
+	lineLTN[0] = lineLBN[1];
+	lineLTN[1].x = minPos.x; lineLTN[1].y = maxPos.y; lineLTN[1].z = maxPos.z;
+
+	D3DXVECTOR3 lineLBF[2];
+	lineLBF[0] = lineLTN[1];
+	lineLBF[1].x = minPos.x; lineLBF[1].y = minPos.y; lineLBF[1].z = maxPos.z;
+
+	D3DXVECTOR3 lineLTF[2];
+	lineLTF[0] = lineLBF[1];
+	lineLTF[1] = minPos;
+
+	D3DXVECTOR3 lineRBN[2];
+	lineRBN[0].x = maxPos.x; lineRBN[0].y = minPos.y; lineRBN[0].z = minPos.z;
+	lineRBN[1].x = maxPos.x; lineRBN[1].y = maxPos.y; lineRBN[1].z = minPos.z;
+
+	D3DXVECTOR3 lineRTN[2];
+	lineRTN[0] = lineRBN[1];
+	lineRTN[1].x = maxPos.x; lineRTN[1].y = maxPos.y; lineRTN[1].z = maxPos.z;
+
+	D3DXVECTOR3 lineRBF[2];
+	lineRBF[0] = lineRTN[1];
+	lineRBF[1].x = maxPos.x; lineRBF[1].y = minPos.y; lineRBF[1].z = maxPos.z;
+
+	D3DXVECTOR3 lineRTF[2];
+	lineRTF[0] = lineRBF[1];
+	lineRTF[1] = lineRBN[0];
+
+	D3DXVECTOR3 lineBN[2];
+	lineBN[0] = minPos;
+	lineBN[1].x = maxPos.x; lineBN[1].y = minPos.y; lineBN[1].z = minPos.z;
+
+	D3DXVECTOR3 lineTN[2];
+	lineTN[0].x = minPos.x; lineTN[0].y = maxPos.y; lineTN[0].z = minPos.z;
+	lineTN[1].x = maxPos.x; lineTN[1].y = maxPos.y; lineTN[1].z = minPos.z;
+
+	D3DXVECTOR3 lineBF[2];
+	lineBF[0].x = minPos.x; lineBF[0].y = minPos.y; lineBF[0].z = maxPos.z;
+	lineBF[1].x = maxPos.x; lineBF[1].y = minPos.y; lineBF[1].z = maxPos.z;
+
+	D3DXVECTOR3 lineTF[2];
+	lineBF[0].x = minPos.x; lineBF[0].y = maxPos.y; lineBF[0].z = maxPos.z;
+	lineBF[1] = maxPos;
+
+	ID3DXLine* Line;
+	D3DXCreateLine( RENDERER.GetDevice() , &Line );
+	Line->SetWidth( 1 );
+	Line->SetAntialias( true );
+	Line->Begin();
+	Line->DrawTransform( lineLBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineLTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineLBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineLTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineRBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineRTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineRBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineRTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	Line->DrawTransform( lineTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+
+	Line->End();
+	Line->Release();	
+}
+

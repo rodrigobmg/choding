@@ -27,7 +27,6 @@ void GdsRenderFrame::AttachRenderObject( GdsRenderObjectPtr pRenderObject , int 
 	}
 
  	RENDEROBEJCT renderobj( iRenderStateGroupID , pRenderObject );
-// 	m_RenderFrame.push_back( renderobj );
  	if ( m_RenderFrame.empty() )
  	{		
  		m_RenderFrame.push_back( renderobj );
@@ -47,7 +46,6 @@ void GdsRenderFrame::AttachRenderObject( GdsRenderObjectPtr pRenderObject , int 
  			RENDER_CONTAINER::iterator i = lower_bound( m_RenderFrame.begin() , m_RenderFrame.end() , iRenderStateGroupID , DataCompare() );
 			if ( i != m_RenderFrame.end() )
 			{
-				//size_t dis = std::distance( m_RenderFrame.begin() , i );
 				m_RenderFrame.insert( i , renderobj );
 			}
 			else
@@ -81,27 +79,6 @@ void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
 	}
 
 	m_RenderFrame.clear();
-
-// 	if ( !m_DelObjectList.empty() )
-// 	{
-// 		RENDEROBJECT_LIST::iterator delit = m_DelObjectList.begin();
-// 		for( ; delit != m_DelObjectList.end() ; ++delit )
-// 		{
-// 			RENDER_CONTAINER::iterator it = m_RenderFrame.begin();
-// 			for ( ; it != m_RenderFrame.end() ;  )
-// 			{
-// 				if ( it->second == *delit )
-// 				{
-// 					m_RenderFrame.erase( it++ );			
-// 				}
-// 				else
-// 				{
-// 					++it;
-// 				}
-// 			}
-// 		}
-// 		m_DelObjectList.clear();
-// 	}
 }
 
 void GdsRenderFrame::AddRenderStateGroup( GdsRenderStateGroupPtr renderstategroup , int iRenderStateGroupID )

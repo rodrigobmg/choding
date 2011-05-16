@@ -1,11 +1,11 @@
 #include "GdsCamera.h"
 #include "Renderer\GdsRendererDX9.h"
 
-GdsCamera::GdsCamera()
+GdsCamera::GdsCamera() :
+m_fDelta( 1.0f )
 {
 	SetName( OBJECT_NODE_CAMERA );
 	vClear();
-	m_bVisibleFrustum = false;
 }
 
 GdsCamera::~GdsCamera()
@@ -67,11 +67,6 @@ void GdsCamera::vUpdate( float fElapsedtime )
 	}
 
 	m_Frustum.UpdatePlane( matView * matProj );
-
-	if ( m_bVisibleFrustum )
-	{
-
-	}
 }
 
 void GdsCamera::SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR3& up )
@@ -79,9 +74,4 @@ void GdsCamera::SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR
 	vEyePt = eye;
 	vLookatPt = lookat;
 	vUpVec	= up;
-}
-
-void GdsCamera::SetVisibleFrustum( bool bflag )
-{
-	m_bVisibleFrustum = bflag;
 }

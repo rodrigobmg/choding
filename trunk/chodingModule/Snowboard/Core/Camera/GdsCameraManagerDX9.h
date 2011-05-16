@@ -32,6 +32,20 @@ public:
 	void				SetCurCam( int32_t index ){ m_iCurCamIndex = index; }
 	GdsCameraPtr		GetCurCam(){ return m_camaraContainer.at( m_iCurCamIndex); }
 
+	void				MoveForwardLookat( float delta );
+	void				MoveBackLookat( float delta );
+	void				MoveLeftLookat( float delta );
+	void				MoveRightLookat( float delta );
+	void				MoveUpLookat( float delta );
+	void				MoveDownLookat( float delta );
+
+	void				MoveForwardEye( float delta );
+	void				MoveBackEye( float delta );
+	void				MoveLeftEye( float delta );
+	void				MoveRightEye( float delta );
+	void				MoveUpEye( float delta );
+	void				MoveDownEye( float delta );
+
 	void				Update( float fElapsedtime );
 
 };

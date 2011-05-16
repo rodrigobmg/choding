@@ -20,10 +20,11 @@ void GdsInputSystem::MappingEvent( int ikey , int ievent )
 	m_mapEvent.sort();
 }
 
-void GdsInputSystem::Record( UINT msg , WPARAM wParam , LPARAM lParam )
+void GdsInputSystem::Record( HWND hwnd , UINT msg , WPARAM wParam , LPARAM lParam )
 {
 	if ( msg == WM_KEYUP )
 	{
+		m_EventDataUp.hwnd = hwnd;
 		m_EventDataUp.msg = msg;
 		m_EventDataUp.wParam = wParam;
 		m_EventDataUp.lParam = lParam;
@@ -31,10 +32,23 @@ void GdsInputSystem::Record( UINT msg , WPARAM wParam , LPARAM lParam )
 
 	if ( msg == WM_KEYDOWN )
 	{
+		m_EventDataDown.hwnd = hwnd;
 		m_EventDataDown.msg = msg;
 		m_EventDataDown.wParam = wParam;
 		m_EventDataDown.lParam = lParam;
 	}
+
+	if ( msg == WM_LBUTTONDOWN )
+	{
+
+	}
+
+	if ( msg == WM_LBUTTONUP )
+	{
+
+	}
+
+
 	
 }
 
@@ -47,7 +61,9 @@ bool GdsInputSystem::GetKeyIsUp( int ikey )
 			ret = true;
 	}
 
-	clear( m_EventDataUp );
+	if ( ret )
+		clear( m_EventDataUp );
+
 	return ret;
 }
 
@@ -60,7 +76,9 @@ bool GdsInputSystem::GetKeyIsDown( int ikey )
 			ret = true;
 	}
 
-	clear( m_EventDataDown );
+	if ( ret )
+		clear( m_EventDataDown );
+
 	return ret;
 }
 

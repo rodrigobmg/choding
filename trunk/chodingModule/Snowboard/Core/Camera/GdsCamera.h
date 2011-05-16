@@ -20,8 +20,7 @@ protected:
 
 	GdsFrustum		m_Frustum;
 
-	bool			m_bVisibleFrustum;
-	
+	float			m_fDelta; // 카메라 연산에 쓰일 기본 델타값 기본값 1.0f
 
 	virtual	void	vUpdate( float fElapsedtime );
 	virtual	void	vClear();
@@ -29,11 +28,19 @@ protected:
 public:
 	GdsCamera();
 	virtual ~GdsCamera();
+	
+	void			SetDelta( float fvalue ){ m_fDelta = fvalue; }
 
 	void			SetLootAtLH( D3DXVECTOR3& eye , D3DXVECTOR3& lookat , D3DXVECTOR3& up );
-	void			SetLookAt( D3DXVECTOR3& lookat );
-	void			SetEye( D3DXVECTOR3& eye );
-	void			SetUp( D3DXVECTOR3& up );
+
+	void			SetLookAt( D3DXVECTOR3& lookat ){ vLookatPt = lookat; }
+	D3DXVECTOR3&	GetLookAt(){ return vLookatPt; }
+
+	void			SetEye( D3DXVECTOR3& eye ){ vEyePt = eye; }
+	D3DXVECTOR3&	GetEye(){ return vEyePt; }
+
+	void			SetUp( D3DXVECTOR3& up ){ vUpVec = up; }
+	D3DXVECTOR3&	GetUp(){ return vUpVec; }
 	
 	void			SetFrustum( GdsFrustum& Frustum ){ m_Frustum = Frustum; }
 	GdsFrustum&		GetFrustum(){ return m_Frustum; }
@@ -42,7 +49,6 @@ public:
 	D3DXMATRIX&		GetViewMat(){ return matView; }
 	D3DXMATRIX&		GetProjMat(){ return matProj; }
 
-	void			SetVisibleFrustum( bool bflag );
 };
 
 typedef boost::shared_ptr< GdsCamera >	GdsCameraPtr;
