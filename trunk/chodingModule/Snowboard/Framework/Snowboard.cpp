@@ -153,22 +153,22 @@ HRESULT CSnowboard::MsgProc(  HWND hWnd , UINT msg , WPARAM wParam , LPARAM lPar
  	{
  		int x ,y ,z;
  		INPUTSYSTEM.GetMousePosDelta( x, y, z );
- 		LOG_WARNING_F( "Mouse DeltaPos %d %d %d\n" , x ,y,z );
+ 		//LOG_WARNING_F( "Mouse DeltaPos %d %d %d\n" , x ,y,z );
  		//CAMMGR.MoveLeftLookat( 2.0f );
 		if ( x > 0 )
-			CAMMGR.MoveRightLookat( 1 );
+			CAMMGR.MoveRightLookat( 0.05 );
 		else
-			CAMMGR.MoveLeftLookat( 1 );
+			CAMMGR.MoveLeftLookat( 0.05 );
 
 		if ( y > 0 )
-			CAMMGR.MoveDownLookat( 1 );
+			CAMMGR.MoveDownLookat( 0.05 );
 		else
-			CAMMGR.MoveUpLookat( 1 );
+			CAMMGR.MoveUpLookat( 0.05 );
 
 		if ( z > 0 )
-			CAMMGR.MoveForwardLookat( 1 );
+			CAMMGR.MoveForwardLookat( 0.05 );
 		else
-			CAMMGR.MoveBackLookat( 1 );
+			CAMMGR.MoveBackLookat( 0.05 );
  	}
  
  	if ( INPUTSYSTEM.GetMouseIsDown( VM_LBTN ) )
