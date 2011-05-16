@@ -22,7 +22,7 @@ private:
 protected:
 
 	virtual	void			vClear();
-	virtual HRESULT			vCreate( HWND hWnd );
+	virtual bool			vCreate( HWND hWnd );
 	virtual HRESULT			vRelease();
 
 public:
@@ -32,7 +32,7 @@ public:
 	
 	void					ToggleWireMode(){ m_bWireMode = !m_bWireMode; }
 	void					Clear(){ vClear(); }
-	HRESULT					Create( HWND hWnd ){ return vCreate( hWnd ); }
+	bool					Create( HWND hWnd ){ return vCreate( hWnd ); }
 	HRESULT					Release(){ return vRelease(); }
 
 	void					SetRootNode( GdsNodePtr node ){ m_RootNode = node; }

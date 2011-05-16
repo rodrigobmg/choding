@@ -1,6 +1,7 @@
 #include "GdsRendererDX9.h"
 #include "../Camera/GdsCameraManagerDX9.h"
 #include "InputSystem/GdsInputSystem.h"
+#include "../../System/Logger/logger.h"
 
 GdsRendererDX9::GdsRendererDX9() :
 m_bWireMode( false ) ,
@@ -29,11 +30,14 @@ void GdsRendererDX9::vClear()
 
 }
 
-HRESULT GdsRendererDX9::vCreate( HWND hWnd )
+bool GdsRendererDX9::vCreate( HWND hWnd )
 {
 	// Create the D3D object.
 	if( NULL == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) )
-		return E_FAIL;
+	{
+		LOG_ERROR_F( "Fail to create d3d\n");
+		return false;
+	}
 
 	// Set up the structure used to create the D3DDevice. Since we are now
 	// using more complex geometry, we will create a device with a zbuffer.
@@ -50,7 +54,8 @@ HRESULT GdsRendererDX9::vCreate( HWND hWnd )
 		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 		&d3dpp, &m_pd3dDevice ) ) )
 	{
-		return E_FAIL;
+		LOG_ERROR_F("Fail to create device\n");
+		return false;
 	}
 
 	setRootNodeAndCamNode();

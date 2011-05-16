@@ -6,7 +6,6 @@
 #include "../../chodingModule/Snowboard/Framework/Snowboard.h"
 
 CSnowboard* g_pSnowboard = NULL;
-HWND hWnd;
 
 bool InitModule( HWND hWnd )
 {
@@ -48,7 +47,7 @@ bool OnIdle()
 		
 		char buffer[256] = {0,};
 		sprintf_s( buffer , 256 , "FrameRate = %d" , (int)rate);
-		::SetWindowTextA( hWnd , buffer );
+		::SetWindowTextA( g_pSnowboard->GetWnd() , buffer );
 		
 	}
 
@@ -63,7 +62,7 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE , LPSTR , INT )
 
 	RegisterClassEx( &wc );
 
-	hWnd = CreateWindow( L"Choding" , L"Choding" , WS_OVERLAPPEDWINDOW , 100 , 100,
+	HWND hWnd = CreateWindow( L"Choding" , L"Choding" , WS_OVERLAPPEDWINDOW , 100 , 100,
 								800 , 600,
 								GetDesktopWindow() , NULL ,
 								wc.hInstance , NULL );

@@ -13,6 +13,7 @@
 #include "InputSystem/GdsInputSystem.h"
 
 CSnowboard::CSnowboard()
+:m_bMouseDrag(false)
 {
 	Clear(); 
 }
@@ -33,6 +34,8 @@ bool CSnowboard::InitModule( HWND hWnd )
 	FRAMEMEMORY.Init( 1024 * 1024 );
 	LOG_WARNING_F( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
 
+	m_hWnd = hWnd;
+
 	InitRenderer( hWnd );
 	InitResource( RENDERER.GetDevice() );
 
@@ -43,9 +46,11 @@ bool CSnowboard::InitModule( HWND hWnd )
 
 bool	CSnowboard::InitRenderer( HWND hWnd )
 {
-	//m_pRenderer = boost::shared_dynamic_cast< GdsRendererDX9 >( GdsCoreFactory::CreateCore( CORE_RENDERER ) );
-	RENDERER.Create( hWnd );
-	//m_pRenderer->Create( hWnd );
+	if ( RENDERER.Create( hWnd ) == false )
+	{
+		LOG_ERROR_F( "Fail to create renderer \n" );
+		return false;
+	}
 	
 	GdsRenderStateGroupPtr renderstate = GdsRenderStateGroupPtr( new GdsRenderStateGroup );
 	renderstate->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );	/// 0번 텍스처 스테이지의 확대 필터
@@ -63,7 +68,7 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 
 	GDS::SetMaxFrameRate( 0 );
 
-	return TRUE;
+	return false;
 }
 
 bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
@@ -143,24 +148,42 @@ HRESULT CSnowboard::MsgProc(  HWND hWnd , UINT msg , WPARAM wParam , LPARAM lPar
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_E ) )
 		CAMMGR.MoveDownEye( 2.0f );
 
-
-	if ( INPUTSYSTEM.GetKeyIsDown( VK_I ) )
-		CAMMGR.MoveForwardLookat( 2.0f );
-
-	if ( INPUTSYSTEM.GetKeyIsDown( VK_J ) )
-		CAMMGR.MoveLeftLookat( 2.0f );
-
-	if ( INPUTSYSTEM.GetKeyIsDown( VK_L ) )
-		CAMMGR.MoveRightLookat( 2.0f );
-
-	if ( INPUTSYSTEM.GetKeyIsDown( VK_K ) )
-		CAMMGR.MoveBackLookat( 2.0f );
-
-	if ( INPUTSYSTEM.GetKeyIsDown( VK_U ) )
-		CAMMGR.MoveUpLookat( 2.0f );
-
-	if ( INPUTSYSTEM.GetKeyIsDown( VK_O ) )
-		CAMMGR.MoveDownLookat( 2.0f );
+	
+// 	if ( m_bMouseDrag )
+// 	{
+// 		int x ,y ,z;
+// 		INPUTSYSTEM.GetMousePosDelta( x, y, z );
+// 		LOG_WARNING_F( "Mouse DeltaPos %d %d %d\n" , x ,y,z );
+// 		CAMMGR.MoveLeftLookat( 2.0f );
+// 	}
+// 
+// 	if ( INPUTSYSTEM.GetMouseIsDown( VM_LBTN ) )
+// 	{
+// 		m_bMouseDrag = true;
+// 	}	
+// 
+// 	if ( INPUTSYSTEM.GetMouseIsUp( VM_LBTN ) )
+// 	{
+// 		m_bMouseDrag = false;
+// 	}
+	
+// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_I ) )
+// 		CAMMGR.MoveForwardLookat( 2.0f );
+// 
+// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_J ) )
+// 		CAMMGR.MoveLeftLookat( 2.0f );
+// 
+// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_L ) )
+// 		CAMMGR.MoveRightLookat( 2.0f );
+// 
+// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_K ) )
+// 		CAMMGR.MoveBackLookat( 2.0f );
+// 
+// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_U ) )
+// 		CAMMGR.MoveUpLookat( 2.0f );
+// 
+// 	if ( INPUTSYSTEM.GetKeyIsDown( VK_O ) )
+// 		CAMMGR.MoveDownLookat( 2.0f );
 
 	return true;
 }

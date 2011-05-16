@@ -1,6 +1,14 @@
 #ifndef _GDS_H_STDAFX_
 #define _GDS_H_STDAFX_
 
+#ifndef WINVER    // Windows XP 이상에서만 기능을 사용할 수 있습니다.
+#define WINVER 0x0501  // 다른 버전의 Windows에 맞도록 적합한 값으로 변경해 주십시오.
+#endif
+
+#ifndef _WIN32_WINNT  // Windows XP 이상에서만 기능을 사용할 수 있습니다.                   
+#define _WIN32_WINNT 0x0501 // 다른 버전의 Windows에 맞도록 적합한 값으로 변경해 주십시오.
+#endif      
+
 #include <Windows.h>
 #include <WinBase.h>
 #include <d3dx9.h>

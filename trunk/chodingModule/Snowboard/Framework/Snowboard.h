@@ -28,13 +28,15 @@ public:
 	void		MakeHeightMap( GdsNodePtr pNode );
 
 	float		GetFrameRate(){ return m_fFrameRate; }
-
+	HWND		GetWnd(){ return m_hWnd; }
 private:
 	
+	bool		m_bMouseDrag;
 	GdsRendererDX9Ptr	m_pRenderer;
 	GdsResMgrPtr		m_pResMgr;
 	
 	float				m_fFrameRate;
+	HWND		m_hWnd;
 };
 
 #endif

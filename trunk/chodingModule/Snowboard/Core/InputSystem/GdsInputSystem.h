@@ -32,6 +32,10 @@
 #define VK_Y 0x59  
 #define VK_Z 0x5a 
 
+#define VM_LBTN	1
+#define VM_RBTN 2
+#define VM_MBTN 3
+
 class GdsInputSystem : public GdsObject
 {
 public:
@@ -47,6 +51,11 @@ public:
 	bool			GetKeyIsDown( int ikey );
 	bool			GetKeyIsUp( int ikey );
 
+	bool			GetMouseIsDown( int ikey );
+	bool			GetMouseIsUp( int ikey );
+
+	void			GetMousePosDelta( int& x , int& y , int& z );
+
 protected:
 private:
 
@@ -58,9 +67,18 @@ private:
 		LPARAM lParam;
 	};
 
+	int					m_iPreMousePosX;
+	int					m_iPreMousePosY;
+	int					m_iPreMousePosZ;
+
+	int					m_iMouseDeltaX;
+	int					m_iMouseDeltaY;
+	int					m_iMouseDeltaZ;
+
 	EVENT				m_EventDataUp;
 	EVENT				m_EventDataDown;
-	EVENT				m_EventDataMouse;
+	EVENT				m_EventMouseUp;
+	EVENT				m_EventMouseDown;
 
 	typedef GdsLookupTable< int , int >	MAP_EVENT;
 	MAP_EVENT					m_mapEvent;
