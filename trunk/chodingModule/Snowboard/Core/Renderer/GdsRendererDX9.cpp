@@ -105,7 +105,7 @@ void GdsRendererDX9::setRootNodeAndCamNode()
 
 	camnode->SetLootAtLH( vEyePt , vLookatPt , vUpVec );
 
-	GdsFrustum frustum( -0.5 , 0.5 , -0.5 , 0.5 , 1.f , 1000.f , false );
+	GdsFrustum frustum( -0.5 , 0.5 , -0.5 , 0.5 , 10.f , 10000.f , false );
 	camnode->SetFrustum( frustum );
 
  	CAMMGR.Attach( camnode );

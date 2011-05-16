@@ -12,7 +12,7 @@ m_vWorldTranslate(0.0f, 0.0f, 0.0f),
 m_vScale( 1.0f, 1.0f, 1.0f)
 , m_bUseOctree( false )
 , m_pOctreeRootNode( NULL )
-, m_iLimitedCountOfFacePerNode( 300 )
+, m_iLimitedCountOfFacePerNode( 100 )
 , m_bCull( false )
 , m_bDrawOctreeBox( false )
 {
@@ -62,11 +62,12 @@ void GdsNode::GenOctreeFaceIndex()
 
 int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
 {
-	if ( CAMMGR.GetCurCam()->GetFrustum().VertexIsInFrustum( node->m_cenPos ) == false )
-		return iCurIndexCount;
 
 	if ( node->m_iCountOfFace > 0 )
 	{
+		if ( CAMMGR.GetCurCam()->GetFrustum().SphereIsInFrustum( node->m_cenPos , 50.0f ) == false )
+			return iCurIndexCount;
+
 		for ( int i = 0 ; i < node->m_iCountOfFace ; i++ )
 		{
 			GDSINDEX* p = ((GDSINDEX*)pIB) + iCurIndexCount;
@@ -81,7 +82,8 @@ int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
 		{
 			octreeDrawBox( node->m_minPos , node->m_maxPos );
 		}
-	}		
+
+	}	
 
 	if(node->m_pChild[0]) iCurIndexCount = genTriIndex( node->m_pChild[0] , pIB , iCurIndexCount );
 	if(node->m_pChild[1]) iCurIndexCount = genTriIndex( node->m_pChild[1] , pIB , iCurIndexCount );
@@ -379,6 +381,61 @@ void GdsNode::build( Node* node )
 	{
 		node->m_pFace = pTempFace;
 		iCountOfFace = iFaceCount8;
+
+		//페이스에 대한 minPos, maxPos를 갱신한다.
+		D3DXVECTOR3 p0 , p1 , p2;
+		D3DXVECTOR3 minPos( 0,0,0 );
+		D3DXVECTOR3 maxPos( 0,0,0 );
+		for(int i = 0; i < iCountOfFace ; ++i)
+		{
+			p0 = D3DXVECTOR3(&m_pVert[node->m_pFace[i]._0].p.x);
+			p1 = D3DXVECTOR3(&m_pVert[node->m_pFace[i]._1].p.x);
+			p2 = D3DXVECTOR3(&m_pVert[node->m_pFace[i]._2].p.x);
+			
+			if ( minPos.x > p0.x )
+				minPos.x = p0.x;
+			if ( minPos.y > p0.y )
+				minPos.y = p0.y;
+			if ( minPos.z > p0.z )
+				minPos.z = p0.z;
+			if ( maxPos.x < p0.x )
+				maxPos.x = p0.x;
+			if ( maxPos.y < p0.y )
+				maxPos.y = p0.y;
+			if ( maxPos.z < p0.z )
+				maxPos.z = p0.z;
+
+			if ( minPos.x > p1.x )
+				minPos.x = p1.x;
+			if ( minPos.y > p1.y )
+				minPos.y = p1.y;
+			if ( minPos.z > p1.z )
+				minPos.z = p1.z;
+			if ( maxPos.x < p1.x )
+				maxPos.x = p1.x;
+			if ( maxPos.y < p1.y )
+				maxPos.y = p1.y;
+			if ( maxPos.z < p1.z )
+				maxPos.z = p1.z;
+
+			if ( minPos.x > p2.x )
+				minPos.x = p2.x;
+			if ( minPos.y > p2.y )
+				minPos.y = p2.y;
+			if ( minPos.z > p2.z )
+				minPos.z = p2.z;
+			if ( maxPos.x < p2.x )
+				maxPos.x = p2.x;
+			if ( maxPos.y < p2.y )
+				maxPos.y = p2.y;
+			if ( maxPos.z < p2.z )
+				maxPos.z = p2.z;
+		}
+
+		node->m_minPos = minPos;
+		node->m_maxPos = maxPos;
+		node->m_cenPos = (minPos+maxPos)*0.5;
+
 	}
 	node->m_iCountOfFace = iCountOfFace;
 
