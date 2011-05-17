@@ -15,6 +15,8 @@ m_vScale( 1.0f, 1.0f, 1.0f)
 , m_iLimitedCountOfFacePerNode( 100 )
 , m_bCull( false )
 , m_bDrawOctreeBox( false )
+, m_bUseLOD( false )
+, m_pVBUseOnlyLOD(NULL)
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
@@ -37,6 +39,7 @@ void GdsNode::vClear()
 	RemoveAllChild();	
 	m_list_RenderObject.clear();
 	ReleaseOctree();
+	SAFE_DELETE( m_pVBUseOnlyLOD );
 }
 
 
@@ -65,17 +68,41 @@ int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
 
 	if ( node->m_iCountOfFace > 0 )
 	{
-		if ( CAMMGR.GetCurCam()->GetFrustum().SphereIsInFrustum( node->m_cenPos , 50.0f ) == false )
+		if ( CAMMGR.GetCurCam()->GetFrustum().SphereIsInFrustum( node->m_cenPos , node->m_fRadius ) == false )
 			return iCurIndexCount;
 
-		for ( int i = 0 ; i < node->m_iCountOfFace ; i++ )
+		if ( m_bUseLOD )
 		{
-			GDSINDEX* p = ((GDSINDEX*)pIB) + iCurIndexCount;
-			p->_0 = node->m_pFace[i]._0;
-			p->_1 = node->m_pFace[i]._1;
-			p->_2 = node->m_pFace[i]._2;			
-			*p++;
-			iCurIndexCount++;
+			for ( int i = 0 ; i < node->m_iCountOfFace/2 ; i++ )
+			{
+				GDSINDEX* p = ((GDSINDEX*)pIB) + iCurIndexCount;
+				if ( i % 2 == 0 )
+				{
+					p->_0 = node->m_pFace[i]._0;
+					p->_1 = node->m_pFace[i+1]._1;
+					p->_2 = node->m_pFace[i+1]._2;			
+				}
+				else
+				{
+					p->_0 = node->m_pFace[i+1]._0;
+					p->_1 = node->m_pFace[i]._1;
+					p->_2 = node->m_pFace[i]._2;			
+				}				
+				*p++;
+				iCurIndexCount++;
+			}		
+		}
+		else
+		{
+			for ( int i = 0 ; i < node->m_iCountOfFace ; i++ )
+			{
+				GDSINDEX* p = ((GDSINDEX*)pIB) + iCurIndexCount;
+				p->_0 = node->m_pFace[i]._0;
+				p->_1 = node->m_pFace[i]._1;
+				p->_2 = node->m_pFace[i]._2;			
+				*p++;
+				iCurIndexCount++;
+			}		
 		}		
 
 		if ( m_bDrawOctreeBox )
@@ -437,6 +464,9 @@ void GdsNode::build( Node* node )
 		node->m_cenPos = (minPos+maxPos)*0.5;
 
 	}
+
+	D3DXVECTOR3 dist( m_cenPos - m_minPos );
+	node->m_fRadius = D3DXVec3Length( &dist );
 	node->m_iCountOfFace = iCountOfFace;
 
 	// 자식 노드 재귀 호출
@@ -755,3 +785,21 @@ void GdsNode::octreeDrawBox( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos )
 	Line->Release();	
 }
 
+void GdsNode::SetUseLOD( bool flag )
+{
+	m_bUseLOD = flag;
+	if ( flag )
+	{
+		m_vecCamPosUseOnlyLOD = CAMMGR.GetCurCam()->GetEye();
+		SAFE_DELETE( m_pVBUseOnlyLOD );
+		GdsRenderObjectPtr rendertoken = GetRenderObject( 0 );
+		VOID* pVB;
+		LPDIRECT3DVERTEXBUFFER9 vb = rendertoken->GetVertexBuffer();
+		if (  SUCCEEDED( vb->Lock( 0 , rendertoken->GetVertexMaxCount() * sizeof( GDSVERTEX ) , (void**)&pVB , 0 ) ) )
+		{
+			m_pVBUseOnlyLOD = new GDSVERTEX[ rendertoken->GetVertexMaxCount() ];
+			memcpy( m_pVBUseOnlyLOD , pVB , sizeof( GDSVERTEX )* rendertoken->GetVertexMaxCount() );
+		}
+		vb->Unlock();
+	}
+}

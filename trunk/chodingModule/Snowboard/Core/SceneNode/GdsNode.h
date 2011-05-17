@@ -17,10 +17,12 @@ class GdsNode : public GdsObject //, public boost::enable_shared_from_this< GdsN
 		D3DXVECTOR3	m_minPos;
 		D3DXVECTOR3	m_maxPos;
 		D3DXVECTOR3	m_cenPos;
+		float		m_fRadius;
 
 		Node(int iNumFaces, D3DXVECTOR3& vMin, D3DXVECTOR3& vMax)
 			: m_iCountOfFace( iNumFaces ) , m_minPos(vMin) , m_maxPos(vMax) , m_cenPos((vMin+vMax)*0.5 )
 			, m_iNumOfChild( 0 )
+			, m_fRadius( 0.f )
 		{
 			for (int i=0 ; i<8 ; i++)
 				m_pChild[i] = NULL;
@@ -71,6 +73,9 @@ private:
 private:
 	
 	bool								m_bUseOctree;
+	bool								m_bUseLOD;
+	D3DXVECTOR3							m_vecCamPosUseOnlyLOD; //lod연산에 쓰일 카메라 위치
+	GDSVERTEX*							m_pVBUseOnlyLOD;
 
 	D3DXMATRIX							m_matLocal;
 	D3DXMATRIX							m_matWorld;
@@ -109,11 +114,14 @@ public:
 	virtual ~GdsNode();
  	
 	void					AddRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateIndex );
-	GdsRenderObjectPtr		GetRenderObject( int index ){ m_list_RenderObject.at(index); }
+	GdsRenderObjectPtr		GetRenderObject( int index ){ return m_list_RenderObject.at(index).first; }
 //  	boost::shared_ptr< GdsNode > shared_ptr_this()
 //  	{
 //  		return shared_from_this();
 //  	}
+
+	void					SetUseLOD( bool flag );
+	bool					GetuseLOD(){ return m_bUseLOD; }
 
 	void					SetDrawAxis( bool bShow );
 	void					SetDrawBox( bool bShow );
