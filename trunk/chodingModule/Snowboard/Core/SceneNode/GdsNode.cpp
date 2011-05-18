@@ -12,11 +12,12 @@ m_vWorldTranslate(0.0f, 0.0f, 0.0f),
 m_vScale( 1.0f, 1.0f, 1.0f)
 , m_bUseOctree( false )
 , m_pOctreeRootNode( NULL )
-, m_iLimitedCountOfFacePerNode( 100 )
+, m_iLimitedCountOfFacePerNode( 10 )
 , m_bCull( false )
 , m_bDrawOctreeBox( false )
 , m_bUseLOD( false )
 , m_pVBUseOnlyLOD(NULL)
+, m_bUseQuadtree(false)
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
@@ -73,21 +74,19 @@ int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
 
 		if ( m_bUseLOD )
 		{
-			for ( int i = 0 ; i < node->m_iCountOfFace/2 ; i++ )
+			D3DXVECTOR3 vecdist = node->m_cenPos - m_vecCamPosUseOnlyLOD;
+			float dist = D3DXVec3Length( &vecdist );
+
+			for ( int i = 0 ; i < node->m_iCountOfFace ; i++ )
 			{
-				GDSINDEX* p = ((GDSINDEX*)pIB) + iCurIndexCount;
-				if ( i % 2 == 0 )
+				if ( i % 4 == 0 )
 				{
-					p->_0 = node->m_pFace[i]._0;
-					p->_1 = node->m_pFace[i+1]._1;
-					p->_2 = node->m_pFace[i+1]._2;			
+					
 				}
-				else
-				{
-					p->_0 = node->m_pFace[i+1]._0;
-					p->_1 = node->m_pFace[i]._1;
-					p->_2 = node->m_pFace[i]._2;			
-				}				
+				GDSINDEX* p = ((GDSINDEX*)pIB) + iCurIndexCount;
+				p->_0 = node->m_pFace[i]._0;
+				p->_1 = node->m_pFace[i]._1;
+				p->_2 = node->m_pFace[i]._2;			
 				*p++;
 				iCurIndexCount++;
 			}		
@@ -803,3 +802,723 @@ void GdsNode::SetUseLOD( bool flag )
 		vb->Unlock();
 	}
 }
+
+/*
+#pragma	  once
+#include "SmartIndexBuffer.h"
+
+class SectorSLodPatch
+{
+public:
+	enum PatchDir
+	{
+		PATCHDIR_LEFT = 0,
+		PATCHDIR_RIGHT,
+		PATCHDIR_TOP,
+		PATCHDIR_BOTTOM
+	};
+
+	static const int MaxLevel = 4;
+
+private:
+	struct OneLevel
+	{
+		Smart16BitIndexBuffer Normal[4];
+		Smart16BitIndexBuffer ProtectionFromCrack[4];
+	};
+
+	static const int Width;
+	static const int HalfWidth;
+
+public:
+	SectorSLodPatch();
+	virtual ~SectorSLodPatch();
+
+	void Draw(PatchDir dir, int TargetLevel, bool IsProtectCrack);
+
+private:
+	void CreateNormalIndice();
+	void CreateProectionFromCrackIndice();
+	inline void ConvertIndex(PatchDir dir, int origin_x, int origin_y, int& new_x, int& new_y);
+	inline int ComputeRealIndex(int x, int y);
+	inline void AddIndex(Smart16BitIndexBuffer& targetib, int n, int x, int y);
+	void CheckErrorCCW(Smart16BitIndexBuffer& targetib, int start, int end, PatchDir dir);
+
+private:
+	int m_MaxLevel;
+	OneLevel m_Indice[MaxLevel];
+};
+
+// 각 조각에 대해 아래와 같이 좌표를 변환해 줌
+inline void SectorSLodPatch::ConvertIndex(PatchDir dir, int origin_x, int origin_y, int& new_x, int& new_y)
+{
+	switch(dir)
+	{
+	case PATCHDIR_LEFT:
+		new_x = origin_x;
+		new_y = origin_y;
+		break;
+
+	case PATCHDIR_RIGHT:
+		new_x = -origin_x + Width;
+		new_y = origin_y;
+		break;
+
+	case PATCHDIR_TOP:
+		new_x = origin_y;
+		new_y = origin_x;
+		break;
+
+	case PATCHDIR_BOTTOM:
+		new_x = origin_y;
+		new_y = -origin_x + Width;
+		break;
+	}
+}
+
+// 실제 index buffer에 기록할 좌표 계산
+inline int SectorSLodPatch::ComputeRealIndex(int x, int y)
+{
+	return y*(Width+1)+x;
+}
+
+// index 추가
+inline void SectorSLodPatch::AddIndex(Smart16BitIndexBuffer& targetib, int n, int x, int y)
+{
+	int newx, newy;
+	ConvertIndex((PatchDir)n, x, y, newx, newy);
+	targetib.AddIndex(ComputeRealIndex(newx, newy));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include "stdafx.h"
+#include "SectorSLodPatch.h"
+#include "HeightMap.h"
+
+const int SectorSLodPatch::Width = HeightMap::TableCellWidth-1;
+const int SectorSLodPatch::HalfWidth = (HeightMap::TableCellWidth-1)/2;
+
+SectorSLodPatch::SectorSLodPatch()
+{
+	CreateNormalIndice();
+	CreateProectionFromCrackIndice();
+}
+
+SectorSLodPatch::~SectorSLodPatch()
+{
+}
+
+// 렌더링....
+void SectorSLodPatch::Draw(PatchDir dir, int TargetLevel, bool IsProtectCrack)
+{
+	if(TargetLevel >= MaxLevel)
+		TargetLevel = MaxLevel-1;
+	if(IsProtectCrack)
+	{
+		m_Indice[TargetLevel].ProtectionFromCrack[dir].SetIndices();
+		m_Indice[TargetLevel].ProtectionFromCrack[dir].Draw();
+	}
+	else
+	{
+		m_Indice[TargetLevel].Normal[dir].SetIndices();
+		m_Indice[TargetLevel].Normal[dir].Draw();
+	}
+}
+
+// 일반 조각 만들기
+void SectorSLodPatch::CreateNormalIndice()
+{
+	int curwidth = Width;
+
+	// 각 레벨 만들기
+	for(int m = 0 ; m < MaxLevel ; m++, curwidth /= 2)
+	{
+		int indexcount = 0;
+		for(int n = 2 ; n <= curwidth ; n += 2)
+			indexcount += n * 2 + 1;
+
+		const int increase_gap = Width/curwidth;
+
+		// 각 방향 만들기
+		for(int n = 0 ; n < 4 ; n++)
+		{
+			Smart16BitIndexBuffer& targetib = m_Indice[m].Normal[n];
+			targetib.CreateIndexArray(indexcount);
+			targetib.CreateIndexBuffer();
+			targetib.ResetDynamicIndexPtr();
+
+			int startpntx = 0, startpnty = 0;
+			int x = 0, y = 0;
+
+			// 스트립 만들기
+			while(startpntx != HalfWidth)
+			{
+				int startindex = targetib.GetDynamicIndexDataNumber();
+
+				AddIndex(targetib, n , x, y);
+
+				// 스트립 만들때 index 를 추가할 세가지 type
+				while(x+y != Width)
+				{
+					if(y<HalfWidth)
+					{
+						x+=increase_gap;
+						y+=increase_gap;
+						AddIndex(targetib, n, x, y);
+
+						x-=increase_gap;
+						AddIndex(targetib, n, x, y);
+					}
+					else if(y==HalfWidth)
+					{
+						x+=increase_gap;
+						AddIndex(targetib, n, x, y);
+
+						x-=increase_gap;
+						y+=increase_gap;
+						AddIndex(targetib, n, x, y);
+					}
+					else
+					{
+						x+=increase_gap;
+						AddIndex(targetib, n, x, y);
+
+						x-=increase_gap;
+						y+=increase_gap;
+						AddIndex(targetib, n, x, y);
+					}
+				}
+
+				int endindex = targetib.GetDynamicIndexDataNumber();
+				targetib.Check(D3DPT_TRIANGLESTRIP);
+
+				CheckErrorCCW(targetib, startindex, endindex, (PatchDir)n);
+
+				startpntx += increase_gap;
+				startpnty += increase_gap;
+				x = startpntx;
+				y = startpnty;
+			}
+
+			targetib.Upload();
+			targetib.DestroyIndexArray();
+		}
+	}
+}
+
+// Clock-Wise인 경우 Counter-Clock-Wise 로 변환
+void SectorSLodPatch::CheckErrorCCW(Smart16BitIndexBuffer& targetib, int start, int end, PatchDir dir)
+{
+	if(dir == PATCHDIR_LEFT || dir == PATCHDIR_BOTTOM)
+	{
+		// cull ccw 때문에 뒤집어야 함
+		for(int k = 0; k < (end - start)/2 ; k++)
+			swap(targetib[start + k], targetib[end - k - 1]);
+	}
+}
+
+// 크랙방지용 조각 만들기
+void SectorSLodPatch::CreateProectionFromCrackIndice()
+{
+	int curwidth = Width;
+
+	// 각 레벨 만들기
+	for(int m = 0 ; m < MaxLevel ; m++, curwidth /= 2)
+	{
+		int indexcount = 3*(curwidth/2) + 6*(curwidth/2-1);
+		for(int n = 2 ; n < curwidth ; n += 2)
+			indexcount += n * 2 + 1;
+
+		const int increase_gap = Width/curwidth;
+
+		// 각 방향 만들기
+		for(int n = 0 ; n < 4 ; n++)
+		{
+			Smart16BitIndexBuffer& targetib = m_Indice[m].ProtectionFromCrack[n];
+			targetib.CreateIndexArray(indexcount);
+			targetib.CreateIndexBuffer();
+			targetib.ResetDynamicIndexPtr();
+
+			// crack 방지 triangle list
+			int startindex = targetib.GetDynamicIndexDataNumber();
+
+			for(int k=0;k<Width;k+=increase_gap*2)
+			{
+				AddIndex(targetib, n, 0, k);
+				AddIndex(targetib, n, increase_gap, k+increase_gap);
+				AddIndex(targetib, n, 0, k+increase_gap*2);
+			}
+			for(int k=increase_gap*2; k<=Width-increase_gap*2; k+=increase_gap*2)
+			{
+				AddIndex(targetib, n, increase_gap, k);
+				AddIndex(targetib, n, 0, k);
+				AddIndex(targetib, n, increase_gap, k-increase_gap);
+				AddIndex(targetib, n, increase_gap, k);
+				AddIndex(targetib, n, increase_gap, k+increase_gap);
+				AddIndex(targetib, n, 0, k);
+			}
+
+			int endindex = targetib.GetDynamicIndexDataNumber();
+			targetib.Check(D3DPT_TRIANGLELIST);
+
+			CheckErrorCCW(targetib, startindex, endindex, (PatchDir)n);
+
+			int startpntx = increase_gap, startpnty = increase_gap;
+			int x = increase_gap;
+			int y = increase_gap;
+
+			// 스트립 만들기
+			while(startpntx != HalfWidth)
+			{
+				startindex = targetib.GetDynamicIndexDataNumber();
+
+				AddIndex(targetib, n, x, y);
+
+				// 스트립 만들때 index 를 추가할 세가지 type
+				while(x+y != Width)
+				{
+					if(y<HalfWidth)
+					{
+						x+=increase_gap;
+						y+=increase_gap;
+						AddIndex(targetib, n, x, y);
+
+						x-=increase_gap;
+						AddIndex(targetib, n, x, y);
+					}
+					else if(y==HalfWidth)
+					{
+						x+=increase_gap;
+						AddIndex(targetib, n, x, y);
+
+						x-=increase_gap;
+						y+=increase_gap;
+						AddIndex(targetib, n, x, y);
+					}
+					else
+					{
+						x+=increase_gap;
+						AddIndex(targetib, n, x, y);
+
+						x-=increase_gap;
+						y+=increase_gap;
+						AddIndex(targetib, n, x, y);
+					}
+				}
+
+				endindex = targetib.GetDynamicIndexDataNumber();
+
+				targetib.Check(D3DPT_TRIANGLESTRIP);
+
+				CheckErrorCCW(targetib, startindex, endindex, (PatchDir)n);
+
+				startpntx += increase_gap;
+				startpnty += increase_gap;
+				x = startpntx;
+				y = startpnty;
+			}
+
+			targetib.Upload();
+			targetib.DestroyIndexArray();
+		}
+	}
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+// 사용법 (스마트 버텍스 버퍼 사용법과 비슷하다. 참고할것)
+// 유의사항 : 내 엔진에서 그대로 뜯어왔으니 약간의 수정을 요함.. 32bit 는 생략했음. 
+
+
+// Smart16BitIndexBuffer aa(300);
+
+// aa.AddIndex(1);
+// aa.AddIndex(2);
+// aa.AddIndex(3);
+// aa.AddIndex(4);
+// aa.Check(D3DPT_TRIANGLESTRIP);	// 지금까지 add 한 인딕스들이 이루는 형태
+// aa.AddIndex(5);
+// aa.AddIndex(6);
+// aa.AddIndex(7);
+// aa.AddIndex(6);
+// aa.AddIndex(7);
+// aa.AddIndex(8);
+// aa.Check(D3DPT_TRIANGLELIST);	// 지금까지 add 한 인딕스들이 이루는 형태
+// .....
+// aa.Upload();						// 다끝나면 system memory buffer 에서 video memory buffer 로 upload
+
+// vv.SetFVF();						// 당연히 소스가 되는 버텍스 버퍼를 설정해 줘야한다
+// vv.SetStreamSource();			// 당연히 소스가 되는 버텍스 버퍼를 설정해 줘야한다
+// aa.SetIndices();
+// aa.Draw();
+
+
+
+
+
+
+
+
+
+
+
+class Smart16BitIndexBuffer
+{
+private:
+struct IndexCheckInfo
+{
+IndexCheckInfo();
+IndexCheckInfo(D3DPRIMITIVETYPE PrimitiveType_, size_t StartIndexCount_, 
+size_t UsedIndexCount_, size_t PrimitiveCount_);
+
+D3DPRIMITIVETYPE PrimitiveType;
+size_t StartIndexCount;
+size_t UsedIndexCount;
+size_t PrimitiveCount;
+};
+
+typedef vector<IndexCheckInfo> IndexChickInfoList;
+typedef vector<IndexCheckInfo>::iterator IndexChickInfoIter;
+
+public:
+Smart16BitIndexBuffer(RenderSystem* pRenderDevice);
+virtual ~Smart16BitIndexBuffer(void);
+
+void CreateIndexArray();
+void CreateIndexArray(size_t IndexNumber);
+void DestroyIndexArray();
+void CreateIndexBuffer();
+void DestroyIndexBuffer();
+
+void ResetDynamicIndexPtr();
+bool SetIndices();
+
+size_t GetIndexNumber() const;
+size_t GetIndicesSizeInByte() const;
+size_t GetIndexSizeInByte() const;
+
+bool Upload(size_t StartIndex = 0, size_t IndexNumber = 0);
+bool Upload(const WORD* TargetData, size_t StartIndex, size_t IndexNumber);
+bool Download(WORD* DestPtr, size_t StartIndex, size_t IndexNumber);
+
+__inline void operator ++() { ++DynamicIndexPtr_; }
+__inline void operator ++(int) { ++DynamicIndexPtr_; }
+__inline void operator --() { DynamicIndexPtr_--; }
+__inline void operator +=(size_t how) { DynamicIndexPtr_ += how; }
+__inline void operator -=(size_t how) { DynamicIndexPtr_-=how; }
+__inline void operator =(size_t when) { DynamicIndexPtr_= IndexArray_ + when; }
+__inline WORD& operator [] (size_t Index) { return IndexArray_[Index]; }
+__inline const WORD& operator [] (size_t Index) const { return IndexArray_[Index]; }
+void Check(D3DPRIMITIVETYPE PrimitiveType);
+bool Draw();
+size_t GetDynamicIndexDataNumber() const;
+__inline void AddIndex(WORD Index);
+
+private:
+bool Lock(size_t StartIndex = 0, size_t LockIndexNumber = 0);
+bool Unlock();
+
+// todo
+// bool DrawUpload()	
+
+private:
+LPDIRECT3DINDEXBUFFER9 IndexBuffer_;
+IndexChickInfoList IndexCheckInfoList_;
+size_t CheckCount_;
+size_t IndexNumber_;
+WORD* IndexArray_;
+WORD* DynamicIndexPtr_;
+size_t DynamicIndexCount_;
+WORD* LockPtr_;
+RenderSystem* m_pRenderSys;
+};
+
+__inline void Smart16BitIndexBuffer::AddIndex(WORD Index)
+{
+*DynamicIndexPtr_ = Index;
+++DynamicIndexPtr_;
+++DynamicIndexCount_;
+++CheckCount_;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+
+
+Smart16BitIndexBuffer::IndexCheckInfo::IndexCheckInfo()
+{
+}
+
+Smart16BitIndexBuffer::IndexCheckInfo::IndexCheckInfo(
+D3DPRIMITIVETYPE PrimitiveType_, size_t StartIndexCount_, 
+size_t UsedIndexCount_, size_t PrimitiveCount_)
+: PrimitiveType(PrimitiveType_),
+StartIndexCount(StartIndexCount_),
+UsedIndexCount(UsedIndexCount_),
+PrimitiveCount(PrimitiveCount_)
+{
+}
+
+Smart16BitIndexBuffer::Smart16BitIndexBuffer(RenderSystem* pRenderSys)
+: m_pRenderSys(pRenderSys),
+LockPtr_(NULL), 
+IndexArray_(NULL), 
+IndexBuffer_(NULL), 
+IndexNumber_(0),
+DynamicIndexCount_(0),
+CheckCount_(0)
+{
+IndexCheckInfoList_.reserve(100);
+}
+
+Smart16BitIndexBuffer::~Smart16BitIndexBuffer(void)
+{
+DestroyIndexArray();
+DestroyIndexBuffer();
+}
+
+void Smart16BitIndexBuffer::CreateIndexArray()
+{
+if(IndexArray_ == NULL)
+{
+IndexArray_ = new WORD[IndexNumber_];
+}
+ResetDynamicIndexPtr();
+}
+
+void Smart16BitIndexBuffer::CreateIndexArray(size_t IndexNumber)
+{
+if(IndexArray_ == NULL)
+{
+IndexNumber_ = IndexNumber;
+IndexArray_ = new WORD[IndexNumber_];
+}
+ResetDynamicIndexPtr();
+}
+
+void Smart16BitIndexBuffer::DestroyIndexArray()
+{
+SAFE_DELETE_ARRAY(IndexArray_);
+}
+
+void Smart16BitIndexBuffer::CreateIndexBuffer()
+{
+IndexBuffer_ = 
+m_pRenderSys->CreateIndexBuffer(sizeof(WORD)*IndexNumber_, D3DFMT_INDEX16);
+}
+
+void Smart16BitIndexBuffer::DestroyIndexBuffer()
+{
+SAFE_RELEASE(IndexBuffer_);
+}
+
+bool Smart16BitIndexBuffer::SetIndices()
+{
+if(IndexBuffer_ == NULL)
+return false;
+
+m_pRenderSys->Device()->SetIndices(IndexBuffer_);
+
+return true;
+}
+
+bool Smart16BitIndexBuffer::Upload(size_t StartIndex, size_t IndexNumber)
+{
+if(Lock(StartIndex, IndexNumber) == false)
+return false;
+
+if(StartIndex == 0 && IndexNumber == 0)
+{
+StartIndex = 0;
+IndexNumber = IndexNumber_;
+}
+
+memcpy(LockPtr_, &IndexArray_[StartIndex], IndexNumber * sizeof(WORD));
+
+if(Unlock() == false)
+return false;
+
+return true;
+}
+
+bool Smart16BitIndexBuffer::Upload(const WORD* TargetData, size_t StartIndex, size_t IndexNumber)
+{
+if(IndexArray_)
+return false;
+
+memcpy(&IndexArray_[StartIndex], TargetData, IndexNumber * sizeof(WORD));
+
+if(IndexBuffer_)
+return false;
+
+if(Lock(StartIndex, IndexNumber) == false)
+return false;
+
+if(StartIndex == 0 && IndexNumber == 0)
+{
+StartIndex = 0;
+IndexNumber = IndexNumber_;
+}
+
+memcpy(LockPtr_, &IndexArray_[StartIndex], IndexNumber * sizeof(WORD));
+
+if(Unlock() == false)
+return false;
+
+return true;
+}
+
+bool Smart16BitIndexBuffer::Download(WORD* DestPtr, size_t StartIndex, size_t IndexNumber)
+{
+if(IndexArray_ == NULL)
+return false;
+
+if(StartIndex == 0 && IndexNumber == 0)
+{
+StartIndex = 0;
+IndexNumber = IndexNumber_;
+}
+
+memcpy(DestPtr, &IndexArray_[StartIndex], sizeof(WORD)*IndexNumber);
+
+return true;
+}
+
+void Smart16BitIndexBuffer::Check(D3DPRIMITIVETYPE PrimitiveType)
+{
+IndexCheckInfoList_.push_back(	
+IndexCheckInfo(	PrimitiveType, 
+DynamicIndexCount_,
+CheckCount_, 
+qb::ComputePrimitiveNumber(PrimitiveType, CheckCount_)));
+CheckCount_ = 0;
+}
+
+bool Smart16BitIndexBuffer::Draw()
+{
+if(IndexBuffer_ == NULL)
+return false;
+
+if(IndexCheckInfoList_.empty() == true)
+return false;
+
+for(IndexChickInfoIter Iter = IndexCheckInfoList_.begin(); Iter != IndexCheckInfoList_.end(); ++Iter)
+{
+m_pRenderSys->DrawIndexedPrimitive(Iter->PrimitiveType, 0,0,
+Iter->UsedIndexCount, Iter->StartIndexCount, Iter->PrimitiveCount);
+}
+
+return true;
+}
+
+bool Smart16BitIndexBuffer::Lock(size_t StartIndex, size_t LockIndexNumber)
+{
+if(IndexBuffer_ == NULL)
+return false;
+
+if(FAILED(IndexBuffer_->Lock(StartIndex * sizeof(WORD), LockIndexNumber * sizeof(WORD),
+(void**)&LockPtr_, 0)))
+return false;
+
+return true;
+}
+
+void Smart16BitIndexBuffer::ResetDynamicIndexPtr()
+{
+DynamicIndexPtr_ = IndexArray_;
+DynamicIndexCount_ = 0;
+CheckCount_ = 0;
+IndexCheckInfoList_.resize(0);
+}
+
+size_t Smart16BitIndexBuffer::GetIndexNumber() const
+{
+return IndexNumber_;
+}
+
+size_t Smart16BitIndexBuffer::GetIndicesSizeInByte() const
+{
+return sizeof(WORD) * IndexNumber_;
+}
+
+size_t Smart16BitIndexBuffer::GetIndexSizeInByte() const
+{
+return sizeof(WORD);
+}
+
+size_t Smart16BitIndexBuffer::GetDynamicIndexDataNumber() const
+{
+return DynamicIndexCount_;
+}
+
+bool Smart16BitIndexBuffer::Unlock()
+{
+if(IndexBuffer_ == NULL)
+return false;
+
+if(FAILED(IndexBuffer_->Unlock()))
+return false;
+
+LockPtr_ = NULL;
+
+return true;
+}
+
+
+*/
+
+
+/*
+{
+if(GetCapture())
+{
+D3DXMATRIXA16 matProj;
+m_pd3dDevice->GetTransform( D3DTS_PROJECTION, &matProj );
+
+POINT ptCursor;
+GetCursorPos( &ptCursor );
+ScreenToClient( m_hWnd, &ptCursor );
+
+// Compute the vector of the pick ray in screen space
+D3DXVECTOR3 v;
+v.x =  ( ( ( 2.0f * ptCursor.x ) / m_d3dsdBackBuffer.Width  ) - 1 ) / matProj._11;
+v.y = -( ( ( 2.0f * ptCursor.y ) / m_d3dsdBackBuffer.Height ) - 1 ) / matProj._22;
+v.z =  1.0f;
+
+// Get the inverse of the composite view and world matrix
+D3DXMATRIXA16 matView, matWorld, m;
+m_pd3dDevice->GetTransform( D3DTS_VIEW, &matView );
+m_pd3dDevice->GetTransform( D3DTS_WORLD, &matWorld );
+
+m = matWorld * matView;
+D3DXMatrixInverse( &m, NULL, &m );
+
+// Transform the screen space pick ray into 3D space
+m_vRayDir.x  = v.x*m._11 + v.y*m._21 + v.z*m._31;
+m_vRayDir.y  = v.x*m._12 + v.y*m._22 + v.z*m._32;
+m_vRayDir.z  = v.x*m._13 + v.y*m._23 + v.z*m._33;
+m_vRayPos.x = m._41;
+m_vRayPos.y = m._42;
+m_vRayPos.z = m._43;
+
+return S_OK;
+}
+
+return E_FAIL;	
+}
+*/

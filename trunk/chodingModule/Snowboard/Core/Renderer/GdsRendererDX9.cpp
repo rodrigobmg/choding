@@ -4,7 +4,7 @@
 #include "../../System/Logger/logger.h"
 
 GdsRendererDX9::GdsRendererDX9() :
-m_bWireMode( false ) ,
+m_bWireMode( true ) ,
 m_pd3dDevice( NULL ) ,
 m_pD3D( NULL )
 {

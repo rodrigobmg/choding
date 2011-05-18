@@ -72,6 +72,7 @@ private:
 
 private:
 	
+	bool								m_bUseQuadtree;
 	bool								m_bUseOctree;
 	bool								m_bUseLOD;
 	D3DXVECTOR3							m_vecCamPosUseOnlyLOD; //lod연산에 쓰일 카메라 위치

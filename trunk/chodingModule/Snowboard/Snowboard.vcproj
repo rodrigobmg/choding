@@ -594,6 +594,10 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="DXutil"
+				>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
