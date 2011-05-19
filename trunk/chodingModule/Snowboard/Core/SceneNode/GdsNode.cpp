@@ -634,6 +634,7 @@ HRESULT GdsNode::Update( float fElapsedtime )
 			RENDER_OBJECT_CONTAINER::iterator it = m_list_RenderObject.begin();
 			for ( ; it != m_list_RenderObject.end() ; ++it )
 			{
+				it->first->SetMatrix( m_matWorld );
 				RENDERER.GetRenderFrame()->AttachRenderObject( it->first , it->second );
 			}			
 		}		

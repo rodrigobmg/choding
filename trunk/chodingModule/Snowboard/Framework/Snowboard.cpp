@@ -308,4 +308,5 @@ void CSnowboard::MakeHeightMap( GdsNodePtr pNode )
 	pNode->SetDrawAxis( true );
 	pNode->SetDrawBox( true );
 	pNode->SetUseLOD( true );
+	pNode->SetScale( 10.f );
 }
