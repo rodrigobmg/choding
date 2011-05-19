@@ -12,7 +12,7 @@ m_vWorldTranslate(0.0f, 0.0f, 0.0f),
 m_vScale( 1.0f, 1.0f, 1.0f)
 , m_bUseOctree( false )
 , m_pOctreeRootNode( NULL )
-, m_iLimitedCountOfFacePerNode( 10 )
+, m_iLimitedCountOfFacePerNode( 300 )
 , m_bCull( false )
 , m_bDrawOctreeBox( false )
 , m_bUseLOD( false )

@@ -78,6 +78,7 @@ typedef unsigned __int64	uint64_t;
 #define OBJECT_NODE_CHILDMESH	L"ChildMesh"
 #define OBJECT_NODE_CAMERA	L"CameraNode"
 
+#define OBJECT_TERRAIN		L"Terrain"
 #define OBJECT_MATRIX3		L"Matrix3"
 #define OBJECT_FRUSTUM		L"Frustum"
 #define OBJECT_TRANSFORM	L"Transform"

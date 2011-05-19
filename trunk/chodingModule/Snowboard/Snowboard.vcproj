@@ -382,6 +382,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Terrain"
+				>
+				<File
+					RelativePath=".\Core\Terrain\GdsTerrain.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Terrain\GdsTerrain.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="System"
