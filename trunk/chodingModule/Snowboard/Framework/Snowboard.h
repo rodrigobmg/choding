@@ -25,7 +25,6 @@ public:
 	void		Clear();
 
 	void		TestFunc();
-	void		MakeHeightMap( GdsNodePtr pNode );
 
 	float		GetFrameRate(){ return m_fFrameRate; }
 	HWND		GetWnd(){ return m_hWnd; }

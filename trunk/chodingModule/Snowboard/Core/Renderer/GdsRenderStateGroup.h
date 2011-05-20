@@ -3,6 +3,8 @@
 
 #include "../Base/GdsObject.h"
 
+#define TERRAIN_RENDERSTATE	0
+
 class GdsRenderStateGroup : public GdsObject
 {	
 	typedef std::pair< int , int >				VALUE;

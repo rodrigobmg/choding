@@ -255,7 +255,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Oc-Tree"
+				Name="Oc-Tree &amp; Terrain"
 				>
 				<File
 					RelativePath=".\testUnit\GdsTerrain_test.hpp"
