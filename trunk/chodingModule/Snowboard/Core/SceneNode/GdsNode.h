@@ -65,10 +65,12 @@ private:
 
 private:
 	
-	bool								m_bUseOctree;
+	bool									m_bShowBox;
+	bool									m_bShowAxis;
+	bool									m_bUseOctree;
 
-	D3DXMATRIX							m_matLocal;
-	D3DXMATRIX							m_matWorld;
+	D3DXMATRIX								m_matLocal;
+	D3DXMATRIX								m_matWorld;
 
 	D3DXQUATERNION							m_qRotate;
 	D3DXQUATERNION							m_qWorldRotate;
@@ -112,8 +114,8 @@ public:
 //  	}
 
 	
-	void					SetDrawAxis( bool bShow );
-	void					SetDrawBox( bool bShow );
+	void					SetDrawAxis( bool bShow ){ m_bShowAxis = bShow; }
+	void					SetDrawBox( bool bShow ){ m_bShowBox = bShow; }
 	
 	void					SetBillboard( bool bflag ){ m_bBillboard = bflag; }
 

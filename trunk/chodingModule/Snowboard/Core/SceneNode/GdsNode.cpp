@@ -14,6 +14,8 @@ m_vScale( 1.0f, 1.0f, 1.0f)
 , m_pOctreeRootNode( NULL )
 , m_iLimitedCountOfFacePerNode( 300 )
 , m_bCull( false )
+, m_bShowBox( false )
+, m_bShowAxis( false )
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
@@ -562,6 +564,17 @@ HRESULT GdsNode::Update( float fElapsedtime )
 	if ( m_bCull )
 		return TRUE;
 
+	if ( m_bShowAxis )
+	{
+
+	}
+	if ( m_bShowBox )
+	{
+		D3DXVECTOR3 minPos( 0.f , 0.f , 0.f );
+		D3DXVECTOR3 maxPos( 10.f , 10.f , 10.f );
+		RENDERER.DrawBox( minPos , maxPos );
+	}
+
 	D3DXMATRIX matTrans, matScale, matRot;
 	D3DXMatrixIdentity( &matTrans );
 	D3DXMatrixIdentity( &matScale );
@@ -650,26 +663,6 @@ void GdsNode::AddRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderSta
 {
 	RENDERTOKEN rendertoken( pRenderObject , iRenderStateIndex );
 	m_list_RenderObject.push_back( rendertoken );	
-}
-
-void GdsNode::SetDrawAxis( bool bShow )
-{
-	RENDER_OBJECT_CONTAINER::iterator it = m_list_RenderObject.begin();
-	RENDER_OBJECT_CONTAINER::iterator it_end = m_list_RenderObject.end();
-	for ( ; it != it_end ; ++it )
-	{
-		//it->first->SetDrawAxis( true );
-	}
-}
-
-void GdsNode::SetDrawBox( bool bShow )
-{
-	RENDER_OBJECT_CONTAINER::iterator it = m_list_RenderObject.begin();
-	RENDER_OBJECT_CONTAINER::iterator it_end = m_list_RenderObject.end();
-	for ( ; it != it_end ; ++it )
-	{
-		//it->first->SetDrawBox( true );
-	}
 }
 
 /*

@@ -88,25 +88,9 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 
 		m_RenderFrameList->Render( m_pd3dDevice );
 
-		if( !m_DrawPointData.empty() )
+		if( !m_DrawAxisData.empty() || !m_DrawBoxData.empty() )
 		{
-			DRAWPOINT_CONTAINER::iterator it = m_DrawPointData.begin();
-			DRAWPOINT_CONTAINER::iterator it_end = m_DrawPointData.end();
-			for( ; it != it_end ; ++it )
-			{
-				drawAxis( *it );
-			}
-		}
-
-		if ( !m_DrawRectData.empty() )
-		{
-			DRAWRECT_CONTAINER::iterator it = m_DrawRectData.begin();
-			DRAWRECT_CONTAINER::iterator it_end = m_DrawRectData.end();
-			for ( ; it != it_end ; ++it )
-			{
-				drawBox( it->first , it->second );
-			}
-
+			drawEtc();			
 		}
 
  		m_pd3dDevice->EndScene();
@@ -134,17 +118,8 @@ void GdsRendererDX9::setRootNodeAndCamNode()
   	CAMMGR.SetCurCam( 0 );
 }
 
-void GdsRendererDX9::drawAxis(  D3DXVECTOR3& point  )
+void GdsRendererDX9::drawAxis(  D3DXVECTOR3& point , D3DXMATRIXA16& mat , ID3DXLine* Line )
 {
-
-	D3DXMATRIXA16 matWorld;
-	D3DXMATRIXA16 matView;
-	D3DXMATRIXA16 matProj;
-	m_pd3dDevice->GetTransform( D3DTS_WORLD , &matWorld );
-	m_pd3dDevice->GetTransform( D3DTS_VIEW  , &matView );
-	m_pd3dDevice->GetTransform( D3DTS_PROJECTION , &matProj );
-	D3DXMATRIXA16 mat = matWorld*matView*matProj;
-
 	D3DXVECTOR3 lineLBN[2];
 	lineLBN[0].x = 0.0f; lineLBN[0].y = 0.0f; lineLBN[0].z = 0.0f;
 	lineLBN[1].x = 10.0f; lineLBN[1].y = 0.0f; lineLBN[1].z = 0.0f;
@@ -157,28 +132,13 @@ void GdsRendererDX9::drawAxis(  D3DXVECTOR3& point  )
 	lineLBF[0].x = 0.0f; lineLBF[0].y = 0.0f; lineLBF[0].z = 0.0f;
 	lineLBF[1].x = 0.0f; lineLBF[1].y = 0.0f; lineLBF[1].z = 10.0f;
 
-
-	ID3DXLine* Line;
-	D3DXCreateLine( m_pd3dDevice , &Line );
-	Line->SetWidth( 1 );
-	Line->SetAntialias( true );
-	Line->Begin();
 	Line->DrawTransform( lineLBN , 2, &mat, D3DXCOLOR( 1.0f , 0.0f , 0.0f , 1.0f ));
 	Line->DrawTransform( lineLTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
 	Line->DrawTransform( lineLBF , 2, &mat, D3DXCOLOR( 0.0f , 0.0f , 1.0f , 1.0f ));
-	Line->End();
-	Line->Release();
 }
 
-void GdsRendererDX9::drawBox(  D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos  )
+void GdsRendererDX9::drawBox(  D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos , D3DXMATRIXA16& mat , ID3DXLine* Line )
 {
-	D3DXMATRIXA16 matWorld;
-	D3DXMATRIXA16 matView;
-	D3DXMATRIXA16 matProj;
-	m_pd3dDevice->GetTransform( D3DTS_WORLD , &matWorld );
-	m_pd3dDevice->GetTransform( D3DTS_VIEW  , &matView );
-	m_pd3dDevice->GetTransform( D3DTS_PROJECTION , &matProj );
-	D3DXMATRIXA16 mat = matWorld*matView*matProj;
 
 	D3DXVECTOR3 lineLBN[2];
 	lineLBN[0] = minPos;
@@ -225,14 +185,9 @@ void GdsRendererDX9::drawBox(  D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos  )
 	lineBF[1].x = maxPos.x; lineBF[1].y = minPos.y; lineBF[1].z = maxPos.z;
 
 	D3DXVECTOR3 lineTF[2];
-	lineBF[0].x = minPos.x; lineBF[0].y = maxPos.y; lineBF[0].z = maxPos.z;
-	lineBF[1] = maxPos;
+	lineTF[0].x = minPos.x; lineTF[0].y = maxPos.y; lineTF[0].z = maxPos.z;
+	lineTF[1] = maxPos;
 
-	ID3DXLine* Line;
-	D3DXCreateLine( m_pd3dDevice , &Line );
-	Line->SetWidth( 1 );
-	Line->SetAntialias( true );
-	Line->Begin();
 	Line->DrawTransform( lineLBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
 	Line->DrawTransform( lineLTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
 	Line->DrawTransform( lineLBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
@@ -245,7 +200,52 @@ void GdsRendererDX9::drawBox(  D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos  )
 	Line->DrawTransform( lineTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
 	Line->DrawTransform( lineBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
 	Line->DrawTransform( lineTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
+	
+}
+
+void GdsRendererDX9::DrawBox( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos )
+{
+	RECT_DATA box( minPos , maxPos );
+	m_DrawBoxData.push_back( box );
+}
+
+void GdsRendererDX9::DrawAxis( D3DXVECTOR3& point )
+{
+	m_DrawAxisData.push_back( point );
+}
+
+void GdsRendererDX9::drawEtc()
+{
+	D3DXMATRIXA16 matWorld;
+	D3DXMATRIXA16 matView;
+	D3DXMATRIXA16 matProj;
+	m_pd3dDevice->GetTransform( D3DTS_WORLD , &matWorld );
+	m_pd3dDevice->GetTransform( D3DTS_VIEW  , &matView );
+	m_pd3dDevice->GetTransform( D3DTS_PROJECTION , &matProj );
+	D3DXMATRIXA16 mat = matWorld*matView*matProj;
+
+	ID3DXLine* Line;
+	D3DXCreateLine( m_pd3dDevice , &Line );
+	Line->SetWidth( 1 );
+	Line->SetAntialias( true );
+	Line->Begin();
+
+	DRAWAXIS_CONTAINER::iterator itAxis = m_DrawAxisData.begin();
+	DRAWAXIS_CONTAINER::iterator itAxis_end = m_DrawAxisData.end();
+	for( ; itAxis != itAxis_end ; ++itAxis )
+	{
+		drawAxis( *itAxis , mat , Line );
+	}
+
+	DRAWBOX_CONTAINER::iterator itBox = m_DrawBoxData.begin();
+	DRAWBOX_CONTAINER::iterator itBox_end = m_DrawBoxData.end();
+	for ( ; itBox != itBox_end ; ++itBox )
+	{
+		drawBox( itBox->first , itBox->second , mat , Line );
+	}
 
 	Line->End();
-	Line->Release();	
+	Line->Release();		
+	m_DrawAxisData.clear();
+	m_DrawBoxData.clear();
 }
