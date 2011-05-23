@@ -25,19 +25,10 @@ class GdsRenderObject : public GdsObject
 	int						m_iStartIndex;
 	int						m_iEndIndex;
 
-	bool					m_bShowBox;
-	bool					m_bShowAxis;
-
-	void					drawAxis( LPDIRECT3DDEVICE9 device );
-	void					drawBox( LPDIRECT3DDEVICE9 device );
-
 public:
 
 	GdsRenderObject();
 	virtual ~GdsRenderObject();
-
-	void					SetDrawBox( bool bflag ){ m_bShowBox = bflag; }
-	void					SetDrawAxis( bool bflag ){ m_bShowAxis = bflag; }
 
 	virtual void			vRender( LPDIRECT3DDEVICE9 device );
 	

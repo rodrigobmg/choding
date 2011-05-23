@@ -47,24 +47,17 @@ class GdsNode : public GdsObject //, public boost::enable_shared_from_this< GdsN
 
 	void			build( Node* node );
 	int				genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount );
-	void			octreeDrawBox( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos );
 public:	
 
 	void			CreateOctree();
-	void			ReleaseOctree(){ m_bUseOctree = false; Empty(); }
-
+	void			ReleaseOctree(){ m_bUseOctree = false; SAFE_DELETE( m_pOctreeRootNode ); }
 	void			GenOctreeFaceIndex();
-
-	void   			Empty(){ SAFE_DELETE( m_pOctreeRootNode ); }
-	//void   			Draw();
 
 	void			SetLimitedFacePerNode( int iCount ){ m_iLimitedCountOfFacePerNode = iCount; }
 	int				GetTotalOctreenode(){ return m_iCountOfOctreeNode; }
-	
-	void			SetOctreeDrawBox( bool flag ){ m_bDrawOctreeBox = flag; }
 
 private:
-	bool			m_bDrawOctreeBox;
+
 	int				m_iCountOfOctreeNode;
 	int				m_iLimitedCountOfFacePerNode;      // 노드당 최소 평면 수
 	GDSVERTEX*		m_pVert;							// 정점 배열
@@ -72,11 +65,7 @@ private:
 
 private:
 	
-	bool								m_bUseQuadtree;
 	bool								m_bUseOctree;
-	bool								m_bUseLOD;
-	D3DXVECTOR3							m_vecCamPosUseOnlyLOD; //lod연산에 쓰일 카메라 위치
-	GDSVERTEX*							m_pVBUseOnlyLOD;
 
 	D3DXMATRIX							m_matLocal;
 	D3DXMATRIX							m_matWorld;
@@ -116,14 +105,13 @@ public:
  	
 	void					AddRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateIndex );
 	GdsRenderObjectPtr		GetRenderObject( int index ){ return m_list_RenderObject.at(index).first; }
+//		//강제로 카운터 올리고 자기 참조
 //  	boost::shared_ptr< GdsNode > shared_ptr_this()
 //  	{
 //  		return shared_from_this();
 //  	}
 
-	void					SetUseLOD( bool flag );
-	bool					GetuseLOD(){ return m_bUseLOD; }
-
+	
 	void					SetDrawAxis( bool bShow );
 	void					SetDrawBox( bool bShow );
 	
@@ -162,8 +150,8 @@ public:
 
 	const	D3DXVECTOR3&	GetWorldTranslate() const{ return m_vWorldTranslate; }
 	const	D3DXQUATERNION& GetWorldRotate() const{	return m_qWorldRotate; }
-	const	D3DXMATRIX&	GetLocalMatrix() const{	return m_matLocal; }
-	const	D3DXMATRIX&	GetWorldMatrix() const{	return m_matWorld; }
+	const	D3DXMATRIX&		GetLocalMatrix() const{	return m_matLocal; }
+	const	D3DXMATRIX&		GetWorldMatrix() const{	return m_matWorld; }
 
 	void					SetLocalMatrix( const D3DXMATRIX& matLocal ){m_matLocal = matLocal;}
 	void					SetLocalFromWorldTransform( const D3DXMATRIX& matWorld );

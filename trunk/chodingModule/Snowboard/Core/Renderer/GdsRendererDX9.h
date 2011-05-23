@@ -8,6 +8,13 @@
 class GdsRendererDX9 : public GdsRendererBase
 {
 
+	typedef std::pair< D3DXVECTOR3 , D3DXVECTOR3 >	RECT_DATA;
+	typedef std::list< RECT_DATA >					DRAWRECT_CONTAINER;
+	DRAWRECT_CONTAINER		m_DrawRectData;
+
+	typedef std::list< D3DXVECTOR3 >				DRAWPOINT_CONTAINER;
+	DRAWPOINT_CONTAINER		m_DrawPointData;
+
 private:
 	
  	LPDIRECT3D9             m_pD3D;      // = NULL; // Used to create the D3DDevice
@@ -19,6 +26,10 @@ private:
 
 	void					setRootNodeAndCamNode();
 
+
+	void					drawAxis( D3DXVECTOR3& point );
+	void					drawBox( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos );
+
 protected:
 
 	virtual	void			vClear();
@@ -29,6 +40,9 @@ public:
 
 	GdsRendererDX9();
 	virtual ~GdsRendererDX9();
+
+	void					DrawRect( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos );
+	void					DrawPoint( D3DXVECTOR3& point );
 	
 	void					ToggleWireMode(){ m_bWireMode = !m_bWireMode; }
 	void					Clear(){ vClear(); }

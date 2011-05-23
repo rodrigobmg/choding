@@ -5,11 +5,12 @@
 #include "Renderer\GdsRenderStateGroup.h"
 
 GdsTerrain::GdsTerrain() 
-: m_iVertexPerPatch( 32 )
+: m_iVertexPerNode( 16 )
 , m_pIB( NULL )
 , m_ixheight( 0 )
 , m_izheight( 0 )
 , m_iMaxLOD( 6 )
+, m_pRootTile(NULL)
 {
 	SetName( OBJECT_TERRAIN );	
 	
@@ -36,16 +37,70 @@ GdsTerrain::~GdsTerrain()
 
 void GdsTerrain::vClear()
 {
-	SAFE_DELETE( m_pPatch );
+	SAFE_DELETE( m_pRootTile );
+}
+
+
+void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
+{
+	tile->m_cenPos = ( tile->m_minPos + tile->m_maxPos ) * 0.5;
+	float fDist = tile->m_maxPos.x - tile->m_minPos.x;
+	if ( abs( fDist ) > m_iVertexPerNode )
+	{
+		tile->m_pChild[0] = new TILE;
+		tile->m_pChild[0]->m_minPos = tile->m_minPos;
+		tile->m_pChild[0]->m_maxPos = tile->m_cenPos;		
+
+		tile->m_pChild[1] = new TILE;
+		tile->m_pChild[1]->m_minPos = D3DXVECTOR3( tile->m_cenPos.x , 0 , tile->m_minPos.z );
+		tile->m_pChild[1]->m_maxPos = D3DXVECTOR3( tile->m_maxPos.x , 0 , tile->m_cenPos.z );
+
+		tile->m_pChild[2] = new TILE;
+		tile->m_pChild[2]->m_minPos = tile->m_cenPos;
+		tile->m_pChild[2]->m_maxPos = tile->m_maxPos;
+
+		tile->m_pChild[3] = new TILE;
+		tile->m_pChild[3]->m_minPos = D3DXVECTOR3( tile->m_minPos.x , 0 , tile->m_cenPos.z );
+		tile->m_pChild[3]->m_maxPos = D3DXVECTOR3( tile->m_cenPos.x , 0 , tile->m_maxPos.z );
+
+		build( tile->m_pChild[0] , pVB );
+		build( tile->m_pChild[1] , pVB );
+		build( tile->m_pChild[2] , pVB );
+		build( tile->m_pChild[3] , pVB );
+	}
+	else
+	{
+		tile->m_pVertex = new GDSVERTEX[ m_iVertexPerNode*m_iVertexPerNode ];
+		int icount = 0;
+		int minY = 0;
+		int maxY = 0;
+		for ( int x = tile->m_minPos.x ; x < tile->m_maxPos.x ; x++ )
+		{
+			for ( int z = tile->m_minPos.z ; z< tile->m_maxPos.z ; z++ )
+			{
+				tile->m_pVertex[icount] = pVB[ z*m_iVertexPerNode + x];
+				if ( tile->m_pVertex[icount].p.y > maxY )
+					maxY = tile->m_pVertex[icount].p.y;
+
+				if ( tile->m_pVertex[icount].p.y < minY )
+					minY = tile->m_pVertex[icount].p.y;
+				
+				icount++;				
+			}		
+		}		
+		tile->m_minPos.y = minY;
+		tile->m_maxPos.y = maxY;
+	}
 }
 
 bool GdsTerrain::MakeHeightMap( GdsNodePtr pNode )
 {
-	if ( m_pPatch != NULL )
+	if ( m_pRootTile != NULL )
 	{
 		ASSERT( 0 && "중복 로딩" );
 		return false;
 	}
+
 	GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"map.bmp") );
 	GdsResTexturePtr texcolor = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"tile2.tga") );
 
@@ -57,21 +112,20 @@ bool GdsTerrain::MakeHeightMap( GdsNodePtr pNode )
 	cxHeight = ddsd.Width;				/// 텍스처의 가로크기
 	czHeight = ddsd.Height;				/// 텍스처의 세로크기
 
-	int icheckx = cxHeight % m_iVertexPerPatch;
-	int icheckz = czHeight % m_iVertexPerPatch;
-	if ( icheckx != 0 || icheckz != 0 || cxHeight < m_iVertexPerPatch || czHeight < m_iVertexPerPatch )
+	int icheckx = cxHeight % m_iVertexPerNode;
+	int icheckz = czHeight % m_iVertexPerNode;
+	if ( icheckx != 0 || icheckz != 0 || cxHeight < m_iVertexPerNode || czHeight < m_iVertexPerNode )
 	{
 		LOG_ERROR_F( "Texture Size Error:[%d,%d]", cxHeight, czHeight );
 		return false;
 	}
 
-	icheckx = cxHeight / m_iVertexPerPatch;
-	icheckz = czHeight / m_iVertexPerPatch;
+	icheckx = cxHeight / m_iVertexPerNode;
+	icheckz = czHeight / m_iVertexPerNode;
 	if ( icheckx > 0 && icheckz > 0 )
 	{
 		m_ixheight = icheckx;
 		m_izheight = icheckz;
-		m_pPatch = new PATCH[icheckx*icheckz];
 	}
 	else
 	{
@@ -98,12 +152,16 @@ bool GdsTerrain::MakeHeightMap( GdsNodePtr pNode )
 
 	GDSVERTEX	v;
 	GDSVERTEX*	pV = (GDSVERTEX*)pVertices;
+	
+	D3DXVECTOR3	minPos(0.f , 0.f, 0.f );
+	D3DXVECTOR3 maxPos( 0.f, 0.f , 0.f );
+
 	for( DWORD z = 0 ; z < czHeight ; z++ )
 	{
 		for( DWORD x = 0 ; x < cxHeight ; x++ )
 		{
-			v.p.x = (float)x-cxHeight/2.0f;		/// 정점의 x좌표(메시를 원점에 정렬)
-			v.p.z = -((float)z-czHeight/2.0f);	/// 정점의 z좌표(메시를 원점에 정렬), z축이 모니터안쪽이므로 -를 곱한다.
+			v.p.x = -((float)x-cxHeight);		/// 정점의 x좌표(메시를 원점에 정렬)
+			v.p.z = -((float)z-czHeight);	/// 정점의 z좌표(메시를 원점에 정렬), z축이 모니터안쪽이므로 -를 곱한다.
 			v.p.y = ((float)(*((LPDWORD)d3drc.pBits+x+z*(d3drc.Pitch/4))&0x000000ff))/10.0f;	/// DWORD이므로 pitch/4
 			v.n.x = v.p.x;
 			v.n.y = v.p.y;
@@ -112,8 +170,30 @@ bool GdsTerrain::MakeHeightMap( GdsNodePtr pNode )
 			v.t.x = (float)x / (cxHeight-1);
 			v.t.y = (float)z / (czHeight-1);
 			*pV++ = v;
+
+			if ( minPos.x > v.p.x )
+				minPos.x = v.p.x;
+
+			if ( minPos.y > v.p.y )
+				minPos.y = v.p.y;
+
+			if ( minPos.z > v.p.z )
+				minPos.z = v.p.z;
+
+			if ( maxPos.x < v.p.x )
+				maxPos.x = v.p.x;
+			if ( maxPos.y < v.p.y )
+				maxPos.y = v.p.y;
+			if ( maxPos.z < v.p.z )
+				maxPos.z = v.p.z;
 		}
 	}
+
+	m_pRootTile = new TILE;
+	m_pRootTile->m_minPos = minPos;
+	m_pRootTile->m_maxPos = maxPos;
+	m_pRootTile->m_cenPos = ( minPos+maxPos )* 0.5f;
+	//build( m_pRootTile , (GDSVERTEX*)pVertices );
 
 	pVB->Unlock();
 	texheight->Get()->UnlockRect( 0 );
@@ -160,28 +240,25 @@ bool GdsTerrain::MakeHeightMap( GdsNodePtr pNode )
 	renderObject->SetEndIndex( (cxHeight-1)*(czHeight-1)*2 );
 	renderObject->SetStartVertexIndex( 0 );
 	renderObject->SetEndVertexIndex( cxHeight*czHeight );
-	renderObject->SetTexture( texcolor->Get() );
+	//renderObject->SetTexture( texcolor->Get() );
 	D3DXMATRIX tm = pNode->GetLocalMatrix();
 	renderObject->SetMatrix( tm );
 
 	pNode->AddRenderObject( renderObject , 0 );	
 
-	//pNode->CreateOctree();
-	//	pNode->SetDrawOctreeNodeBoxLine( true );
 	pNode->SetDrawAxis( true );
 	pNode->SetDrawBox( true );
-	pNode->SetUseLOD( true );
 	//pNode->SetScale( 10.f );
 
 	return true;
 }
 
-void GdsTerrain::createVB()
+void GdsTerrain::createVB( GdsRenderObjectPtr pRenderToken )
 {
 
 }
 
-void GdsTerrain::createIB()
+void GdsTerrain::createIB( GdsRenderObjectPtr pRenderToken )
 {
 
 }

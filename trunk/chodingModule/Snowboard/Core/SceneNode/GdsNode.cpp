@@ -14,10 +14,6 @@ m_vScale( 1.0f, 1.0f, 1.0f)
 , m_pOctreeRootNode( NULL )
 , m_iLimitedCountOfFacePerNode( 300 )
 , m_bCull( false )
-, m_bDrawOctreeBox( false )
-, m_bUseLOD( false )
-, m_pVBUseOnlyLOD(NULL)
-, m_bUseQuadtree(false)
 {
 	SetName( OBJECT_NODE );
 	m_ChildNode.clear();
@@ -40,7 +36,6 @@ void GdsNode::vClear()
 	RemoveAllChild();	
 	m_list_RenderObject.clear();
 	ReleaseOctree();
-	SAFE_DELETE( m_pVBUseOnlyLOD );
 }
 
 
@@ -72,42 +67,15 @@ int GdsNode::genTriIndex( Node* node , LPVOID pIB , int iCurIndexCount )
 		if ( CAMMGR.GetCurCam()->GetFrustum().SphereIsInFrustum( node->m_cenPos , node->m_fRadius ) == false )
 			return iCurIndexCount;
 
-		if ( m_bUseLOD )
+		for ( int i = 0 ; i < node->m_iCountOfFace ; i++ )
 		{
-			D3DXVECTOR3 vecdist = node->m_cenPos - m_vecCamPosUseOnlyLOD;
-			float dist = D3DXVec3Length( &vecdist );
-
-			for ( int i = 0 ; i < node->m_iCountOfFace ; i++ )
-			{
-				if ( i % 4 == 0 )
-				{
-					
-				}
-				GDSINDEX* p = ((GDSINDEX*)pIB) + iCurIndexCount;
-				p->_0 = node->m_pFace[i]._0;
-				p->_1 = node->m_pFace[i]._1;
-				p->_2 = node->m_pFace[i]._2;			
-				*p++;
-				iCurIndexCount++;
-			}		
-		}
-		else
-		{
-			for ( int i = 0 ; i < node->m_iCountOfFace ; i++ )
-			{
-				GDSINDEX* p = ((GDSINDEX*)pIB) + iCurIndexCount;
-				p->_0 = node->m_pFace[i]._0;
-				p->_1 = node->m_pFace[i]._1;
-				p->_2 = node->m_pFace[i]._2;			
-				*p++;
-				iCurIndexCount++;
-			}		
+			GDSINDEX* p = ((GDSINDEX*)pIB) + iCurIndexCount;
+			p->_0 = node->m_pFace[i]._0;
+			p->_1 = node->m_pFace[i]._1;
+			p->_2 = node->m_pFace[i]._2;			
+			*p++;
+			iCurIndexCount++;
 		}		
-
-		if ( m_bDrawOctreeBox )
-		{
-			octreeDrawBox( node->m_minPos , node->m_maxPos );
-		}
 
 	}	
 
@@ -200,7 +168,6 @@ void GdsNode::build( Node* node )
 	D3DXVECTOR3 m_cenPos = node->m_cenPos;
 	D3DXVECTOR3 m_minPos = node->m_minPos;
 	D3DXVECTOR3 m_maxPos = node->m_maxPos;
-	//GDSINDEX* m_pFace	 = node->m_pFace;
 
 	for(int i = 0; i < iCountOfFace ; ++i)
 	{
@@ -691,7 +658,7 @@ void GdsNode::SetDrawAxis( bool bShow )
 	RENDER_OBJECT_CONTAINER::iterator it_end = m_list_RenderObject.end();
 	for ( ; it != it_end ; ++it )
 	{
-		it->first->SetDrawAxis( true );
+		//it->first->SetDrawAxis( true );
 	}
 }
 
@@ -701,106 +668,7 @@ void GdsNode::SetDrawBox( bool bShow )
 	RENDER_OBJECT_CONTAINER::iterator it_end = m_list_RenderObject.end();
 	for ( ; it != it_end ; ++it )
 	{
-		it->first->SetDrawBox( true );
-	}
-}
-
-void GdsNode::octreeDrawBox( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos )
-{
-	D3DXMATRIXA16 matWorld;
-	D3DXMATRIXA16 matView;
-	D3DXMATRIXA16 matProj;
-	RENDERER.GetDevice()->GetTransform( D3DTS_WORLD , &matWorld );
-	RENDERER.GetDevice()->GetTransform( D3DTS_VIEW  , &matView );
-	RENDERER.GetDevice()->GetTransform( D3DTS_PROJECTION , &matProj );
-	D3DXMATRIXA16 mat = matWorld*matView*matProj;
-
-	D3DXVECTOR3 lineLBN[2];
-	lineLBN[0] = minPos;
-	lineLBN[1].x = minPos.x; lineLBN[1].y = maxPos.y; lineLBN[1].z = minPos.z;
-
-	D3DXVECTOR3 lineLTN[2];
-	lineLTN[0] = lineLBN[1];
-	lineLTN[1].x = minPos.x; lineLTN[1].y = maxPos.y; lineLTN[1].z = maxPos.z;
-
-	D3DXVECTOR3 lineLBF[2];
-	lineLBF[0] = lineLTN[1];
-	lineLBF[1].x = minPos.x; lineLBF[1].y = minPos.y; lineLBF[1].z = maxPos.z;
-
-	D3DXVECTOR3 lineLTF[2];
-	lineLTF[0] = lineLBF[1];
-	lineLTF[1] = minPos;
-
-	D3DXVECTOR3 lineRBN[2];
-	lineRBN[0].x = maxPos.x; lineRBN[0].y = minPos.y; lineRBN[0].z = minPos.z;
-	lineRBN[1].x = maxPos.x; lineRBN[1].y = maxPos.y; lineRBN[1].z = minPos.z;
-
-	D3DXVECTOR3 lineRTN[2];
-	lineRTN[0] = lineRBN[1];
-	lineRTN[1].x = maxPos.x; lineRTN[1].y = maxPos.y; lineRTN[1].z = maxPos.z;
-
-	D3DXVECTOR3 lineRBF[2];
-	lineRBF[0] = lineRTN[1];
-	lineRBF[1].x = maxPos.x; lineRBF[1].y = minPos.y; lineRBF[1].z = maxPos.z;
-
-	D3DXVECTOR3 lineRTF[2];
-	lineRTF[0] = lineRBF[1];
-	lineRTF[1] = lineRBN[0];
-
-	D3DXVECTOR3 lineBN[2];
-	lineBN[0] = minPos;
-	lineBN[1].x = maxPos.x; lineBN[1].y = minPos.y; lineBN[1].z = minPos.z;
-
-	D3DXVECTOR3 lineTN[2];
-	lineTN[0].x = minPos.x; lineTN[0].y = maxPos.y; lineTN[0].z = minPos.z;
-	lineTN[1].x = maxPos.x; lineTN[1].y = maxPos.y; lineTN[1].z = minPos.z;
-
-	D3DXVECTOR3 lineBF[2];
-	lineBF[0].x = minPos.x; lineBF[0].y = minPos.y; lineBF[0].z = maxPos.z;
-	lineBF[1].x = maxPos.x; lineBF[1].y = minPos.y; lineBF[1].z = maxPos.z;
-
-	D3DXVECTOR3 lineTF[2];
-	lineBF[0].x = minPos.x; lineBF[0].y = maxPos.y; lineBF[0].z = maxPos.z;
-	lineBF[1] = maxPos;
-
-	ID3DXLine* Line;
-	D3DXCreateLine( RENDERER.GetDevice() , &Line );
-	Line->SetWidth( 1 );
-	Line->SetAntialias( true );
-	Line->Begin();
-	Line->DrawTransform( lineLBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineLTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineLBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineLTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineRBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineRTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineRBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineRTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-
-	Line->End();
-	Line->Release();	
-}
-
-void GdsNode::SetUseLOD( bool flag )
-{
-	m_bUseLOD = flag;
-	if ( flag )
-	{
-		m_vecCamPosUseOnlyLOD = CAMMGR.GetCurCam()->GetEye();
-		SAFE_DELETE( m_pVBUseOnlyLOD );
-		GdsRenderObjectPtr rendertoken = GetRenderObject( 0 );
-		VOID* pVB;
-		LPDIRECT3DVERTEXBUFFER9 vb = rendertoken->GetVertexBuffer();
-		if (  SUCCEEDED( vb->Lock( 0 , rendertoken->GetVertexMaxCount() * sizeof( GDSVERTEX ) , (void**)&pVB , 0 ) ) )
-		{
-			m_pVBUseOnlyLOD = new GDSVERTEX[ rendertoken->GetVertexMaxCount() ];
-			memcpy( m_pVBUseOnlyLOD , pVB , sizeof( GDSVERTEX )* rendertoken->GetVertexMaxCount() );
-		}
-		vb->Unlock();
+		//it->first->SetDrawBox( true );
 	}
 }
 
