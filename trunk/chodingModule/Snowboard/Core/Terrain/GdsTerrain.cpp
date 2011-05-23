@@ -93,12 +93,8 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 		tile->m_RenderToken = GdsRenderObjectPtr( new GdsRenderObject );
 
 		LPDIRECT3DVERTEXBUFFER9 pVB;
-		if( FAILED( RENDERER.GetDevice()->CreateVertexBuffer( m_iVertexPerNode*m_iVertexPerNode*sizeof( GDSVERTEX ),
-			0, GDSVERTEX::FVF,
-			D3DPOOL_DEFAULT, &pVB, NULL ) ) )
-		{
-			return;
-		}
+		RESMGR.AllocVertexBuffer( pVB , m_iVertexPerNode*m_iVertexPerNode*sizeof( GDSVERTEX ) );
+		
 		VOID* pVertices;
 		if( FAILED( pVB->Lock( 0, m_iVertexPerNode*m_iVertexPerNode*sizeof(GDSVERTEX), (void**)&pVertices, 0 ) ) )
 			return;
@@ -157,75 +153,57 @@ bool GdsTerrain::MakeHeightMap( GdsNodePtr pNode )
 	}
 
 
-	LPDIRECT3DVERTEXBUFFER9 pVB;
 	LOG_WARNING_F( "Texture Size:[%d,%d]", cxHeight, czHeight );
-	if( FAILED( RENDERER.GetDevice()->CreateVertexBuffer( ddsd.Width*ddsd.Height*sizeof( GDSVERTEX ),
-		0, GDSVERTEX::FVF,
-		D3DPOOL_DEFAULT, &pVB, NULL ) ) )
-	{
-		return false;
-	}
 
 	/// 텍스처 메모리 락!
 	texheight->Get()->LockRect( 0, &d3drc, NULL, D3DLOCK_READONLY );
-	VOID* pVertices;
-	/// 정점버퍼 락!
-	if( FAILED( pVB->Lock( 0, cxHeight*czHeight*sizeof(GDSVERTEX), (void**)&pVertices, 0 ) ) )
-		return false;
-
-	GDSVERTEX	v;
-	GDSVERTEX*	pV = (GDSVERTEX*)pVertices;
+	
 	
 	D3DXVECTOR3	minPos(0.f , 0.f, 0.f );
 	D3DXVECTOR3 maxPos( 0.f, 0.f , 0.f );
-
+	GDSVERTEX* v = new GDSVERTEX[czHeight*cxHeight];
 	for( int z = 0 ; z < czHeight ; z++ )
 	{
 		for( int x = 0 ; x < cxHeight ; x++ )
 		{
-			v.p.x = -((float)x-cxHeight);		/// 정점의 x좌표(메시를 원점에 정렬)
-			v.p.z = -((float)z-czHeight);	/// 정점의 z좌표(메시를 원점에 정렬), z축이 모니터안쪽이므로 -를 곱한다.
-			v.p.y = ((float)(*((LPDWORD)d3drc.pBits+x+z*(d3drc.Pitch/4))&0x000000ff))/10.0f;	/// DWORD이므로 pitch/4
-			v.n.x = v.p.x;
-			v.n.y = v.p.y;
-			v.n.z = v.p.z;
-			D3DXVec3Normalize( &v.n, &v.n );
-			v.t.x = (float)x / (cxHeight-1);
-			v.t.y = (float)z / (czHeight-1);
-			*pV++ = v;
+			v->p.x = -((float)x-cxHeight);		/// 정점의 x좌표(메시를 원점에 정렬)
+			v->p.z = -((float)z-czHeight);	/// 정점의 z좌표(메시를 원점에 정렬), z축이 모니터안쪽이므로 -를 곱한다.
+			v->p.y = ((float)(*((LPDWORD)d3drc.pBits+x+z*(d3drc.Pitch/4))&0x000000ff))/10.0f;	/// DWORD이므로 pitch/4
+			v->n.x = v->p.x;
+			v->n.y = v->p.y;
+			v->n.z = v->p.z;
+			D3DXVec3Normalize( &v->n, &v->n );
+			v->t.x = (float)x / (cxHeight-1);
+			v->t.y = (float)z / (czHeight-1);
 
-			if ( minPos.x > v.p.x )
-				minPos.x = v.p.x;
+			if ( minPos.x > v->p.x )
+				minPos.x = v->p.x;
 
-			if ( minPos.y > v.p.y )
-				minPos.y = v.p.y;
+			if ( minPos.y > v->p.y )
+				minPos.y = v->p.y;
 
-			if ( minPos.z > v.p.z )
-				minPos.z = v.p.z;
+			if ( minPos.z > v->p.z )
+				minPos.z = v->p.z;
 
-			if ( maxPos.x < v.p.x )
-				maxPos.x = v.p.x;
-			if ( maxPos.y < v.p.y )
-				maxPos.y = v.p.y;
-			if ( maxPos.z < v.p.z )
-				maxPos.z = v.p.z;
+			if ( maxPos.x < v->p.x )
+				maxPos.x = v->p.x;
+			if ( maxPos.y < v->p.y )
+				maxPos.y = v->p.y;
+			if ( maxPos.z < v->p.z )
+				maxPos.z = v->p.z;
 		}
 	}
-	pVB->Unlock();
+
 	texheight->Get()->UnlockRect( 0 );
 
 	m_pRootTile = new TILE;
 	m_pRootTile->m_minPos = minPos;
 	m_pRootTile->m_maxPos = maxPos;
-	build( m_pRootTile , (GDSVERTEX*)pVertices );
+	build( m_pRootTile , (GDSVERTEX*)v );
 
+	SAFE_DELETE( v );
 
-	LPDIRECT3DINDEXBUFFER9 m_pIB;
-	if( FAILED( RENDERER.GetDevice()->CreateIndexBuffer( ( m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 * sizeof(GDSINDEX), 0, 
-		D3DFMT_INDEX16, D3DPOOL_DEFAULT, &m_pIB, NULL ) ) )
-	{
-		return false;
-	}
+	RESMGR.AllocIndexBuffer( m_pIB , ( m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 * sizeof(GDSINDEX) );
 
 	GDSINDEX	i;
 	GDSINDEX*	pI;
@@ -278,5 +256,4 @@ void GdsTerrain::genIndex( TILE* tile )
 	tile->m_RenderToken->SetIndexBuffer( m_pIB );
 	tile->m_RenderToken->SetStartIndex( 0 );
 	tile->m_RenderToken->SetEndIndex( (m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 );	
-
 }

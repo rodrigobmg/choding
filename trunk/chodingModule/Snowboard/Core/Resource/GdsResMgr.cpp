@@ -36,12 +36,14 @@ HRESULT GdsResMgr::Create( LPDIRECT3DDEVICE9 device )
 {
 	Clear();
 	m_pDevice = device;
+	m_listIndexBuffer.clear();
+	m_listVertexBuffer.clear();
 	return true;
 }
 
 HRESULT GdsResMgr::Release()
 {
-	Clear();
+	Clear();	
 	return true;
 }
 
@@ -262,3 +264,26 @@ HRESULT GdsResMgr::ReCreate( LPDIRECT3DDEVICE9 device , GdsResBasePtr recreated_
 	recreated_res->ReCreate( device );
 	return true;
 }
+
+void GdsResMgr::AllocIndexBuffer( LPDIRECT3DINDEXBUFFER9& pIB , size_t size )
+{
+	if ( m_pDevice )
+	{
+		if ( FAILED( m_pDevice->CreateIndexBuffer( size , 0, D3DFMT_INDEX16, D3DPOOL_DEFAULT, &pIB, NULL ) ) )
+			return;
+
+		m_listIndexBuffer.push_back( pIB );
+	}
+}
+
+void GdsResMgr::AllocVertexBuffer( LPDIRECT3DVERTEXBUFFER9& pVB , size_t size )
+{
+	if ( m_pDevice )
+	{
+		if ( FAILED( m_pDevice->CreateVertexBuffer( size , 0, GDSVERTEX::FVF, D3DPOOL_DEFAULT, &pVB, NULL ) ))
+			return;
+
+		m_listVertexBuffer.push_back( pVB );
+	}
+}
+

@@ -4,7 +4,7 @@
 #include "../Base\GdsObject.h"
 #include "../Renderer/GdsRenderObject.h"
 
-class GdsNode : public GdsObject //, public boost::enable_shared_from_this< GdsNode >
+class GdsNode : public GdsObject
 {
 	// oc-tree
 	struct Node

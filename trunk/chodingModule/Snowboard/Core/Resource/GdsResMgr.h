@@ -11,6 +11,11 @@ class GdsResMgr : public GdsObject{
 
 private:
 
+	typedef std::list< LPDIRECT3DINDEXBUFFER9 >	INDEXBUFFER_LIST;
+	typedef std::list< LPDIRECT3DVERTEXBUFFER9 > VERTEXBUFFER_LIST;
+	INDEXBUFFER_LIST	m_listIndexBuffer;
+	VERTEXBUFFER_LIST	m_listVertexBuffer;
+
  	typedef stdext::hash_map< tstring , GdsResBasePtr >	HASHMAPRes;
 	//typedef std::vector<tstring>	FILE_LIST;
 	typedef GdsLookupTable< tstring , tstring > FILE_LIST;
@@ -75,6 +80,8 @@ public:
 	HRESULT				ReCreate( LPDIRECT3DDEVICE9 device , GdsResBasePtr recreated_res );
 	HRESULT				Release();
 
+	void				AllocIndexBuffer( LPDIRECT3DINDEXBUFFER9& pIB , size_t size );
+	void				AllocVertexBuffer( LPDIRECT3DVERTEXBUFFER9& pVB , size_t size );
 
 };
 

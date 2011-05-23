@@ -54,10 +54,9 @@ class GdsTerrain : public GdsObject
 	};
 
 	TILE*						m_pRootTile;
-// 	typedef	std::vector< GdsRenderObject >	TILE;
-// 	TILE						m_vecTile;
 	void						genIndex( TILE* tile );
 	void						build( TILE* tile , GDSVERTEX* pVB );
+
 protected:			
 
 	virtual void				vClear();
