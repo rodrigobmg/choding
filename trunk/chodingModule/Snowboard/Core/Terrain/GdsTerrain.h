@@ -8,16 +8,13 @@
 class GdsTerrain : public GdsObject
 {
 	// index-templet for slod
-	LPDIRECT3DINDEXBUFFER9*		m_pIB;
+	LPDIRECT3DINDEXBUFFER9		m_pIB;
 
 	int							m_iVertexPerNode;
 	int							m_ixheight;
 	int							m_izheight;
 	int							m_iMaxLOD;
-
-	void						createIB( GdsRenderObjectPtr pRenderToken );
-	void						createVB( GdsRenderObjectPtr pRenderToken );
-
+	
 	// tile
 	struct TILE
 	{
@@ -29,9 +26,11 @@ class GdsTerrain : public GdsObject
 		D3DXVECTOR3				m_minPos;
 		D3DXVECTOR3				m_maxPos;
 		D3DXVECTOR3				m_cenPos;
+		GdsRenderObjectPtr		m_RenderToken;
 		TILE()
 		{
 			m_pVertex = NULL;
+			m_RenderToken = GdsRenderObjectPtr( (GdsRenderObject*)NULL );
 			m_iLOD = 0;
 			m_iMaxLOD = 3;						
 			m_maxPos = D3DXVECTOR3( 0.f , 0.f , 0.f );
@@ -57,7 +56,7 @@ class GdsTerrain : public GdsObject
 	TILE*						m_pRootTile;
 // 	typedef	std::vector< GdsRenderObject >	TILE;
 // 	TILE						m_vecTile;
-
+	void						genIndex( TILE* tile );
 	void						build( TILE* tile , GDSVERTEX* pVB );
 protected:			
 
