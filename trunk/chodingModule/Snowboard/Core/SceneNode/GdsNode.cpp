@@ -566,7 +566,8 @@ HRESULT GdsNode::Update( float fElapsedtime )
 
 	if ( m_bShowAxis )
 	{
-
+		D3DXVECTOR3 cenPos( 5.f , 5.f , 5.f );
+		RENDERER.DrawAxis( cenPos );
 	}
 	if ( m_bShowBox )
 	{

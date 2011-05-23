@@ -139,7 +139,6 @@ void GdsRendererDX9::drawAxis(  D3DXVECTOR3& point , D3DXMATRIXA16& mat , ID3DXL
 
 void GdsRendererDX9::drawBox(  D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos , D3DXMATRIXA16& mat , ID3DXLine* Line )
 {
-
 	D3DXVECTOR3 lineLBN[2];
 	lineLBN[0] = minPos;
 	lineLBN[1].x = minPos.x; lineLBN[1].y = maxPos.y; lineLBN[1].z = minPos.z;
