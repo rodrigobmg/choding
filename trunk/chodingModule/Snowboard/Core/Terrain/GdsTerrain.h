@@ -76,8 +76,9 @@ public:
 	void						SetVertexPerPatch( int ivalue ){ m_iVertexPerNode = ivalue; }
 	int							GetVertexPerPatch(){ return m_iVertexPerNode; }
 
-	bool						MakeHeightMap( GdsNodePtr pNode );
+	bool						MakeHeightMap();
 
+	void						Update( float fElapsedtime );
 };
 
 #define TERRAIN	singleton_holder< GdsTerrain >::instance()

@@ -32,5 +32,5 @@ public:
  TEST_F( GdsTerrainTest,  MakeHeightMap )
  {	 
 	 GdsNodePtr pNode = GdsNodePtr( new GdsNode );
-	 TERRAIN.MakeHeightMap( pNode );		
+	 TERRAIN.MakeHeightMap();		
  }

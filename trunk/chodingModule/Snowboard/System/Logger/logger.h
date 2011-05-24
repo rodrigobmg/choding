@@ -39,7 +39,7 @@
 	__pragma (warning(default:4127))
 
 #define LOG_INFO_F(fmt, ...)								\
-	a2::Logger::getInstance().LogF(fmt, __VA_ARGS__)
+	util::Logger::getInstance().LogF(fmt, __VA_ARGS__)
 
 #define LOG_ERROR_F(fmt, ...)								\
 	do														\
@@ -86,7 +86,7 @@
 #define LOG_COLOR_F(COLOR, fmt, ...)						\
 	do														\
 	{														\
-		a2::Logger & g_logger = a2::Logger::getInstance();	\
+		util::Logger & g_logger = LOGGER;					\
 		g_logger.SetColorTo##COLOR();						\
 		g_logger.LogF(fmt, __VA_ARGS__);					\
 		g_logger.SetColorToBLACK();							\

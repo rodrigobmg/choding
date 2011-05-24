@@ -103,11 +103,7 @@ void CSnowboard::TestFunc()
 
 	RENDERER.GetRootNode()->SetName( L"ROOT" );
 
-	GdsNodePtr mapNode = GdsNodePtr( new GdsNode );
-	mapNode->SetName( L"height Map" );
-	TERRAIN.MakeHeightMap( mapNode );
-	RENDERER.GetRootNode()->AttachChild( mapNode );
-
+	TERRAIN.MakeHeightMap();
 }
 
 HRESULT CSnowboard::MsgProc(  HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )

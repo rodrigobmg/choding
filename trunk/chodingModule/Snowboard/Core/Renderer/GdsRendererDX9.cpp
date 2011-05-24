@@ -2,6 +2,7 @@
 #include "../Camera/GdsCameraManagerDX9.h"
 #include "InputSystem/GdsInputSystem.h"
 #include "../../System/Logger/logger.h"
+#include "Terrain/GdsTerrain.h"
 
 GdsRendererDX9::GdsRendererDX9() :
 m_bWireMode( true ) ,
@@ -83,12 +84,14 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 			m_pd3dDevice->SetTransform( D3DTS_PROJECTION, &(CAMMGR.GetCurCam()->GetProjMat()) );
 		}
 
+		TERRAIN.Update( fAccumTime );
+
 		if ( m_RootNode )
 			m_RootNode->Update( fAccumTime );					
 
 		m_RenderFrameList->Render( m_pd3dDevice );
 
-		if( !m_DrawAxisData.empty() || !m_DrawBoxData.empty() )
+		if( !m_listAxisData.empty() || !m_listBoxData.empty() )
 		{
 			drawEtc();			
 		}
@@ -118,7 +121,7 @@ void GdsRendererDX9::setRootNodeAndCamNode()
   	CAMMGR.SetCurCam( 0 );
 }
 
-void GdsRendererDX9::drawAxis(  D3DXVECTOR3& point , D3DXMATRIXA16& mat , ID3DXLine* Line )
+void GdsRendererDX9::drawAxis(  D3DXMATRIX& mat , D3DXVECTOR3& point , ID3DXLine* Line )
 {
 	D3DXVECTOR3 lineLBN[2];
 	lineLBN[0].x = 0.0f; lineLBN[0].y = 0.0f; lineLBN[0].z = 0.0f;
@@ -137,7 +140,7 @@ void GdsRendererDX9::drawAxis(  D3DXVECTOR3& point , D3DXMATRIXA16& mat , ID3DXL
 	Line->DrawTransform( lineLBF , 2, &mat, D3DXCOLOR( 0.0f , 0.0f , 1.0f , 1.0f ));
 }
 
-void GdsRendererDX9::drawBox(  D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos , D3DXMATRIXA16& mat , ID3DXLine* Line )
+void GdsRendererDX9::drawBox( D3DXMATRIX& mat , D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos , ID3DXLine* Line )
 {
 	D3DXVECTOR3 lineLBN[2];
 	lineLBN[0] = minPos;
@@ -198,19 +201,19 @@ void GdsRendererDX9::drawBox(  D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos , D3DXM
 	Line->DrawTransform( lineBN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
 	Line->DrawTransform( lineTN , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
 	Line->DrawTransform( lineBF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	Line->DrawTransform( lineTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));
-	
+	Line->DrawTransform( lineTF , 2, &mat, D3DXCOLOR( 0.0f , 1.0f , 0.0f , 1.0f ));	
 }
 
-void GdsRendererDX9::DrawBox( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos )
+void GdsRendererDX9::DrawBox( D3DXMATRIX& mat , D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos )
 {
-	RECT_DATA box( minPos , maxPos );
-	m_DrawBoxData.push_back( box );
+	BOXDATA token( mat , minPos , maxPos );
+	m_listBoxData.push_back( token );
 }
 
-void GdsRendererDX9::DrawAxis( D3DXVECTOR3& point )
+void GdsRendererDX9::DrawAxis( D3DXMATRIX& mat , D3DXVECTOR3& point )
 {
-	m_DrawAxisData.push_back( point );
+	AXISDATA token( mat , point );
+	m_listAxisData.push_back( token );
 }
 
 void GdsRendererDX9::drawEtc()
@@ -220,8 +223,7 @@ void GdsRendererDX9::drawEtc()
 	D3DXMATRIXA16 matProj;
 	m_pd3dDevice->GetTransform( D3DTS_WORLD , &matWorld );
 	m_pd3dDevice->GetTransform( D3DTS_VIEW  , &matView );
-	m_pd3dDevice->GetTransform( D3DTS_PROJECTION , &matProj );
-	D3DXMATRIXA16 mat = matWorld*matView*matProj;
+	m_pd3dDevice->GetTransform( D3DTS_PROJECTION , &matProj );	
 
 	ID3DXLine* Line;
 	D3DXCreateLine( m_pd3dDevice , &Line );
@@ -229,22 +231,25 @@ void GdsRendererDX9::drawEtc()
 	Line->SetAntialias( true );
 	Line->Begin();
 
-	DRAWAXIS_CONTAINER::iterator itAxis = m_DrawAxisData.begin();
-	DRAWAXIS_CONTAINER::iterator itAxis_end = m_DrawAxisData.end();
+	LIST_AXIS::iterator itAxis = m_listAxisData.begin();
+	LIST_AXIS::iterator itAxis_end = m_listAxisData.end();
 	for( ; itAxis != itAxis_end ; ++itAxis )
 	{
-		drawAxis( *itAxis , mat , Line );
+		D3DXMATRIX mat = (boost::tuples::get<0>(*itAxis))*matView*matProj;
+		drawAxis( mat , boost::tuples::get<1>(*itAxis) , Line );
 	}
 
-	DRAWBOX_CONTAINER::iterator itBox = m_DrawBoxData.begin();
-	DRAWBOX_CONTAINER::iterator itBox_end = m_DrawBoxData.end();
+	LIST_BOX::iterator itBox = m_listBoxData.begin();
+	LIST_BOX::iterator itBox_end = m_listBoxData.end();
 	for ( ; itBox != itBox_end ; ++itBox )
 	{
-		drawBox( itBox->first , itBox->second , mat , Line );
+		D3DXMATRIX mat = (boost::tuples::get<0>(*itBox))*matView*matProj;
+		drawBox( mat , boost::tuples::get<1>(*itBox) , boost::tuples::get<2>(*itBox) , Line );
 	}
 
 	Line->End();
-	Line->Release();		
-	m_DrawAxisData.clear();
-	m_DrawBoxData.clear();
+	Line->Release();
+
+	m_listAxisData.clear();
+	m_listBoxData.clear();
 }

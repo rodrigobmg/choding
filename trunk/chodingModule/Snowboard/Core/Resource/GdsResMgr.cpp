@@ -30,14 +30,15 @@ GdsResMgr::~GdsResMgr()
 
 void GdsResMgr::Clear()
 {
+	m_listIndexBuffer.clear();
+	m_listVertexBuffer.clear();
+	m_listRenderToken.clear();
 }
 
 HRESULT GdsResMgr::Create( LPDIRECT3DDEVICE9 device )
 {
 	Clear();
-	m_pDevice = device;
-	m_listIndexBuffer.clear();
-	m_listVertexBuffer.clear();
+	m_pDevice = device;	
 	return true;
 }
 
@@ -71,12 +72,13 @@ GdsResBasePtr GdsResMgr::exist( const TCHAR* filename )
 GdsResBasePtr	GdsResMgr::Get( const TCHAR* filename )
 {
 	GdsResBasePtr p = exist( filename );
-	if ( p )
+	if ( p == NULL )
 	{
-		return p;
+		p = load_res(filename);
 	}
-	
-	return load_res( filename );
+
+	LOG_WARNING_F( "Load Resource %s" , filename );
+	return p;
 }
 
 GdsResBasePtr GdsResMgr::load_res( const TCHAR* filename )
@@ -265,25 +267,80 @@ HRESULT GdsResMgr::ReCreate( LPDIRECT3DDEVICE9 device , GdsResBasePtr recreated_
 	return true;
 }
 
-void GdsResMgr::AllocIndexBuffer( LPDIRECT3DINDEXBUFFER9& pIB , size_t size )
+void GdsResMgr::AllocIndexBuffer( LPDIRECT3DINDEXBUFFER9& pIB , uint32_t size )
 {
 	if ( m_pDevice )
 	{
 		if ( FAILED( m_pDevice->CreateIndexBuffer( size , 0, D3DFMT_INDEX16, D3DPOOL_DEFAULT, &pIB, NULL ) ) )
+		{
+			pIB = NULL;
 			return;
+		}
 
+		LOG_CYAN_F( "Alloc IndexBuffer size = %d byte " , size );
 		m_listIndexBuffer.push_back( pIB );
 	}
 }
 
-void GdsResMgr::AllocVertexBuffer( LPDIRECT3DVERTEXBUFFER9& pVB , size_t size )
+void GdsResMgr::FreeIndexBuffer( LPDIRECT3DINDEXBUFFER9 pIB )
+{
+	INDEXBUFFER_LIST::iterator it = m_listIndexBuffer.begin();
+	INDEXBUFFER_LIST::iterator it_end = m_listIndexBuffer.end();
+	for ( ; it != it_end ; ++it )
+	{
+		if( pIB == *it )
+		{
+			(*it)->Release();
+			break;
+		}
+	}
+}
+
+void GdsResMgr::AllocVertexBuffer( LPDIRECT3DVERTEXBUFFER9& pVB , uint32_t size )
 {
 	if ( m_pDevice )
 	{
 		if ( FAILED( m_pDevice->CreateVertexBuffer( size , 0, GDSVERTEX::FVF, D3DPOOL_DEFAULT, &pVB, NULL ) ))
+		{
+			pVB = NULL;
 			return;
-
+		}
+		LOG_GREEN_F( "Alloc VertexBuffer size = %d byte " , size );
 		m_listVertexBuffer.push_back( pVB );
 	}
 }
 
+void GdsResMgr::FreeVertexBuffer( LPDIRECT3DVERTEXBUFFER9 pVB )
+{
+	VERTEXBUFFER_LIST::iterator it = m_listVertexBuffer.begin();
+	VERTEXBUFFER_LIST::iterator it_end = m_listVertexBuffer.end();
+	for ( ; it != it_end ; ++it )
+	{
+		if ( *it == pVB )
+		{
+			(*it)->Release();
+			break;
+		}
+	}
+}
+
+void GdsResMgr::AllocRenderObject( GdsRenderObjectPtr& p )
+{
+	LOG_CYAN( "Alloc RenderObject addres\n" );
+	p = GdsRenderObjectPtr( new GdsRenderObject );
+	m_listRenderToken.push_back( p );
+}
+
+void GdsResMgr::FreeRenderObject( GdsRenderObjectPtr p )
+{
+	RENDERTOKEN_LIST::iterator it = m_listRenderToken.begin();
+	RENDERTOKEN_LIST::iterator it_end = m_listRenderToken.end();
+	for ( ; it != it_end ; ++it )
+	{
+		if ( p == *it )
+		{
+			m_listRenderToken.erase( it );
+			break;
+		}
+	}
+}

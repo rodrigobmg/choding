@@ -8,12 +8,12 @@
 class GdsRendererDX9 : public GdsRendererBase
 {
 	//상자나 축그릴때 사용할 녀석들
-	typedef std::pair< D3DXVECTOR3 , D3DXVECTOR3 >	RECT_DATA;
-	typedef std::list< RECT_DATA >					DRAWBOX_CONTAINER;
-	DRAWBOX_CONTAINER		m_DrawBoxData;
-
-	typedef std::list< D3DXVECTOR3 >				DRAWAXIS_CONTAINER;
-	DRAWAXIS_CONTAINER		m_DrawAxisData;
+	typedef boost::tuple< D3DXMATRIX , D3DXVECTOR3 >				AXISDATA;
+	typedef std::list< AXISDATA >									LIST_AXIS;
+	LIST_AXIS					m_listAxisData;
+	typedef	boost::tuple< D3DXMATRIX , D3DXVECTOR3 , D3DXVECTOR3 >	BOXDATA;
+	typedef std::list< BOXDATA >									LIST_BOX;
+	LIST_BOX					m_listBoxData;
 
 private:
 	
@@ -27,8 +27,8 @@ private:
 	void					setRootNodeAndCamNode();
 
 	void					drawEtc();
-	void					drawAxis( D3DXVECTOR3& point , D3DXMATRIXA16& mat , ID3DXLine* line );
-	void					drawBox( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos , D3DXMATRIXA16& mat , ID3DXLine* line );
+	void					drawAxis( D3DXMATRIX& mat , D3DXVECTOR3& point , ID3DXLine* line );
+	void					drawBox( D3DXMATRIX& mat , D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos , ID3DXLine* line );
 
 protected:
 
@@ -41,8 +41,8 @@ public:
 	GdsRendererDX9();
 	virtual ~GdsRendererDX9();
 
-	void					DrawBox( D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos );
-	void					DrawAxis( D3DXVECTOR3& point );
+	void					DrawBox( D3DXMATRIX& mat , D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos );
+	void					DrawAxis( D3DXMATRIX& mat , D3DXVECTOR3& point );
 	
 	void					ToggleWireMode(){ m_bWireMode = !m_bWireMode; }
 	void					Clear(){ vClear(); }

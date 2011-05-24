@@ -562,19 +562,7 @@ HRESULT GdsNode::DetachChild( GdsNodePtr pNode )
 HRESULT GdsNode::Update( float fElapsedtime )
 {	
 	if ( m_bCull )
-		return TRUE;
-
-	if ( m_bShowAxis )
-	{
-		D3DXVECTOR3 cenPos( 5.f , 5.f , 5.f );
-		RENDERER.DrawAxis( cenPos );
-	}
-	if ( m_bShowBox )
-	{
-		D3DXVECTOR3 minPos( 0.f , 0.f , 0.f );
-		D3DXVECTOR3 maxPos( 10.f , 10.f , 10.f );
-		RENDERER.DrawBox( minPos , maxPos );
-	}
+		return FALSE;
 
 	D3DXMATRIX matTrans, matScale, matRot;
 	D3DXMatrixIdentity( &matTrans );
@@ -601,29 +589,40 @@ HRESULT GdsNode::Update( float fElapsedtime )
 
 	m_vWorldTranslate = D3DXVECTOR3(m_matWorld._41, m_matWorld._42, m_matWorld._43 ) ;
 	D3DXQuaternionRotationMatrix(&m_qWorldRotate, &m_matWorld);
-
 	// ºä ÆÇÁ¤
-	if ( CAMMGR.GetCurCam()->GetFrustum().VertexIsInFrustum( m_vWorldTranslate ) )	
+	if ( CAMMGR.GetCurCam()->GetFrustum().VertexIsInFrustum( m_vWorldTranslate ) == false )	
 	{
-		if ( m_bUseOctree )
-		{
-			GenOctreeFaceIndex();
-		}
-
-		if ( !m_list_RenderObject.empty() )
-		{
-			RENDER_OBJECT_CONTAINER::iterator it = m_list_RenderObject.begin();
-			for ( ; it != m_list_RenderObject.end() ; ++it )
-			{
-				it->first->SetMatrix( m_matWorld );
-				RENDERER.GetRenderFrame()->AttachRenderObject( it->first , it->second );
-			}			
-		}		
+		return FALSE;
 	}
-	else
+
+
+	if ( m_bShowAxis )
 	{
-
+		D3DXVECTOR3 cenPos( 5.f , 5.f , 5.f );
+		RENDERER.DrawAxis( m_matWorld , cenPos );
 	}
+	if ( m_bShowBox )
+	{
+		D3DXVECTOR3 minPos( -10.f , -10.f , -10.f );
+		D3DXVECTOR3 maxPos( 10.f , 10.f , 10.f );
+		RENDERER.DrawBox( m_matWorld , minPos , maxPos );
+	}
+
+
+	if ( m_bUseOctree )
+	{
+		GenOctreeFaceIndex();
+	}
+
+	if ( !m_list_RenderObject.empty() )
+	{
+		RENDER_OBJECT_CONTAINER::iterator it = m_list_RenderObject.begin();
+		for ( ; it != m_list_RenderObject.end() ; ++it )
+		{
+			it->first->SetMatrix( m_matWorld );
+			RENDERER.GetRenderFrame()->AttachRenderObject( it->first , it->second );
+		}			
+	}		
 
 	vUpdate( fElapsedtime );
 

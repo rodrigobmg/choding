@@ -4,6 +4,7 @@
 #include "../Base/GdsObject.h"
 #include "GdsResBaseType.h"
 #include "Type\GdsResTexture.h"
+#include "..\Renderer\GdsRenderObject.h"
 
 // 모든 리소스 파일네임은 소문자로 취급한다.!!!!!!!!!!!!!!!!
 
@@ -15,6 +16,9 @@ private:
 	typedef std::list< LPDIRECT3DVERTEXBUFFER9 > VERTEXBUFFER_LIST;
 	INDEXBUFFER_LIST	m_listIndexBuffer;
 	VERTEXBUFFER_LIST	m_listVertexBuffer;
+
+	typedef std::list< GdsRenderObjectPtr >		RENDERTOKEN_LIST;
+	RENDERTOKEN_LIST	m_listRenderToken;
 
  	typedef stdext::hash_map< tstring , GdsResBasePtr >	HASHMAPRes;
 	//typedef std::vector<tstring>	FILE_LIST;
@@ -80,9 +84,18 @@ public:
 	HRESULT				ReCreate( LPDIRECT3DDEVICE9 device , GdsResBasePtr recreated_res );
 	HRESULT				Release();
 
-	void				AllocIndexBuffer( LPDIRECT3DINDEXBUFFER9& pIB , size_t size );
-	void				AllocVertexBuffer( LPDIRECT3DVERTEXBUFFER9& pVB , size_t size );
+	void				AllocIndexBuffer( LPDIRECT3DINDEXBUFFER9& pIB , uint32_t size );
+	void				FreeIndexBuffer( LPDIRECT3DINDEXBUFFER9 pIB );
 
+	void				AllocVertexBuffer( LPDIRECT3DVERTEXBUFFER9& pVB , uint32_t size );
+	void				FreeVertexBuffer( LPDIRECT3DVERTEXBUFFER9 pVB );
+
+	void				AllocRenderObject( GdsRenderObjectPtr& p );
+	void				FreeRenderObject( GdsRenderObjectPtr p );
+
+	int					GetCountIndexBuffer(){ m_listIndexBuffer.size(); }
+	int					GetCountVertexBuffer(){ m_listVertexBuffer.size(); }
+	int					GetCountRenderObject(){ m_listRenderToken.size(); }
 };
 
 typedef	boost::shared_ptr< GdsResMgr >	GdsResMgrPtr;
