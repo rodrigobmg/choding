@@ -5,7 +5,7 @@
 #include "Renderer\GdsRenderStateGroup.h"
 
 GdsTerrain::GdsTerrain() 
-: m_iVertexPerNode( 16 )
+: m_iVertexPerNode( 32 )
 , m_pIB( NULL )
 , m_ixheight( 0 )
 , m_izheight( 0 )
@@ -132,7 +132,7 @@ bool GdsTerrain::MakeHeightMap()
 	cxHeight = ddsd.Width;				/// 텍스처의 가로크기
 	czHeight = ddsd.Height;				/// 텍스처의 세로크기
 
-	m_iVertexPerNode = cxHeight;
+	//m_iVertexPerNode = cxHeight;
 
 	int icheckx = cxHeight % m_iVertexPerNode;
 	int icheckz = czHeight % m_iVertexPerNode;
