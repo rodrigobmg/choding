@@ -74,9 +74,9 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 		int icount = 0;
 		float minY = 0;
 		float maxY = 0;
-		for ( int x = static_cast<int>(tile->m_minPos.x) ; x < static_cast<int>(tile->m_maxPos.x) ; x++ )
+		for ( int x = static_cast<int>(tile->m_minPos.x) ; x < m_iVertexPerNode ; x++ )
 		{
-			for ( int z = static_cast<int>(tile->m_minPos.z) ; z < static_cast<int>(tile->m_maxPos.z) ; z++ )
+			for ( int z = static_cast<int>(tile->m_minPos.z) ; z < m_iVertexPerNode ; z++ )
 			{
 				tile->m_pVertex[icount] = pVB[ z*m_iVertexPerNode + x];
 				if ( tile->m_pVertex[icount].p.y > maxY )
@@ -172,7 +172,7 @@ bool GdsTerrain::MakeHeightMap()
 		{
 
 			vertex.p.x = (float)x;
-			vertex.p.z = -( (float)z - czHeight );	
+			vertex.p.z = -( (float)z - czHeight );
 			vertex.p.y = ((float)(*( (LPDWORD)d3drc.pBits+x+z*(d3drc.Pitch/4) )&0x000000ff) ) / 10.0f;	/// DWORD¿Ãπ«∑Œ pitch/4
 			vertex.n.x = vertex.p.x;
 			vertex.n.y = vertex.p.y;
