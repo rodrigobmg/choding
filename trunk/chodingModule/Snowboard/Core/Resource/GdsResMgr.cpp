@@ -278,7 +278,7 @@ void GdsResMgr::AllocIndexBuffer( LPDIRECT3DINDEXBUFFER9& pIB , uint32_t size )
 		}
 		
 		m_listIndexBuffer.push_back( pIB );
-		LOG_CYAN_F( "Alloc IndexBuffer size = %d byte address[0x%08x] Total Count = %d" , size , pIB , m_listIndexBuffer.size() );
+	//	LOG_CYAN_F( "Alloc IndexBuffer size = %d byte address[0x%08x] Total Count = %d" , size , pIB , m_listIndexBuffer.size() );
 	}
 }
 
@@ -307,7 +307,7 @@ void GdsResMgr::AllocVertexBuffer( LPDIRECT3DVERTEXBUFFER9& pVB , uint32_t size 
 		}
 		
 		m_listVertexBuffer.push_back( pVB );
-		LOG_CYAN_F( "Alloc VertexBuffer size = %d byte address[0x%08x] Total Count = %d" , size , pVB , m_listVertexBuffer.size() );
+	//	LOG_CYAN_F( "Alloc VertexBuffer size = %d byte address[0x%08x] Total Count = %d" , size , pVB , m_listVertexBuffer.size() );
 	}
 }
 
@@ -329,7 +329,7 @@ void GdsResMgr::AllocRenderObject( GdsRenderObjectPtr& p )
 {	
 	m_listRenderToken.push_back( p );
 	p = GdsRenderObjectPtr( new GdsRenderObject );	
-	LOG_CYAN_F( "Alloc RenderObject address[0x%08x] Total Count = %d" , p , m_listRenderToken.size() );
+//	LOG_CYAN_F( "Alloc RenderObject address[0x%08x] Total Count = %d" , p , m_listRenderToken.size() );
 }
 
 void GdsResMgr::FreeRenderObject( GdsRenderObjectPtr p )

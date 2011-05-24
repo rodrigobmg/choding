@@ -9,7 +9,7 @@ GdsTerrain::GdsTerrain()
 , m_pIB( NULL )
 , m_ixheight( 0 )
 , m_izheight( 0 )
-, m_iMaxLOD( 6 )
+, m_iMaxLOD( 0 )
 , m_pRootTile(NULL)
 {
 	SetName( OBJECT_TERRAIN );	
@@ -40,9 +40,9 @@ void GdsTerrain::vClear()
 	SAFE_DELETE( m_pRootTile );
 	for ( size_t i=0 ; i<m_iMaxLOD ; i++)
 	{
-		if ( m_pIB[0] != NULL )
+		if ( m_pIB[i] != NULL )
 		{
-			RESMGR.FreeIndexBuffer( m_pIB[0] );
+			RESMGR.FreeIndexBuffer( m_pIB[i] );
 		}
 	}
 	SAFE_DELETE(m_pIB);
@@ -141,7 +141,12 @@ bool GdsTerrain::MakeHeightMap()
 	cxHeight = ddsd.Width;				/// 텍스처의 가로크기
 	czHeight = ddsd.Height;				/// 텍스처의 세로크기
 
-	//m_iVertexPerNode = cxHeight;
+	//maxlod 계산
+	for ( int i=m_iVertexPerNode; i > 0 ; i /= 2 )
+	{
+		m_iMaxLOD++;
+	}
+	m_iMaxLOD -= 1;
 
 	int icheckx = cxHeight % m_iVertexPerNode;
 	int icheckz = czHeight % m_iVertexPerNode;
@@ -237,10 +242,17 @@ void GdsTerrain::genIndex( TILE* tile )
 	if ( tile->m_pVertex == NULL )
 		return;	
 
-	tile->m_RenderToken->SetIndexMaxCount( (m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 );
-	tile->m_RenderToken->SetIndexBuffer( m_pIB[0] );
+	int iLodlv = 0;
+	float iOffset;
+	if ( iLodlv == 0 )
+		iOffset = 1;
+	else
+		iOffset = pow( 2.0f , iLodlv );
+
+	tile->m_RenderToken->SetIndexMaxCount( (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 );
+	tile->m_RenderToken->SetIndexBuffer( m_pIB[iLodlv] );
 	tile->m_RenderToken->SetStartIndex( 0 );
-	tile->m_RenderToken->SetEndIndex( (m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 );	
+	tile->m_RenderToken->SetEndIndex( (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 );	
 	
 	RENDERER.GetRenderFrame()->AttachRenderObject( tile->m_RenderToken , 0 );
 }
@@ -254,34 +266,44 @@ void GdsTerrain::Update( float fElapsedtime )
 bool GdsTerrain::createTempletIB()
 {
 	m_pIB = new LPDIRECT3DINDEXBUFFER9[m_iMaxLOD];
-	for ( size_t i = 0 ; i< m_iMaxLOD ; i++)
+	for ( int iLodlv = 0 ; iLodlv< m_iMaxLOD ; iLodlv++)
 	{
-		m_pIB[i] = NULL;
-	}
+		m_pIB[iLodlv] = NULL;
 
-	RESMGR.AllocIndexBuffer( m_pIB[0] , ( m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 * sizeof(GDSINDEX) );
 
-	GDSINDEX	i;
-	GDSINDEX*	pI;
+		float iOffset;
+		if ( iLodlv == 0 )
+			iOffset = 1;
+		else
+			iOffset = pow( 2.0f , iLodlv );
 
-	if( FAILED( m_pIB[0]->Lock( 0, (m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 * sizeof(GDSINDEX), (void**)&pI, 0 ) ) )
-		return false;
+		RESMGR.AllocIndexBuffer( m_pIB[iLodlv] , (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 * sizeof(GDSINDEX) );		
 
-	for( int z = 0 ; z < m_iVertexPerNode-1 ; z++ )
-	{
-		for( int x = 0 ; x < m_iVertexPerNode-1 ; x++ )
+		GDSINDEX*	pI;
+		if( FAILED( m_pIB[iLodlv]->Lock( 0, (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 * sizeof(GDSINDEX), (void**)&pI, 0 ) ) )
+			return false;
+
+		GDSINDEX	i;
+		int icount = 0;
+		for( int z = 0 ; z < m_iVertexPerNode-iOffset ; z += iOffset )
 		{
-			i._0 = (z*m_iVertexPerNode+x);
-			i._1 = (z*m_iVertexPerNode+x+1);
-			i._2 = ((z+1)*m_iVertexPerNode+x);
-			*pI++ = i;
-			i._0 = ((z+1)*m_iVertexPerNode+x);
-			i._1 = (z*m_iVertexPerNode+x+1);
-			i._2 = ((z+1)*m_iVertexPerNode+x+1);
-			*pI++ = i;
+			for( int x = 0 ; x < m_iVertexPerNode-iOffset ; x += iOffset )
+			{
+				i._0 = (z*m_iVertexPerNode+x);
+				i._1 = (z*m_iVertexPerNode+x+iOffset);
+				i._2 = ((z+iOffset)*m_iVertexPerNode+x);
+				*pI++ = i;
+				i._0 = ((z+iOffset)*m_iVertexPerNode+x);
+				i._1 = (z*m_iVertexPerNode+x+iOffset);
+				i._2 = ((z+iOffset)*m_iVertexPerNode+x+iOffset);
+				*pI++ = i;
+				icount++;
+			}
 		}
+		
+		m_pIB[iLodlv]->Unlock();	
+
 	}
-	m_pIB[0]->Unlock();	
 	
 	return true;
 }
