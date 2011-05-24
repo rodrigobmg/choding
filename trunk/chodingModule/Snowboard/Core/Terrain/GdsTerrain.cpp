@@ -72,10 +72,10 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 		tile->m_pChild[3]->m_minPos = D3DXVECTOR3( tile->m_minPos.x , 0 , tile->m_cenPos.z );
 		tile->m_pChild[3]->m_maxPos = D3DXVECTOR3( tile->m_cenPos.x , 0 , tile->m_maxPos.z );
 
-		build( tile->m_pChild[0] , pVB );
-		build( tile->m_pChild[1] , pVB );
-		build( tile->m_pChild[2] , pVB );
-		build( tile->m_pChild[3] , pVB );
+		build( tile->m_pChild[0] , (GDSVERTEX*)pVB );
+		build( tile->m_pChild[1] , (GDSVERTEX*)pVB );
+		build( tile->m_pChild[2] , (GDSVERTEX*)pVB );
+		build( tile->m_pChild[3] , (GDSVERTEX*)pVB );
 	}
 	else
 	{
@@ -83,9 +83,9 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 		int icount = 0;
 		float minY = 0;
 		float maxY = 0;
-		for ( int x = static_cast<int>(tile->m_minPos.x) ; x < m_iVertexPerNode ; x++ )
+		for ( int x = static_cast<int>(tile->m_minPos.x) ; x < static_cast<int>(tile->m_minPos.x)+ m_iVertexPerNode ; x++ )
 		{
-			for ( int z = static_cast<int>(tile->m_minPos.z) ; z < m_iVertexPerNode ; z++ )
+			for ( int z = static_cast<int>(tile->m_minPos.z) ; z < static_cast<int>(tile->m_minPos.z)+m_iVertexPerNode ; z++ )
 			{
 				tile->m_pVertex[icount] = pVB[ z*m_iVertexPerNode + x];
 				if ( tile->m_pVertex[icount].p.y > maxY )
@@ -102,17 +102,17 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 
 		RESMGR.AllocRenderObject( tile->m_RenderToken );
 
-		LPDIRECT3DVERTEXBUFFER9 pVB;
-		RESMGR.AllocVertexBuffer( pVB , m_iVertexPerNode*m_iVertexPerNode*sizeof( GDSVERTEX ) );
+		LPDIRECT3DVERTEXBUFFER9 VB;
+		RESMGR.AllocVertexBuffer( VB , m_iVertexPerNode*m_iVertexPerNode*sizeof( GDSVERTEX ) );
 		
 		VOID* pVertices;
-		if( FAILED( pVB->Lock( 0, m_iVertexPerNode*m_iVertexPerNode*sizeof(GDSVERTEX), (void**)&pVertices, 0 ) ) )
+		if( FAILED( VB->Lock( 0, m_iVertexPerNode*m_iVertexPerNode*sizeof(GDSVERTEX), (void**)&pVertices, 0 ) ) )
 			return;
 
 		memcpy( pVertices , tile->m_pVertex , m_iVertexPerNode*m_iVertexPerNode*sizeof(GDSVERTEX) );
-		pVB->Unlock();
+		VB->Unlock();
 
-		tile->m_RenderToken->SetVertexBuffer( pVB );
+		tile->m_RenderToken->SetVertexBuffer( VB );
 		tile->m_RenderToken->SetVertexMaxCount( m_iVertexPerNode*m_iVertexPerNode );
 		tile->m_RenderToken->SetVertexSize( sizeof( GDSVERTEX ) );
 		tile->m_RenderToken->SetFVF( GDSVERTEX::FVF );
