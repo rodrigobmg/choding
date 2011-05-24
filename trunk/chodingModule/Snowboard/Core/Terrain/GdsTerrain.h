@@ -8,7 +8,7 @@
 class GdsTerrain : public GdsObject
 {
 	// index-templet for slod
-	LPDIRECT3DINDEXBUFFER9		m_pIB;
+	LPDIRECT3DINDEXBUFFER9*		m_pIB;
 
 	int							m_iVertexPerNode;
 	int							m_ixheight;
@@ -56,6 +56,8 @@ class GdsTerrain : public GdsObject
 	TILE*						m_pRootTile;
 	void						genIndex( TILE* tile );
 	void						build( TILE* tile , GDSVERTEX* pVB );
+
+	bool						createTempletIB();
 
 protected:			
 

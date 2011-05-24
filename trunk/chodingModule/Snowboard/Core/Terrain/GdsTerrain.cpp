@@ -38,6 +38,15 @@ GdsTerrain::~GdsTerrain()
 void GdsTerrain::vClear()
 {
 	SAFE_DELETE( m_pRootTile );
+	for ( size_t i=0 ; i<m_iMaxLOD ; i++)
+	{
+		if ( m_pIB[0] != NULL )
+		{
+			RESMGR.FreeIndexBuffer( m_pIB[0] );
+		}
+	}
+	SAFE_DELETE(m_pIB);
+	
 }
 
 
@@ -205,34 +214,9 @@ bool GdsTerrain::MakeHeightMap()
 	m_pRootTile->m_minPos = minPos;
 	m_pRootTile->m_maxPos = maxPos;
 	build( m_pRootTile , (GDSVERTEX*)v );
-
-	RESMGR.AllocIndexBuffer( m_pIB , ( m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 * sizeof(GDSINDEX) );
-
-	GDSINDEX	i;
-	GDSINDEX*	pI;
-
-	if( FAILED( m_pIB->Lock( 0, (m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 * sizeof(GDSINDEX), (void**)&pI, 0 ) ) )
-		return false;
-
-	for( int z = 0 ; z < m_iVertexPerNode-1 ; z++ )
-	{
-		for( int x = 0 ; x < m_iVertexPerNode-1 ; x++ )
-		{
- 			i._0 = (z*m_iVertexPerNode+x);
- 			i._1 = (z*m_iVertexPerNode+x+1);
- 			i._2 = ((z+1)*m_iVertexPerNode+x);
- 			*pI++ = i;
- 			i._0 = ((z+1)*m_iVertexPerNode+x);
- 			i._1 = (z*m_iVertexPerNode+x+1);
- 			i._2 = ((z+1)*m_iVertexPerNode+x+1);
- 			*pI++ = i;
-		}
-	}
-	m_pIB->Unlock();
-
 	SAFE_DELETE( v );
 
-	genIndex( m_pRootTile );
+	createTempletIB();
 
 	return true;
 }
@@ -254,7 +238,7 @@ void GdsTerrain::genIndex( TILE* tile )
 		return;	
 
 	tile->m_RenderToken->SetIndexMaxCount( (m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 );
-	tile->m_RenderToken->SetIndexBuffer( m_pIB );
+	tile->m_RenderToken->SetIndexBuffer( m_pIB[0] );
 	tile->m_RenderToken->SetStartIndex( 0 );
 	tile->m_RenderToken->SetEndIndex( (m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 );	
 	
@@ -265,4 +249,39 @@ void GdsTerrain::Update( float fElapsedtime )
 {
 	if( m_pRootTile )
 		genIndex( m_pRootTile );
+}
+
+bool GdsTerrain::createTempletIB()
+{
+	m_pIB = new LPDIRECT3DINDEXBUFFER9[m_iMaxLOD];
+	for ( size_t i = 0 ; i< m_iMaxLOD ; i++)
+	{
+		m_pIB[i] = NULL;
+	}
+
+	RESMGR.AllocIndexBuffer( m_pIB[0] , ( m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 * sizeof(GDSINDEX) );
+
+	GDSINDEX	i;
+	GDSINDEX*	pI;
+
+	if( FAILED( m_pIB[0]->Lock( 0, (m_iVertexPerNode-1)*(m_iVertexPerNode-1)*2 * sizeof(GDSINDEX), (void**)&pI, 0 ) ) )
+		return false;
+
+	for( int z = 0 ; z < m_iVertexPerNode-1 ; z++ )
+	{
+		for( int x = 0 ; x < m_iVertexPerNode-1 ; x++ )
+		{
+			i._0 = (z*m_iVertexPerNode+x);
+			i._1 = (z*m_iVertexPerNode+x+1);
+			i._2 = ((z+1)*m_iVertexPerNode+x);
+			*pI++ = i;
+			i._0 = ((z+1)*m_iVertexPerNode+x);
+			i._1 = (z*m_iVertexPerNode+x+1);
+			i._2 = ((z+1)*m_iVertexPerNode+x+1);
+			*pI++ = i;
+		}
+	}
+	m_pIB[0]->Unlock();	
+	
+	return true;
 }

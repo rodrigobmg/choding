@@ -218,10 +218,8 @@ void GdsRendererDX9::DrawAxis( D3DXMATRIX& mat , D3DXVECTOR3& point )
 
 void GdsRendererDX9::drawEtc()
 {
-	D3DXMATRIXA16 matWorld;
 	D3DXMATRIXA16 matView;
 	D3DXMATRIXA16 matProj;
-	m_pd3dDevice->GetTransform( D3DTS_WORLD , &matWorld );
 	m_pd3dDevice->GetTransform( D3DTS_VIEW  , &matView );
 	m_pd3dDevice->GetTransform( D3DTS_PROJECTION , &matProj );	
 
@@ -235,16 +233,16 @@ void GdsRendererDX9::drawEtc()
 	LIST_AXIS::iterator itAxis_end = m_listAxisData.end();
 	for( ; itAxis != itAxis_end ; ++itAxis )
 	{
-		D3DXMATRIX mat = (boost::tuples::get<0>(*itAxis))*matView*matProj;
-		drawAxis( mat , boost::tuples::get<1>(*itAxis) , Line );
+		D3DXMATRIX matWorld = (boost::tuples::get<0>(*itAxis))*matView*matProj;
+		drawAxis( matWorld , boost::tuples::get<1>(*itAxis) , Line );
 	}
 
 	LIST_BOX::iterator itBox = m_listBoxData.begin();
 	LIST_BOX::iterator itBox_end = m_listBoxData.end();
 	for ( ; itBox != itBox_end ; ++itBox )
 	{
-		D3DXMATRIX mat = (boost::tuples::get<0>(*itBox))*matView*matProj;
-		drawBox( mat , boost::tuples::get<1>(*itBox) , boost::tuples::get<2>(*itBox) , Line );
+		D3DXMATRIX matWorld = (boost::tuples::get<0>(*itBox))*matView*matProj;
+		drawBox( matWorld , boost::tuples::get<1>(*itBox) , boost::tuples::get<2>(*itBox) , Line );
 	}
 
 	Line->End();
