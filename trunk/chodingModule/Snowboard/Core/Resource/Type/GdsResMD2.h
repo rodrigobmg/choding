@@ -1,13 +1,13 @@
 #ifndef _GDS_CORE_RESOURCE_TYPE_MD2_H_
 #define _GDS_CORE_RESOURCE_TYPE_MD2_H_
 
-#include "GdsResBaseType.h"
+#include "..\GdsResBaseType.h"
 
 class GdsResMD2 : public GdsResBase{
 private:
 
-	GdsPolygonPropertyPtr		m_Polygon;
-	GdsTexturePropertyPtr		m_Texture;
+	//GdsPolygonPropertyPtr		m_Polygon;
+	//GdsTexturePropertyPtr		m_Texture;
 
 	typedef struct 
 	{

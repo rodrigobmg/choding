@@ -281,6 +281,14 @@
 					Name="Type"
 					>
 					<File
+						RelativePath=".\Core\Resource\Type\GdsIndexBuffer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Resource\Type\GdsIndexBuffer.h"
+						>
+					</File>
+					<File
 						RelativePath=".\Core\Resource\Type\GdsResASE.cpp"
 						>
 					</File>
@@ -297,11 +305,27 @@
 						</FileConfiguration>
 					</File>
 					<File
+						RelativePath=".\Core\Resource\Type\GdsResMD2.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Resource\Type\GdsResMD2.h"
+						>
+					</File>
+					<File
 						RelativePath=".\Core\Resource\Type\GdsResTexture.cpp"
 						>
 					</File>
 					<File
 						RelativePath=".\Core\Resource\Type\GdsResTexture.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Resource\Type\GdsVertexBuffer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Resource\Type\GdsVertexBuffer.h"
 						>
 					</File>
 				</Filter>

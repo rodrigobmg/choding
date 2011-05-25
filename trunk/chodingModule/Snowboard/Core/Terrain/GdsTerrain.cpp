@@ -6,11 +6,12 @@
 
 GdsTerrain::GdsTerrain() 
 : m_iVertexPerNode( 33 )
-, m_pIB( NULL )
+, m_ppIB( NULL )
 , m_ixheight( 0 )
 , m_izheight( 0 )
 , m_iMaxLOD( 0 )
 , m_pRootTile(NULL)
+, m_iLodRate( 50 )
 {
 	SetName( OBJECT_TERRAIN );	
 	
@@ -40,12 +41,17 @@ void GdsTerrain::vClear()
 	SAFE_DELETE( m_pRootTile );
 	for ( size_t i=0 ; i<m_iMaxLOD ; i++)
 	{
-		if ( m_pIB[i] != NULL )
+		if ( m_ppIB[i] != NULL )
 		{
-			RESMGR.FreeIndexBuffer( m_pIB[i] );
+			for ( size_t j=0 ; j<5; j++)
+			{
+				if( m_ppIB[i][j] != NULL )
+					RESMGR.FreeIndexBuffer( m_ppIB[i][j] );
+			}			
 		}
+		SAFE_DELETE(m_ppIB[i]);
 	}
-	SAFE_DELETE(m_pIB);
+	SAFE_DELETE(m_ppIB);
 	
 }
 
@@ -60,20 +66,33 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 	if ( abs( fDist ) > m_iVertexPerNode )
 	{
 		tile->m_pChild[0] = new TILE;
+		tile->m_pChild[0]->m_pParent = tile;
 		tile->m_pChild[0]->m_minPos = tile->m_minPos;
 		tile->m_pChild[0]->m_maxPos = tile->m_cenPos;		
 
 		tile->m_pChild[1] = new TILE;
+		tile->m_pChild[1]->m_pParent = tile;
 		tile->m_pChild[1]->m_minPos = D3DXVECTOR3( tile->m_cenPos.x , 0 , tile->m_minPos.z );
 		tile->m_pChild[1]->m_maxPos = D3DXVECTOR3( tile->m_maxPos.x , 0 , tile->m_cenPos.z );
 
 		tile->m_pChild[2] = new TILE;
+		tile->m_pChild[2]->m_pParent = tile;
 		tile->m_pChild[2]->m_minPos = tile->m_cenPos;
 		tile->m_pChild[2]->m_maxPos = tile->m_maxPos;
 
 		tile->m_pChild[3] = new TILE;
+		tile->m_pChild[3]->m_pParent = tile;
 		tile->m_pChild[3]->m_minPos = D3DXVECTOR3( tile->m_minPos.x , 0 , tile->m_cenPos.z );
 		tile->m_pChild[3]->m_maxPos = D3DXVECTOR3( tile->m_cenPos.x , 0 , tile->m_maxPos.z );
+
+		tile->m_pChild[0]->m_pNeighbor[1] = tile->m_pChild[1];
+		tile->m_pChild[0]->m_pNeighbor[3] = tile->m_pChild[3];
+		tile->m_pChild[1]->m_pNeighbor[0] = tile->m_pChild[0];
+		tile->m_pChild[1]->m_pNeighbor[2] = tile->m_pChild[2];
+		tile->m_pChild[2]->m_pNeighbor[1] = tile->m_pChild[1];
+		tile->m_pChild[2]->m_pNeighbor[3] = tile->m_pChild[3];
+		tile->m_pChild[3]->m_pNeighbor[0] = tile->m_pChild[0];
+		tile->m_pChild[3]->m_pNeighbor[2] = tile->m_pChild[2];
 
 		build( tile->m_pChild[0] , (GDSVERTEX*)pVB );
 		build( tile->m_pChild[1] , (GDSVERTEX*)pVB );
@@ -292,20 +311,40 @@ void GdsTerrain::genIndex( TILE* tile )
 	if ( tile->m_pVertex == NULL )
 		return;	
 
-	int iLodlv = 7;
+	if ( CAMMGR.GetCurCam()->GetFrustum().VertexIsInFrustum( tile->m_cenPos ) == false )
+		return;
+
+	D3DXVECTOR3 eyepos = CAMMGR.GetCurCam()->GetEye();	
+	D3DXVECTOR3 dir = eyepos - tile->m_cenPos;
+	float fdist = D3DXVec3Length( &dir ); 
+	int iLodlv = 0;
+	for (size_t i=0; i<m_iMaxLOD; i++)
+	{
+		iLodlv++;
+		if ( i*m_iLodRate > fdist )
+		{			
+			break;
+		}
+	}
+	
+	//iLodlv = m_iMaxLOD - iLodlv;
+	if ( iLodlv < 0 )
+		iLodlv = 0;
 	if ( iLodlv >= m_iMaxLOD )
 		iLodlv = m_iMaxLOD-1;
+
+	tile->m_iLOD = iLodlv;
 
 	int iOffset;
 	iOffset = static_cast<int>( pow( 2.0f , iLodlv ) );
 
 	tile->m_RenderToken->SetIndexMaxCount( (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 );
-	tile->m_RenderToken->SetIndexBuffer( m_pIB[iLodlv] );
+	tile->m_RenderToken->SetIndexBuffer( m_ppIB[iLodlv][0] );
 	tile->m_RenderToken->SetStartIndex( 0 );
 	tile->m_RenderToken->SetEndIndex( (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 );	
 	
-	D3DXMATRIX tm = tile->m_RenderToken->GetMatrix();
-	RENDERER.DrawBox( tm , tile->m_minPos , tile->m_maxPos );
+// 	D3DXMATRIX tm = tile->m_RenderToken->GetMatrix();
+// 	RENDERER.DrawBox( tm , tile->m_minPos , tile->m_maxPos );
 	
 	RENDERER.GetRenderFrame()->AttachRenderObject( tile->m_RenderToken , 0 );
 }
@@ -318,40 +357,72 @@ void GdsTerrain::Update( float fElapsedtime )
 
 bool GdsTerrain::createTempletIB()
 {
-	m_pIB = new LPDIRECT3DINDEXBUFFER9[m_iMaxLOD];
+	m_ppIB = new LPDIRECT3DINDEXBUFFER9*[m_iMaxLOD];
 	for ( int iLodlv = 0 ; iLodlv< m_iMaxLOD ; iLodlv++)
 	{
-		m_pIB[iLodlv] = NULL;
+		m_ppIB[iLodlv] = new LPDIRECT3DINDEXBUFFER9[5];
 
 		int iOffset;
 		iOffset = static_cast<int>( pow( 2.0f , iLodlv ) );
 
-		RESMGR.AllocIndexBuffer( m_pIB[iLodlv] , (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 * sizeof(GDSINDEX) );		
-
-		GDSINDEX*	pI;
-		if( FAILED( m_pIB[iLodlv]->Lock( 0, (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 * sizeof(GDSINDEX), (void**)&pI, 0 ) ) )
-			return false;
-
-		GDSINDEX	i;
-		int icount = 0;
-		for( int x = 0 ; x < m_iVertexPerNode-iOffset ; x += iOffset )
+		for ( int icrack = 0 ; icrack < 5 ; icrack++)
 		{
-			for( int z = 0 ; z < m_iVertexPerNode-iOffset ; z += iOffset )
-			{
-				i._2 = (z*m_iVertexPerNode+x);
-				i._1 = (z*m_iVertexPerNode+x+iOffset);
-				i._0 = ((z+iOffset)*m_iVertexPerNode+x);
-				*pI++ = i;
-				i._2 = ((z+iOffset)*m_iVertexPerNode+x);
-				i._1 = (z*m_iVertexPerNode+x+iOffset);
-				i._0 = ((z+iOffset)*m_iVertexPerNode+x+iOffset);
-				*pI++ = i;
-				icount += 2;
-			}
-		}
-		
-		m_pIB[iLodlv]->Unlock();	
+			RESMGR.AllocIndexBuffer( m_ppIB[iLodlv][icrack] , (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 * sizeof(GDSINDEX) );		
 
+			GDSINDEX*	pI;
+			if( FAILED( m_ppIB[iLodlv][icrack]->Lock( 0, (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 * sizeof(GDSINDEX), (void**)&pI, 0 ) ) )
+				return false;
+
+			GDSINDEX	i;
+			int icount = 0;
+			for( int x = 0 ; x < m_iVertexPerNode-iOffset ; x += iOffset )
+			{
+				for( int z = 0 ; z < m_iVertexPerNode-iOffset ; z += iOffset )
+				{
+					int igap = iOffset / 2 ;
+					if ( icrack == 1 ) //left
+					{
+						if( x <= iOffset )
+						{
+							i._2 = z * m_iVertexPerNode+x;
+							i._1 = ( z+igap )*m_iVertexPerNode + x+igap;
+							i._0 = ( z+igap )*m_iVertexPerNode + x;
+							*pI++ = i;
+							i._2 = ((z+iOffset)*m_iVertexPerNode+x);
+							i._1 = (z*m_iVertexPerNode+x+iOffset);
+							i._0 = ((z+iOffset)*m_iVertexPerNode+x+iOffset);
+							*pI++ = i;
+						}
+					}
+					else if ( icrack == 2 ) // front
+					{
+
+					}
+					else if ( icrack == 3 ) // right
+					{
+
+					}
+					else if ( icrack == 4 ) // near
+					{
+
+					}
+					else
+					{
+						i._2 = (z*m_iVertexPerNode+x);
+						i._1 = (z*m_iVertexPerNode+x+iOffset);
+						i._0 = ((z+iOffset)*m_iVertexPerNode+x);
+						*pI++ = i;
+						i._2 = ((z+iOffset)*m_iVertexPerNode+x);
+						i._1 = (z*m_iVertexPerNode+x+iOffset);
+						i._0 = ((z+iOffset)*m_iVertexPerNode+x+iOffset);
+						*pI++ = i;					
+					}					
+					icount += 2;
+				}
+			}
+			
+			m_ppIB[iLodlv][icrack]->Unlock();	
+		}
 	}
 	
 	return true;

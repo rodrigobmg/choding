@@ -8,12 +8,13 @@
 class GdsTerrain : public GdsObject
 {
 	// index-templet for slod
-	LPDIRECT3DINDEXBUFFER9*		m_pIB;
+	LPDIRECT3DINDEXBUFFER9**	m_ppIB;
 
 	int							m_iVertexPerNode;
 	int							m_ixheight;
 	int							m_izheight;
 	int							m_iMaxLOD;
+	int							m_iLodRate;
 	
 	// tile
 	struct TILE
@@ -22,7 +23,9 @@ class GdsTerrain : public GdsObject
 		GDSVERTEX*				m_pVertex;
 		int						m_iLOD;
 		int						m_iMaxLOD;
+		TILE*					m_pParent;
 		TILE*					m_pChild[4];
+		TILE*					m_pNeighbor[4];
 		D3DXVECTOR3				m_minPos;
 		D3DXVECTOR3				m_maxPos;
 		D3DXVECTOR3				m_cenPos;
@@ -30,6 +33,7 @@ class GdsTerrain : public GdsObject
 		TILE()
 		{
 			m_pVertex = NULL;
+			m_pParent = NULL;
 			m_RenderToken = GdsRenderObjectPtr( (GdsRenderObject*)NULL );
 			m_iLOD = 0;
 			m_iMaxLOD = 3;						
@@ -40,6 +44,7 @@ class GdsTerrain : public GdsObject
 			for ( int i=0 ;i < 4 ; i++)
 			{
 				m_pChild[i] = NULL;
+				m_pNeighbor[i] = NULL;
 			}
 		}
 
@@ -72,8 +77,8 @@ public:
 
 	void						Clear(){ vClear(); }
 
-	void						SetMaxLOD( int ilevel ){ m_iMaxLOD = ilevel; }
-	int							GetMaxLOD(){ return m_iMaxLOD; }
+	void						SetLODRate( int ilevel ){ m_iLodRate = ilevel; }
+	int							GetLODRate(){ return m_iLodRate; }
 	
 	void						SetVertexPerPatch( int ivalue ){ m_iVertexPerNode = ivalue; }
 	int							GetVertexPerPatch(){ return m_iVertexPerNode; }
