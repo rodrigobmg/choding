@@ -5,7 +5,7 @@
 #include "Renderer\GdsRenderStateGroup.h"
 
 GdsTerrain::GdsTerrain() 
-: m_iVertexPerNode( 9 )
+: m_iVertexPerNode( 33 )
 , m_pIB( NULL )
 , m_ixheight( 0 )
 , m_izheight( 0 )
@@ -53,9 +53,9 @@ void GdsTerrain::vClear()
 void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 {
 	tile->m_cenPos = ( tile->m_minPos + tile->m_maxPos ) * 0.5;
- 	tile->m_cenPos.x = floor( tile->m_cenPos.x );
- 	tile->m_cenPos.y = floor( tile->m_cenPos.y );
- 	tile->m_cenPos.z = floor( tile->m_cenPos.z );
+  	tile->m_cenPos.x = ceil( tile->m_cenPos.x );
+  	tile->m_cenPos.y = ceil( tile->m_cenPos.y );
+  	tile->m_cenPos.z = ceil( tile->m_cenPos.z );
 	float fDist = tile->m_maxPos.x - tile->m_minPos.x;
 	if ( abs( fDist ) > m_iVertexPerNode )
 	{
@@ -93,13 +93,13 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 		{
 			for ( int x = istartx ; x < istartx + m_iVertexPerNode ; x++ )
 			{
-				tile->m_pVertex[icount] = pVB[ z*m_ixheight + x];
+				tile->m_pVertex[icount] = pVB[ z *m_ixheight + x];
 				if ( tile->m_pVertex[icount].p.y > maxY )
 					maxY = tile->m_pVertex[icount].p.y;
 
 				if ( tile->m_pVertex[icount].p.y < minY )
 					minY = tile->m_pVertex[icount].p.y;
-				
+			
 				icount++;				
 			}		
 		}		
@@ -136,7 +136,7 @@ bool GdsTerrain::MakeHeightMap()
 		return false;
 	}
 
-	GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"map.bmp") );
+	GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"map.jpg") );
 	GdsResTexturePtr texcolor = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"tile2.tga") );
 
 	D3DSURFACE_DESC		ddsd;
@@ -148,7 +148,7 @@ bool GdsTerrain::MakeHeightMap()
 	czHeight = ddsd.Height;				/// 텍스처의 세로크기
 
 	//maxlod 계산
-	for ( int i=m_iVertexPerNode; i > 0 ; i /= 2 )
+	for ( int i= (m_iVertexPerNode-1) ; i > 0 ; i /= 2 )
 	{
 		m_iMaxLOD++;
 	}
@@ -166,8 +166,8 @@ bool GdsTerrain::MakeHeightMap()
 	icheckz = czHeight / (m_iVertexPerNode-1);
 	if ( icheckx > 0 && icheckz > 0 )
 	{
-		m_ixheight = cxHeight;
-		m_izheight = czHeight;
+		m_ixheight = cxHeight+1;
+		m_izheight = czHeight+1;
 	}
 	else
 	{
@@ -185,37 +185,81 @@ bool GdsTerrain::MakeHeightMap()
 	D3DXVECTOR3	minPos( 0.f , 0.f, 0.f );
 	D3DXVECTOR3 maxPos( 0.f, 0.f , 0.f );
 	GDSVERTEX vertex;
-	GDSVERTEX* v = new GDSVERTEX[czHeight*cxHeight];
-	for( int z = 0 ; z < czHeight ; z++ )
+	GDSVERTEX* v = new GDSVERTEX[m_ixheight*m_izheight];
+	for( int z = 0 ; z < czHeight+1 ; z++ )
 	{
-		for( int x = 0 ; x < cxHeight ; x++ )
+		for( int x = 0 ; x < cxHeight+1 ; x++ )
 		{
+			if ( z == czHeight )
+			{
+				vertex = v[(z-1)*m_ixheight+x];
+				vertex.p.z -= 1;
 
-			vertex.p.x = (float)x;
-			vertex.p.z = -( (float)z - ( cxHeight - 1) );
-			vertex.p.y = ((float)(*( (LPDWORD)d3drc.pBits+x+z*(d3drc.Pitch/4) )&0x000000ff) ) / 10.0f;	/// DWORD이므로 pitch/4
-			vertex.n.x = vertex.p.x;
-			vertex.n.y = vertex.p.y;
-			vertex.n.z = vertex.p.z;
-			D3DXVec3Normalize( &vertex.n, &vertex.n );
-			vertex.t.x = (float)x / (cxHeight-1);
-			vertex.t.y = (float)z / (czHeight-1);
-			
-			if ( minPos.x > vertex.p.x )
-				minPos.x = vertex.p.x;
-			if ( minPos.y > vertex.p.y )
-				minPos.y = vertex.p.y;
-			if ( minPos.z > vertex.p.z )
-				minPos.z = vertex.p.z;
+				if ( minPos.x > vertex.p.x )
+					minPos.x = vertex.p.x;
+				if ( minPos.y > vertex.p.y )
+					minPos.y = vertex.p.y;
+				if ( minPos.z > vertex.p.z )
+					minPos.z = vertex.p.z;
 
-			if ( maxPos.x < vertex.p.x )
-				maxPos.x = vertex.p.x;
-			if ( maxPos.y < vertex.p.y )
-				maxPos.y = vertex.p.y;
-			if ( maxPos.z < vertex.p.z )
-				maxPos.z = vertex.p.z;
+				if ( maxPos.x < vertex.p.x )
+					maxPos.x = vertex.p.x;
+				if ( maxPos.y < vertex.p.y )
+					maxPos.y = vertex.p.y;
+				if ( maxPos.z < vertex.p.z )
+					maxPos.z = vertex.p.z;
 
-			v[z*cxHeight+x] = vertex;
+				v[z*m_ixheight+x] = vertex;
+			}
+			else if ( x == cxHeight )
+			{
+				vertex = v[z*m_ixheight+(x-1)];
+				vertex.p.x += 1;
+
+				if ( minPos.x > vertex.p.x )
+					minPos.x = vertex.p.x;
+				if ( minPos.y > vertex.p.y )
+					minPos.y = vertex.p.y;
+				if ( minPos.z > vertex.p.z )
+					minPos.z = vertex.p.z;
+
+				if ( maxPos.x < vertex.p.x )
+					maxPos.x = vertex.p.x;
+				if ( maxPos.y < vertex.p.y )
+					maxPos.y = vertex.p.y;
+				if ( maxPos.z < vertex.p.z )
+					maxPos.z = vertex.p.z;
+
+				v[z*m_ixheight+x] = vertex;
+			}			
+			else
+			{
+				vertex.p.x = (float)x;
+				vertex.p.z = z;//-( (float)(z-1) - ( cxHeight - 1) );
+				vertex.p.y = ((float)(*( (LPDWORD)d3drc.pBits+x+( czHeight - z)*(d3drc.Pitch/4) )&0x000000ff) ) / 10.0f;	/// DWORD이므로 pitch/4
+				vertex.n.x = vertex.p.x;
+				vertex.n.y = vertex.p.y;
+				vertex.n.z = vertex.p.z;
+				D3DXVec3Normalize( &vertex.n, &vertex.n );
+				vertex.t.x = (float)x / (cxHeight-1);
+				vertex.t.y = (float)z / (czHeight-1);
+
+				if ( minPos.x > vertex.p.x )
+					minPos.x = vertex.p.x;
+				if ( minPos.y > vertex.p.y )
+					minPos.y = vertex.p.y;
+				if ( minPos.z > vertex.p.z )
+					minPos.z = vertex.p.z;
+
+				if ( maxPos.x < vertex.p.x )
+					maxPos.x = vertex.p.x;
+				if ( maxPos.y < vertex.p.y )
+					maxPos.y = vertex.p.y;
+				if ( maxPos.z < vertex.p.z )
+					maxPos.z = vertex.p.z;
+
+				v[z*m_ixheight+x] = vertex;
+			}			
 		}
 	}
 
@@ -248,20 +292,20 @@ void GdsTerrain::genIndex( TILE* tile )
 	if ( tile->m_pVertex == NULL )
 		return;	
 
-	int iLodlv = 2;
-	if ( iLodlv > m_iMaxLOD )
-		iLodlv = m_iMaxLOD;
+	int iLodlv = 7;
+	if ( iLodlv >= m_iMaxLOD )
+		iLodlv = m_iMaxLOD-1;
 
-	float iOffset;
-	if ( iLodlv == 0 )
-		iOffset = 1;
-	else
-		iOffset = pow( 2.0f , iLodlv );
+	int iOffset;
+	iOffset = static_cast<int>( pow( 2.0f , iLodlv ) );
 
 	tile->m_RenderToken->SetIndexMaxCount( (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 );
 	tile->m_RenderToken->SetIndexBuffer( m_pIB[iLodlv] );
 	tile->m_RenderToken->SetStartIndex( 0 );
 	tile->m_RenderToken->SetEndIndex( (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 );	
+	
+	D3DXMATRIX tm = tile->m_RenderToken->GetMatrix();
+	RENDERER.DrawBox( tm , tile->m_minPos , tile->m_maxPos );
 	
 	RENDERER.GetRenderFrame()->AttachRenderObject( tile->m_RenderToken , 0 );
 }
@@ -280,10 +324,7 @@ bool GdsTerrain::createTempletIB()
 		m_pIB[iLodlv] = NULL;
 
 		int iOffset;
-		if ( iLodlv == 0 )
-			iOffset = 1;
-		else
-			iOffset = static_cast<int>( pow( 2.0f , iLodlv ) );
+		iOffset = static_cast<int>( pow( 2.0f , iLodlv ) );
 
 		RESMGR.AllocIndexBuffer( m_pIB[iLodlv] , (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 * sizeof(GDSINDEX) );		
 
@@ -293,17 +334,17 @@ bool GdsTerrain::createTempletIB()
 
 		GDSINDEX	i;
 		int icount = 0;
-		for( int z = 0 ; z < m_iVertexPerNode-1 ; z += iOffset )
+		for( int x = 0 ; x < m_iVertexPerNode-iOffset ; x += iOffset )
 		{
-			for( int x = 0 ; x < m_iVertexPerNode-1 ; x += iOffset )
+			for( int z = 0 ; z < m_iVertexPerNode-iOffset ; z += iOffset )
 			{
-				i._0 = (z*m_iVertexPerNode+x);
+				i._2 = (z*m_iVertexPerNode+x);
 				i._1 = (z*m_iVertexPerNode+x+iOffset);
-				i._2 = ((z+iOffset)*m_iVertexPerNode+x);
-				*pI++ = i;
 				i._0 = ((z+iOffset)*m_iVertexPerNode+x);
+				*pI++ = i;
+				i._2 = ((z+iOffset)*m_iVertexPerNode+x);
 				i._1 = (z*m_iVertexPerNode+x+iOffset);
-				i._2 = ((z+iOffset)*m_iVertexPerNode+x+iOffset);
+				i._0 = ((z+iOffset)*m_iVertexPerNode+x+iOffset);
 				*pI++ = i;
 				icount += 2;
 			}
