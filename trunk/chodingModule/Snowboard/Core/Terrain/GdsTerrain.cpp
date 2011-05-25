@@ -5,7 +5,7 @@
 #include "Renderer\GdsRenderStateGroup.h"
 
 GdsTerrain::GdsTerrain() 
-: m_iVertexPerNode( 32 )
+: m_iVertexPerNode( 9 )
 , m_pIB( NULL )
 , m_ixheight( 0 )
 , m_izheight( 0 )
@@ -53,6 +53,9 @@ void GdsTerrain::vClear()
 void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 {
 	tile->m_cenPos = ( tile->m_minPos + tile->m_maxPos ) * 0.5;
+ 	tile->m_cenPos.x = floor( tile->m_cenPos.x );
+ 	tile->m_cenPos.y = floor( tile->m_cenPos.y );
+ 	tile->m_cenPos.z = floor( tile->m_cenPos.z );
 	float fDist = tile->m_maxPos.x - tile->m_minPos.x;
 	if ( abs( fDist ) > m_iVertexPerNode )
 	{
@@ -83,11 +86,14 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 		int icount = 0;
 		float minY = 0;
 		float maxY = 0;
-		for ( int x = static_cast<int>(tile->m_minPos.x) ; x < static_cast<int>(tile->m_minPos.x)+ m_iVertexPerNode ; x++ )
+		int istartx = static_cast<int>(tile->m_minPos.x);
+		int istartz = static_cast<int>(tile->m_minPos.z);
+
+		for ( int z = istartz ; z < istartz + m_iVertexPerNode ; z++ )
 		{
-			for ( int z = static_cast<int>(tile->m_minPos.z) ; z < static_cast<int>(tile->m_minPos.z)+m_iVertexPerNode ; z++ )
+			for ( int x = istartx ; x < istartx + m_iVertexPerNode ; x++ )
 			{
-				tile->m_pVertex[icount] = pVB[ z*m_iVertexPerNode + x];
+				tile->m_pVertex[icount] = pVB[ z*m_ixheight + x];
 				if ( tile->m_pVertex[icount].p.y > maxY )
 					maxY = tile->m_pVertex[icount].p.y;
 
@@ -148,20 +154,20 @@ bool GdsTerrain::MakeHeightMap()
 	}
 	m_iMaxLOD -= 1;
 
-	int icheckx = cxHeight % m_iVertexPerNode;
-	int icheckz = czHeight % m_iVertexPerNode;
-	if ( icheckx != 0 || icheckz != 0 || cxHeight < m_iVertexPerNode || czHeight < m_iVertexPerNode )
+	int icheckx = cxHeight % (m_iVertexPerNode-1);
+	int icheckz = czHeight % (m_iVertexPerNode-1);
+	if ( icheckx != 0 || icheckz != 0 || cxHeight < (m_iVertexPerNode-1) || czHeight < (m_iVertexPerNode-1) )
 	{
 		LOG_ERROR_F( "Texture Size Error:[%d,%d]", cxHeight, czHeight );
 		return false;
 	}
 
-	icheckx = cxHeight / m_iVertexPerNode;
-	icheckz = czHeight / m_iVertexPerNode;
+	icheckx = cxHeight / (m_iVertexPerNode-1);
+	icheckz = czHeight / (m_iVertexPerNode-1);
 	if ( icheckx > 0 && icheckz > 0 )
 	{
-		m_ixheight = icheckx;
-		m_izheight = icheckz;
+		m_ixheight = cxHeight;
+		m_izheight = czHeight;
 	}
 	else
 	{
@@ -186,7 +192,7 @@ bool GdsTerrain::MakeHeightMap()
 		{
 
 			vertex.p.x = (float)x;
-			vertex.p.z = -( (float)z - czHeight );
+			vertex.p.z = -( (float)z - ( cxHeight - 1) );
 			vertex.p.y = ((float)(*( (LPDWORD)d3drc.pBits+x+z*(d3drc.Pitch/4) )&0x000000ff) ) / 10.0f;	/// DWORD¿Ãπ«∑Œ pitch/4
 			vertex.n.x = vertex.p.x;
 			vertex.n.y = vertex.p.y;
@@ -209,7 +215,7 @@ bool GdsTerrain::MakeHeightMap()
 			if ( maxPos.z < vertex.p.z )
 				maxPos.z = vertex.p.z;
 
-			v[x*cxHeight+z] = vertex;
+			v[z*cxHeight+x] = vertex;
 		}
 	}
 
@@ -242,7 +248,10 @@ void GdsTerrain::genIndex( TILE* tile )
 	if ( tile->m_pVertex == NULL )
 		return;	
 
-	int iLodlv = 0;
+	int iLodlv = 2;
+	if ( iLodlv > m_iMaxLOD )
+		iLodlv = m_iMaxLOD;
+
 	float iOffset;
 	if ( iLodlv == 0 )
 		iOffset = 1;
@@ -270,12 +279,11 @@ bool GdsTerrain::createTempletIB()
 	{
 		m_pIB[iLodlv] = NULL;
 
-
-		float iOffset;
+		int iOffset;
 		if ( iLodlv == 0 )
 			iOffset = 1;
 		else
-			iOffset = pow( 2.0f , iLodlv );
+			iOffset = static_cast<int>( pow( 2.0f , iLodlv ) );
 
 		RESMGR.AllocIndexBuffer( m_pIB[iLodlv] , (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 * sizeof(GDSINDEX) );		
 
@@ -285,9 +293,9 @@ bool GdsTerrain::createTempletIB()
 
 		GDSINDEX	i;
 		int icount = 0;
-		for( int z = 0 ; z < m_iVertexPerNode-iOffset ; z += iOffset )
+		for( int z = 0 ; z < m_iVertexPerNode-1 ; z += iOffset )
 		{
-			for( int x = 0 ; x < m_iVertexPerNode-iOffset ; x += iOffset )
+			for( int x = 0 ; x < m_iVertexPerNode-1 ; x += iOffset )
 			{
 				i._0 = (z*m_iVertexPerNode+x);
 				i._1 = (z*m_iVertexPerNode+x+iOffset);
@@ -297,7 +305,7 @@ bool GdsTerrain::createTempletIB()
 				i._1 = (z*m_iVertexPerNode+x+iOffset);
 				i._2 = ((z+iOffset)*m_iVertexPerNode+x+iOffset);
 				*pI++ = i;
-				icount++;
+				icount += 2;
 			}
 		}
 		
