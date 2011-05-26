@@ -7,5 +7,4 @@ GdsIndexBuffer::GdsIndexBuffer()
 
 GdsIndexBuffer::~GdsIndexBuffer()
 {
-
 }
