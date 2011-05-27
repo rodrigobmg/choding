@@ -86,15 +86,14 @@ public:
 
 	void				AllocIndexBuffer( LPDIRECT3DINDEXBUFFER9& pIB , uint32_t size );
 	void				FreeIndexBuffer( LPDIRECT3DINDEXBUFFER9 pIB );
+	int					GetCountIndexBuffer(){ m_listIndexBuffer.size(); }
 
 	void				AllocVertexBuffer( LPDIRECT3DVERTEXBUFFER9& pVB , uint32_t size );
 	void				FreeVertexBuffer( LPDIRECT3DVERTEXBUFFER9 pVB );
+	int					GetCountVertexBuffer(){ m_listVertexBuffer.size(); }
 
 	void				AllocRenderObject( GdsRenderObjectPtr& p );
-	void				FreeRenderObject( GdsRenderObjectPtr p );
-
-	int					GetCountIndexBuffer(){ m_listIndexBuffer.size(); }
-	int					GetCountVertexBuffer(){ m_listVertexBuffer.size(); }
+	void				FreeRenderObject( GdsRenderObjectPtr p );	
 	int					GetCountRenderObject(){ m_listRenderToken.size(); }
 };
 

@@ -270,6 +270,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="GdsIndexVertexBuffer"
+				>
+				<File
+					RelativePath=".\testUnit\GdsIndexVertexBuffer_test.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="리소스 파일"

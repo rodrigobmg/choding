@@ -43,6 +43,7 @@
 //#include "GdsMaterial_test.hpp"
 //#include "GdsRenderFrame_test.hpp"
 #include "GdsTerrain_test.hpp"
+#include "GdsIndexVertexBuffer_test.hpp"
 
 
 int main(int argc, char **argv)

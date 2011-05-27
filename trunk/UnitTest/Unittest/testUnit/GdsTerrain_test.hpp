@@ -3,6 +3,8 @@
 
 #include "..\..\..\chodingModule\Snowboard\Core\SceneNode\GdsNode.h"
 #include "..\..\..\chodingModule\Snowboard\Core\Terrain\GdsTerrain.h"
+#include "..\..\..\chodingModule\Snowboard\Core\Resource\Type\GdsIndexBuffer.h"
+#include "..\..\..\chodingModule\Snowboard\Core\Resource\Type\GdsVertexBuffer.h"
 
 class GdsTerrainTest : public ::testing::Test
 {
@@ -58,24 +60,12 @@ struct TRIANGLE
 		m_iLodlv = dir = 0;
 		m_pRight = m_pLeft = NULL;
 	}
+	~TRIANGLE()
+	{
+		SAFE_DELETE( m_pLeft );
+		SAFE_DELETE( m_pRight );
+	}
 
-	/*
-	void checkorder( D3DXVECTOR3& corner , D3DXVECTOR3& p1 , D3DXVECTOR3& p2 )
-		{
-			if ( p1.x == p2.x )
-			{
-				if( p1.z < p2.z )
-				{
-					swap( p1 , p2 );
-					return;
-				}
-			}
-			else if ( p1.z == p2.z )
-			{
-				if( p1.x)
-			}
-		}*/
-	
 	void calcDir( D3DXVECTOR3& center , D3DXVECTOR3& corner , int& dir )
 	{
 		if( center.z == corner.z )
@@ -100,7 +90,6 @@ struct TRIANGLE
 				dir = SOUTH;
 			}
 		}
-
 	}
 	
 	void split( TRIANGLE* tri , int idir , int lodlv )
@@ -130,21 +119,6 @@ struct TRIANGLE
 
 		split( tri->m_pLeft , 0 , tri->m_iLodlv );
 		split( tri->m_pRight , 0 , tri->m_iLodlv );
-		/*
-			switch( idir )
-					{
-					case 1: // LEFT
-						break;
-					case 2: // NEAR
-						break;
-					case 3: //RIGHT
-						break;
-					case 4: //FAR
-						break;
-					default:
-						break;
-			
-		}*/
 	}
 
 	void genIndex( std::vector< D3DXVECTOR3 >& vecList , int ilodlv , int icrackDir )
@@ -203,34 +177,75 @@ struct TRIANGLE
 	}
 
 };
+
+void GetVertex( GDSVERTEX* tile , int x , int z , GDSVERTEX& vertex )
+{
+	if ( x >= 33 )
+		x = 33-1;
+	if ( z >= 33 )
+		z = 33-1;
+	if ( x < 0 )
+		x = 0;
+	if ( z < 0 )
+		z = 0;
+
+	vertex = tile[ z*(33) + x ];
+}
+
+void GetIndex( GDSVERTEX& vertex , int& index )
+{
+	index = (vertex.p.z)*(33) + vertex.p.x;
+}
+
 TEST_F( GdsTerrainTest,  MakeHeightMap )
 {	 
 	GdsNodePtr pNode = GdsNodePtr( new GdsNode );
 	TERRAIN.MakeHeightMap();		
 
-	D3DXVECTOR3 map[33*33];
+	GDSVERTEX map[33*33];
 	int xheight , zheight;
 	xheight = zheight = 33;
+
+	GdsVertexBufferPtr vertexBuffer = GdsVertexBufferPtr( new GdsVertexBuffer );
 	for (int z = 0 ; z < zheight ; z++ )
 	{
 		for (int x=0; x< xheight ; x++ )
 		{
-			map[z*xheight + x ] = D3DXVECTOR3( x , 0 , z );
+			map[z*xheight + x ].p = D3DXVECTOR3( x , 0 , z );
+			vertexBuffer->AddVertex( map[z*xheight + x ] );
 		}		
 	}
+
+	GDSVERTEX testVertex;
+	for ( int x=0 ; x < xheight ; x++ )
+	{
+		for ( int z=0 ; z < zheight ; z++ )
+		{
+			GetVertex( map , x , z , testVertex );
+			EXPECT_EQ( x , (int)testVertex.p.x );
+			EXPECT_EQ( z , (int)testVertex.p.z );
+			int index=0;
+			GetIndex( testVertex , index );
+			EXPECT_EQ( z*xheight+x , index );
+		}
+	}
+	
+
+	EXPECT_EQ( xheight*zheight , vertexBuffer->GetVertexMaxCount() );
+	vertexBuffer->Alloc();
 
 
 	TRIANGLE* pRootTri1 = new TRIANGLE;	
 
 	pRootTri1->m_pLeft = new TRIANGLE;
-	pRootTri1->m_pLeft->p1 = map[0];
-	pRootTri1->m_pLeft->corner = map[ 0 * (zheight) + (xheight-1) ];
-	pRootTri1->m_pLeft->p2 = map[(zheight-1)*(zheight) + xheight-1 ];
+	pRootTri1->m_pLeft->p1 = map[0].p;
+	pRootTri1->m_pLeft->corner = map[ 0 * (zheight) + (xheight-1) ].p;
+	pRootTri1->m_pLeft->p2 = map[(zheight-1)*(zheight) + xheight-1 ].p;
 
 	pRootTri1->m_pRight = new TRIANGLE;
-	pRootTri1->m_pRight->p1 = map[ (zheight-1)*(zheight) + xheight-1 ];
-	pRootTri1->m_pRight->corner = map[ (zheight)*(xheight-1) + 0 ];
-	pRootTri1->m_pRight->p2 = map[0];
+	pRootTri1->m_pRight->p1 = map[ (zheight-1)*(zheight) + xheight-1 ].p;
+	pRootTri1->m_pRight->corner = map[ (zheight)*(xheight-1) + 0 ].p;
+	pRootTri1->m_pRight->p2 = map[0].p;
 
 	pRootTri1->split( pRootTri1->m_pLeft , 0 , pRootTri1->m_iLodlv );
 	pRootTri1->split( pRootTri1->m_pRight , 0 , pRootTri1->m_iLodlv );
@@ -254,5 +269,7 @@ TEST_F( GdsTerrainTest,  MakeHeightMap )
 	pRootTri1->genIndex( vecList5 , 5 , 0 );
 
 	std::vector< D3DXVECTOR3 > vecList6;
-	pRootTri1->genIndex( vecList6 , 6 , 0 );
+	pRootTri1->genIndex( vecList6 , 6 , 0 );	
+
+	SAFE_DELETE( pRootTri1 );
 }

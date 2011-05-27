@@ -104,6 +104,9 @@ struct GDSVERTEX
 struct GDSINDEX
 {
 	WORD _0 , _1, _2;
+	GDSINDEX(){};
+	GDSINDEX( WORD __0 , WORD __1 , WORD __2 ):_0(__0),_1(__1),_2(__2)
+	{}
 };
 
 //메모리 릭 탐지

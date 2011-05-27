@@ -8,7 +8,7 @@ class GdsVertexBuffer : public GdsResBase
 private:
 
 	LPDIRECT3DVERTEXBUFFER9		m_pVB;
-	GDSVERTEX*					m_pBuffer;
+	std::vector<GDSVERTEX>		m_pBuffer;
 
 	int							m_VertexSize;
 	int							m_FVF;
@@ -28,12 +28,16 @@ public:
 
 	LPDIRECT3DVERTEXBUFFER9		Get(){ return m_pVB; }
 
-	void					SetVertexSize( int ivertexsize ){ m_VertexSize = ivertexsize; }
-	void					SetFVF( int ifvf ){ m_FVF = ifvf; }
-	void					SetVertexMaxCount( int icount ){ m_Vertex_Maxcount = icount; }
-	int						GetVertexMaxCount(){ return m_Vertex_Maxcount; }
-	void					SetStartVertexIndex( int index ){ m_iStartVertexIndex = index; }
-	void					SetEndVertexIndex( int index ){ m_iEndVertexIndex = index; }
+	void						AddVertex( GDSVERTEX& vertex );
+	void						Alloc();
+	void						Free();
+
+	void						SetVertexSize( int ivertexsize ){ m_VertexSize = ivertexsize; }
+	void						SetFVF( int ifvf ){ m_FVF = ifvf; }
+	void						SetVertexMaxCount( int icount ){ m_Vertex_Maxcount = icount; }
+	int							GetVertexMaxCount(){ return m_Vertex_Maxcount; }
+	void						SetStartVertexIndex( int index ){ m_iStartVertexIndex = index; }
+	void						SetEndVertexIndex( int index ){ m_iEndVertexIndex = index; }
 };
 
 typedef boost::shared_ptr< GdsVertexBuffer >	GdsVertexBufferPtr;
