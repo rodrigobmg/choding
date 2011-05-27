@@ -192,9 +192,9 @@ void GetVertex( GDSVERTEX* tile , int x , int z , GDSVERTEX& vertex )
 	vertex = tile[ z*(33) + x ];
 }
 
-void GetIndex( GDSVERTEX& vertex , int& index )
+void GetIndex( D3DXVECTOR3& vertex , int& index )
 {
-	index = (vertex.p.z)*(33) + vertex.p.x;
+	index = (vertex.z)*(33) + vertex.x;
 }
 
 TEST_F( GdsTerrainTest,  MakeHeightMap )
@@ -225,7 +225,7 @@ TEST_F( GdsTerrainTest,  MakeHeightMap )
 			EXPECT_EQ( x , (int)testVertex.p.x );
 			EXPECT_EQ( z , (int)testVertex.p.z );
 			int index=0;
-			GetIndex( testVertex , index );
+			GetIndex( testVertex.p , index );
 			EXPECT_EQ( z*xheight+x , index );
 		}
 	}
@@ -250,8 +250,23 @@ TEST_F( GdsTerrainTest,  MakeHeightMap )
 	pRootTri1->split( pRootTri1->m_pLeft , 0 , pRootTri1->m_iLodlv );
 	pRootTri1->split( pRootTri1->m_pRight , 0 , pRootTri1->m_iLodlv );
 
+	GdsIndexBufferPtr indexbuffer = GdsIndexBufferPtr( new GdsIndexBuffer );
+
 	std::vector< D3DXVECTOR3 > vecList0;
 	pRootTri1->genIndex( vecList0 , 0 , 0 );
+	int index;
+	GDSINDEX id;
+	for ( int i=0; i< vecList0.size() ; i += 3 )
+	{
+		GetIndex( vecList0[i] , index );
+		id._0 = index;
+		GetIndex( vecList0[i+1] , index );
+		id._1 = index;
+		GetIndex( vecList0[i+2] , index );
+		id._2 = index;
+		indexbuffer->AddIndex( id );
+	}
+	
 
 	std::vector< D3DXVECTOR3 > vecList1;
 	pRootTri1->genIndex( vecList1 , 1 , TRIANGLE::EAST );
