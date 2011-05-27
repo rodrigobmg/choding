@@ -122,15 +122,10 @@ struct TRIANGLE
 		tri->m_pRight->p1		= tri->corner;
 		tri->m_pRight->p2		= tri->p2;
 		
-		if ( lodlv == 1 )
+		if ( lodlv > 0  )
 		{
 			calcDir( (tri->m_pLeft->p1 + tri->m_pLeft->p2 ) *0.5 , tri->m_pLeft->corner , tri->m_pLeft->dir );
 			calcDir( (tri->m_pRight->p1 + tri->m_pRight->p2 )*0.5 , tri->m_pRight->corner , tri->m_pRight->dir );
-		}
-		else if ( lodlv > 1 )
-		{
-			tri->m_pLeft->dir = tri->dir;
-			tri->m_pRight->dir = tri->dir;
 		}
 
 		split( tri->m_pLeft , 0 , tri->m_iLodlv );
@@ -152,24 +147,59 @@ struct TRIANGLE
 		}*/
 	}
 
-	void genIndex( std::vector< D3DXVECTOR3 >& vecList , int ilodlv )
+	void genIndex( std::vector< D3DXVECTOR3 >& vecList , int ilodlv , int icrackDir )
 	{
 		if ( ilodlv < m_iLodlv )
 			return;
 
 		if ( ilodlv == m_iLodlv && m_pLeft != NULL && m_pRight != NULL )
 		{
-			vecList.push_back( m_pLeft->p1 );
-			vecList.push_back( m_pLeft->corner );
-			vecList.push_back( m_pLeft->p2 );
+			if ( icrackDir == m_pLeft->dir && icrackDir != NONE 
+				&& m_pLeft->m_pLeft != NULL && m_pLeft->m_pRight != NULL 
+				)
+			{
+				vecList.push_back( m_pLeft->m_pLeft->p1 );
+				vecList.push_back( m_pLeft->m_pLeft->corner );
+				vecList.push_back( m_pLeft->m_pLeft->p2 );
 
-			vecList.push_back( m_pRight->p1 );
-			vecList.push_back( m_pRight->corner );
-			vecList.push_back( m_pRight->p2 );
+				vecList.push_back( m_pLeft->m_pRight->p1 );
+				vecList.push_back( m_pLeft->m_pRight->corner );
+				vecList.push_back( m_pLeft->m_pRight->p2 );
+
+				vecList.push_back( m_pRight->p1 );
+				vecList.push_back( m_pRight->corner );
+				vecList.push_back( m_pRight->p2 );
+			}
+			else if ( icrackDir == m_pRight->dir && icrackDir != NONE 
+				&& m_pRight->m_pLeft != NULL && m_pRight->m_pRight != NULL 
+				)
+			{
+				vecList.push_back( m_pRight->m_pLeft->p1 );
+				vecList.push_back( m_pRight->m_pLeft->corner );
+				vecList.push_back( m_pRight->m_pLeft->p2 );
+
+				vecList.push_back( m_pRight->m_pRight->p1 );
+				vecList.push_back( m_pRight->m_pRight->corner );
+				vecList.push_back( m_pRight->m_pRight->p2 );				
+
+				vecList.push_back( m_pLeft->p1 );
+				vecList.push_back( m_pLeft->corner );
+				vecList.push_back( m_pLeft->p2 );
+			}
+			else
+			{
+				vecList.push_back( m_pLeft->p1 );
+				vecList.push_back( m_pLeft->corner );
+				vecList.push_back( m_pLeft->p2 );
+
+				vecList.push_back( m_pRight->p1 );
+				vecList.push_back( m_pRight->corner );
+				vecList.push_back( m_pRight->p2 );
+			}			
 		}		
 
-		if ( m_pLeft ) m_pLeft->genIndex( vecList , ilodlv );
-		if ( m_pRight )	m_pRight->genIndex( vecList , ilodlv );		
+		if ( m_pLeft ) m_pLeft->genIndex( vecList , ilodlv , icrackDir );
+		if ( m_pRight )	m_pRight->genIndex( vecList , ilodlv , icrackDir );		
 	}
 
 };
@@ -206,23 +236,23 @@ TEST_F( GdsTerrainTest,  MakeHeightMap )
 	pRootTri1->split( pRootTri1->m_pRight , 0 , pRootTri1->m_iLodlv );
 
 	std::vector< D3DXVECTOR3 > vecList0;
-	pRootTri1->genIndex( vecList0 , 0 );
+	pRootTri1->genIndex( vecList0 , 0 , 0 );
 
 	std::vector< D3DXVECTOR3 > vecList1;
-	pRootTri1->genIndex( vecList1 , 1 );
+	pRootTri1->genIndex( vecList1 , 1 , TRIANGLE::EAST );
 
 	std::vector< D3DXVECTOR3 > vecList2;
-	pRootTri1->genIndex( vecList2 , 2 );
+	pRootTri1->genIndex( vecList2 , 2 , TRIANGLE::EAST );
 
 	std::vector< D3DXVECTOR3 > vecList3;
-	pRootTri1->genIndex( vecList3 , 3 );
+	pRootTri1->genIndex( vecList3 , 3 , 0 );
 
 	std::vector< D3DXVECTOR3 > vecList4;
-	pRootTri1->genIndex( vecList4 , 4 );
+	pRootTri1->genIndex( vecList4 , 4 , 0 );
 
 	std::vector< D3DXVECTOR3 > vecList5;
-	pRootTri1->genIndex( vecList5 , 5 );
+	pRootTri1->genIndex( vecList5 , 5 , 0 );
 
 	std::vector< D3DXVECTOR3 > vecList6;
-	pRootTri1->genIndex( vecList6 , 6 );
+	pRootTri1->genIndex( vecList6 , 6 , 0 );
 }
