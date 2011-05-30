@@ -48,9 +48,21 @@ void GdsVertexBuffer::Alloc()
 			*p++ = m_pBuffer.at(i);
 		}
 		m_pVB->Unlock();
-
-		m_pBuffer.clear();
 	}
+}
+
+void GdsVertexBuffer::Update()
+{
+	VOID* pI;
+	if( FAILED( m_pVB->Lock( 0 , m_Vertex_Maxcount*sizeof(GDSVERTEX), (void**)&pI, 0 ) ) )
+		return;
+
+	GDSVERTEX* p = (GDSVERTEX*)pI;
+	for ( size_t i=0 ; i < m_Vertex_Maxcount ; i++ )
+	{			
+		*p++ = m_pBuffer.at(i);
+	}
+	m_pVB->Unlock();
 }
 
 void GdsVertexBuffer::Free()
@@ -58,6 +70,7 @@ void GdsVertexBuffer::Free()
 	if ( m_pVB )
 	{
 		RESMGR.FreeVertexBuffer( m_pVB );
+		m_pBuffer.clear();
 	}
 }
 
@@ -65,4 +78,21 @@ void GdsVertexBuffer::AddVertex( GDSVERTEX& vertex )
 {
 	m_Vertex_Maxcount++;
 	m_pBuffer.push_back( vertex );
+}
+
+void GdsVertexBuffer::GetVertexFromIndex(int index , GDSVERTEX& vertex )
+{
+	if( index < m_pBuffer.size() && index >= 0 )
+	{
+		vertex = m_pBuffer.at(index);
+	}
+}
+
+void GdsVertexBuffer::SetVertexToIndex( int index , GDSVERTEX& vertex )
+{
+	if( index >= 0 && index < m_pBuffer.size() )
+	{
+		GDSVERTEX& p = m_pBuffer.at(index);
+		p = vertex;
+	}
 }

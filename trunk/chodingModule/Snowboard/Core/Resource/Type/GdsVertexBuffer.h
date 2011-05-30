@@ -27,10 +27,13 @@ public:
 	virtual ~GdsVertexBuffer();	
 
 	LPDIRECT3DVERTEXBUFFER9		Get(){ return m_pVB; }
-
+	
+	void						GetVertexFromIndex( int index , GDSVERTEX& vertex );
+	void						SetVertexToIndex( int index , GDSVERTEX& vertex );
 	void						AddVertex( GDSVERTEX& vertex );
 	void						Alloc();
 	void						Free();
+	void						Update();
 
 	void						SetVertexSize( int ivertexsize ){ m_VertexSize = ivertexsize; }
 	void						SetFVF( int ifvf ){ m_FVF = ifvf; }

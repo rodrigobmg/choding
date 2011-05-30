@@ -4,9 +4,151 @@
 #include "Renderer\GdsRendererDX9.h"
 #include "Renderer\GdsRenderStateGroup.h"
 
+GdsTerrain::TRIANGLE::TRIANGLE()
+{
+	m_iLodlv = dir = 0;
+	m_pRight = m_pLeft = NULL;
+}
+
+GdsTerrain::TRIANGLE::~TRIANGLE()
+{
+	SAFE_DELETE( m_pLeft );
+	SAFE_DELETE( m_pRight );
+}
+
+void GdsTerrain::TRIANGLE::calcDir( D3DXVECTOR3& center , D3DXVECTOR3& corner , int& dir )
+{
+	if( center.z == corner.z )
+	{
+		if ( center.x > corner.x )
+		{
+			dir = EAST;
+		}
+		else
+		{
+			dir = WEST;
+		}
+	}
+	else if ( center.x == corner.x )
+	{
+		if ( center.z > corner.z )
+		{
+			dir = NORTH;
+		}
+		else
+		{
+			dir = SOUTH;
+		}
+	}
+}
+
+void GdsTerrain::TRIANGLE::split( TRIANGLE* tri , int idir , int lodlv , int iLodLimit )
+{
+	lodlv++;
+	if ( lodlv > iLodLimit )
+		return;
+
+	tri->center = ( tri->p1 + tri->p2 ) * 0.5;
+	tri->m_pLeft = new TRIANGLE;
+	tri->m_pRight = new TRIANGLE;
+	tri->m_iLodlv = lodlv;
+
+	tri->m_pLeft->corner	= tri->center;
+	tri->m_pLeft->p1		= tri->p1;
+	tri->m_pLeft->p2		= tri->corner;
+
+	tri->m_pRight->corner	= tri->center;
+	tri->m_pRight->p1		= tri->corner;
+	tri->m_pRight->p2		= tri->p2;
+
+	if ( lodlv > 0  )
+	{
+		calcDir( (tri->m_pLeft->p1 + tri->m_pLeft->p2 ) *0.5 , tri->m_pLeft->corner , tri->m_pLeft->dir );
+		calcDir( (tri->m_pRight->p1 + tri->m_pRight->p2 )*0.5 , tri->m_pRight->corner , tri->m_pRight->dir );
+	}
+
+	split( tri->m_pLeft , 0 , tri->m_iLodlv , iLodLimit );
+	split( tri->m_pRight , 0 , tri->m_iLodlv , iLodLimit );
+}
+
+void GdsTerrain::TRIANGLE::genIndexTemplet( std::vector< D3DXVECTOR3 >& vecList , int ilodlv , int icrackDir )
+{
+	if ( ilodlv < m_iLodlv )
+		return;
+
+	if ( ilodlv == m_iLodlv && m_pLeft != NULL && m_pRight != NULL )
+	{
+		if ( icrackDir == m_pLeft->dir && icrackDir != NONE 
+			&& m_pLeft->m_pLeft != NULL && m_pLeft->m_pRight != NULL 
+			)
+		{
+			vecList.push_back( m_pLeft->m_pLeft->p1 );
+			vecList.push_back( m_pLeft->m_pLeft->corner );
+			vecList.push_back( m_pLeft->m_pLeft->p2 );
+
+			vecList.push_back( m_pLeft->m_pRight->p1 );
+			vecList.push_back( m_pLeft->m_pRight->corner );
+			vecList.push_back( m_pLeft->m_pRight->p2 );
+
+			vecList.push_back( m_pRight->p1 );
+			vecList.push_back( m_pRight->corner );
+			vecList.push_back( m_pRight->p2 );
+		}
+		else if ( icrackDir == m_pRight->dir && icrackDir != NONE 
+			&& m_pRight->m_pLeft != NULL && m_pRight->m_pRight != NULL 
+			)
+		{
+			vecList.push_back( m_pRight->m_pLeft->p1 );
+			vecList.push_back( m_pRight->m_pLeft->corner );
+			vecList.push_back( m_pRight->m_pLeft->p2 );
+
+			vecList.push_back( m_pRight->m_pRight->p1 );
+			vecList.push_back( m_pRight->m_pRight->corner );
+			vecList.push_back( m_pRight->m_pRight->p2 );				
+
+			vecList.push_back( m_pLeft->p1 );
+			vecList.push_back( m_pLeft->corner );
+			vecList.push_back( m_pLeft->p2 );
+		}
+		else
+		{
+			vecList.push_back( m_pLeft->p1 );
+			vecList.push_back( m_pLeft->corner );
+			vecList.push_back( m_pLeft->p2 );
+
+			vecList.push_back( m_pRight->p1 );
+			vecList.push_back( m_pRight->corner );
+			vecList.push_back( m_pRight->p2 );
+		}			
+	}		
+
+	if ( m_pLeft ) m_pLeft->genIndexTemplet( vecList , ilodlv , icrackDir );
+	if ( m_pRight )	m_pRight->genIndexTemplet( vecList , ilodlv , icrackDir );		
+}
+
+
+void GdsTerrain::TRIANGLE::GetVertex( GDSVERTEX* tile , int x , int z , GDSVERTEX& vertex )
+{
+	if ( x >= 33 )
+		x = 33-1;
+	if ( z >= 33 )
+		z = 33-1;
+	if ( x < 0 )
+		x = 0;
+	if ( z < 0 )
+		z = 0;
+
+	vertex = tile[ z*(33) + x ];
+}
+
+void GdsTerrain::TRIANGLE::GetIndex( D3DXVECTOR3& vertex , int& index )
+{
+	index = (vertex.z)*(33) + vertex.x;
+}
+
+
 GdsTerrain::GdsTerrain() 
 : m_iVertexPerNode( 33 )
-, m_ppIB( NULL )
 , m_ixheight( 0 )
 , m_izheight( 0 )
 , m_iMaxLOD( 0 )
@@ -38,30 +180,13 @@ GdsTerrain::~GdsTerrain()
 
 void GdsTerrain::vClear()
 {
-	SAFE_DELETE( m_pRootTile );
-	for ( size_t i=0 ; i<m_iMaxLOD ; i++)
-	{
-		if ( m_ppIB[i] != NULL )
-		{
-			for ( size_t j=0 ; j<5; j++)
-			{
-				if( m_ppIB[i][j] != NULL )
-					RESMGR.FreeIndexBuffer( m_ppIB[i][j] );
-			}			
-		}
-		SAFE_DELETE(m_ppIB[i]);
-	}
-	SAFE_DELETE(m_ppIB);
-	
+	SAFE_DELETE( m_pRootTile );		
 }
 
 
 void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 {
 	tile->m_cenPos = ( tile->m_minPos + tile->m_maxPos ) * 0.5;
-  	tile->m_cenPos.x = ceil( tile->m_cenPos.x );
-  	tile->m_cenPos.y = ceil( tile->m_cenPos.y );
-  	tile->m_cenPos.z = ceil( tile->m_cenPos.z );
 	float fDist = tile->m_maxPos.x - tile->m_minPos.x;
 	if ( abs( fDist ) > m_iVertexPerNode )
 	{
@@ -85,15 +210,6 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 		tile->m_pChild[3]->m_minPos = D3DXVECTOR3( tile->m_minPos.x , 0 , tile->m_cenPos.z );
 		tile->m_pChild[3]->m_maxPos = D3DXVECTOR3( tile->m_cenPos.x , 0 , tile->m_maxPos.z );
 
-		tile->m_pChild[0]->m_pNeighbor[1] = tile->m_pChild[1];
-		tile->m_pChild[0]->m_pNeighbor[3] = tile->m_pChild[3];
-		tile->m_pChild[1]->m_pNeighbor[0] = tile->m_pChild[0];
-		tile->m_pChild[1]->m_pNeighbor[2] = tile->m_pChild[2];
-		tile->m_pChild[2]->m_pNeighbor[1] = tile->m_pChild[1];
-		tile->m_pChild[2]->m_pNeighbor[3] = tile->m_pChild[3];
-		tile->m_pChild[3]->m_pNeighbor[0] = tile->m_pChild[0];
-		tile->m_pChild[3]->m_pNeighbor[2] = tile->m_pChild[2];
-
 		build( tile->m_pChild[0] , (GDSVERTEX*)pVB );
 		build( tile->m_pChild[1] , (GDSVERTEX*)pVB );
 		build( tile->m_pChild[2] , (GDSVERTEX*)pVB );
@@ -101,8 +217,7 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 	}
 	else
 	{
-		tile->m_pVertex = new GDSVERTEX[ m_iVertexPerNode*m_iVertexPerNode ];
-		int icount = 0;
+		tile->m_pVB		= GdsVertexBufferPtr( new GdsVertexBuffer );
 		float minY = 0;
 		float maxY = 0;
 		int istartx = static_cast<int>(tile->m_minPos.x);
@@ -112,38 +227,16 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 		{
 			for ( int x = istartx ; x < istartx + m_iVertexPerNode ; x++ )
 			{
-				tile->m_pVertex[icount] = pVB[ z *m_ixheight + x];
-				if ( tile->m_pVertex[icount].p.y > maxY )
-					maxY = tile->m_pVertex[icount].p.y;
+				tile->m_pVB->AddVertex( pVB[ z*m_ixheight + x] );
+				if ( pVB[ z*m_ixheight + x].p.y > maxY )
+					maxY = pVB[ z*m_ixheight + x].p.y;
 
-				if ( tile->m_pVertex[icount].p.y < minY )
-					minY = tile->m_pVertex[icount].p.y;
-			
-				icount++;				
+				if ( pVB[ z*m_ixheight + x].p.y < minY )
+					minY = pVB[ z*m_ixheight + x].p.y;			
 			}		
 		}		
 		tile->m_minPos.y = minY;
 		tile->m_maxPos.y = maxY;
-
-		RESMGR.AllocRenderObject( tile->m_RenderToken );
-
-		LPDIRECT3DVERTEXBUFFER9 VB;
-		RESMGR.AllocVertexBuffer( VB , m_iVertexPerNode*m_iVertexPerNode*sizeof( GDSVERTEX ) );
-		
-		VOID* pVertices;
-		if( FAILED( VB->Lock( 0, m_iVertexPerNode*m_iVertexPerNode*sizeof(GDSVERTEX), (void**)&pVertices, 0 ) ) )
-			return;
-
-		memcpy( pVertices , tile->m_pVertex , m_iVertexPerNode*m_iVertexPerNode*sizeof(GDSVERTEX) );
-		VB->Unlock();
-
-		tile->m_RenderToken->SetVertexBuffer( VB );
-		tile->m_RenderToken->SetVertexMaxCount( m_iVertexPerNode*m_iVertexPerNode );
-		tile->m_RenderToken->SetVertexSize( sizeof( GDSVERTEX ) );
-		tile->m_RenderToken->SetFVF( GDSVERTEX::FVF );
-		tile->m_RenderToken->SetStartVertexIndex( 0 );
-		tile->m_RenderToken->SetEndVertexIndex( m_iVertexPerNode*m_iVertexPerNode );
-
 	}
 }
 
@@ -305,11 +398,8 @@ void GdsTerrain::genIndex( TILE* tile )
 	if ( tile->m_pChild[2] ) genIndex( tile->m_pChild[2] );
 	if ( tile->m_pChild[3] ) genIndex( tile->m_pChild[3] );
 
-	if ( tile->m_RenderToken == NULL )
+	if ( tile->m_pVB->Get() == NULL )
 		return;
-
-	if ( tile->m_pVertex == NULL )
-		return;	
 
 	if ( CAMMGR.GetCurCam()->GetFrustum().VertexIsInFrustum( tile->m_cenPos ) == false )
 		return;
@@ -326,27 +416,6 @@ void GdsTerrain::genIndex( TILE* tile )
 			break;
 		}
 	}
-	
-	//iLodlv = m_iMaxLOD - iLodlv;
-	if ( iLodlv < 0 )
-		iLodlv = 0;
-	if ( iLodlv >= m_iMaxLOD )
-		iLodlv = m_iMaxLOD-1;
-
-	tile->m_iLOD = iLodlv;
-
-	int iOffset;
-	iOffset = static_cast<int>( pow( 2.0f , iLodlv ) );
-
-	tile->m_RenderToken->SetIndexMaxCount( (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 );
-	tile->m_RenderToken->SetIndexBuffer( m_ppIB[iLodlv][0] );
-	tile->m_RenderToken->SetStartIndex( 0 );
-	tile->m_RenderToken->SetEndIndex( (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 );	
-	
-// 	D3DXMATRIX tm = tile->m_RenderToken->GetMatrix();
-// 	RENDERER.DrawBox( tm , tile->m_minPos , tile->m_maxPos );
-	
-	RENDERER.GetRenderFrame()->AttachRenderObject( tile->m_RenderToken , 0 );
 }
 
 void GdsTerrain::Update( float fElapsedtime )
@@ -356,74 +425,29 @@ void GdsTerrain::Update( float fElapsedtime )
 }
 
 bool GdsTerrain::createTempletIB()
-{
-	m_ppIB = new LPDIRECT3DINDEXBUFFER9*[m_iMaxLOD];
-	for ( int iLodlv = 0 ; iLodlv< m_iMaxLOD ; iLodlv++)
-	{
-		m_ppIB[iLodlv] = new LPDIRECT3DINDEXBUFFER9[5];
+{	
+	TRIANGLE* pRootTri1 = new TRIANGLE;	
+	D3DXVECTOR3 minPos( 0,0,0 );
+	D3DXVECTOR3 maxPos( m_ixheight-1 , 0 , m_izheight-1 );
+	int iLodLimit = 4;
 
-		int iOffset;
-		iOffset = static_cast<int>( pow( 2.0f , iLodlv ) );
+	pRootTri1->m_pLeft = new TRIANGLE;
+	pRootTri1->m_pLeft->p1 = minPos;
+	pRootTri1->m_pLeft->corner = D3DXVECTOR3( 0,0,32 );
+	pRootTri1->m_pLeft->p2 = maxPos;
 
-		for ( int icrack = 0 ; icrack < 5 ; icrack++)
-		{
-			RESMGR.AllocIndexBuffer( m_ppIB[iLodlv][icrack] , (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 * sizeof(GDSINDEX) );		
+	pRootTri1->m_pRight = new TRIANGLE;
+	pRootTri1->m_pRight->p1 = maxPos;
+	pRootTri1->m_pRight->corner = D3DXVECTOR3( 0, 0, 32 );
+	pRootTri1->m_pRight->p2 = minPos;
 
-			GDSINDEX*	pI;
-			if( FAILED( m_ppIB[iLodlv][icrack]->Lock( 0, (m_iVertexPerNode-iOffset)*(m_iVertexPerNode-iOffset)*2 * sizeof(GDSINDEX), (void**)&pI, 0 ) ) )
-				return false;
+	pRootTri1->split( pRootTri1->m_pLeft , 0 , pRootTri1->m_iLodlv , iLodLimit );
+	pRootTri1->split( pRootTri1->m_pRight , 0 , pRootTri1->m_iLodlv , iLodLimit );
 
-			GDSINDEX	i;
-			int icount = 0;
-			for( int x = 0 ; x < m_iVertexPerNode-iOffset ; x += iOffset )
-			{
-				for( int z = 0 ; z < m_iVertexPerNode-iOffset ; z += iOffset )
-				{
-					int igap = iOffset / 2 ;
-					if ( icrack == 1 ) //left
-					{
-						if( x <= iOffset )
-						{
-							i._2 = z * m_iVertexPerNode+x;
-							i._1 = ( z+igap )*m_iVertexPerNode + x+igap;
-							i._0 = ( z+igap )*m_iVertexPerNode + x;
-							*pI++ = i;
-							i._2 = ((z+iOffset)*m_iVertexPerNode+x);
-							i._1 = (z*m_iVertexPerNode+x+iOffset);
-							i._0 = ((z+iOffset)*m_iVertexPerNode+x+iOffset);
-							*pI++ = i;
-						}
-					}
-					else if ( icrack == 2 ) // front
-					{
-
-					}
-					else if ( icrack == 3 ) // right
-					{
-
-					}
-					else if ( icrack == 4 ) // near
-					{
-
-					}
-					else
-					{
-						i._2 = (z*m_iVertexPerNode+x);
-						i._1 = (z*m_iVertexPerNode+x+iOffset);
-						i._0 = ((z+iOffset)*m_iVertexPerNode+x);
-						*pI++ = i;
-						i._2 = ((z+iOffset)*m_iVertexPerNode+x);
-						i._1 = (z*m_iVertexPerNode+x+iOffset);
-						i._0 = ((z+iOffset)*m_iVertexPerNode+x+iOffset);
-						*pI++ = i;					
-					}					
-					icount += 2;
-				}
-			}
-			
-			m_ppIB[iLodlv][icrack]->Unlock();	
-		}
-	}
+	SAFE_DELETE( pRootTri1 );
 	
+	GdsIndexBufferPtr pIndexBuffer = GdsIndexBufferPtr( new GdsIndexBuffer );
+	//pIndexBuffer->Alloc()
+	//m_LODIBTemplet.push_back( )
 	return true;
 }

@@ -49,7 +49,7 @@ public:
 	{
 		//»ý¼ºÀÚ
  		TCHAR respath[MAX_PATH];
- 		_stprintf_s( respath , L"%s\\%s" , L"d:\\choding\\application" , L"Resource" );
+ 		_stprintf_s( respath , L"%s\\%s" , L"e:\\project\\choding\\application" , L"Resource" );
  		ASSERT_TRUE( RESMGR.CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;jpg;dds;tga" , true )) );
 		GdsResTexturePtr ptex = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"banana.bmp" ) );
 		LPDIRECT3DTEXTURE9 tex = ptex->Get();
