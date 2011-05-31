@@ -3,6 +3,10 @@
 
 GdsVertexBuffer::GdsVertexBuffer()
 :m_Vertex_Maxcount(0)
+, m_FVF( GDSVERTEX::FVF )
+, m_iStartVertexIndex(0)
+, m_VertexSize(0)
+, m_iEndVertexIndex(0) 
 {
 
 }
@@ -48,6 +52,9 @@ void GdsVertexBuffer::Alloc()
 			*p++ = m_pBuffer.at(i);
 		}
 		m_pVB->Unlock();
+
+		m_VertexSize = sizeof(GDSVERTEX);		
+		m_iEndVertexIndex = m_Vertex_Maxcount;
 	}
 }
 

@@ -96,6 +96,8 @@ void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 		}		
 		tile->m_minPos.y = minY;
 		tile->m_maxPos.y = maxY;
+		
+		tile->m_pVB->Alloc();
 	}
 }
 
@@ -275,6 +277,24 @@ void GdsTerrain::genIndex( TILE* tile )
 			break;
 		}
 	}
+
+	GdsRenderObjectPtr p;
+	RESMGR.AllocRenderObject( p );
+	p->SetFVF( GDSVERTEX::FVF );
+	p->SetVertexBuffer( tile->m_pVB->Get() );
+	p->SetEndVertexIndex( tile->m_pVB->GetEndVertexIndex() );
+	p->SetVertexSize( tile->m_pVB->GetVertexSize() );
+	p->SetVertexMaxCount( tile->m_pVB->GetVertexMaxCount() );
+
+	
+	INDEX_CONTAINER lodindex = m_LODIBTemplet.at(0);
+	p->SetIndexMaxCount( lodindex.at(0)->GetIndexMaxCount() );
+	p->SetIndexBuffer( lodindex.at(0)->Get() );
+	p->SetEndIndex( lodindex.at(0)->GetIndexMaxCount() );
+	p->SetStartVertexIndex( 0 );
+	p->SetStartIndex( 0 );
+
+	RENDERER.GetRenderFrame()->AttachRenderObject( p , TERRAIN_RENDERSTATE );
 }
 
 void GdsTerrain::Update( float fElapsedtime )
@@ -288,7 +308,7 @@ bool GdsTerrain::createTempletIB()
 	TRIANGLE* pRootTri1 = new TRIANGLE;	
 	D3DXVECTOR3 minPos( 0,0,0 );
 	D3DXVECTOR3 maxPos( (float)m_ixheight-1 , 0 , (float)m_izheight-1 );
-	int iLodLimit = 4;
+	int iLodLimit = 7;
 
 	pRootTri1->m_pLeft = new TRIANGLE;
 	pRootTri1->m_pLeft->p1 = minPos;
@@ -305,8 +325,12 @@ bool GdsTerrain::createTempletIB()
 	
 	GdsIndexBufferPtr pIndexBuffer = GdsIndexBufferPtr( new GdsIndexBuffer );
 	
-	pRootTri1->genIndexTemplet( pIndexBuffer , 3 , TRIANGLE::SOUTH );
+	pRootTri1->genIndexTemplet( pIndexBuffer , 5 , TRIANGLE::NONE );
 	pIndexBuffer->Alloc();
+
+	INDEX_CONTAINER lod;
+	lod.push_back( pIndexBuffer );
+	m_LODIBTemplet.push_back( lod );
 
 	SAFE_DELETE( pRootTri1 );
 	return true;
