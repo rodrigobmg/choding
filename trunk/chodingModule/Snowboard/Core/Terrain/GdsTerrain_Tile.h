@@ -4,10 +4,8 @@
 #include "..\Resource\Type\GdsVertexBuffer.h"
 
 // tile
-class TILE
+struct TILE
 {
-
-public:
 	// 33 * 33
 	int						m_iLOD;
 	int						m_iMaxLOD;

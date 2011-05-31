@@ -3,9 +3,8 @@
 
 #include "../../Framework/Snowboard_stdafx.h"
 
-class TRIANGLE
+struct TRIANGLE
 {
-public:
 	// direction LEFT:0 , NEAR:1 , RIGHT:2 , FAR:3
 	//		  /| p2
 	//center / |
