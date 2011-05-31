@@ -55,7 +55,7 @@ void GdsRenderObject::vRender( LPDIRECT3DDEVICE9 device )
 	if ( m_ib )
 	{
 		device->SetIndices( m_ib );
-		device->DrawIndexedPrimitive( D3DPT_TRIANGLELIST , 0 , m_iStartVertexIndex , m_Vertex_Maxcount , m_iStartIndex , m_Index_Maxcount );
+		device->DrawIndexedPrimitive( m_ePrimitive , 0 , m_iStartVertexIndex , m_Vertex_Maxcount , m_iStartIndex , m_Index_Maxcount );
 	}	
 }
 
