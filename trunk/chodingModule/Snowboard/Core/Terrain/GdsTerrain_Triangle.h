@@ -1,0 +1,41 @@
+#ifndef _GDS_CORE_TERRAIN_TRIANGLE_H_
+#define _GDS_CORE_TERRAIN_TRIANGLE_H_
+
+#include "../../Framework/Snowboard_stdafx.h"
+
+class TRIANGLE
+{
+public:
+	// direction LEFT:0 , NEAR:1 , RIGHT:2 , FAR:3
+	//		  /| p2
+	//center / |
+	//		/  |
+	//   p1/---|  corner
+	//  order to triangle index p1 , corner , p2
+	enum DIR
+	{
+		NONE = 0,
+		WEST,
+		SOUTH,
+		EAST,
+		NORTH,
+	};
+
+	D3DXVECTOR3 p1 , corner , p2 , center;
+	int dir,m_iLodlv;
+	TRIANGLE*	m_pLeft;
+	TRIANGLE*	m_pRight;
+
+
+
+	TRIANGLE();
+	~TRIANGLE();
+
+	void calcDir( D3DXVECTOR3& center , D3DXVECTOR3& corner , int& dir );
+	void split( TRIANGLE* tri , int idir , int lodlv , int iLodLimit );
+	void genIndexTemplet( std::vector< D3DXVECTOR3 >& vecList , int ilodlv , int icrackDir );
+	void GetVertex( GDSVERTEX* tile , int x , int z , GDSVERTEX& vertex );
+	void GetIndex( D3DXVECTOR3& vertex , int& index );
+};
+
+#endif

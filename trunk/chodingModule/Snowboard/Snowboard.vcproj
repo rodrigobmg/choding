@@ -417,6 +417,22 @@
 					RelativePath=".\Core\Terrain\GdsTerrain.h"
 					>
 				</File>
+				<File
+					RelativePath=".\Core\Terrain\GdsTerrain_Tile.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Terrain\GdsTerrain_Tile.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Terrain\GdsTerrain_Triangle.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Terrain\GdsTerrain_Triangle.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
