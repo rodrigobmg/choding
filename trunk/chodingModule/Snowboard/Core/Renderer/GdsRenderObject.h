@@ -24,6 +24,7 @@ class GdsRenderObject : public GdsObject
 	int						m_Index_Maxcount;
 	int						m_iStartIndex;
 	int						m_iEndIndex;
+	D3DPRIMITIVETYPE		m_ePrimitive;
 
 public:
 
@@ -54,6 +55,8 @@ public:
 	void					SetIndexBuffer( LPDIRECT3DINDEXBUFFER9	ib ){ m_ib = ib; }
 	LPDIRECT3DINDEXBUFFER9	GetIndexBuffer(){ return m_ib; }
 
+	void					SetPrimitive( D3DPRIMITIVETYPE type ){ m_ePrimitive = type; }
+	D3DPRIMITIVETYPE		GetPrimitive(){ return m_ePrimitive; }
 	void					SetIndexMaxCount( int count ){ m_Index_Maxcount = count; }
 	int						GetIndexMaxCount(){ return m_Index_Maxcount; }
 	void					SetStartIndex( int index ){ m_iStartIndex = index; }

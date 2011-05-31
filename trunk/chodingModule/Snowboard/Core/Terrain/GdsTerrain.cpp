@@ -206,7 +206,7 @@ bool GdsTerrain::MakeHeightMap()
 			else
 			{
 				vertex.p.x = (float)x;
-				vertex.p.z = z;//-( (float)(z-1) - ( cxHeight - 1) );
+				vertex.p.z = (float)z;//-( (float)(z-1) - ( cxHeight - 1) );
 				vertex.p.y = ((float)(*( (LPDWORD)d3drc.pBits+x+( czHeight - z)*(d3drc.Pitch/4) )&0x000000ff) ) / 10.0f;	/// DWORDÀÌ¹Ç·Î pitch/4
 				vertex.n.x = vertex.p.x;
 				vertex.n.y = vertex.p.y;
@@ -267,7 +267,7 @@ void GdsTerrain::genIndex( TILE* tile )
 	D3DXVECTOR3 dir = eyepos - tile->m_cenPos;
 	float fdist = D3DXVec3Length( &dir ); 
 	int iLodlv = 0;
-	for (size_t i=0; i<m_iMaxLOD; i++)
+	for (int i=0; i<m_iMaxLOD; i++)
 	{
 		iLodlv++;
 		if ( i*m_iLodRate > fdist )
@@ -287,25 +287,26 @@ bool GdsTerrain::createTempletIB()
 {	
 	TRIANGLE* pRootTri1 = new TRIANGLE;	
 	D3DXVECTOR3 minPos( 0,0,0 );
-	D3DXVECTOR3 maxPos( m_ixheight-1 , 0 , m_izheight-1 );
+	D3DXVECTOR3 maxPos( (float)m_ixheight-1 , 0 , (float)m_izheight-1 );
 	int iLodLimit = 4;
 
 	pRootTri1->m_pLeft = new TRIANGLE;
 	pRootTri1->m_pLeft->p1 = minPos;
-	pRootTri1->m_pLeft->corner = D3DXVECTOR3( 0,0,32 );
+	pRootTri1->m_pLeft->corner = D3DXVECTOR3( (float)m_ixheight-1 ,0, 0 );
 	pRootTri1->m_pLeft->p2 = maxPos;
 
 	pRootTri1->m_pRight = new TRIANGLE;
 	pRootTri1->m_pRight->p1 = maxPos;
-	pRootTri1->m_pRight->corner = D3DXVECTOR3( 0, 0, 32 );
+	pRootTri1->m_pRight->corner = D3DXVECTOR3( 0, 0, (float)m_izheight-1 );
 	pRootTri1->m_pRight->p2 = minPos;
 
-	pRootTri1->split( pRootTri1->m_pLeft , 0 , pRootTri1->m_iLodlv , iLodLimit );
-	pRootTri1->split( pRootTri1->m_pRight , 0 , pRootTri1->m_iLodlv , iLodLimit );	
+	pRootTri1->split( pRootTri1->m_pLeft , pRootTri1->m_iLodlv , iLodLimit );
+	pRootTri1->split( pRootTri1->m_pRight , pRootTri1->m_iLodlv , iLodLimit );	
 	
 	GdsIndexBufferPtr pIndexBuffer = GdsIndexBufferPtr( new GdsIndexBuffer );
-	//pIndexBuffer->Alloc()
-	//m_LODIBTemplet.push_back( )
+	
+	pRootTri1->genIndexTemplet( pIndexBuffer , 3 , TRIANGLE::SOUTH );
+	pIndexBuffer->Alloc();
 
 	SAFE_DELETE( pRootTri1 );
 	return true;

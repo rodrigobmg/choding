@@ -2,6 +2,7 @@
 #define _GDS_CORE_TERRAIN_TRIANGLE_H_
 
 #include "../../Framework/Snowboard_stdafx.h"
+#include "Resource/Type/GdsIndexBuffer.h"
 
 struct TRIANGLE
 {
@@ -25,16 +26,14 @@ struct TRIANGLE
 	TRIANGLE*	m_pLeft;
 	TRIANGLE*	m_pRight;
 
-
-
 	TRIANGLE();
 	~TRIANGLE();
 
 	void calcDir( D3DXVECTOR3& center , D3DXVECTOR3& corner , int& dir );
-	void split( TRIANGLE* tri , int idir , int lodlv , int iLodLimit );
-	void genIndexTemplet( std::vector< D3DXVECTOR3 >& vecList , int ilodlv , int icrackDir );
+	void split( TRIANGLE* tri , int lodlv , int iLodLimit );
+	void genIndexTemplet( GdsIndexBufferPtr pIB , int ilodlv , int icrackDir );
 	void GetVertex( GDSVERTEX* tile , int x , int z , GDSVERTEX& vertex );
-	void GetIndex( D3DXVECTOR3& vertex , int& index );
+	void GetIndex( D3DXVECTOR3& vertex , WORD& index );
 };
 
 #endif

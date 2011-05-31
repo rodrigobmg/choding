@@ -2,7 +2,7 @@
 
 
 GdsRenderObject::GdsRenderObject()
-: m_iTextureIndex( 0 ) , m_Texture( NULL ) , m_vb( NULL ) , m_ib( NULL )
+: m_iTextureIndex( 0 ) , m_Texture( NULL ) , m_vb( NULL ) , m_ib( NULL ) , m_ePrimitive(D3DPT_TRIANGLELIST)
 {
 	SetName( OBJECT_RENDEROBJECT );
 	ZeroMemory( &m_Material , sizeof(D3DMATERIAL9) );

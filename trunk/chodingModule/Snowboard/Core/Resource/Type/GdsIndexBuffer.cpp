@@ -4,6 +4,7 @@
 GdsIndexBuffer::GdsIndexBuffer()
 : m_Index_Maxcount(0)
 , m_pIB(NULL)
+, m_ePrimitiveType( D3DPT_TRIANGLELIST )
 {
 	vClear();
 }
@@ -57,6 +58,8 @@ void GdsIndexBuffer::Alloc()
 		m_pIB->Unlock();
 
 		m_pBuffer.clear();	
+		m_iStartIndex = 0;
+		m_iEndIndex = m_Index_Maxcount;
 	}
 }
 

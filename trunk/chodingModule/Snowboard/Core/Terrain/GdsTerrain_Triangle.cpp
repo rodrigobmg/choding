@@ -38,7 +38,7 @@ void TRIANGLE::calcDir( D3DXVECTOR3& center , D3DXVECTOR3& corner , int& dir )
 	}
 }
 
-void TRIANGLE::split( TRIANGLE* tri , int idir , int lodlv , int iLodLimit )
+void TRIANGLE::split( TRIANGLE* tri , int lodlv , int iLodLimit )
 {
 	lodlv++;
 	if ( lodlv > iLodLimit )
@@ -59,15 +59,21 @@ void TRIANGLE::split( TRIANGLE* tri , int idir , int lodlv , int iLodLimit )
 
 	if ( lodlv > 0  )
 	{
-		calcDir( (tri->m_pLeft->p1 + tri->m_pLeft->p2 ) *0.5 , tri->m_pLeft->corner , tri->m_pLeft->dir );
-		calcDir( (tri->m_pRight->p1 + tri->m_pRight->p2 )*0.5 , tri->m_pRight->corner , tri->m_pRight->dir );
+		D3DXVECTOR3 center , corner;
+		center = ( tri->m_pLeft->p1 + tri->m_pLeft->p2 )*0.5;
+		corner = tri->m_pLeft->corner;
+		calcDir( center , corner , tri->m_pLeft->dir );
+
+		center = (tri->m_pRight->p1 + tri->m_pRight->p2 )*0.5;
+		corner = tri->m_pRight->corner;
+		calcDir( center , corner , tri->m_pRight->dir );
 	}
 
-	split( tri->m_pLeft , 0 , tri->m_iLodlv , iLodLimit );
-	split( tri->m_pRight , 0 , tri->m_iLodlv , iLodLimit );
+	split( tri->m_pLeft , tri->m_iLodlv , iLodLimit );
+	split( tri->m_pRight , tri->m_iLodlv , iLodLimit );
 }
 
-void TRIANGLE::genIndexTemplet( std::vector< D3DXVECTOR3 >& vecList , int ilodlv , int icrackDir )
+void TRIANGLE::genIndexTemplet( GdsIndexBufferPtr pIB , int ilodlv , int icrackDir )
 {
 	if ( ilodlv < m_iLodlv )
 		return;
@@ -78,48 +84,62 @@ void TRIANGLE::genIndexTemplet( std::vector< D3DXVECTOR3 >& vecList , int ilodlv
 			&& m_pLeft->m_pLeft != NULL && m_pLeft->m_pRight != NULL 
 			)
 		{
-			vecList.push_back( m_pLeft->m_pLeft->p1 );
-			vecList.push_back( m_pLeft->m_pLeft->corner );
-			vecList.push_back( m_pLeft->m_pLeft->p2 );
+ 			GDSINDEX index;
+ 			GetIndex( m_pLeft->m_pLeft->p1 , index._0 );
+ 			GetIndex( m_pLeft->m_pLeft->corner , index._1 );
+ 			GetIndex( m_pLeft->m_pLeft->p2 , index._2 );
+ 			pIB->AddIndex( index );
+ 
+ 			GetIndex( m_pLeft->m_pRight->p1 , index._0 );
+ 			GetIndex( m_pLeft->m_pRight->corner , index._1 );
+ 			GetIndex( m_pLeft->m_pRight->p2 , index._2 );
+ 			pIB->AddIndex( index );
+ 
+ 			GetIndex( m_pRight->p1 , index._0 );
+ 			GetIndex( m_pRight->corner , index._1 );
+ 			GetIndex( m_pRight->p2 , index._2 );
+ 			pIB->AddIndex( index );
 
-			vecList.push_back( m_pLeft->m_pRight->p1 );
-			vecList.push_back( m_pLeft->m_pRight->corner );
-			vecList.push_back( m_pLeft->m_pRight->p2 );
-
-			vecList.push_back( m_pRight->p1 );
-			vecList.push_back( m_pRight->corner );
-			vecList.push_back( m_pRight->p2 );
 		}
 		else if ( icrackDir == m_pRight->dir && icrackDir != NONE 
 			&& m_pRight->m_pLeft != NULL && m_pRight->m_pRight != NULL 
 			)
 		{
-			vecList.push_back( m_pRight->m_pLeft->p1 );
-			vecList.push_back( m_pRight->m_pLeft->corner );
-			vecList.push_back( m_pRight->m_pLeft->p2 );
+ 			GDSINDEX index;
+ 			GetIndex( m_pRight->m_pLeft->p1 , index._0 );
+ 			GetIndex( m_pRight->m_pLeft->corner , index._1 );
+ 			GetIndex( m_pRight->m_pLeft->p2 , index._2 );
+ 			pIB->AddIndex( index );
+ 
+ 			GetIndex( m_pRight->m_pRight->p1 , index._0 );
+ 			GetIndex( m_pRight->m_pRight->corner , index._1 );
+ 			GetIndex( m_pRight->m_pRight->p2 , index._2 );
+ 			pIB->AddIndex( index );
+ 
+ 			GetIndex( m_pLeft->p1 , index._0 );
+ 			GetIndex( m_pLeft->corner , index._1 );
+ 			GetIndex( m_pLeft->p2 , index._2 );
+ 			pIB->AddIndex( index );
 
-			vecList.push_back( m_pRight->m_pRight->p1 );
-			vecList.push_back( m_pRight->m_pRight->corner );
-			vecList.push_back( m_pRight->m_pRight->p2 );				
-
-			vecList.push_back( m_pLeft->p1 );
-			vecList.push_back( m_pLeft->corner );
-			vecList.push_back( m_pLeft->p2 );
 		}
 		else
 		{
-			vecList.push_back( m_pLeft->p1 );
-			vecList.push_back( m_pLeft->corner );
-			vecList.push_back( m_pLeft->p2 );
+ 			GDSINDEX index;
+ 			GetIndex( m_pLeft->p1 , index._0 );
+ 			GetIndex( m_pLeft->corner , index._1 );
+ 			GetIndex( m_pLeft->p2 , index._2 );
+ 			pIB->AddIndex( index );
+ 
+ 			GetIndex( m_pRight->p1 , index._0 );
+ 			GetIndex( m_pRight->corner , index._1 );
+ 			GetIndex( m_pRight->p2 , index._2 );
+ 			pIB->AddIndex( index );
 
-			vecList.push_back( m_pRight->p1 );
-			vecList.push_back( m_pRight->corner );
-			vecList.push_back( m_pRight->p2 );
 		}			
 	}		
 
-	if ( m_pLeft ) m_pLeft->genIndexTemplet( vecList , ilodlv , icrackDir );
-	if ( m_pRight )	m_pRight->genIndexTemplet( vecList , ilodlv , icrackDir );		
+	if ( m_pLeft ) m_pLeft->genIndexTemplet( pIB , ilodlv , icrackDir );
+	if ( m_pRight )	m_pRight->genIndexTemplet( pIB , ilodlv , icrackDir );		
 }
 
 
@@ -137,7 +157,7 @@ void TRIANGLE::GetVertex( GDSVERTEX* tile , int x , int z , GDSVERTEX& vertex )
 	vertex = tile[ z*(33) + x ];
 }
 
-void TRIANGLE::GetIndex( D3DXVECTOR3& vertex , int& index )
+void TRIANGLE::GetIndex( D3DXVECTOR3& vertex , WORD& index )
 {
 	index = (vertex.z)*(33) + vertex.x;
 }
