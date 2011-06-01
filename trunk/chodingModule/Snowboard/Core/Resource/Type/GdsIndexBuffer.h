@@ -14,6 +14,7 @@ private:
 	int							m_iStartIndex;
 	int							m_iEndIndex;
 	int							m_ePrimitiveType;
+	D3DCULL						m_eCullmode;
 	
 
 protected:
@@ -30,6 +31,9 @@ public:
 
 	void						Alloc();
 	void						Free();
+
+	void						SetCullMode( D3DCULL eMode );
+	D3DCULL						GetCullMode(){ return m_eCullmode; }
 
 	void						AddIndex( GDSINDEX& index );
 	int							GetTotalIndex(){ return m_Index_Maxcount; }

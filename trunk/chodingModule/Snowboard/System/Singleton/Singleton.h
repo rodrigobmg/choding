@@ -3,6 +3,10 @@
 
 #include "../../Framework/Snowboard_stdafx.h"
 
+#ifndef _WIN32_WINNT  // Windows XP 이상에서만 기능을 사용할 수 있습니다.                   
+#define _WIN32_WINNT 0x0501 // 다른 버전의 Windows에 맞도록 적합한 값으로 변경해 주십시오.
+#endif   
+
 // 기본 정책기반 싱글톤
 // create policy
 template <typename T>

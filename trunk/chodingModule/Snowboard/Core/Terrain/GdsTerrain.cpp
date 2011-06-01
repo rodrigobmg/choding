@@ -4,6 +4,7 @@
 #include "Renderer\GdsRendererDX9.h"
 #include "Renderer\GdsRenderStateGroup.h"
 #include "GdsTerrain_Triangle.h"
+#include "InputSystem\GdsInputSystem.h"
 
 
 GdsTerrain::GdsTerrain() 
@@ -13,6 +14,8 @@ GdsTerrain::GdsTerrain()
 , m_iMaxLOD( 0 )
 , m_pRootTile(NULL)
 , m_iLodRate( 50 )
+, m_ilod(0)
+, m_idir(0)
 {
 	SetName( OBJECT_TERRAIN );	
 	
@@ -39,6 +42,7 @@ GdsTerrain::~GdsTerrain()
 
 void GdsTerrain::vClear()
 {
+	m_LODIBTemplet.clear();
 	SAFE_DELETE( m_pRootTile );		
 }
 
@@ -120,13 +124,6 @@ bool GdsTerrain::MakeHeightMap()
 	cxHeight = ddsd.Width;				/// 텍스처의 가로크기
 	czHeight = ddsd.Height;				/// 텍스처의 세로크기
 
-	//maxlod 계산
-	for ( int i= (m_iVertexPerNode-1) ; i > 0 ; i /= 2 )
-	{
-		m_iMaxLOD++;
-	}
-	m_iMaxLOD -= 1;
-
 	int icheckx = cxHeight % (m_iVertexPerNode-1);
 	int icheckz = czHeight % (m_iVertexPerNode-1);
 	if ( icheckx != 0 || icheckz != 0 || cxHeight < (m_iVertexPerNode-1) || czHeight < (m_iVertexPerNode-1) )
@@ -148,7 +145,11 @@ bool GdsTerrain::MakeHeightMap()
 		return false;
 	}
 
-
+	//maxlod 계산
+	for ( int i= (m_iVertexPerNode-1) ; i > 0 ; i /= 2 )
+	{
+		m_iMaxLOD++;
+	}
 	LOG_WARNING_F( "Texture Size:[%d,%d]", cxHeight, czHeight );
 
 	/// 텍스처 메모리 락!
@@ -166,7 +167,7 @@ bool GdsTerrain::MakeHeightMap()
 			if ( z == czHeight )
 			{
 				vertex = v[(z-1)*m_ixheight+x];
-				vertex.p.z -= 1;
+				vertex.p.z += 1;
 
 				if ( minPos.x > vertex.p.x )
 					minPos.x = vertex.p.x;
@@ -209,11 +210,8 @@ bool GdsTerrain::MakeHeightMap()
 			{
 				vertex.p.x = (float)x;
 				vertex.p.z = (float)z;//-( (float)(z-1) - ( cxHeight - 1) );
-				vertex.p.y = ((float)(*( (LPDWORD)d3drc.pBits+x+( czHeight - z)*(d3drc.Pitch/4) )&0x000000ff) ) / 10.0f;	/// DWORD이므로 pitch/4
-				vertex.n.x = vertex.p.x;
-				vertex.n.y = vertex.p.y;
-				vertex.n.z = vertex.p.z;
-				D3DXVec3Normalize( &vertex.n, &vertex.n );
+				vertex.p.y = ((float)(*( (LPDWORD)d3drc.pBits+x+( czHeight - z)*(d3drc.Pitch/4) )&0x000000ff) ) / 10.0f;	/// DWORD이므로 pitch/4 				
+ 				D3DXVec3Normalize( &vertex.n, &vertex.p );
 				vertex.t.x = (float)x / (cxHeight-1);
 				vertex.t.y = (float)z / (czHeight-1);
 
@@ -278,19 +276,22 @@ void GdsTerrain::genIndex( TILE* tile )
 		}
 	}
 
+	
 	GdsRenderObjectPtr p;
 	RESMGR.AllocRenderObject( p );
 	p->SetFVF( GDSVERTEX::FVF );
 	p->SetVertexBuffer( tile->m_pVB->Get() );
+
 	p->SetEndVertexIndex( tile->m_pVB->GetEndVertexIndex() );
 	p->SetVertexSize( tile->m_pVB->GetVertexSize() );
 	p->SetVertexMaxCount( tile->m_pVB->GetVertexMaxCount() );
 
 	
-	INDEX_CONTAINER lodindex = m_LODIBTemplet.at(0);
-	p->SetIndexMaxCount( lodindex.at(0)->GetIndexMaxCount() );
-	p->SetIndexBuffer( lodindex.at(0)->Get() );
-	p->SetEndIndex( lodindex.at(0)->GetIndexMaxCount() );
+	INDEX_CONTAINER lodindex = m_LODIBTemplet.at(m_ilod);
+
+	p->SetIndexMaxCount( lodindex.at(m_idir)->GetIndexMaxCount() );
+	p->SetIndexBuffer( lodindex.at(m_idir)->Get() );
+	p->SetEndIndex( lodindex.at(m_idir)->GetIndexMaxCount() );
 	p->SetStartVertexIndex( 0 );
 	p->SetStartIndex( 0 );
 
@@ -299,6 +300,13 @@ void GdsTerrain::genIndex( TILE* tile )
 
 void GdsTerrain::Update( float fElapsedtime )
 {
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_B ) )
+	{
+		m_ilod = rand()%m_LODIBTemplet.size();
+		INDEX_CONTAINER lodindex = m_LODIBTemplet.at(m_ilod);
+		m_idir = rand()%lodindex.size();
+	}
+
 	if( m_pRootTile )
 		genIndex( m_pRootTile );
 }
@@ -308,7 +316,6 @@ bool GdsTerrain::createTempletIB()
 	TRIANGLE* pRootTri1 = new TRIANGLE;	
 	D3DXVECTOR3 minPos( 0,0,0 );
 	D3DXVECTOR3 maxPos( (float)m_ixheight-1 , 0 , (float)m_izheight-1 );
-	int iLodLimit = 7;
 
 	pRootTri1->m_pLeft = new TRIANGLE;
 	pRootTri1->m_pLeft->p1 = minPos;
@@ -320,17 +327,32 @@ bool GdsTerrain::createTempletIB()
 	pRootTri1->m_pRight->corner = D3DXVECTOR3( 0, 0, (float)m_izheight-1 );
 	pRootTri1->m_pRight->p2 = minPos;
 
-	pRootTri1->split( pRootTri1->m_pLeft , pRootTri1->m_iLodlv , iLodLimit );
-	pRootTri1->split( pRootTri1->m_pRight , pRootTri1->m_iLodlv , iLodLimit );	
+	pRootTri1->split( pRootTri1->m_pLeft , pRootTri1->m_iLodlv , m_iMaxLOD );
+	pRootTri1->split( pRootTri1->m_pRight , pRootTri1->m_iLodlv , m_iMaxLOD );	
 	
-	GdsIndexBufferPtr pIndexBuffer = GdsIndexBufferPtr( new GdsIndexBuffer );
-	
-	pRootTri1->genIndexTemplet( pIndexBuffer , 5 , TRIANGLE::NONE );
-	pIndexBuffer->Alloc();
-
-	INDEX_CONTAINER lod;
-	lod.push_back( pIndexBuffer );
-	m_LODIBTemplet.push_back( lod );
+	for ( int lvlod=0; lvlod < m_iMaxLOD ; lvlod++ )
+	{
+		INDEX_CONTAINER lod;
+		//홀수일때
+		if( lvlod % 2 == 1 )
+		{
+			for ( size_t dir=0 ; dir < TRIANGLE::MAX ; dir++ )
+			{
+				GdsIndexBufferPtr pIndexBuffer = GdsIndexBufferPtr( new GdsIndexBuffer );
+				pRootTri1->genIndexTemplet( pIndexBuffer , lvlod , dir );
+				pIndexBuffer->Alloc();
+				lod.push_back( pIndexBuffer );
+			}
+		}
+		else
+		{
+			GdsIndexBufferPtr pIndexBuffer = GdsIndexBufferPtr( new GdsIndexBuffer );
+			pRootTri1->genIndexTemplet( pIndexBuffer , lvlod , TRIANGLE::NONE );
+			pIndexBuffer->Alloc();
+			lod.push_back( pIndexBuffer );
+		}	
+		m_LODIBTemplet.push_back(lod);
+	}
 
 	SAFE_DELETE( pRootTri1 );
 	return true;

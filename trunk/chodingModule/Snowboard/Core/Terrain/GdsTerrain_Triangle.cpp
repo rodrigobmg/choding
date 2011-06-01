@@ -18,23 +18,31 @@ void TRIANGLE::calcDir( D3DXVECTOR3& center , D3DXVECTOR3& corner , int& dir )
 	{
 		if ( center.x > corner.x )
 		{
-			dir = EAST;
+			if ( center.x == 32 )
+				dir = EAST;
 		}
 		else
 		{
-			dir = WEST;
+			if ( center.x == 0 )
+				dir = WEST;
 		}
 	}
 	else if ( center.x == corner.x )
 	{
 		if ( center.z > corner.z )
 		{
-			dir = NORTH;
+			if ( center.z == 32 )
+				dir = NORTH;
 		}
 		else
 		{
-			dir = SOUTH;
+			if ( center.z == 0 )
+				dir = SOUTH;
 		}
+	}
+	else
+	{
+		dir = NONE;
 	}
 }
 
@@ -57,17 +65,20 @@ void TRIANGLE::split( TRIANGLE* tri , int lodlv , int iLodLimit )
 	tri->m_pRight->p1		= tri->corner;
 	tri->m_pRight->p2		= tri->p2;
 
-	if ( lodlv > 0  )
-	{
-		D3DXVECTOR3 center , corner;
-		center = ( tri->m_pLeft->p1 + tri->m_pLeft->p2 )*0.5;
-		corner = tri->m_pLeft->corner;
-		calcDir( center , corner , tri->m_pLeft->dir );
-
-		center = (tri->m_pRight->p1 + tri->m_pRight->p2 )*0.5;
-		corner = tri->m_pRight->corner;
-		calcDir( center , corner , tri->m_pRight->dir );
-	}
+ 	if ( lodlv > 0  )
+ 	{
+ 		D3DXVECTOR3 center , corner;
+ 		int eDir;
+ 		center = ( tri->m_pLeft->p1 + tri->m_pLeft->p2 )*0.5;
+ 		corner = tri->m_pLeft->corner;
+ 		calcDir( center , corner , eDir );
+ 		tri->m_pLeft->dir = eDir;
+ 
+ 		center = (tri->m_pRight->p1 + tri->m_pRight->p2 )*0.5;
+ 		corner = tri->m_pRight->corner;
+ 		calcDir( center , corner , eDir );
+ 		tri->m_pRight->dir = eDir;
+ 	}
 
 	split( tri->m_pLeft , tri->m_iLodlv , iLodLimit );
 	split( tri->m_pRight , tri->m_iLodlv , iLodLimit );
@@ -85,16 +96,19 @@ void TRIANGLE::genIndexTemplet( GdsIndexBufferPtr pIB , int ilodlv , int icrackD
 			)
 		{
  			GDSINDEX index;
+			checkVertexOrder( m_pLeft->m_pLeft->p1 , m_pLeft->m_pLeft->corner , m_pLeft->m_pLeft->p2 );
  			GetIndex( m_pLeft->m_pLeft->p1 , index._0 );
  			GetIndex( m_pLeft->m_pLeft->corner , index._1 );
  			GetIndex( m_pLeft->m_pLeft->p2 , index._2 );
  			pIB->AddIndex( index );
  
+			checkVertexOrder( m_pLeft->m_pRight->p1 , m_pLeft->m_pRight->corner , m_pLeft->m_pRight->p2 );
  			GetIndex( m_pLeft->m_pRight->p1 , index._0 );
  			GetIndex( m_pLeft->m_pRight->corner , index._1 );
  			GetIndex( m_pLeft->m_pRight->p2 , index._2 );
  			pIB->AddIndex( index );
  
+			checkVertexOrder( m_pRight->p1 , m_pRight->corner , m_pRight->p2 );
  			GetIndex( m_pRight->p1 , index._0 );
  			GetIndex( m_pRight->corner , index._1 );
  			GetIndex( m_pRight->p2 , index._2 );
@@ -106,16 +120,19 @@ void TRIANGLE::genIndexTemplet( GdsIndexBufferPtr pIB , int ilodlv , int icrackD
 			)
 		{
  			GDSINDEX index;
+			checkVertexOrder( m_pRight->m_pLeft->p1 , m_pRight->m_pLeft->corner , m_pRight->m_pLeft->p2 );
  			GetIndex( m_pRight->m_pLeft->p1 , index._0 );
  			GetIndex( m_pRight->m_pLeft->corner , index._1 );
  			GetIndex( m_pRight->m_pLeft->p2 , index._2 );
  			pIB->AddIndex( index );
  
+			checkVertexOrder( m_pRight->m_pRight->p1 , m_pRight->m_pRight->corner , m_pRight->m_pRight->p2 );
  			GetIndex( m_pRight->m_pRight->p1 , index._0 );
  			GetIndex( m_pRight->m_pRight->corner , index._1 );
  			GetIndex( m_pRight->m_pRight->p2 , index._2 );
  			pIB->AddIndex( index );
  
+			checkVertexOrder( m_pLeft->p1 , m_pLeft->corner , m_pLeft->p2 );
  			GetIndex( m_pLeft->p1 , index._0 );
  			GetIndex( m_pLeft->corner , index._1 );
  			GetIndex( m_pLeft->p2 , index._2 );
@@ -125,11 +142,13 @@ void TRIANGLE::genIndexTemplet( GdsIndexBufferPtr pIB , int ilodlv , int icrackD
 		else
 		{
  			GDSINDEX index;
+			checkVertexOrder( m_pLeft->p1 , m_pLeft->corner , m_pLeft->p2 );
  			GetIndex( m_pLeft->p1 , index._0 );
  			GetIndex( m_pLeft->corner , index._1 );
  			GetIndex( m_pLeft->p2 , index._2 );
  			pIB->AddIndex( index );
  
+			checkVertexOrder( m_pRight->p1 , m_pRight->corner , m_pRight->p2 );
  			GetIndex( m_pRight->p1 , index._0 );
  			GetIndex( m_pRight->corner , index._1 );
  			GetIndex( m_pRight->p2 , index._2 );
@@ -142,6 +161,17 @@ void TRIANGLE::genIndexTemplet( GdsIndexBufferPtr pIB , int ilodlv , int icrackD
 	if ( m_pRight )	m_pRight->genIndexTemplet( pIB , ilodlv , icrackDir );		
 }
 
+void TRIANGLE::checkVertexOrder( D3DXVECTOR3& p1 , D3DXVECTOR3& corner , D3DXVECTOR3& p2 )
+{
+	D3DXVECTOR3 vecp1 = p1 - corner;
+	D3DXVECTOR3 vecp2 = p2 - corner;
+	D3DXVECTOR3 cross;
+	D3DXVec3Cross( &cross , &vecp1 , &vecp2 );
+	if ( cross.y > 0 )
+	{
+		swap( p1,p2);
+	}
+}
 
 void TRIANGLE::GetVertex( GDSVERTEX* tile , int x , int z , GDSVERTEX& vertex )
 {

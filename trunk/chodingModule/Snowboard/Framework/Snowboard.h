@@ -30,7 +30,6 @@ public:
 	HWND		GetWnd(){ return m_hWnd; }
 private:
 	
-	bool		m_bMouseDrag;
 	GdsRendererDX9Ptr	m_pRenderer;
 	GdsResMgrPtr		m_pResMgr;
 	

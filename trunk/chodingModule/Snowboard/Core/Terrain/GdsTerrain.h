@@ -21,6 +21,9 @@ class GdsTerrain : public GdsObject
 	int							m_izheight;
 	int							m_iMaxLOD;
 	int							m_iLodRate;
+
+	int							m_ilod;
+	int							m_idir;
 	// root tile for quad-tree
 	TILE*						m_pRootTile;
 	void						genIndex( TILE* tile );

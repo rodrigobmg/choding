@@ -10,7 +10,7 @@
 #endif      
 
 #include <Windows.h>
-#include <WinBase.h>
+#include <winbase.h>
 #include <d3dx9.h>
 #include <ASSERT.h>
 #include <d3d9.h>

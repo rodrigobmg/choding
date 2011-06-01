@@ -68,6 +68,9 @@ bool GdsRendererDX9::vCreate( HWND hWnd )
 
 void GdsRendererDX9::vUpdate( float fAccumTime )
 {	
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_P ) )
+		RENDERER.ToggleWireMode();
+
 	if ( m_bWireMode )
 		m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
 	else

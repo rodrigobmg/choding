@@ -120,13 +120,13 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 // 		return E_FAIL; 
 // 	}
 
- 	void *pVertices;
+// 	void *pVertices;
 //  	if( FAILED( /*m_pVB*/m_Polygon->GetVB()->Lock( 0, Size * sizeof(MD2_VERTEX), (void**)&pVertices, 0 ) ) )
 //  	{
 // 		return E_FAIL; 
 // 	}
 
- 	memcpy( pVertices, Vertices, Size * sizeof(MD2_VERTEX) );
+// 	memcpy( pVertices, Vertices, Size * sizeof(MD2_VERTEX) );
  	//m_pVB->Unlock();
 // 	m_Polygon->SetPrimitive( pMD2Header.numTris );
 // 	m_Polygon->GetVB()->Unlock();

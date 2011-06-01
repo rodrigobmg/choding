@@ -51,6 +51,76 @@ GdsCameraPtr GdsCameraManagerDX9::GetCamNode( int iCamIndex )
 
 void GdsCameraManagerDX9::Update( float fElapsedtime )
 {
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_W ) )
+		CAMMGR.MoveForwardEye( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_A ) )
+		CAMMGR.MoveLeftEye( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_D ) )
+		CAMMGR.MoveRightEye( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_S ) )
+		CAMMGR.MoveBackEye( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_Q ) )
+		CAMMGR.MoveUpEye( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_E ) )
+		CAMMGR.MoveDownEye( 2.0f );
+
+
+// 	if ( m_bMouseDrag )
+// 	{
+// 		int x ,y ,z;
+// 		INPUTSYSTEM.GetMousePosDelta( x, y, z );
+// 		//LOG_WARNING_F( "Mouse DeltaPos %d %d %d\n" , x ,y,z );
+// 		//CAMMGR.MoveLeftLookat( 2.0f );
+// 		if ( x > 0 )
+// 			CAMMGR.MoveRightLookat( 0.05 );
+// 		else
+// 			CAMMGR.MoveLeftLookat( 0.05 );
+// 
+// 		if ( y > 0 )
+// 			CAMMGR.MoveDownLookat( 0.05 );
+// 		else
+// 			CAMMGR.MoveUpLookat( 0.05 );
+// 
+// 		if ( z > 0 )
+// 			CAMMGR.MoveForwardLookat( 0.05 );
+// 		else
+// 			CAMMGR.MoveBackLookat( 0.05 );
+// 	}
+// 
+// 	if ( INPUTSYSTEM.GetMouseIsDown( VM_LBTN ) )
+// 	{
+// 		m_bMouseDrag = true;
+// 	}	
+// 
+// 	if ( INPUTSYSTEM.GetMouseIsUp( VM_LBTN ) )
+// 	{
+// 		m_bMouseDrag = false;
+// 	}
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_I ) )
+		CAMMGR.MoveForwardLookat( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_J ) )
+		CAMMGR.MoveLeftLookat( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_L ) )
+		CAMMGR.MoveRightLookat( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_K ) )
+		CAMMGR.MoveBackLookat( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_U ) )
+		CAMMGR.MoveUpLookat( 2.0f );
+
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_O ) )
+		CAMMGR.MoveDownLookat( 2.0f );
+
+
 	if ( GetCurCam() )
 		GetCurCam()->Update(fElapsedtime);
 }

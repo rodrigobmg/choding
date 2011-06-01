@@ -5,6 +5,7 @@ GdsIndexBuffer::GdsIndexBuffer()
 : m_Index_Maxcount(0)
 , m_pIB(NULL)
 , m_ePrimitiveType( D3DPT_TRIANGLELIST )
+, m_eCullmode( D3DCULL_CCW )
 {
 	vClear();
 }
@@ -57,7 +58,7 @@ void GdsIndexBuffer::Alloc()
 		}
 		m_pIB->Unlock();
 
-		m_pBuffer.clear();	
+		//m_pBuffer.clear();	
 		m_iStartIndex = 0;
 		m_iEndIndex = m_Index_Maxcount;
 	}
@@ -67,6 +68,7 @@ void GdsIndexBuffer::Free()
 {
 	if ( m_pIB )
 	{
+		m_pBuffer.clear();	
 		RESMGR.FreeIndexBuffer(m_pIB);
 	}
 }
@@ -75,4 +77,22 @@ void GdsIndexBuffer::AddIndex( GDSINDEX& index )
 {
 	m_Index_Maxcount++;
 	m_pBuffer.push_back( index );
+}
+
+void GdsIndexBuffer::SetCullMode( D3DCULL eMode )
+{
+	if ( ( m_eCullmode == D3DCULL_CCW && eMode == D3DCULL_CW )
+		|| ( m_eCullmode == D3DCULL_CW && eMode == D3DCULL_CCW )
+		)
+	{
+		//change index order
+		if ( m_pIB != NULL )
+		{
+
+		}
+	}
+
+
+	m_eCullmode = eMode;
+
 }
