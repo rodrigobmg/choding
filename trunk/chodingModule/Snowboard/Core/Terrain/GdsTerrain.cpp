@@ -113,7 +113,7 @@ bool GdsTerrain::MakeHeightMap()
 		return false;
 	}
 
-	GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"map.jpg") );
+	GdsResTexturePtr texheight = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"map.bmp") );
 	GdsResTexturePtr texcolor = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"tile2.tga") );
 
 	D3DSURFACE_DESC		ddsd;
@@ -252,15 +252,15 @@ void GdsTerrain::genIndex( TILE* tile )
 	if ( tile == NULL )
 		return;
 
+	if ( CAMMGR.GetCurCam()->GetFrustum().VertexIsInFrustum( tile->m_cenPos ) == false )
+		return;
+
 	if ( tile->m_pChild[0] ) genIndex( tile->m_pChild[0] );
 	if ( tile->m_pChild[1] ) genIndex( tile->m_pChild[1] );
 	if ( tile->m_pChild[2] ) genIndex( tile->m_pChild[2] );
 	if ( tile->m_pChild[3] ) genIndex( tile->m_pChild[3] );
 
-	if ( tile->m_pVB->Get() == NULL )
-		return;
-
-	if ( CAMMGR.GetCurCam()->GetFrustum().VertexIsInFrustum( tile->m_cenPos ) == false )
+	if ( tile->m_pVB == NULL )
 		return;
 
 	D3DXVECTOR3 eyepos = CAMMGR.GetCurCam()->GetEye();	
@@ -277,8 +277,8 @@ void GdsTerrain::genIndex( TILE* tile )
 	}
 
 	
-	GdsRenderObjectPtr p;
-	RESMGR.AllocRenderObject( p );
+	GdsRenderObjectPtr p = GdsRenderObjectPtr( new GdsRenderObject );
+	//RESMGR.AllocRenderObject( p );
 	p->SetFVF( GDSVERTEX::FVF );
 	p->SetVertexBuffer( tile->m_pVB->Get() );
 
@@ -315,16 +315,16 @@ bool GdsTerrain::createTempletIB()
 {	
 	TRIANGLE* pRootTri1 = new TRIANGLE;	
 	D3DXVECTOR3 minPos( 0,0,0 );
-	D3DXVECTOR3 maxPos( (float)m_ixheight-1 , 0 , (float)m_izheight-1 );
+	D3DXVECTOR3 maxPos( (float)m_iVertexPerNode-1 , 0 , (float)m_iVertexPerNode-1 );
 
 	pRootTri1->m_pLeft = new TRIANGLE;
 	pRootTri1->m_pLeft->p1 = minPos;
-	pRootTri1->m_pLeft->corner = D3DXVECTOR3( (float)m_ixheight-1 ,0, 0 );
+	pRootTri1->m_pLeft->corner = D3DXVECTOR3( (float)m_iVertexPerNode-1 ,0, 0 );
 	pRootTri1->m_pLeft->p2 = maxPos;
 
 	pRootTri1->m_pRight = new TRIANGLE;
 	pRootTri1->m_pRight->p1 = maxPos;
-	pRootTri1->m_pRight->corner = D3DXVECTOR3( 0, 0, (float)m_izheight-1 );
+	pRootTri1->m_pRight->corner = D3DXVECTOR3( 0, 0, (float)m_iVertexPerNode-1 );
 	pRootTri1->m_pRight->p2 = minPos;
 
 	pRootTri1->split( pRootTri1->m_pLeft , pRootTri1->m_iLodlv , m_iMaxLOD );
