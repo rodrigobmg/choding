@@ -60,11 +60,11 @@ bool GdsFrustum::VertexIsInFrustum( const D3DXVECTOR3& v )
 	for( int i = 0; i < 6; ++i )
 	{
 		float fDist = D3DXPlaneDotCoord( &m_plane[i], &v );
-		if( fDist <= 5.0f )
-			return true;
+		if( fDist > 5.0f )
+			return false;
 	}
 
-	return false;
+	return true;
 }
 
 bool GdsFrustum::SphereIsInFrustum( const D3DXVECTOR3& v, float fradius ) 
@@ -72,9 +72,9 @@ bool GdsFrustum::SphereIsInFrustum( const D3DXVECTOR3& v, float fradius )
 	for( int  i = 0 ; i < 6; ++i )
 	{
 		float fDist = D3DXPlaneDotCoord( &m_plane[i], &v );
-		if( fDist <= ( fradius + 5.0f ) )
-			return true;
+		if( fDist > ( fradius + 5.0f ) )
+			return false;
 	}
 
-	return false;
+	return true;
 }

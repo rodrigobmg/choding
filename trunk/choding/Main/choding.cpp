@@ -40,11 +40,11 @@ bool OnIdle()
 	{
 		g_pSnowboard->OnIdle();
 		float rate = g_pSnowboard->GetFrameRate();
+		int		count = g_pSnowboard->GetCountofRenderObject();
 		
 		char buffer[256] = {0,};
-		sprintf_s( buffer , 256 , "FrameRate = %d" , (int)rate);
-		::SetWindowTextA( g_pSnowboard->GetWnd() , buffer );
-		
+		sprintf_s( buffer , 256 , "FrameRate = %03d RenderObject = %04d " , (int)rate , count );
+		::SetWindowTextA( g_pSnowboard->GetWnd() , buffer );		
 	}
 
 	return true;

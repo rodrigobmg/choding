@@ -189,5 +189,7 @@ void TRIANGLE::GetVertex( GDSVERTEX* tile , int x , int z , GDSVERTEX& vertex )
 
 void TRIANGLE::GetIndex( D3DXVECTOR3& vertex , WORD& index )
 {
-	index = (vertex.z)*(33) + vertex.x;
+	int x = (int)vertex.x % 33;
+	int z = (int)vertex.z % 33;
+	index = (z)*(33) + x;
 }

@@ -49,7 +49,9 @@ void GdsTerrain::vClear()
 
 void GdsTerrain::build( TILE* tile , GDSVERTEX* pVB )
 {
-	tile->m_cenPos = ( tile->m_minPos + tile->m_maxPos ) * 0.5;
+	tile->m_cenPos = ( tile->m_minPos + tile->m_maxPos ) * 0.5;	
+	tile->m_fRadius = D3DXVec3Length( &(tile->m_cenPos - tile->m_minPos) ); 
+
 	float fDist = tile->m_maxPos.x - tile->m_minPos.x;
 	if ( abs( fDist ) > m_iVertexPerNode )
 	{
@@ -252,7 +254,7 @@ void GdsTerrain::genIndex( TILE* tile )
 	if ( tile == NULL )
 		return;
 
-	if ( CAMMGR.GetCurCam()->GetFrustum().VertexIsInFrustum( tile->m_cenPos ) == false )
+	if ( CAMMGR.GetCurCam()->GetFrustum().SphereIsInFrustum( tile->m_cenPos , tile->m_fRadius ) == false )
 		return;
 
 	if ( tile->m_pChild[0] ) genIndex( tile->m_pChild[0] );

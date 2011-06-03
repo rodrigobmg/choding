@@ -27,6 +27,7 @@ public:
 	void		TestFunc();
 
 	float		GetFrameRate(){ return m_fFrameRate; }
+	int			GetCountofRenderObject(){ return m_iRenderobjectCount; }
 	HWND		GetWnd(){ return m_hWnd; }
 private:
 	
@@ -34,6 +35,7 @@ private:
 	GdsResMgrPtr		m_pResMgr;
 	
 	float				m_fFrameRate;
+	int					m_iRenderobjectCount;
 	HWND		m_hWnd;
 };
 

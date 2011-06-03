@@ -14,6 +14,8 @@
 #include "Terrain/GdsTerrain.h"
 
 CSnowboard::CSnowboard()
+:m_iRenderobjectCount(0)
+,m_fFrameRate(0.0f)
 {
 	Clear(); 
 }
@@ -25,7 +27,6 @@ CSnowboard::~CSnowboard()
 
 void CSnowboard::Clear()
 {
-	m_fFrameRate = 0.0f;
 }
 
 bool CSnowboard::InitModule( HWND hWnd )
@@ -59,17 +60,12 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 
 bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 {
-	//m_pResMgr = boost::shared_dynamic_cast< GdsResMgr >( GdsCoreFactory::CreateCore( CORE_RESOURCE ) );
 	RESMGR.Create( device );
 	return TRUE;
 }
 
 void CSnowboard::DestroyModule()
 {
-// 	if ( m_pRenderer )
-// 		m_pRenderer->Release();
-// 	if ( m_pResMgr )
-// 		m_pResMgr->Release();	
 }
 
 
@@ -80,13 +76,9 @@ void CSnowboard::OnIdle()
 		return;
 	}
 
-// 	if ( m_pRenderer )
-// 	{		
-// 		m_pRenderer->Update( GDS::GetAccumTime() );
-// 		m_fFrameRate = 1.0f / GDS::GetFrameTime();
-// 	}
 	RENDERER.Update( GDS::GetAccumTime() );
 	m_fFrameRate = 1.0f / GDS::GetFrameTime();
+	m_iRenderobjectCount = RENDERER.GetRenderFrame()->GetRenderObjectCount();
 }
 
 

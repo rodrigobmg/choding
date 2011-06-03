@@ -40,3 +40,8 @@ TEST_F( GdsTerrainTest,  MakeHeightMap )
 	EXPECT_EQ( 33*33-1 , (int)index );
 	TERRAIN.MakeHeightMap();		
 }
+
+TEST_F( GdsTerrainTest , Update )
+{
+	TERRAIN.Update(0.f);
+}

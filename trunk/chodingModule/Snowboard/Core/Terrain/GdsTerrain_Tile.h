@@ -7,8 +7,9 @@
 struct TILE
 {
 	// 33 * 33
+	float					m_fRadius;
 	int						m_iLOD;
-	int						m_iMaxLOD;
+	int						m_iCrackLOD;
 	TILE*					m_pParent;
 	TILE*					m_pChild[4];
 	D3DXVECTOR3				m_minPos;

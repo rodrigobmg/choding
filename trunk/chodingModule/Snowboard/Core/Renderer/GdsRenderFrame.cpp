@@ -2,6 +2,7 @@
 
 
 GdsRenderFrame::GdsRenderFrame()
+: m_iTotalcountofRenderObject(0)
 {
 	SetName( OBJECT_RENDERFRAME );
 }
@@ -77,7 +78,7 @@ void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
 			it->second->vRender( device );
 		}
 	}
-
+	m_iTotalcountofRenderObject = m_RenderFrame.size();
 	m_RenderFrame.clear();
 }
 

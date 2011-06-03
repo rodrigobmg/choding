@@ -37,6 +37,7 @@ class GdsRenderFrame : public GdsObject
 	typedef std::list< GdsRenderObjectPtr >			RENDEROBJECT_LIST;
 	RENDEROBJECT_LIST		m_DelObjectList;
 
+	int						m_iTotalcountofRenderObject;
 public:
 
 	GdsRenderFrame();
@@ -45,14 +46,12 @@ public:
 	GdsRenderObjectPtr		AllocRenderObject();
 	void					FreeRenderObejct();
 
+	int						GetRenderObjectCount(){ return m_iTotalcountofRenderObject; }
 	void					AttachRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateGroupID );
-
 	void					AddRenderStateGroup( GdsRenderStateGroupPtr renderstategroup , int iRenderStateGroupID );
-
+	
 	void					Render( LPDIRECT3DDEVICE9 device ){ vRender( device ); }
-
-	size_t					GetRenderObjectCount(){ return m_RenderFrame.size(); }
-
+	
 protected:
 
 	virtual	void			vRender( LPDIRECT3DDEVICE9 device );
