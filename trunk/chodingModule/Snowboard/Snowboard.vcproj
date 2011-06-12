@@ -289,6 +289,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\Core\Resource\Type\GdsPixelshader.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Resource\Type\GdsPixelshader.h"
+						>
+					</File>
+					<File
 						RelativePath=".\Core\Resource\Type\GdsResASE.cpp"
 						>
 					</File>
@@ -326,6 +334,14 @@
 					</File>
 					<File
 						RelativePath=".\Core\Resource\Type\GdsVertexBuffer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Resource\Type\GdsVertexShader.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Core\Resource\Type\GdsVertexShader.h"
 						>
 					</File>
 				</Filter>
