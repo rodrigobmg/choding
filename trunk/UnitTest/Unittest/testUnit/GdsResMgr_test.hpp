@@ -48,8 +48,16 @@ public:
 	virtual void SetUp()
 	{
 		//»ý¼ºÀÚ
+		TCHAR curpath[ MAX_PATH ];
+		GetCurrentDirectory( MAX_PATH, curpath );
+
+		tstring wstr( curpath );
+
+		size_t poscomma = wstr.find( L"UnitTest" );
+		tstring path		= wstr.substr( 0 , poscomma );
+
  		TCHAR respath[MAX_PATH];
-		_stprintf_s( respath , L"%s\\%s" , L"d:\\choding\\application" , L"Resource" );
+		_stprintf_s( respath , L"%s%s" , path.c_str() , L"application\\Resource" );
  		ASSERT_TRUE( RESMGR.CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;jpg;dds;tga" , true )) );
 		GdsResTexturePtr ptex = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"banana.bmp" ) );
 		LPDIRECT3DTEXTURE9 tex = ptex->Get();
