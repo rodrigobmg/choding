@@ -22,7 +22,7 @@ class GdsBGThread : public GdsThread
 	public:
 
 		_OWNER* pthis;
-		typedef HRESULT ( _OWNER::*PFUNC)( _PARAMETER );	
+		typedef void ( _OWNER::*PFUNC)( _PARAMETER );	
 		PFUNC			pf;
 		_PARAMETER		parameter;
 
@@ -45,7 +45,7 @@ public:
 	{
 		if ( m_ThreadQueue.size() > m_byMaxcapacity )
 		{
-			ASSERT( 0 && "MAX 段引" );
+			//ASSERT( 0 && "MAX 段引" );
 			return;
 		}
 
@@ -67,6 +67,7 @@ public:
 
 	void		SetMaxcapacity( BYTE byValue )	{ m_byMaxcapacity = byValue; }
 	BYTE		GetMaxcapacity()				{ return m_byMaxcapacity;	}
+	int			GetCountWaitingJob() const		{ return (int)m_ThreadQueue.size(); }
 
 	std::queue< IWORK_TOKEN* > m_ThreadQueue;
 	BYTE		m_byMaxcapacity;

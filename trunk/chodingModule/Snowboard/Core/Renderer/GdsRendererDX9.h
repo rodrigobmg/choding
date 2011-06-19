@@ -19,12 +19,9 @@ private:
 	
  	LPDIRECT3D9             m_pD3D;      // = NULL; // Used to create the D3DDevice
  	LPDIRECT3DDEVICE9       m_pd3dDevice;// = NULL; // Our rendering device
-	GdsNodePtr				m_RootNode;
 	bool					m_bWireMode;
 
 	GdsRenderFramePtr 		m_RenderFrameList;
-
-	void					setRootNodeAndCamNode();
 
 	void					drawEtc();
 	void					drawAxis( D3DXMATRIX& mat , D3DXVECTOR3& point , ID3DXLine* line );
@@ -49,10 +46,7 @@ public:
 	bool					Create( HWND hWnd ){ return vCreate( hWnd ); }
 	HRESULT					Release(){ return vRelease(); }
 
-	void					SetRootNode( GdsNodePtr node ){ m_RootNode = node; }
-	GdsNodePtr				GetRootNode() { return m_RootNode; }
-	
-	void					vUpdate( float fAccumTime );
+	void					vRenderFrame();
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
 
 	GdsRenderFramePtr		GetRenderFrame(){ return m_RenderFrameList; }

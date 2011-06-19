@@ -12,10 +12,12 @@
 #include "Resource/Type/GdsResASE.h"
 #include "InputSystem/GdsInputSystem.h"
 #include "Terrain/GdsTerrain.h"
+#include "../System/Thread/GdsThreadPool.h"
 
 CSnowboard::CSnowboard()
 :m_iRenderobjectCount(0)
 ,m_fFrameRate(0.0f)
+,m_pRootNode( (GdsNode*)NULL )
 {
 	Clear(); 
 }
@@ -27,6 +29,8 @@ CSnowboard::~CSnowboard()
 
 void CSnowboard::Clear()
 {
+	if ( m_pRootNode )
+		m_pRootNode->RemoveAllChild();
 }
 
 bool CSnowboard::InitModule( HWND hWnd )
@@ -34,11 +38,17 @@ bool CSnowboard::InitModule( HWND hWnd )
 	LOGGER.Init(NULL , NULL , NULL , NULL );
 	FRAMEMEMORY.Init( 1024 * 1024 );
 	LOG_WARNING_F( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
+	
+	//int thread_count = THREADPOOL.GetTotalCountofThread();
+	//LOG_CYAN_F( "Make Thread = %d cont" , thread_count );
+
 
 	m_hWnd = hWnd;
 
 	InitRenderer( hWnd );
 	InitResource( RENDERER.GetDevice() );
+	InitRootNode();
+	InitCamMgr();
 
 	TestFunc();
 
@@ -53,7 +63,7 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 		return false;
 	}	
 
-	GDS::SetMaxFrameRate( 0 );
+	GDS::SetMaxFrameRate( 500.f );
 
 	return false;
 }
@@ -62,6 +72,13 @@ bool	CSnowboard::InitResource( LPDIRECT3DDEVICE9 device )
 {
 	RESMGR.Create( device );
 	return TRUE;
+}
+
+bool CSnowboard::InitCamMgr()
+{
+	CAMMGR.Init();
+
+	return CAMMGR.GetCurCam() != NULL ? true : false;
 }
 
 void CSnowboard::DestroyModule()
@@ -76,7 +93,22 @@ void CSnowboard::OnIdle()
 		return;
 	}
 
-	RENDERER.Update( GDS::GetAccumTime() );
+	Update( GDS::GetAccumTime() );
+	Render();	
+}
+
+void CSnowboard::Update(float fAccumTime)
+{
+	CAMMGR.Update( fAccumTime );
+	TERRAIN.Update( fAccumTime );
+
+	if ( m_pRootNode )
+		m_pRootNode->Update( fAccumTime );					
+}
+
+void CSnowboard::Render()
+{
+	RENDERER.RenderFrame();	
 	m_fFrameRate = 1.0f / GDS::GetFrameTime();
 	m_iRenderobjectCount = RENDERER.GetRenderFrame()->GetRenderObjectCount();
 }
@@ -92,7 +124,7 @@ void CSnowboard::TestFunc()
 
 	RESMGR.CreateList( GdsResMgr::LOADLIST_WORK_TOKEN( respath , L"ase;bmp;dds;tga;jpg" , true ) );
 
-	RENDERER.GetRootNode()->SetName( L"ROOT" );
+	m_pRootNode->SetName( L"ROOT" );
 
 	TERRAIN.MakeHeightMap();
 }
@@ -104,3 +136,12 @@ HRESULT CSnowboard::MsgProc(  HWND hWnd , UINT msg , WPARAM wParam , LPARAM lPar
 	return true;
 }
 
+bool CSnowboard::InitRootNode()
+{
+	if ( m_pRootNode == NULL )
+	{
+		m_pRootNode = GdsNodePtr( new GdsNode );
+	}
+
+	return m_pRootNode == NULL ? false : true ;
+}

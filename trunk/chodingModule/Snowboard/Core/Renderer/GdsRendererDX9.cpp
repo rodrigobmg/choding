@@ -20,9 +20,7 @@ GdsRendererDX9::~GdsRendererDX9()
 HRESULT GdsRendererDX9::vRelease()
 {
 	SAFE_RELEASE(m_pD3D);
-	SAFE_RELEASE(m_pd3dDevice);
-	if ( m_RootNode )
-		m_RootNode->RemoveAllChild();
+	SAFE_RELEASE(m_pd3dDevice);	
 	return true;
 }
 
@@ -58,15 +56,13 @@ bool GdsRendererDX9::vCreate( HWND hWnd )
 		LOG_ERROR_F("Fail to create device\n");
 		return false;
 	}
-
-	setRootNodeAndCamNode();
 	
 	m_RenderFrameList = GdsRenderFramePtr( new GdsRenderFrame );
 
 	return true;
 }
 
-void GdsRendererDX9::vUpdate( float fAccumTime )
+void GdsRendererDX9::vRenderFrame()
 {	
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_P ) )
 		RENDERER.ToggleWireMode();
@@ -80,17 +76,8 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 
 	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
 	{	
-		if ( CAMMGR.GetCurCam() )
-		{
-			CAMMGR.Update( fAccumTime );
-			m_pd3dDevice->SetTransform( D3DTS_VIEW , &(CAMMGR.GetCurCam()->GetViewMat()));
-			m_pd3dDevice->SetTransform( D3DTS_PROJECTION, &(CAMMGR.GetCurCam()->GetProjMat()) );
-		}
-
-		TERRAIN.Update( fAccumTime );
-
-		if ( m_RootNode )
-			m_RootNode->Update( fAccumTime );					
+		m_pd3dDevice->SetTransform( D3DTS_VIEW , &(CAMMGR.GetCurCam()->GetViewMat()));
+		m_pd3dDevice->SetTransform( D3DTS_PROJECTION, &(CAMMGR.GetCurCam()->GetProjMat()) );
 
 		m_RenderFrameList->Render( m_pd3dDevice );
 
@@ -103,25 +90,6 @@ void GdsRendererDX9::vUpdate( float fAccumTime )
 	}
 
 	m_pd3dDevice->Present( NULL , NULL , NULL , NULL );
-}
-
-void GdsRendererDX9::setRootNodeAndCamNode()
-{
-	m_RootNode = GdsNodePtr( new GdsNode );
-		
-	GdsCameraPtr	camnode = GdsCameraPtr( new GdsCamera );
-
-	D3DXVECTOR3 vEyePt( 1.0f, 100.0f,-100.0f );
-	D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
-	D3DXVECTOR3 vUpVec( 0.0f, 1.0f, 0.0f );
-
-	camnode->SetLootAtLH( vEyePt , vLookatPt , vUpVec );
-
-	GdsFrustum frustum( -0.5 , 0.5 , -0.5 , 0.5 , 1.f , 300.f , false );
-	camnode->SetFrustum( frustum );
-
- 	CAMMGR.Attach( camnode );
-  	CAMMGR.SetCurCam( 0 );
 }
 
 void GdsRendererDX9::drawAxis(  D3DXMATRIX& mat , D3DXVECTOR3& point , ID3DXLine* Line )

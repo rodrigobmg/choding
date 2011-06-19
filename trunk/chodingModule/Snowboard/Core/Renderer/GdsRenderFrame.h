@@ -43,9 +43,6 @@ public:
 	GdsRenderFrame();
 	virtual ~GdsRenderFrame();
 
-	GdsRenderObjectPtr		AllocRenderObject();
-	void					FreeRenderObejct();
-
 	int						GetRenderObjectCount(){ return m_iTotalcountofRenderObject; }
 	void					AttachRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateGroupID );
 	void					AddRenderStateGroup( GdsRenderStateGroupPtr renderstategroup , int iRenderStateGroupID );

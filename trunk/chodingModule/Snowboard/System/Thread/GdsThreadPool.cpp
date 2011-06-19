@@ -1,53 +1,35 @@
 #include "GdsThreadPool.h"
 
 GdsThreadPool::GdsThreadPool()
-: m_GdsBGThread(NULL)
 {
-	Clear();
+	clear();
+	create();
 }
 
 GdsThreadPool::~GdsThreadPool()
 {
-	Clear();
+	clear();
 }
 
-void GdsThreadPool::Clear()
+void GdsThreadPool::clear()
 {
 	THREAD_CONTAINER::iterator it = m_GdsThreadPool.begin();
  	for ( ; it != m_GdsThreadPool.end() ; ++it )
  	{
-		(*it)->SuspendThread();
+		(*it)->ExitThread();
  		SAFE_DELETE( (*it) );
  	}
 	m_GdsThreadPool.clear();
-
-	if ( m_GdsBGThread )
-		m_GdsBGThread->SuspendThread();
-	SAFE_DELETE( m_GdsBGThread );
 }
 
-void GdsThreadPool::SetBGThreadMaxCapacity( BYTE byvalue )
+void GdsThreadPool::create()
 {
-	if ( m_GdsBGThread == NULL )
-		ASSERT( 0 && "백그라운더 할당후 해주세요" );
+	SYSTEM_INFO info;
+	GetSystemInfo( &info );
 
-	m_GdsBGThread->SetMaxcapacity( byvalue );
-}
-
-BYTE GdsThreadPool::GetBGThreadMaxCapacity()
-{
-	if ( m_GdsBGThread == NULL )
-		ASSERT( 0 && "백그라운더 할당후 해주세요" );
-
-	return m_GdsBGThread->GetMaxcapacity();
-}
-
-void GdsThreadPool::Create( int count )
-{
-	for ( size_t t = 0 ; t < (size_t)count ; ++t )
+	for ( size_t t = 0 ; t < info.dwNumberOfProcessors*2 ; ++t )
 	{
 		GdsBGThread* p = new GdsBGThread;
-		//GdsBGThreadPtr p = GdsBGThreadPtr( new GdsBGThread );
 		p->CreateAndRunThread();
 		m_GdsThreadPool.push_back( p );
 	}	
@@ -65,13 +47,11 @@ GdsBGThread* GdsThreadPool::GetIdleThread()
 	return NULL;
 }
 
-GdsBGThread* GdsThreadPool::GetBGThread()
+GdsBGThread* GdsThreadPool::GetThread( int index )
 {
-	if ( m_GdsBGThread )
-		return m_GdsBGThread;
+	int size = static_cast<int>( m_GdsThreadPool.size() );
+	if ( index > size )
+		return NULL;
 
-	m_GdsBGThread = new GdsBGThread;
-	m_GdsBGThread->CreateAndRunThread();
-	m_GdsBGThread->SetMaxcapacity( 10 );
-	return m_GdsBGThread;
+	return m_GdsThreadPool.at( index );
 }

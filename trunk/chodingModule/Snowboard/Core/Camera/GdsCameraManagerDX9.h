@@ -10,18 +10,21 @@ class GdsCameraManagerDX9 : public GdsObject
 private:
 
 	typedef std::vector< GdsCameraPtr >		CAM_CONTAINER;	
-	CAM_CONTAINER			m_camaraContainer;
-	int32_t					m_iCurCamIndex;
+	CAM_CONTAINER		m_camaraContainer;
+	int32_t				m_iCurCamIndex;
+	bool				m_bMouseDrag;
 
 protected:
 
-	virtual void	vClear();
+	virtual void		vClear();
 	
 
 public:
 
 	GdsCameraManagerDX9(void);
 	virtual ~GdsCameraManagerDX9(void);
+
+	void				Init();
 
 	GdsCameraPtr		GetCamNode( int iCamIndex );
 

@@ -21,6 +21,8 @@ public:
 
 	bool		InitRenderer( HWND hWnd );
 	bool		InitResource( LPDIRECT3DDEVICE9 device );
+	bool		InitRootNode();
+	bool		InitCamMgr();
 
 	void		Clear();
 
@@ -33,10 +35,14 @@ private:
 	
 	GdsRendererDX9Ptr	m_pRenderer;
 	GdsResMgrPtr		m_pResMgr;
+	GdsNodePtr			m_pRootNode;
 	
 	float				m_fFrameRate;
 	int					m_iRenderobjectCount;
-	HWND		m_hWnd;
+	HWND				m_hWnd;
+
+	void		Update( float fAccumTime );
+	void		Render();
 };
 
 #endif

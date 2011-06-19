@@ -77,7 +77,7 @@ GdsResBasePtr	GdsResMgr::Get( const TCHAR* filename )
 		p = load_res(filename);
 	}
 
-	LOG_WARNING_F( "Load Resource %s" , filename );
+	LOG_RED_F( "Load Resource %s" , filename );
 	return p;
 }
 

@@ -2,6 +2,7 @@
 #include "InputSystem\GdsInputSystem.h"
 
 GdsCameraManagerDX9::GdsCameraManagerDX9( void )
+:m_bMouseDrag(false)
 {
 	SetName( OBJECT_CAMMGR_DX9 );
 	vClear();
@@ -14,7 +15,24 @@ GdsCameraManagerDX9::~GdsCameraManagerDX9( void )
 
 void GdsCameraManagerDX9::vClear()
 {
-	m_camaraContainer.clear();
+	m_camaraContainer.clear();	
+}
+
+void GdsCameraManagerDX9::Init()
+{
+	GdsCameraPtr	camnode = GdsCameraPtr( new GdsCamera );
+
+	D3DXVECTOR3 vEyePt( 1.0f, 100.0f,-100.0f );
+	D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
+	D3DXVECTOR3 vUpVec( 0.0f, 1.0f, 0.0f );
+
+	camnode->SetLootAtLH( vEyePt , vLookatPt , vUpVec );
+
+	GdsFrustum frustum( -0.5 , 0.5 , -0.5 , 0.5 , 1.f , 300.f , false );
+	camnode->SetFrustum( frustum );
+
+	CAMMGR.Attach( camnode );
+	CAMMGR.SetCurCam( 0 );	
 }
 
 void GdsCameraManagerDX9::Attach( GdsCameraPtr camnode )
@@ -52,13 +70,19 @@ GdsCameraPtr GdsCameraManagerDX9::GetCamNode( int iCamIndex )
 void GdsCameraManagerDX9::Update( float fElapsedtime )
 {
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_W ) )
+	{
 		CAMMGR.MoveForwardEye( 2.0f );
+		CAMMGR.MoveForwardLookat( 2.0f );
+	}
 
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_A ) )
 		CAMMGR.MoveLeftEye( 2.0f );
 
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_D ) )
+	{
 		CAMMGR.MoveRightEye( 2.0f );
+		CAMMGR.MoveBackLookat( 2.0f );
+	}
 
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_S ) )
 		CAMMGR.MoveBackEye( 2.0f );
@@ -70,40 +94,49 @@ void GdsCameraManagerDX9::Update( float fElapsedtime )
 		CAMMGR.MoveDownEye( 2.0f );
 
 
-// 	if ( m_bMouseDrag )
-// 	{
-// 		int x ,y ,z;
-// 		INPUTSYSTEM.GetMousePosDelta( x, y, z );
-// 		//LOG_WARNING_F( "Mouse DeltaPos %d %d %d\n" , x ,y,z );
-// 		//CAMMGR.MoveLeftLookat( 2.0f );
-// 		if ( x > 0 )
-// 			CAMMGR.MoveRightLookat( 0.05 );
-// 		else
-// 			CAMMGR.MoveLeftLookat( 0.05 );
-// 
-// 		if ( y > 0 )
-// 			CAMMGR.MoveDownLookat( 0.05 );
-// 		else
-// 			CAMMGR.MoveUpLookat( 0.05 );
-// 
-// 		if ( z > 0 )
-// 			CAMMGR.MoveForwardLookat( 0.05 );
-// 		else
-// 			CAMMGR.MoveBackLookat( 0.05 );
-// 	}
-// 
-// 	if ( INPUTSYSTEM.GetMouseIsDown( VM_LBTN ) )
-// 	{
-// 		m_bMouseDrag = true;
-// 	}	
-// 
-// 	if ( INPUTSYSTEM.GetMouseIsUp( VM_LBTN ) )
-// 	{
-// 		m_bMouseDrag = false;
-// 	}
+ 	if ( m_bMouseDrag )
+ 	{
+ 		int x ,y ,z;
+ 		INPUTSYSTEM.GetMousePosDelta( x, y, z );
+ 		//LOG_WARNING_F( "Mouse DeltaPos %d %d %d\n" , x ,y,z );
+ 		//CAMMGR.MoveLeftLookat( 2.0f );
+ 		if ( x > 0 )
+ 			CAMMGR.MoveRightLookat( 0.1 );
+ 		else
+ 			CAMMGR.MoveLeftLookat( 0.1 );
+ 
+ 		if ( y > 0 )
+ 			CAMMGR.MoveDownLookat( 0.1 );
+ 		else
+ 			CAMMGR.MoveUpLookat( 0.1 );
+ 
+ 		if ( z > 0 )
+		{
+			CAMMGR.MoveForwardEye( 0.1 );
+			CAMMGR.MoveForwardLookat( 0.1 );
+		}
+ 		else
+		{
+ 			CAMMGR.MoveRightEye( 0.1 );
+			CAMMGR.MoveBackLookat( 0.1 );
+		}
+ 	}
+ 
+ 	if ( INPUTSYSTEM.GetMouseIsDown( VM_LBTN ) )
+ 	{
+ 		m_bMouseDrag = true;
+ 	}	
+ 
+ 	if ( INPUTSYSTEM.GetMouseIsUp( VM_LBTN ) )
+ 	{
+ 		m_bMouseDrag = false;
+ 	}
 
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_I ) )
+	{
+		CAMMGR.MoveForwardEye( 2.0f );
 		CAMMGR.MoveForwardLookat( 2.0f );
+	}
 
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_J ) )
 		CAMMGR.MoveLeftLookat( 2.0f );
@@ -112,7 +145,10 @@ void GdsCameraManagerDX9::Update( float fElapsedtime )
 		CAMMGR.MoveRightLookat( 2.0f );
 
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_K ) )
+	{
+		CAMMGR.MoveRightEye( 2.0f );
 		CAMMGR.MoveBackLookat( 2.0f );
+	}
 
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_U ) )
 		CAMMGR.MoveUpLookat( 2.0f );

@@ -16,11 +16,11 @@ public:
 	}
 	virtual ~GdsRendererBase(){};
 
-	void			Update( float fElapsedTime ){ vUpdate(fElapsedTime); }
+	void RenderFrame(){ vRenderFrame(); }
 
 protected:
 
-	virtual void	vUpdate( float fElapsedTime ) = 0;
+	virtual void vRenderFrame() = 0;
 };
 
 #endif
