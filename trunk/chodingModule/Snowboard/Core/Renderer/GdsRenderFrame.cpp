@@ -94,3 +94,8 @@ void GdsRenderFrame::AddRenderStateGroup( GdsRenderStateGroupPtr renderstategrou
 {
 	m_RenderStateList.insert( std::pair<int , GdsRenderStateGroupPtr>(  iRenderStateGroupID , renderstategroup ) );
 }
+
+GdsRenderObject* GdsRenderFrame::AllocRenderObject()
+{
+	return RESMGR.AllocRenderObject();
+}

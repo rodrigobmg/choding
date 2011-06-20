@@ -39,8 +39,8 @@ bool CSnowboard::InitModule( HWND hWnd )
 	FRAMEMEMORY.Init( 1024 * 1024 );
 	LOG_WARNING_F( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
 	
-	int thread_count = THREADPOOL.GetTotalCountofThread();
-	LOG_CYAN_F( "Make Thread = %d cont" , thread_count );
+// 	int thread_count = THREADPOOL.GetTotalCountofThread();
+// 	LOG_CYAN_F( "Make Thread = %d cont" , thread_count );
 
 	m_hWnd = hWnd;
 
@@ -62,7 +62,7 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 		return false;
 	}	
 
-	GDS::SetMaxFrameRate( 500.f );
+	GDS::SetMaxFrameRate( 60.f );
 
 	return false;
 }

@@ -24,7 +24,8 @@ GdsThread::GdsThread()
 	this->m_hEvent = NULL;
 	this->m_bRunProcess = FALSE;
 
-	this->m_nPriority = THREAD_PRIORITY_NORMAL;
+	//this->m_nPriority = THREAD_PRIORITY_NORMAL;
+	this->m_nPriority = THREAD_PRIORITY_LOWEST;
 
 	this->m_pThradFunc = NULL;
 	this->m_pSyncObject = NULL;	

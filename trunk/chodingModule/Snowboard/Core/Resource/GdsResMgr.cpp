@@ -30,9 +30,11 @@ GdsResMgr::~GdsResMgr()
 
 void GdsResMgr::Clear()
 {
+	m_ResFileList.clear();
+	m_LoadedResList.clear();
+
 	m_listIndexBuffer.clear();
 	m_listVertexBuffer.clear();
-
 	RENDERTOKEN_LIST::iterator it = m_listRenderToken.begin();
 	RENDERTOKEN_LIST::iterator list_end = m_listRenderToken.end();
 	for ( ; it != list_end ; ++it )
@@ -334,8 +336,15 @@ void GdsResMgr::FreeVertexBuffer( LPDIRECT3DVERTEXBUFFER9 pVB )
 
 GdsRenderObject* GdsResMgr::AllocRenderObject()
 {	
-	m_listRenderToken.push_back( new GdsRenderObject );
-	return m_listRenderToken.at( m_listRenderToken.size()-1 );
+	GdsRenderObject* pRenderObject = new GdsRenderObject;
+	if ( pRenderObject == NULL )
+		return NULL;
+
+	m_listRenderToken.push_back( pRenderObject );
+
+	GdsRenderObject* pTemp = m_listRenderToken.at( m_listRenderToken.size()-1 );
+	ASSERT( pTemp == pRenderObject );
+	return pRenderObject;
 //	LOG_CYAN_F( "Alloc RenderObject address[0x%08x] Total Count = %d" , p , m_listRenderToken.size() );
 }
 

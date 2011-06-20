@@ -136,17 +136,6 @@ namespace util
 
 		bool			m_isSorted;
 
-		void clear()
-		{
-			m_isSorted = false;
-			m_vecData.clear();
-		}
-
-		bool isUnique()
-		{
-			return ( m_vecData.end() == adjacent_find(m_vecData.begin(), m_vecData.end()));
-		}
-
 	public:
 
 		class DataCompare
@@ -169,6 +158,17 @@ namespace util
 
 		GdsLookupTable(){ clear(); }
 		~GdsLookupTable(){ clear(); }
+
+		void clear()
+		{
+			m_isSorted = false;
+			m_vecData.clear();
+		}
+
+		bool isUnique()
+		{
+			return ( m_vecData.end() == adjacent_find(m_vecData.begin(), m_vecData.end()));
+		}
 
 		void add( KEY key , T val )
 		{

@@ -27,10 +27,11 @@ void GdsThreadPool::create()
 	SYSTEM_INFO info;
 	GetSystemInfo( &info );
 
-	for ( size_t t = 0 ; t < info.dwNumberOfProcessors*2 ; ++t )
+	for ( size_t t = 0 ; t < info.dwNumberOfProcessors ; ++t )
 	{
 		GdsBGThread* p = new GdsBGThread;
 		p->CreateAndRunThread();
+		p->SuspendThread();
 		m_GdsThreadPool.push_back( p );
 	}	
 }

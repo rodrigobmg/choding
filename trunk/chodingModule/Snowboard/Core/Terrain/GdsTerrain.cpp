@@ -280,7 +280,7 @@ void GdsTerrain::genIndex( TILE* tile )
 
 	
 	//GdsRenderObjectPtr p = GdsRenderObjectPtr( new GdsRenderObject );
-	GdsRenderObject* p = RESMGR.AllocRenderObject();
+	GdsRenderObject* p = RENDERER.GetRenderFrame()->AllocRenderObject();
 	p->SetFVF( GDSVERTEX::FVF );
 	p->SetVertexBuffer( tile->m_pVB->Get() );
 
