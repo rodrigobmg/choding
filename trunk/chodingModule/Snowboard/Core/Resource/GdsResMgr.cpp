@@ -336,6 +336,7 @@ void GdsResMgr::FreeVertexBuffer( LPDIRECT3DVERTEXBUFFER9 pVB )
 
 GdsRenderObject* GdsResMgr::AllocRenderObject()
 {	
+	int size = sizeof( GdsRenderObject );
 	GdsRenderObject* pRenderObject = new GdsRenderObject;
 	if ( pRenderObject == NULL )
 		return NULL;

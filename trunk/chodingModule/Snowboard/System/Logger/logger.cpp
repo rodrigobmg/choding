@@ -32,6 +32,9 @@ namespace util
 		, output_fptrA fptrWarningOnScreenA
 		, output_fptrA fptrErrorOnStringA  )
 	{
+
+#if defined(_LOGGER_ON_)
+
 		int const BSIZE = _MAX_FNAME;
 		wchar_t buffer [BSIZE];
 		struct _stat s;
@@ -87,6 +90,8 @@ namespace util
 			::GetCurrentDirectory(MAX_PATH, directory);
 			OutputDebugString(util::string::make_string(L"Logger : \'%s\' is not found, current directory is \'%s\'\n", OPTIONFILE, directory).c_str());
 		}
+#endif
+
 	}
 
 	void Logger::LogMsg(wchar_t const * str, uint32_t len)

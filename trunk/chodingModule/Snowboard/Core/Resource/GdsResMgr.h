@@ -12,10 +12,10 @@ class GdsResMgr : public GdsObject{
 
 private:
 
-	typedef std::list< LPDIRECT3DINDEXBUFFER9 >	INDEXBUFFER_LIST;
+	typedef std::vector< LPDIRECT3DINDEXBUFFER9 >	INDEXBUFFER_LIST;
 	INDEXBUFFER_LIST	m_listIndexBuffer;
 
-	typedef std::list< LPDIRECT3DVERTEXBUFFER9 > VERTEXBUFFER_LIST;	
+	typedef std::vector< LPDIRECT3DVERTEXBUFFER9 > VERTEXBUFFER_LIST;	
 	VERTEXBUFFER_LIST	m_listVertexBuffer;
 
 	typedef std::vector< GdsRenderObject* >		RENDERTOKEN_LIST;

@@ -8,8 +8,5 @@ TEST( GdsNodeTest ,  Module )
 {
 	GdsNodePtr parent = GdsNodePtr( new GdsNode );	
 	GdsNodePtr child = GdsNodePtr( new GdsNode );
-
-	parent->AttachChild( child );
-	parent->Update( 0.0f );
 }
 

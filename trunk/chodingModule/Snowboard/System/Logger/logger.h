@@ -1,7 +1,7 @@
 #pragma once
 #include "../../Framework/Snowboard_stdafx.h"
 
-#define _LOGGER_ON_
+//#define _LOGGER_ON_
 
 #if defined(_LOGGER_ON_)
 
