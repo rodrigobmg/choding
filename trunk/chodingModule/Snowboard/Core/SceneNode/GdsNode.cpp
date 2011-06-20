@@ -50,7 +50,7 @@ void GdsNode::GenOctreeFaceIndex()
 	for ( ; it != m_list_RenderObject.end() ; ++it )
 	{
 		LPDWORD pIB;
-		GdsRenderObjectPtr rendertoken = it->first;
+		GdsRenderObject* rendertoken = it->first;
 		LPDIRECT3DINDEXBUFFER9 pI = rendertoken->GetIndexBuffer();
 		if( SUCCEEDED( pI->Lock( 0 , 0 , (void**)&pIB , 0 ) ) )
 		{
@@ -99,7 +99,7 @@ void GdsNode::CreateOctree()
 	for ( ; it != m_list_RenderObject.end() ; ++it )
 	{
 		VOID* pVB;
-		GdsRenderObjectPtr rendertoken = it->first;
+		GdsRenderObject* rendertoken = it->first;
 		LPDIRECT3DVERTEXBUFFER9 vb = rendertoken->GetVertexBuffer();
 		if (  SUCCEEDED( vb->Lock( 0 , rendertoken->GetVertexMaxCount() * sizeof( GDSVERTEX ) , (void**)&pVB , 0 ) ) )
 		{
@@ -659,7 +659,7 @@ void GdsNode::vUpdate( float fElapsedtime )
 }
 
 
-void GdsNode::AddRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateIndex )
+void GdsNode::AddRenderObject( GdsRenderObject* pRenderObject , int iRenderStateIndex )
 {
 	RENDERTOKEN rendertoken( pRenderObject , iRenderStateIndex );
 	m_list_RenderObject.push_back( rendertoken );	

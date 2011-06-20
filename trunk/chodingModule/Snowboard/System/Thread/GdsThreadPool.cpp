@@ -16,7 +16,7 @@ void GdsThreadPool::clear()
 	THREAD_CONTAINER::iterator it = m_GdsThreadPool.begin();
  	for ( ; it != m_GdsThreadPool.end() ; ++it )
  	{
-		(*it)->ExitThread();
+		(*it)->DestroyThread();
  		SAFE_DELETE( (*it) );
  	}
 	m_GdsThreadPool.clear();

@@ -88,7 +88,7 @@ private:
 	typedef	 std::list< GdsNodePtr >		CHILDNODE_CONTAINER;
 	CHILDNODE_CONTAINER						m_ChildNode;	
 
-	typedef std::pair< GdsRenderObjectPtr , int > RENDERTOKEN;
+	typedef std::pair< GdsRenderObject* , int > RENDERTOKEN;
 	typedef std::vector< RENDERTOKEN >	RENDER_OBJECT_CONTAINER;
 	RENDER_OBJECT_CONTAINER					m_list_RenderObject;
 		
@@ -105,8 +105,8 @@ public:
 	GdsNode();
 	virtual ~GdsNode();
  	
-	void					AddRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateIndex );
-	GdsRenderObjectPtr		GetRenderObject( int index ){ return m_list_RenderObject.at(index).first; }
+	void					AddRenderObject( GdsRenderObject* pRenderObject , int iRenderStateIndex );
+	GdsRenderObject*		GetRenderObject( int index ){ return m_list_RenderObject.at(index).first; }
 //		//강제로 카운터 올리고 자기 참조
 //  	boost::shared_ptr< GdsNode > shared_ptr_this()
 //  	{

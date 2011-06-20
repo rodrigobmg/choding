@@ -39,9 +39,8 @@ bool CSnowboard::InitModule( HWND hWnd )
 	FRAMEMEMORY.Init( 1024 * 1024 );
 	LOG_WARNING_F( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
 	
-	//int thread_count = THREADPOOL.GetTotalCountofThread();
-	//LOG_CYAN_F( "Make Thread = %d cont" , thread_count );
-
+	int thread_count = THREADPOOL.GetTotalCountofThread();
+	LOG_CYAN_F( "Make Thread = %d cont" , thread_count );
 
 	m_hWnd = hWnd;
 
@@ -108,7 +107,16 @@ void CSnowboard::Update(float fAccumTime)
 
 void CSnowboard::Render()
 {
-	RENDERER.RenderFrame();	
+	if ( RENDERER.EnableRendering() == false )
+		return;
+
+	GdsBGThread* thread = THREADPOOL.GetThread( 0 );
+	if ( thread == NULL )
+		return;
+
+	//void	Push( _OWNER* pthis , _PARAMETER para , _FP fp )
+	//thread->Push( &RENDERER , 0.f , &GdsRendererBase::RenderFrame );
+	RENDERER.RenderFrame( 0.f );	
 	m_fFrameRate = 1.0f / GDS::GetFrameTime();
 	m_iRenderobjectCount = RENDERER.GetRenderFrame()->GetRenderObjectCount();
 }

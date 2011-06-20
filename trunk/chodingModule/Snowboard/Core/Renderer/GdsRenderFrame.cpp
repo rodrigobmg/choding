@@ -1,4 +1,5 @@
 #include "GdsRenderFrame.h"
+#include "Resource\GdsResMgr.h"
 
 
 GdsRenderFrame::GdsRenderFrame()
@@ -13,7 +14,7 @@ GdsRenderFrame::~GdsRenderFrame()
 	m_RenderStateList.clear();
 }
 
-void GdsRenderFrame::AttachRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateGroupID )
+void GdsRenderFrame::AttachRenderObject( GdsRenderObject* pRenderObject , int iRenderStateGroupID )
 {
 	if ( iRenderStateGroupID < 0 )
 	{
@@ -79,6 +80,13 @@ void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
 		}
 	}
 	m_iTotalcountofRenderObject = m_RenderFrame.size();
+
+	it = m_RenderFrame.begin();
+	RENDER_CONTAINER::iterator it_end = m_RenderFrame.end();
+	for ( ; it != it_end ; ++it )
+	{
+		RESMGR.FreeRenderObject( it->second );
+	}
 	m_RenderFrame.clear();
 }
 

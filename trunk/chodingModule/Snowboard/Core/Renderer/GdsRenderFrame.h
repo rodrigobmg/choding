@@ -7,7 +7,7 @@
 
 class GdsRenderFrame : public GdsObject
 {	
-	typedef std::pair< int , GdsRenderObjectPtr >	RENDEROBEJCT;
+	typedef std::pair< int , GdsRenderObject* >	RENDEROBEJCT;
 
 	struct DataCompare
 	{
@@ -27,15 +27,11 @@ class GdsRenderFrame : public GdsObject
 	};
 
 	
-	typedef std::list< RENDEROBEJCT >				RENDER_CONTAINER;
-	
+	typedef std::list< RENDEROBEJCT	>					RENDER_CONTAINER;	
 	RENDER_CONTAINER		m_RenderFrame;
 
 	typedef std::map< int , GdsRenderStateGroupPtr >	RENDERSTATEGROUP;
 	RENDERSTATEGROUP		m_RenderStateList;
-
-	typedef std::list< GdsRenderObjectPtr >			RENDEROBJECT_LIST;
-	RENDEROBJECT_LIST		m_DelObjectList;
 
 	int						m_iTotalcountofRenderObject;
 public:
@@ -44,7 +40,7 @@ public:
 	virtual ~GdsRenderFrame();
 
 	int						GetRenderObjectCount(){ return m_iTotalcountofRenderObject; }
-	void					AttachRenderObject( GdsRenderObjectPtr pRenderObject , int iRenderStateGroupID );
+	void					AttachRenderObject( GdsRenderObject* pRenderObject , int iRenderStateGroupID );
 	void					AddRenderStateGroup( GdsRenderStateGroupPtr renderstategroup , int iRenderStateGroupID );
 	
 	void					Render( LPDIRECT3DDEVICE9 device ){ vRender( device ); }

@@ -77,9 +77,24 @@ public:
 
 TEST_F( GdsResourceMgrTest ,  Module )
 {
-	GdsRenderObjectPtr p;
-	RESMGR.AllocRenderObject( p );
-	RESMGR.FreeRenderObject( p );
+	D3DMATRIX shared_tm;
+	D3DMATRIX point_tm;
+	GdsRenderObject* instance = new GdsRenderObject;
+	{
+		GdsRenderObjectPtr p1;
+		p1 = GdsRenderObjectPtr( instance );		
+		shared_tm = p1->GetMatrix();
+		point_tm = p1->GetMatrix();
+	}
+
+	GdsRenderObject* render_object1 = RESMGR.AllocRenderObject();	
+	GdsRenderObject* render_object2 = RESMGR.AllocRenderObject();
+	GdsRenderObject* render_object3 = RESMGR.AllocRenderObject();
+	RESMGR.FreeRenderObject( render_object1 );
+	GdsRenderObject* render_object4 = RESMGR.AllocRenderObject();
+	GdsRenderObject* render_object5 = RESMGR.AllocRenderObject();
+	GdsRenderObject* render_object6 = RESMGR.AllocRenderObject();
+	GdsRenderObject* render_object7 = RESMGR.AllocRenderObject();
 }
 
 #endif	

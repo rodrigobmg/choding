@@ -10,17 +10,28 @@ class GdsRendererBase : public GdsObject{
 
 public:
 
-	GdsRendererBase()
+	GdsRendererBase(): m_IsCurRendering( true )
 	{ 
 		SetName( OBJECT_RENDERBASE );
 	}
 	virtual ~GdsRendererBase(){};
 
-	void RenderFrame(){ vRenderFrame(); }
+	bool EnableRendering(){ return m_IsCurRendering; }
+
+	void RenderFrame( float fAcuumTime )
+	{ 
+		if ( m_IsCurRendering == true )
+		{
+			m_IsCurRendering = false;
+			vRenderFrame( fAcuumTime ); 
+			m_IsCurRendering = true;
+		}
+	}
 
 protected:
 
-	virtual void vRenderFrame() = 0;
+	bool		m_IsCurRendering;
+	virtual void vRenderFrame( float fAccumtime ) = 0;
 };
 
 #endif

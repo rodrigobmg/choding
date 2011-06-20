@@ -18,7 +18,7 @@ private:
 	typedef std::list< LPDIRECT3DVERTEXBUFFER9 > VERTEXBUFFER_LIST;	
 	VERTEXBUFFER_LIST	m_listVertexBuffer;
 
-	typedef std::list< GdsRenderObjectPtr >		RENDERTOKEN_LIST;
+	typedef std::vector< GdsRenderObject* >		RENDERTOKEN_LIST;
 	RENDERTOKEN_LIST	m_listRenderToken;
 
  	typedef stdext::hash_map< tstring , GdsResBasePtr >	HASHMAPRes;
@@ -92,8 +92,8 @@ public:
 	void				FreeVertexBuffer( LPDIRECT3DVERTEXBUFFER9 pVB );
 	int					GetCountVertexBuffer(){ m_listVertexBuffer.size(); }
 
-	void				AllocRenderObject( GdsRenderObjectPtr& p );
-	void				FreeRenderObject( GdsRenderObjectPtr p );	
+	GdsRenderObject*	AllocRenderObject();
+	void				FreeRenderObject( GdsRenderObject* p );	
 	int					GetCountRenderObject(){ m_listRenderToken.size(); }
 };
 

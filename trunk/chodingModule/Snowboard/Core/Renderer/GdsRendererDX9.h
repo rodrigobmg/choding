@@ -46,7 +46,7 @@ public:
 	bool					Create( HWND hWnd ){ return vCreate( hWnd ); }
 	HRESULT					Release(){ return vRelease(); }
 
-	void					vRenderFrame();
+	void					vRenderFrame( float fAccumtime );
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
 
 	GdsRenderFramePtr		GetRenderFrame(){ return m_RenderFrameList; }

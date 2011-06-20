@@ -62,7 +62,7 @@ bool GdsRendererDX9::vCreate( HWND hWnd )
 	return true;
 }
 
-void GdsRendererDX9::vRenderFrame()
+void GdsRendererDX9::vRenderFrame( float fAccumtime )
 {	
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_P ) )
 		RENDERER.ToggleWireMode();
