@@ -37,10 +37,10 @@ bool CSnowboard::InitModule( HWND hWnd )
 {
 	LOGGER.Init(NULL , NULL , NULL , NULL );
 	FRAMEMEMORY.Init( 1024 * 1024 );
-	LOG_WARNING_F( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
+	LOG_INFO_F( "Init FrameMemory = %d Byte" , FRAMEMEMORY.GetSize() );
 	
-// 	int thread_count = THREADPOOL.GetTotalCountofThread();
-// 	LOG_CYAN_F( "Make Thread = %d cont" , thread_count );
+ 	int thread_count = THREADPOOL.GetTotalCountofThread();
+ 	LOG_CYAN_F( "Make Thread = %d cont" , thread_count );
 
 	m_hWnd = hWnd;
 
@@ -62,7 +62,7 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 		return false;
 	}	
 
-	GDS::SetMaxFrameRate( 60.f );
+	GDS::SetMaxFrameRate( 0 );
 
 	return false;
 }
@@ -107,12 +107,12 @@ void CSnowboard::Update(float fAccumTime)
 
 void CSnowboard::Render()
 {
-	if ( RENDERER.EnableRendering() == false )
-		return;
+ 	if ( RENDERER.EnableRendering() == false )
+ 		return;
 
-	GdsBGThread* thread = THREADPOOL.GetThread( 0 );
-	if ( thread == NULL )
-		return;
+ 	GdsBGThread* thread = THREADPOOL.GetThread( 0 );
+ 	if ( thread == NULL )
+ 		return;
 
 	//void	Push( _OWNER* pthis , _PARAMETER para , _FP fp )
 	//thread->Push( &RENDERER , 0.f , &GdsRendererBase::RenderFrame );
@@ -123,8 +123,7 @@ void CSnowboard::Render()
 
 
 void CSnowboard::TestFunc()
-{	
-	LOG_WARNING_F( L"%s", L"logger init" );
+{		
 	TCHAR curpath[ MAX_PATH ];
 	GetCurrentDirectory( MAX_PATH, curpath );
 	TCHAR respath[MAX_PATH];

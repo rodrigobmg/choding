@@ -39,7 +39,7 @@
 	__pragma (warning(default:4127))
 
 #define LOG_INFO_F(fmt, ...)								\
-	util::Logger::getInstance().LogF(fmt, __VA_ARGS__)
+	LOGGER.LogF(fmt, __VA_ARGS__)
 
 #define LOG_ERROR_F(fmt, ...)								\
 	do														\

@@ -152,7 +152,7 @@ bool GdsTerrain::MakeHeightMap()
 	{
 		m_iMaxLOD++;
 	}
-	LOG_WARNING_F( "Texture Size:[%d,%d]", cxHeight, czHeight );
+	LOG_INFO_F( "Texture Size:[%d,%d]", cxHeight, czHeight );
 
 	/// 텍스처 메모리 락!
 	texheight->Get()->LockRect( 0, &d3drc, NULL, D3DLOCK_READONLY );
@@ -277,9 +277,7 @@ void GdsTerrain::genIndex( TILE* tile )
 			break;
 		}
 	}
-
 	
-	//GdsRenderObjectPtr p = GdsRenderObjectPtr( new GdsRenderObject );
 	GdsRenderObject* p = RENDERER.GetRenderFrame()->AllocRenderObject();
 	p->SetFVF( GDSVERTEX::FVF );
 	p->SetVertexBuffer( tile->m_pVB->Get() );

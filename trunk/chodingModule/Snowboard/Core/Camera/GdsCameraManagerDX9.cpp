@@ -28,7 +28,7 @@ void GdsCameraManagerDX9::Init()
 
 	camnode->SetLootAtLH( vEyePt , vLookatPt , vUpVec );
 
-	GdsFrustum frustum( -0.5 , 0.5 , -0.5 , 0.5 , 1.f , 300.f , false );
+	GdsFrustum frustum( -0.5 , 0.5 , -0.5 , 0.5 , 1.f , 500.f , false );
 	camnode->SetFrustum( frustum );
 
 	CAMMGR.Attach( camnode );
@@ -98,7 +98,7 @@ void GdsCameraManagerDX9::Update( float fElapsedtime )
  	{
  		int x ,y ,z;
  		INPUTSYSTEM.GetMousePosDelta( x, y, z );
- 		//LOG_WARNING_F( "Mouse DeltaPos %d %d %d\n" , x ,y,z );
+ 		//LOG_INFO_F( "Mouse DeltaPos %d %d %d\n" , x ,y,z );
  		//CAMMGR.MoveLeftLookat( 2.0f );
  		if ( x > 0 )
  			CAMMGR.MoveRightLookat( 0.1 );

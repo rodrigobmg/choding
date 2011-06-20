@@ -20,7 +20,7 @@ public:
 	{
 		//»ý¼ºÀÚ
 		FRAMEMEMORY.Init( 1024*1024 );
-		LOG_WARNING_F( "FrameMemory Init %d Byte" , FRAMEMEMORY.GetSize() );
+		LOG_INFO_F( "FrameMemory Init %d Byte" , FRAMEMEMORY.GetSize() );
 		BYTE* p = (BYTE*)FRAMEMEMORY.Alloc( 512 );
 		_stprintf_s( (wchar_t*)p , 512, L"hello" );
 		BYTE* p2 = (BYTE*)FRAMEMEMORY.Alloc( 200 );
