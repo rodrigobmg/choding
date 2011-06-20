@@ -1,5 +1,4 @@
 #include "GdsRenderFrame.h"
-#include "Resource\GdsResMgr.h"
 
 
 GdsRenderFrame::GdsRenderFrame()
@@ -11,7 +10,9 @@ GdsRenderFrame::GdsRenderFrame()
 GdsRenderFrame::~GdsRenderFrame()
 {
 	m_RenderFrame.clear();
+	m_FrontRenderFrame.clear();
 	m_RenderStateList.clear();
+	m_RenderToken.clear();
 }
 
 void GdsRenderFrame::AttachRenderObject( GdsRenderObject* pRenderObject , int iRenderStateGroupID )
@@ -59,11 +60,18 @@ void GdsRenderFrame::AttachRenderObject( GdsRenderObject* pRenderObject , int iR
  	}
 }
 
+void GdsRenderFrame::swap_buffer()
+{
+	m_FrontRenderFrame.swap( m_RenderFrame );
+}
+
 void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
 { 	 
+	swap_buffer();
+
 	int iPreRenderStateIndex = -1;
-	RENDER_CONTAINER::iterator it = m_RenderFrame.begin();
-	for ( ; it != m_RenderFrame.end() ; ++it )
+	RENDER_CONTAINER::iterator it = m_FrontRenderFrame.begin();
+	for ( ; it != m_FrontRenderFrame.end() ; ++it )
 	{
 		int iRenderStateIndex = it->first;
 		
@@ -79,15 +87,15 @@ void GdsRenderFrame::vRender( LPDIRECT3DDEVICE9 device )
 			it->second->vRender( device );
 		}
 	}
-	m_iTotalcountofRenderObject = m_RenderFrame.size();
+	m_iTotalcountofRenderObject = m_FrontRenderFrame.size();
 
-	it = m_RenderFrame.begin();
-	RENDER_CONTAINER::iterator it_end = m_RenderFrame.end();
+	it = m_FrontRenderFrame.begin();
+	RENDER_CONTAINER::iterator it_end = m_FrontRenderFrame.end();
 	for ( ; it != it_end ; ++it )
 	{
-		RESMGR.FreeRenderObject( it->second );
+		FreeRenderObject( it->second );
 	}
-	m_RenderFrame.clear();
+	m_FrontRenderFrame.clear();
 }
 
 void GdsRenderFrame::AddRenderStateGroup( GdsRenderStateGroupPtr renderstategroup , int iRenderStateGroupID )
@@ -96,6 +104,31 @@ void GdsRenderFrame::AddRenderStateGroup( GdsRenderStateGroupPtr renderstategrou
 }
 
 GdsRenderObject* GdsRenderFrame::AllocRenderObject()
+{	
+	GdsRenderObject* pRenderObject = new GdsRenderObject;
+	if ( pRenderObject == NULL )
+		return NULL;
+
+	m_RenderToken.push_back( pRenderObject );
+
+	GdsRenderObject* pTemp = m_RenderToken.at( m_RenderToken.size()-1 );
+	ASSERT( pTemp == pRenderObject );
+	return pRenderObject;
+	//	LOG_CYAN_F( "Alloc RenderObject address[0x%08x] Total Count = %d" , p , m_listRenderToken.size() );
+}
+
+void GdsRenderFrame::FreeRenderObject( GdsRenderObject* p )
 {
-	return RESMGR.AllocRenderObject();
+	RENDERTOKEN_LIST::iterator it = m_RenderToken.begin();
+	RENDERTOKEN_LIST::iterator list_end = m_RenderToken.end();
+	for ( ; it != list_end ; ++it )
+	{
+		if ( p == *it )
+		{
+			SAFE_DELETE( *it );
+			m_RenderToken.erase( it );
+			p = NULL;
+			break;
+		}
+	}	
 }

@@ -86,15 +86,6 @@ TEST_F( GdsResourceMgrTest ,  Module )
 		shared_tm = p1->GetMatrix();
 		point_tm = p1->GetMatrix();
 	}
-
-	GdsRenderObject* render_object1 = RESMGR.AllocRenderObject();	
-	GdsRenderObject* render_object2 = RESMGR.AllocRenderObject();
-	GdsRenderObject* render_object3 = RESMGR.AllocRenderObject();
-	RESMGR.FreeRenderObject( render_object1 );
-	GdsRenderObject* render_object4 = RESMGR.AllocRenderObject();
-	GdsRenderObject* render_object5 = RESMGR.AllocRenderObject();
-	GdsRenderObject* render_object6 = RESMGR.AllocRenderObject();
-	GdsRenderObject* render_object7 = RESMGR.AllocRenderObject();
 }
 
 #endif	

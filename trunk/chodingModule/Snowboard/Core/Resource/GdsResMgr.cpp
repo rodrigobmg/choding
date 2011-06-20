@@ -35,13 +35,6 @@ void GdsResMgr::Clear()
 
 	m_listIndexBuffer.clear();
 	m_listVertexBuffer.clear();
-	RENDERTOKEN_LIST::iterator it = m_listRenderToken.begin();
-	RENDERTOKEN_LIST::iterator list_end = m_listRenderToken.end();
-	for ( ; it != list_end ; ++it )
-	{
-		SAFE_DELETE( *it );
-	}
-	m_listRenderToken.clear();
 }
 
 HRESULT GdsResMgr::Create( LPDIRECT3DDEVICE9 device )
@@ -332,34 +325,4 @@ void GdsResMgr::FreeVertexBuffer( LPDIRECT3DVERTEXBUFFER9 pVB )
 			break;
 		}
 	}
-}
-
-GdsRenderObject* GdsResMgr::AllocRenderObject()
-{	
-	GdsRenderObject* pRenderObject = new GdsRenderObject;
-	if ( pRenderObject == NULL )
-		return NULL;
-
-	m_listRenderToken.push_back( pRenderObject );
-
-	GdsRenderObject* pTemp = m_listRenderToken.at( m_listRenderToken.size()-1 );
-	ASSERT( pTemp == pRenderObject );
-	return pRenderObject;
-//	LOG_CYAN_F( "Alloc RenderObject address[0x%08x] Total Count = %d" , p , m_listRenderToken.size() );
-}
-
-void GdsResMgr::FreeRenderObject( GdsRenderObject* p )
-{
-	RENDERTOKEN_LIST::iterator it = m_listRenderToken.begin();
-	RENDERTOKEN_LIST::iterator list_end = m_listRenderToken.end();
-	for ( ; it != list_end ; ++it )
-	{
-		if ( p == *it )
-		{
-			SAFE_DELETE( *it );
-			m_listRenderToken.erase( it );
-			p = NULL;
-			break;
-		}
-	}	
 }

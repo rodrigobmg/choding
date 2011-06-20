@@ -31,7 +31,6 @@ void GdsThreadPool::create()
 	{
 		GdsBGThread* p = new GdsBGThread;
 		p->CreateAndRunThread();
-		p->SuspendThread();
 		m_GdsThreadPool.push_back( p );
 	}	
 }
