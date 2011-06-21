@@ -57,10 +57,11 @@ public:
 	virtual void Run()
 	{
 		IWORK_TOKEN* pWorkToken = m_ThreadQueue.front();
-		pWorkToken->Execute();
-		SAFE_DELETE( pWorkToken );
-		
 		m_ThreadQueue.pop();
+
+		pWorkToken->Execute();
+		SAFE_DELETE( pWorkToken );		
+		
 		if ( !m_ThreadQueue.empty() )
 			::SetEvent( m_hEvent );
 	}
