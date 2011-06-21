@@ -63,7 +63,7 @@ bool	CSnowboard::InitRenderer( HWND hWnd )
 		return false;
 	}	
 
-	GDS::SetMaxFrameRate( 0 );
+	GDS::SetMaxFrameRate( 999 );
 
 	return false;
 }
@@ -88,16 +88,15 @@ void CSnowboard::DestroyModule()
 
 void CSnowboard::OnIdle()
 {
-	if ( GDS::MeasureTime() )
+	if ( !GDS::MeasureTime() )
 	{
-		Update( GDS::GetAccumTime() );
-		m_fUpdateRate = 1.0f / GDS::GetFrameTime();
+		return;
 	}
 
-	if ( GDS::MeasureTime_Render() )
-	{
-		Render();
-	}	
+	Update( GDS::GetAccumTime() );
+	m_fUpdateRate = 1.0f / GDS::GetFrameTime();	
+
+	Render();
 }
 
 void CSnowboard::Update(float fAccumTime)
@@ -113,9 +112,11 @@ void CSnowboard::Render()
 {
 	if ( RENDERER.Render( GDS::GetAccumTime_Render() ) )
 	{
-		m_fFrameRate = 1.0f / GDS::GetFrameTime_Render();
-		m_iRenderobjectCount = RENDERER.GetRenderer9()->GetRenderFrame()->GetRenderObjectCount();
+		
 	}
+
+	m_fFrameRate = 1.0f / GDS::GetFrameTime_Render();		
+	m_iRenderobjectCount = RENDERER.GetRenderer9()->GetRenderFrame()->GetRenderObjectCount();
 }
 
 
