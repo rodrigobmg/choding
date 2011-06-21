@@ -27,26 +27,21 @@ private:
 	void					drawAxis( D3DXMATRIX& mat , D3DXVECTOR3& point , ID3DXLine* line );
 	void					drawBox( D3DXMATRIX& mat , D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos , ID3DXLine* line );
 
-protected:
-
-	virtual	void			vClear();
-	virtual bool			vCreate( HWND hWnd );
-	virtual HRESULT			vRelease();
-
 public:
 
 	GdsRendererDX9();
 	virtual ~GdsRendererDX9();
 
+	virtual void			Clear();
+	virtual bool			Create( HWND hWnd );
+	virtual HRESULT			Release();
+
 	void					DrawBox( D3DXMATRIX& mat , D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos );
 	void					DrawAxis( D3DXMATRIX& mat , D3DXVECTOR3& point );
 	
 	void					ToggleWireMode(){ m_bWireMode = !m_bWireMode; }
-	void					Clear(){ vClear(); }
-	bool					Create( HWND hWnd ){ return vCreate( hWnd ); }
-	HRESULT					Release(){ return vRelease(); }
-
-	void					vRenderFrame( float fAccumtime );
+	
+	void					RenderFrame( float fAccumtime );
 	LPDIRECT3DDEVICE9		GetDevice()		{ return m_pd3dDevice; }
 
 	GdsRenderFramePtr		GetRenderFrame(){ return m_RenderFrameList; }

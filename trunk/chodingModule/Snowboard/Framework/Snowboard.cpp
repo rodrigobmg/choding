@@ -45,7 +45,7 @@ bool CSnowboard::InitModule( HWND hWnd )
 	m_hWnd = hWnd;
 
 	InitRenderer( hWnd );
-	InitResource( RENDERER.GetDevice() );
+	InitResource( RENDERER.GetRenderer9()->GetDevice() );
 	InitRootNode();
 	InitCamMgr();
 
@@ -110,7 +110,7 @@ void CSnowboard::Render( float fAccumtime )
 	RENDERER.Render( fAccumtime );
 
 	m_fFrameRate = 1.0f / GDS::GetFrameTime();
-	m_iRenderobjectCount = RENDERER.GetRenderFrame()->GetRenderObjectCount();
+	m_iRenderobjectCount = RENDERER.GetRenderer9()->GetRenderFrame()->GetRenderObjectCount();
 }
 
 

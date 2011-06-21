@@ -32,7 +32,7 @@ GdsTerrain::GdsTerrain()
 	renderstate->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
 	renderstate->SetRenderState( D3DRS_LIGHTING, FALSE );
 
-	RENDERER.GetRenderFrame()->AddRenderStateGroup( renderstate , TERRAIN_RENDERSTATE );
+	RENDERER.GetRenderer9()->GetRenderFrame()->AddRenderStateGroup( renderstate , TERRAIN_RENDERSTATE );
 }
 
 GdsTerrain::~GdsTerrain()
@@ -278,7 +278,7 @@ void GdsTerrain::genIndex( TILE* tile )
 		}
 	}
 	
-	GdsRenderObject* p = RENDERER.GetRenderFrame()->AllocRenderObject( TERRAIN_RENDERSTATE );
+	GdsRenderObject* p = RENDERER.GetRenderer9()->GetRenderFrame()->AllocRenderObject( TERRAIN_RENDERSTATE );
 	p->SetFVF( GDSVERTEX::FVF );
 	p->SetVertexBuffer( tile->m_pVB->Get() );
 

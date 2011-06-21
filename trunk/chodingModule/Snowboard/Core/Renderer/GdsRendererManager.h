@@ -17,8 +17,8 @@ public:
 	void			Render( float fAcuumTime );
 	
 	bool			Create( HWND hwnd );
-	LPDIRECT3DDEVICE9	GetDevice(){ return m_pRenderer->GetDevice(); }
-	GdsRenderFramePtr	GetRenderFrame(){ return m_pRenderer->GetRenderFrame(); }
+
+	GdsRendererDX9*	GetRenderer9(){ return m_pRenderer; }
 
 	void			DrawBox( D3DXMATRIX& mat , D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos ){ m_pRenderer->DrawBox( mat , minPos , maxPos ); }
 	void			DrawAxis( D3DXMATRIX& mat , D3DXVECTOR3& point ){ m_pRenderer->DrawAxis( mat , point ); }

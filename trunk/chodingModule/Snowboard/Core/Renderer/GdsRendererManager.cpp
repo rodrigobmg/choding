@@ -45,7 +45,7 @@ void GdsRendererManager::Render( float fAcuumTime )
 
 	m_pRenderer->GetRenderFrame()->Swap_buffer();
 	//void	Push( _OWNER* pthis , _PARAMETER para , _FP fp )
-	thread->Push( m_pRenderer , 0.f , &GdsRendererBase::Render );
+	thread->Push( m_pRenderer , fAcuumTime , &GdsRendererBase::Render );
 	//m_pRenderer->Render( 0.f );	
 }
 

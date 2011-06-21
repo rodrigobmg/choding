@@ -356,7 +356,7 @@ bool GdsResASE::DecodeMESH( LineContainerA::iterator& line , GdsNodePtr pNode )
 
 void GdsResASE::MakeVertex( LPDIRECT3DVERTEXBUFFER9* vb , D3DXMATRIX& tm , int icount_vertex )
 {
-	LPDIRECT3DDEVICE9 device = RENDERER.GetDevice();
+	LPDIRECT3DDEVICE9 device = RENDERER.GetRenderer9()->GetDevice();
 	ASSERT( device );
 	ASSERT( !(*vb) );
 
@@ -393,7 +393,7 @@ void GdsResASE::MakeVertex( LPDIRECT3DVERTEXBUFFER9* vb , D3DXMATRIX& tm , int i
 
 void GdsResASE::MakeIndex( LPDIRECT3DINDEXBUFFER9* ib , int icount_index )
 {
-	LPDIRECT3DDEVICE9 device = RENDERER.GetDevice();
+	LPDIRECT3DDEVICE9 device = RENDERER.GetRenderer9()->GetDevice();
 	ASSERT( device );
 	ASSERT( !(*ib) );
 

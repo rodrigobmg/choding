@@ -35,7 +35,7 @@ public:
  		UpdateWindow( hWnd );
  
  		RENDERER.Create( hWnd );
- 		RESMGR.Create( RENDERER.GetDevice() );
+ 		RESMGR.Create( RENDERER.GetRenderer9()->GetDevice() );
  
  		UnregisterClass( L"Choding" , wc.hInstance );
 	}

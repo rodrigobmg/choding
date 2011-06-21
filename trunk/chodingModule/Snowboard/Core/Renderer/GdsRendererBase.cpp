@@ -8,6 +8,6 @@ GdsRendererBase::GdsRendererBase()
 
 void GdsRendererBase::Render( float fAcuumTime )
 { 
-	vRenderFrame( fAcuumTime );
+	RenderFrame( fAcuumTime );
 	RENDERER.SetRenderingEnable( true );
 }

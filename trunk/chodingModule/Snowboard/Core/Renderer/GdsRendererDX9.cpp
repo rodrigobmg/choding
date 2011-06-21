@@ -14,22 +14,22 @@ m_pD3D( NULL )
 
 GdsRendererDX9::~GdsRendererDX9()
 {
-	vRelease();
+	Release();
 }
 
-HRESULT GdsRendererDX9::vRelease()
+HRESULT GdsRendererDX9::Release()
 {
 	SAFE_RELEASE(m_pD3D);
 	SAFE_RELEASE(m_pd3dDevice);	
 	return true;
 }
 
-void GdsRendererDX9::vClear()
+void GdsRendererDX9::Clear()
 {
 
 }
 
-bool GdsRendererDX9::vCreate( HWND hWnd )
+bool GdsRendererDX9::Create( HWND hWnd )
 {
 	// Create the D3D object.
 	if( NULL == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) )
@@ -50,7 +50,7 @@ bool GdsRendererDX9::vCreate( HWND hWnd )
 
 	// Create the D3DDevice
 	if( FAILED( m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,
-		D3DCREATE_HARDWARE_VERTEXPROCESSING,
+		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 		&d3dpp, &m_pd3dDevice ) ) )
 	{
 		LOG_ERROR_F("Fail to create device\n");
@@ -62,7 +62,7 @@ bool GdsRendererDX9::vCreate( HWND hWnd )
 	return true;
 }
 
-void GdsRendererDX9::vRenderFrame( float fAccumtime )
+void GdsRendererDX9::RenderFrame( float fAccumtime )
 {	
 	if ( m_bWireMode )
 		m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
