@@ -26,10 +26,6 @@ class GdsRenderFrame : public GdsObject
 		}
 	};
 
-	
-	typedef std::vector< GdsRenderObject* >		RENDERTOKEN_LIST;
-	RENDERTOKEN_LIST		m_RenderToken;
-
 	typedef std::list< RENDEROBEJCT	>					RENDER_CONTAINER;	
 	RENDER_CONTAINER		m_RenderFrame;
 	RENDER_CONTAINER		m_FrontRenderFrame;
@@ -39,25 +35,22 @@ class GdsRenderFrame : public GdsObject
 
 	int						m_iTotalcountofRenderObject;
 
-	//그림을 그릴 전면 렌더프레임으로 스왑
-	void					swap_buffer();
-
 public:
 
 	GdsRenderFrame();
 	virtual ~GdsRenderFrame();
+	
+	//그림을 그릴 전면 렌더프레임으로 스왑
+	void					Swap_buffer();
 
 	int						GetRenderObjectCount(){ return m_iTotalcountofRenderObject; }
-	GdsRenderObject*		AllocRenderObject();
-	void					FreeRenderObject( GdsRenderObject* p );
+	GdsRenderObject*		AllocRenderObject( int iRenderStateGroupID );
+	void					ClearBackFrameBuffer();
 	void					AttachRenderObject( GdsRenderObject* pRenderObject , int iRenderStateGroupID );
 	void					AddRenderStateGroup( GdsRenderStateGroupPtr renderstategroup , int iRenderStateGroupID );
 	
 	void					Render( LPDIRECT3DDEVICE9 device ){ vRender( device ); }
 	
-
-	
-
 protected:
 
 	virtual	void			vRender( LPDIRECT3DDEVICE9 device );

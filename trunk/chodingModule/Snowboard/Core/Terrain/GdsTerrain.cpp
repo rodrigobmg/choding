@@ -278,7 +278,7 @@ void GdsTerrain::genIndex( TILE* tile )
 		}
 	}
 	
-	GdsRenderObject* p = RENDERER.GetRenderFrame()->AllocRenderObject();
+	GdsRenderObject* p = RENDERER.GetRenderFrame()->AllocRenderObject( TERRAIN_RENDERSTATE );
 	p->SetFVF( GDSVERTEX::FVF );
 	p->SetVertexBuffer( tile->m_pVB->Get() );
 
@@ -295,7 +295,7 @@ void GdsTerrain::genIndex( TILE* tile )
 	p->SetStartVertexIndex( 0 );
 	p->SetStartIndex( 0 );
 
-	RENDERER.GetRenderFrame()->AttachRenderObject( p , TERRAIN_RENDERSTATE );
+	//RENDERER.GetRenderFrame()->AttachRenderObject( p , TERRAIN_RENDERSTATE );
 }
 
 void GdsTerrain::Update( float fElapsedtime )

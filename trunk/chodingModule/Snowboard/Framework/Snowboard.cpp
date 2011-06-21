@@ -102,21 +102,25 @@ void CSnowboard::Update(float fAccumTime)
 	TERRAIN.Update( fAccumTime );
 
 	if ( m_pRootNode )
-		m_pRootNode->Update( fAccumTime );					
+		m_pRootNode->Update( fAccumTime );
 }
 
 void CSnowboard::Render()
 {
  	if ( RENDERER.EnableRendering() == false )
- 		return;
+	{
+		RENDERER.GetRenderFrame()->ClearBackFrameBuffer();
+		return;
+	}
 
  	GdsBGThread* thread = THREADPOOL.GetThread( 0 );
  	if ( thread == NULL )
  		return;
 
+	RENDERER.GetRenderFrame()->Swap_buffer();
 	//void	Push( _OWNER* pthis , _PARAMETER para , _FP fp )
-	//thread->Push( &RENDERER , 0.f , &GdsRendererBase::RenderFrame );
-	RENDERER.RenderFrame( 0.f );	
+	thread->Push( &RENDERER , 0.f , &GdsRendererBase::RenderFrame );
+	//RENDERER.RenderFrame( 0.f );	
 	m_fFrameRate = 1.0f / GDS::GetFrameTime();
 	m_iRenderobjectCount = RENDERER.GetRenderFrame()->GetRenderObjectCount();
 }
