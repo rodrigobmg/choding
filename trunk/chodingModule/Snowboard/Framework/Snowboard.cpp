@@ -5,7 +5,6 @@
 #include "../System/Logger/logger.h"
 #include "../System/PerformanceCheck/Performance.h"
 
-#include "../System/Time/GdsSystemTime.h"
 #include "../System/FrameMemory/GdsFrameMemory.h"
 #include "Resource/Type/GdsResASE.h"
 #include "InputSystem/GdsInputSystem.h"
@@ -13,10 +12,12 @@
 #include "../System/Thread/GdsThreadPool.h"
 #include "Renderer/GdsRendererManager.h"
 #include "Resource/GdsResMgr.h"
+#include "../System/Time/GdsSystemTime.h"
 
 CSnowboard::CSnowboard()
 :m_iRenderobjectCount(0)
 ,m_fFrameRate(0.0f)
+,m_fUpdateRate(0.0f)
 ,m_pRootNode( (GdsNode*)NULL )
 {
 	Clear(); 
@@ -87,13 +88,16 @@ void CSnowboard::DestroyModule()
 
 void CSnowboard::OnIdle()
 {
-	if ( !GDS::MeasureTime() )
+	if ( GDS::MeasureTime() )
 	{
-		return;
+		Update( GDS::GetAccumTime() );
+		m_fUpdateRate = 1.0f / GDS::GetFrameTime();
 	}
 
-	Update( GDS::GetAccumTime() );
-	Render( GDS::GetAccumTime() );	
+	if ( GDS::MeasureTime_Render() )
+	{
+		Render();
+	}	
 }
 
 void CSnowboard::Update(float fAccumTime)
@@ -105,12 +109,13 @@ void CSnowboard::Update(float fAccumTime)
 		m_pRootNode->Update( fAccumTime );
 }
 
-void CSnowboard::Render( float fAccumtime )
+void CSnowboard::Render()
 {
-	RENDERER.Render( fAccumtime );
-
-	m_fFrameRate = 1.0f / GDS::GetFrameTime();
-	m_iRenderobjectCount = RENDERER.GetRenderer9()->GetRenderFrame()->GetRenderObjectCount();
+	if ( RENDERER.Render( GDS::GetAccumTime_Render() ) )
+	{
+		m_fFrameRate = 1.0f / GDS::GetFrameTime_Render();
+		m_iRenderobjectCount = RENDERER.GetRenderer9()->GetRenderFrame()->GetRenderObjectCount();
+	}
 }
 
 

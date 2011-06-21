@@ -5,7 +5,8 @@
 #include "GdsRendererDX9.h"
 #include "GdsRenderFrame.h"
 
-class GdsRendererManager : public GdsObject{	
+class GdsRendererManager : public GdsObject
+{	
 
 public:
 
@@ -14,7 +15,7 @@ public:
 
 	bool			EnableRendering();
 	void			SetRenderingEnable( bool flag );
-	void			Render( float fAcuumTime );
+	bool			Render( float fAccumtime );
 	
 	bool			Create( HWND hwnd );
 
@@ -27,6 +28,7 @@ private:
 
 	GdsRendererDX9*	m_pRenderer;
 	bool			m_IsCurRendering;
+
 };
 
 #define RENDERER	singleton_holder< GdsRendererManager >::instance()

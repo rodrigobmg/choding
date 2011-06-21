@@ -1,8 +1,6 @@
 #ifndef _GDS_SYSTEM_TIME_H_
 #define _GDS_SYSTEM_TIME_H_
 
-#include "../../Framework/Snowboard_stdafx.h"
-
 namespace GDS
 {
 	// frame rate counting and display
@@ -109,6 +107,111 @@ namespace GDS
 		else
 			m_fMinFramePeriod = 1.0f / fMax;    
 	}
+
+	// frame rate counting and display
+	int m_iMaxTimer_Render = 30;
+	int m_iTimer_Render = 1;
+	float m_fCurrentTime_Render = 0.f; // Time reported by system
+	float m_fLastTime_Render = -1.f; // Last time reported by system
+	float m_fAccumTime_Render = 0.f; // Time elapsed since application start
+	float m_fFrameTime_Render = 0.f; // Time elapsed since previous frame
+	int m_iClicks_Render = 0;
+	float m_fFrameRate_Render = 0.f;
+	float m_fLastFrameRateTime_Render = 0.f;
+	int m_iLastFrameRateClicks_Render = 0;
+
+	bool m_bUseFixedTime_Render = false;
+	bool m_bNVPerfHUD_Render = false;
+	float m_fMinFramePeriod_Render = 1.0f / 100.0f;
+	float m_fLastFrame_Render = 0.0f;
+	float m_fFixedTimeIncrement_Render = 1.0f / 60.0f;
+
+	float GetAccumTime_Render(){ return m_fAccumTime_Render; }
+	float GetFrameTime_Render(){ return m_fFrameTime_Render; }
+
+	void  ResetFrameTimings_Render()
+	{
+		// 		m_fUpdateTime = 0.0f;
+		// 		m_fCullTime = 0.0f;
+		// 		m_fRenderTime = 0.0f;
+	}
+
+	float GetCurrentTimeInSec_Render()
+	{
+		static bool bFirst_Render = true;
+		static LARGE_INTEGER freq_Render;
+		static LARGE_INTEGER initial_Render;
+
+		if (bFirst_Render)
+		{
+			QueryPerformanceFrequency(&freq_Render);
+			QueryPerformanceCounter(&initial_Render);
+			bFirst_Render = false;
+		}
+
+		LARGE_INTEGER counter;
+		QueryPerformanceCounter(&counter);
+		return (float)((long double)
+			(counter.QuadPart - initial_Render.QuadPart) / 
+			(long double) freq_Render.QuadPart);
+	}
+
+	bool MeasureTime_Render()
+	{
+		if (!m_bUseFixedTime_Render)
+		{
+			// start performance measurements
+			if (m_fLastTime_Render == -1.0f)
+			{
+				m_fLastTime_Render = GetCurrentTimeInSec_Render();
+				m_fAccumTime_Render = 0.0f;
+				m_iClicks_Render = 0;
+			}
+
+			// measure time
+			m_fCurrentTime_Render = GetCurrentTimeInSec_Render();
+			float fDeltaTime = m_fCurrentTime_Render - m_fLastTime_Render;
+
+#if defined(WIN32)
+			// NVPerfHUD support!
+			if (m_bNVPerfHUD_Render && fDeltaTime == 0.0f)
+				return true;
+#endif
+
+			if (fDeltaTime < 0.0f)
+				fDeltaTime = 0.0f;
+			m_fLastTime_Render = m_fCurrentTime_Render;
+			m_fAccumTime_Render += fDeltaTime;
+
+			// frame rate limiter
+			if (m_fAccumTime_Render < (m_fLastFrame_Render + m_fMinFramePeriod_Render))
+				return false;
+
+			m_fFrameTime_Render = m_fAccumTime_Render - m_fLastFrame_Render;
+			m_fLastFrame_Render = m_fAccumTime_Render;
+
+			return true;
+		}
+		else
+		{
+			m_fCurrentTime_Render += m_fFixedTimeIncrement_Render;
+			m_fAccumTime_Render = ((float)m_iClicks_Render) * m_fFixedTimeIncrement_Render;      
+			m_fFrameTime_Render = m_fAccumTime_Render - m_fLastFrame_Render;
+			m_fLastFrame_Render = m_fAccumTime_Render;
+
+			return true;
+		}
+	}
+
+	void SetMaxFrameRate_Render(float fMax)
+	{
+		// convert from rate to period - if a bogus max framerate is passed in,
+		// disable framerate limitation
+		if(fMax < 1e-5f)
+			m_fMinFramePeriod_Render = 1e-5f;    
+		else
+			m_fMinFramePeriod_Render = 1.0f / fMax;    
+	}
 }
 
-#endif // _SNOWBOARD_UTILITY_SINGLETON_
+#endif // 

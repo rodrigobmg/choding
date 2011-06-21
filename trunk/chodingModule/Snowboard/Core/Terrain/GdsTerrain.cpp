@@ -285,7 +285,6 @@ void GdsTerrain::genIndex( TILE* tile )
 	p->SetEndVertexIndex( tile->m_pVB->GetEndVertexIndex() );
 	p->SetVertexSize( tile->m_pVB->GetVertexSize() );
 	p->SetVertexMaxCount( tile->m_pVB->GetVertexMaxCount() );
-
 	
 	INDEX_CONTAINER lodindex = m_LODIBTemplet.at(m_ilod);
 
@@ -294,8 +293,6 @@ void GdsTerrain::genIndex( TILE* tile )
 	p->SetEndIndex( lodindex.at(m_idir)->GetIndexMaxCount() );
 	p->SetStartVertexIndex( 0 );
 	p->SetStartIndex( 0 );
-
-	//RENDERER.GetRenderFrame()->AttachRenderObject( p , TERRAIN_RENDERSTATE );
 }
 
 void GdsTerrain::Update( float fElapsedtime )

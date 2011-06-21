@@ -28,18 +28,20 @@ public:
 	void		TestFunc();
 
 	float		GetFrameRate(){ return m_fFrameRate; }
+	float		GetUpdateRate(){ return m_fUpdateRate; }
 	int			GetCountofRenderObject(){ return m_iRenderobjectCount; }
 	HWND		GetWnd(){ return m_hWnd; }
 private:
 	
-	GdsNodePtr			m_pRootNode;
+	GdsNodePtr	m_pRootNode;
 	
-	float				m_fFrameRate;
-	int					m_iRenderobjectCount;
-	HWND				m_hWnd;
+	float		m_fUpdateRate;
+	float		m_fFrameRate;
+	int			m_iRenderobjectCount;
+	HWND		m_hWnd;
 
 	void		Update( float fAccumTime );
-	void		Render( float fAccumtime );
+	void		Render();
 };
 
 #endif

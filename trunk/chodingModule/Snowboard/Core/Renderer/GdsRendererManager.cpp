@@ -25,28 +25,29 @@ bool GdsRendererManager::EnableRendering()
 	return m_IsCurRendering;
 }
 
-void GdsRendererManager::Render( float fAcuumTime )
+bool GdsRendererManager::Render( float fAccumtime )
 {
 	if ( m_IsCurRendering == false )
 	{
 		//렌더링 중이므로 백버퍼 초기화
 		m_pRenderer->GetRenderFrame()->ClearBackFrameBuffer();
-		return;
+		return false;
 	}
 	
 	SetRenderingEnable( false );
 
 	GdsBGThread* thread = THREADPOOL.GetThread( 0 );
 	if ( thread == NULL )
-		return;
+		return false;
 
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_P ) )
 		m_pRenderer->ToggleWireMode();
 
 	m_pRenderer->GetRenderFrame()->Swap_buffer();
 	//void	Push( _OWNER* pthis , _PARAMETER para , _FP fp )
-	thread->Push( m_pRenderer , fAcuumTime , &GdsRendererBase::Render );
+	thread->Push( m_pRenderer , fAccumtime , &GdsRendererBase::Render );
 	//m_pRenderer->Render( 0.f );	
+	return true;
 }
 
 bool GdsRendererManager::Create( HWND hwnd )

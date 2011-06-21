@@ -92,6 +92,7 @@ typedef unsigned __int64	uint64_t;
 #include "../System/Singleton/Singleton.h"
 #include "Snowboard_macro.h"
 #include "../System/Util/Utility.h"
+//#include "../System/Time/GdsSystemTime.h"
 
 struct GDSVERTEX
 {
