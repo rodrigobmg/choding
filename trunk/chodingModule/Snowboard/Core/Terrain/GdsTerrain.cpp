@@ -1,10 +1,10 @@
 #include "GdsTerrain.h"
 #include "Resource\GdsResMgr.h"
 #include "..\..\System\Logger\logger.h"
-#include "Renderer\GdsRendererDX9.h"
 #include "Renderer\GdsRenderStateGroup.h"
 #include "GdsTerrain_Triangle.h"
 #include "InputSystem\GdsInputSystem.h"
+#include "Renderer\GdsRendererManager.h"
 
 
 GdsTerrain::GdsTerrain() 

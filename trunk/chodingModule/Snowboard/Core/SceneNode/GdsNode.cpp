@@ -1,6 +1,6 @@
 #include "GdsNode.h"
 #include "Camera\GdsCameraManagerDX9.h"
-#include "Renderer\GdsRendererDX9.h"
+#include "Renderer\GdsRendererManager.h"
 
 //ImplementBoostPool( GdsNode )
 //boost::pool<> GdsNode::bpool( sizeof( GdsNode ) );

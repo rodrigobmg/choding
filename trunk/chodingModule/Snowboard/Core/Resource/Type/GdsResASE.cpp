@@ -2,8 +2,8 @@
 #include "../../../System/FileSystem/GdsFile.h"
 #include "../../../System/Logger/logger.h"
 #include "../../../System/FrameMemory/GdsFrameMemory.h"
-#include "Renderer/GdsRendererDX9.h"
 #include "../GdsResMgr.h"
+#include "Renderer/GdsRendererManager.h"
 
 GdsResASE::GdsResASE():
 m_VertexList(NULL),

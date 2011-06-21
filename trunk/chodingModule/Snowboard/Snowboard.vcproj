@@ -194,6 +194,10 @@
 				Name="Renderer"
 				>
 				<File
+					RelativePath=".\Core\Renderer\GdsRendererBase.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Core\Renderer\GdsRendererBase.h"
 					>
 				</File>
@@ -203,6 +207,14 @@
 				</File>
 				<File
 					RelativePath=".\Core\Renderer\GdsRendererDX9.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Renderer\GdsRendererManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Core\Renderer\GdsRendererManager.h"
 					>
 				</File>
 				<File

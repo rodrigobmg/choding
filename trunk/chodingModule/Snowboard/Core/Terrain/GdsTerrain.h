@@ -2,7 +2,6 @@
 #define _GDS_CORE_TERRAIN_H_
 
 #include "..\Base\GdsObject.h"
-#include "..\SceneNode\GdsNode.h"
 #include "..\..\System\Singleton\Singleton.h"
 #include "..\Resource\Type\GdsIndexBuffer.h"
 #include "..\Resource\Type\GdsVertexBuffer.h"

@@ -1,18 +1,18 @@
 #include "Snowboard.h"
 
 #include "../Core/GdsCoreFactory.h"
-#include "../Core/Renderer/GdsRendererDX9.h"
 
 #include "../System/Logger/logger.h"
 #include "../System/PerformanceCheck/Performance.h"
 
-#include "SceneNode/GdsNode.h"
 #include "../System/Time/GdsSystemTime.h"
 #include "../System/FrameMemory/GdsFrameMemory.h"
 #include "Resource/Type/GdsResASE.h"
 #include "InputSystem/GdsInputSystem.h"
 #include "Terrain/GdsTerrain.h"
 #include "../System/Thread/GdsThreadPool.h"
+#include "Renderer/GdsRendererManager.h"
+#include "Resource/GdsResMgr.h"
 
 CSnowboard::CSnowboard()
 :m_iRenderobjectCount(0)
@@ -93,7 +93,7 @@ void CSnowboard::OnIdle()
 	}
 
 	Update( GDS::GetAccumTime() );
-	Render();	
+	Render( GDS::GetAccumTime() );	
 }
 
 void CSnowboard::Update(float fAccumTime)
@@ -105,22 +105,10 @@ void CSnowboard::Update(float fAccumTime)
 		m_pRootNode->Update( fAccumTime );
 }
 
-void CSnowboard::Render()
+void CSnowboard::Render( float fAccumtime )
 {
- 	if ( RENDERER.EnableRendering() == false )
-	{
-		RENDERER.GetRenderFrame()->ClearBackFrameBuffer();
-		return;
-	}
+	RENDERER.Render( fAccumtime );
 
- 	GdsBGThread* thread = THREADPOOL.GetThread( 0 );
- 	if ( thread == NULL )
- 		return;
-
-	RENDERER.GetRenderFrame()->Swap_buffer();
-	//void	Push( _OWNER* pthis , _PARAMETER para , _FP fp )
-	thread->Push( &RENDERER , 0.f , &GdsRendererBase::RenderFrame );
-	//RENDERER.RenderFrame( 0.f );	
 	m_fFrameRate = 1.0f / GDS::GetFrameTime();
 	m_iRenderobjectCount = RENDERER.GetRenderFrame()->GetRenderObjectCount();
 }

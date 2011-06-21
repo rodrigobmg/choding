@@ -2,7 +2,7 @@
 #define _UNITTEST_GDSRESMGR_H_
 
 #include "..\..\..\chodingModule\Snowboard\Core\Resource\GdsResMgr.h"
-#include "..\..\..\chodingModule\Snowboard\Core\Renderer\GdsRendererDX9.h"
+#include "..\..\..\chodingModule\Snowboard\Core\Renderer\GdsRendererManager.h"
 
  LRESULT WINAPI MsgProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lParam )
  {

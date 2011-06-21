@@ -4,8 +4,7 @@
 #include "Snowboard_stdafx.h"
 
 #include "../Core/GdsCoreFactory.h"
-#include "../Core/Renderer/GdsRendererDX9.h"
-#include "../Core/Resource/GdsResMgr.h"
+#include "../Core/SceneNode/GdsNode.h"
 
 class CSnowboard
 {
@@ -33,8 +32,6 @@ public:
 	HWND		GetWnd(){ return m_hWnd; }
 private:
 	
-	GdsRendererDX9Ptr	m_pRenderer;
-	GdsResMgrPtr		m_pResMgr;
 	GdsNodePtr			m_pRootNode;
 	
 	float				m_fFrameRate;
@@ -42,7 +39,7 @@ private:
 	HWND				m_hWnd;
 
 	void		Update( float fAccumTime );
-	void		Render();
+	void		Render( float fAccumtime );
 };
 
 #endif
