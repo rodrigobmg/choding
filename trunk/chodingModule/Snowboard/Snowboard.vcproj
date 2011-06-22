@@ -309,30 +309,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\Core\Resource\Type\GdsResASE.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Resource\Type\GdsResASE.h"
-						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="true"
-							>
-							<Tool
-								Name="VCCustomBuildTool"
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\Core\Resource\Type\GdsResMD2.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Core\Resource\Type\GdsResMD2.h"
-						>
-					</File>
-					<File
 						RelativePath=".\Core\Resource\Type\GdsResTexture.cpp"
 						>
 					</File>
@@ -354,6 +330,36 @@
 					</File>
 					<File
 						RelativePath=".\Core\Resource\Type\GdsVertexShader.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Object"
+					>
+					<File
+						RelativePath=".\Core\Resource\Object\GdsResMD2.cpp"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\Core\Resource\Object\GdsResMD2.h"
 						>
 					</File>
 				</Filter>

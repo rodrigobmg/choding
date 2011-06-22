@@ -81,10 +81,6 @@ TEST_F( GdsResourceMgrTest ,  Module )
 	D3DMATRIX point_tm;
 	GdsRenderObject* instance = new GdsRenderObject;
 	{
-		GdsRenderObjectPtr p1;
-		p1 = GdsRenderObjectPtr( instance );		
-		shared_tm = p1->GetMatrix();
-		point_tm = p1->GetMatrix();
 	}
 }
 

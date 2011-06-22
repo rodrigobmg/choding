@@ -27,7 +27,8 @@ public:
 	int				GetCountOfRenderObject(){ return m_CountRenderObject; }
 
 private:
-
+	
+	bool			m_bUseThreadRender;
 	unsigned long	m_ProcessTick;
 	GdsRendererDX9*	m_pRenderer;
 	bool			m_IsCurRendering;

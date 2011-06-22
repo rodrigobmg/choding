@@ -6,7 +6,6 @@
 #include "../System/PerformanceCheck/Performance.h"
 
 #include "../System/FrameMemory/GdsFrameMemory.h"
-#include "Resource/Type/GdsResASE.h"
 #include "InputSystem/GdsInputSystem.h"
 #include "Terrain/GdsTerrain.h"
 #include "../System/Thread/GdsThreadPool.h"

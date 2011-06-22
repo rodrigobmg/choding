@@ -5,7 +5,6 @@
 #include <omp.h>
 #include "../../System/Logger/logger.h"
 #include "../../System/PerformanceCheck/Performance.h"
-#include "Type/GdsResASE.h"
 
 /*
 #include "tbb/task_scheduler_init.h"
@@ -252,9 +251,9 @@ GdsResBasePtr GdsResMgr::resourceFactory( const TCHAR* ext , const TCHAR* filepa
 	}
 	else if ( !_tcscmp( ext , L"ase" ) ) 
 	{
-		GdsResASEPtr	pAse = GdsResASEPtr( new GdsResASE );
-		pAse->Create( filepath , m_pDevice );
-		return pAse;
+// 		GdsResASEPtr	pAse = GdsResASEPtr( new GdsResASE );
+// 		pAse->Create( filepath , m_pDevice );
+// 		return pAse;
 	}
 
 	return GdsResBasePtr( (GdsResBase*)NULL);

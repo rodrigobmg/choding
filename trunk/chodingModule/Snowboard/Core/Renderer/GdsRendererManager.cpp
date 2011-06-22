@@ -8,6 +8,7 @@ GdsRendererManager::GdsRendererManager()
 ,m_IsCurRendering(true)
 ,m_ProcessTick(0)
 ,m_CountRenderObject(0)
+,m_bUseThreadRender(false)
 {
 
 }
@@ -45,12 +46,21 @@ bool GdsRendererManager::Render( float fAccumtime )
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_P ) )
 		m_pRenderer->ToggleWireMode();
 
-	m_ProcessTick = thread->GetProcessTick();
-	m_CountRenderObject = m_pRenderer->GetRenderFrame()->GetRenderObjectCount();
+	if ( INPUTSYSTEM.GetKeyIsDown( VK_M ) )
+		m_bUseThreadRender = !m_bUseThreadRender;
+
 	m_pRenderer->GetRenderFrame()->Swap_buffer();
-	//void	Push( _OWNER* pthis , _PARAMETER para , _FP fp )
-	thread->Push( m_pRenderer , fAccumtime , &GdsRendererBase::Render );
-	//m_pRenderer->Render( 0.f );	
+	if ( m_bUseThreadRender )
+	{//쓰레드 렌더링
+		m_ProcessTick = thread->GetProcessTick();
+		m_CountRenderObject = m_pRenderer->GetRenderFrame()->GetRenderObjectCount();		
+		thread->Push( m_pRenderer , fAccumtime , &GdsRendererBase::Render );
+	}
+	else
+	{
+		m_pRenderer->Render( fAccumtime );	
+	}
+
 	return true;
 }
 

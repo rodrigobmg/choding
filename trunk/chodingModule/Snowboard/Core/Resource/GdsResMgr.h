@@ -4,11 +4,11 @@
 #include "../Base/GdsObject.h"
 #include "GdsResBaseType.h"
 #include "Type\GdsResTexture.h"
-#include "..\Renderer\GdsRenderObject.h"
 
 // 모든 리소스 파일네임은 소문자로 취급한다.!!!!!!!!!!!!!!!!
 
-class GdsResMgr : public GdsObject{
+class GdsResMgr : public GdsObject
+{
 
 private:
 

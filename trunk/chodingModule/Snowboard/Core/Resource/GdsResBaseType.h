@@ -5,6 +5,10 @@
 
 class GdsResBase : public GdsObject
 {
+public:	
+	GdsResBase();
+	virtual ~GdsResBase();
+
 protected:
 
 	tstring				m_strPath;
@@ -14,8 +18,6 @@ protected:
 	virtual HRESULT		vLoadResource( LPDIRECT3DDEVICE9 device ) = 0;
 
 public:
-	GdsResBase();
-	virtual ~GdsResBase();
 
 	void				Clear();
 	HRESULT				Create( const TCHAR* path , LPDIRECT3DDEVICE9 device );

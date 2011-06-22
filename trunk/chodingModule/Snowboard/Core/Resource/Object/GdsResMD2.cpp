@@ -2,8 +2,6 @@
 #include "../../../System/FileSystem/GdsFile.h"
 
 GdsResMD2::GdsResMD2()
-//m_Polygon( GdsPolygonPropertyPtr( new GdsPolygonProperty ) ),
-//m_Texture( GdsTexturePropertyPtr( new GdsTextureProperty ) )
 {
 	SetName( OBJECT_RES_MD2 );
 	vClear();
@@ -133,8 +131,6 @@ HRESULT GdsResMD2::vLoadResource(LPDIRECT3DDEVICE9 device)
 // 	m_Polygon->SetFVF( D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1 );
 // 	m_Polygon->SetVertexFormatSize( sizeof( MD2_VERTEX ) );
 
-//	GetPropertyState()->SetTextureProperty( m_Texture );
-//	GetPropertyState()->SetPolygonProperty( m_Polygon );
 	///////////////////메모리 해제//////////////////////////////////////////////////////
 	delete []pMD2Data;		//동적할당
 	delete pMD2Matrix;		//매트릭스 40바이트

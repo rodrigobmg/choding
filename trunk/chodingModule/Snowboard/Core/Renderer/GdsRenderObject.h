@@ -5,26 +5,25 @@
 
 class GdsRenderObject : public GdsObject
 {	
-	D3DMATERIAL9			m_Material;
 	D3DLIGHT9				m_Light;
+	D3DMATERIAL9			m_Material;	
+	D3DXMATRIX				m_TM;
+	D3DPRIMITIVETYPE		m_ePrimitive;
 
 	LPDIRECT3DTEXTURE9		m_Texture;
-	int						m_iTextureIndex;//멀티 텍스쳐링할때 필요한 디바이스의 인덱스
-
-	D3DXMATRIX				m_TM;
-
 	LPDIRECT3DVERTEXBUFFER9	m_vb;
+	LPDIRECT3DINDEXBUFFER9	m_ib;
+	
+	int						m_iTextureIndex;//멀티 텍스쳐링할때 필요한 디바이스의 인덱스
 	int						m_VertexSize;
 	int						m_FVF;
 	int						m_Vertex_Maxcount;
 	int						m_iStartVertexIndex;
-	int						m_iEndVertexIndex;
-
-	LPDIRECT3DINDEXBUFFER9	m_ib;
+	int						m_iEndVertexIndex;	
 	int						m_Index_Maxcount;
 	int						m_iStartIndex;
 	int						m_iEndIndex;
-	D3DPRIMITIVETYPE		m_ePrimitive;
+	
 
 public:
 
@@ -63,7 +62,5 @@ public:
 	void					SetEndIndex( int index ){ m_iEndIndex = index; }
 
 };
-
-typedef boost::shared_ptr< GdsRenderObject > GdsRenderObjectPtr;
 
 #endif

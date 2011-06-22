@@ -1,7 +1,7 @@
 #ifndef _UNITTEST_GDSRESASE_H_
 #define _UNITTEST_GDSRESASE_H_
 
-#include "..\..\..\chodingModule\Snowboard\Core\Resource\Type\GdsResASE.h"
+#include "..\..\..\chodingModule\Snowboard\Core\Resource\Object\GdsResASE.h"
 #include "..\..\..\chodingModule\Snowboard\System\FrameMemory\GdsFrameMemory.h"
 #include "..\..\Snowboard\Core\Renderer\GdsRendererDX9.h"
 

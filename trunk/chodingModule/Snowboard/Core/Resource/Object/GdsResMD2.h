@@ -3,11 +3,13 @@
 
 #include "..\GdsResBaseType.h"
 
-class GdsResMD2 : public GdsResBase{
-private:
+class GdsResMD2 : public GdsResBase
+{
+public:
+	GdsResMD2();
+	virtual ~GdsResMD2();
 
-	//GdsPolygonPropertyPtr		m_Polygon;
-	//GdsTexturePropertyPtr		m_Texture;
+private:
 
 	typedef struct 
 	{
@@ -78,8 +80,6 @@ protected:
 	virtual HRESULT				vLoadResource( LPDIRECT3DDEVICE9 device );
 
 public:
-	GdsResMD2();
-	virtual ~GdsResMD2();
 		
 };
 
