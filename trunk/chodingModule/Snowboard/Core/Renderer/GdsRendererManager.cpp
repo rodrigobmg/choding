@@ -6,6 +6,8 @@
 GdsRendererManager::GdsRendererManager()
 :m_pRenderer(NULL)
 ,m_IsCurRendering(true)
+,m_ProcessTick(0)
+,m_CountRenderObject(0)
 {
 
 }
@@ -43,6 +45,8 @@ bool GdsRendererManager::Render( float fAccumtime )
 	if ( INPUTSYSTEM.GetKeyIsDown( VK_P ) )
 		m_pRenderer->ToggleWireMode();
 
+	m_ProcessTick = thread->GetProcessTick();
+	m_CountRenderObject = m_pRenderer->GetRenderFrame()->GetRenderObjectCount();
 	m_pRenderer->GetRenderFrame()->Swap_buffer();
 	//void	Push( _OWNER* pthis , _PARAMETER para , _FP fp )
 	thread->Push( m_pRenderer , fAccumtime , &GdsRendererBase::Render );

@@ -7,7 +7,6 @@
 
 class GdsRendererManager : public GdsObject
 {	
-
 public:
 
 	GdsRendererManager();
@@ -24,10 +23,15 @@ public:
 	void			DrawBox( D3DXMATRIX& mat , D3DXVECTOR3& minPos , D3DXVECTOR3& maxPos ){ m_pRenderer->DrawBox( mat , minPos , maxPos ); }
 	void			DrawAxis( D3DXMATRIX& mat , D3DXVECTOR3& point ){ m_pRenderer->DrawAxis( mat , point ); }
 
+	unsigned long	GetProcessTick(){ return m_ProcessTick; }
+	int				GetCountOfRenderObject(){ return m_CountRenderObject; }
+
 private:
 
+	unsigned long	m_ProcessTick;
 	GdsRendererDX9*	m_pRenderer;
 	bool			m_IsCurRendering;
+	int				m_CountRenderObject;
 
 };
 

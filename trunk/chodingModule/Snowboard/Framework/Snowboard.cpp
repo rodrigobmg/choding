@@ -115,8 +115,8 @@ void CSnowboard::Render()
 		
 	}
 
-	m_fFrameRate = 1.0f / GDS::GetFrameTime_Render();		
-	m_iRenderobjectCount = RENDERER.GetRenderer9()->GetRenderFrame()->GetRenderObjectCount();
+	m_fFrameRate = RENDERER.GetProcessTick();
+	m_iRenderobjectCount = RENDERER.GetCountOfRenderObject();
 }
 
 

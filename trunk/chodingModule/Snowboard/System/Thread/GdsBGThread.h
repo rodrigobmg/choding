@@ -36,9 +36,30 @@ class GdsBGThread : public GdsThread
 		{
 			(pthis->*pf)( parameter );
 		}
-	};
+	};	
 	
 public:
+
+	GdsBGThread()
+	{
+		SetName( OBJECT_BGTHREAD );
+		SetMaxcapacity( 1 );
+	}
+
+	virtual ~GdsBGThread()
+	{
+		while( !m_ThreadQueue.empty() )
+		{
+			IWORK_TOKEN* ptoken = m_ThreadQueue.front();
+			SAFE_DELETE( ptoken );			
+			m_ThreadQueue.pop();
+		}
+	}; 
+
+	static GdsBGThread *New()
+	{
+		return new GdsBGThread;
+	}
 
 	template< class _PARAMETER , class _OWNER , class _FP >
 	void	Push( _OWNER* pthis , _PARAMETER para , _FP fp )
@@ -58,10 +79,11 @@ public:
 	{
 		IWORK_TOKEN* pWorkToken = m_ThreadQueue.front();
 		m_ThreadQueue.pop();
-
+		unsigned long CurTick = GetTickCount();
 		pWorkToken->Execute();
+		m_ProcessTick = GetTickCount() - CurTick;
 		SAFE_DELETE( pWorkToken );		
-		
+
 		if ( !m_ThreadQueue.empty() )
 			::SetEvent( m_hEvent );
 	}
@@ -69,34 +91,13 @@ public:
 	void		SetMaxcapacity( BYTE byValue )	{ m_byMaxcapacity = byValue; }
 	BYTE		GetMaxcapacity()				{ return m_byMaxcapacity;	}
 	int			GetCountWaitingJob() const		{ return (int)m_ThreadQueue.size(); }
+	unsigned long	GetProcessTick(){ return m_ProcessTick; }
+
+private:
 
 	std::queue< IWORK_TOKEN* > m_ThreadQueue;
 	BYTE		m_byMaxcapacity;
-
-
-public:
-	static GdsBGThread *New()
-	{
-		return new GdsBGThread;
-	}
-
-	GdsBGThread()
-	{
-		SetName( OBJECT_BGTHREAD );
-		SetMaxcapacity( 1 );
-	}
-
-	virtual ~GdsBGThread()
-	{
-		EnterLock();
-		while( !m_ThreadQueue.empty() )
-		{
-			IWORK_TOKEN* ptoken = m_ThreadQueue.front();
-			SAFE_DELETE( ptoken );			
-			m_ThreadQueue.pop();
-		}
-		LeaveLock();
-	}; 
+	unsigned long	m_ProcessTick;
 
 };
 
