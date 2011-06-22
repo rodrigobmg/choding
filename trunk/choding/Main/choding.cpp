@@ -44,7 +44,7 @@ bool OnIdle()
 		int	  count = g_pSnowboard->GetCountofRenderObject();
 		
 		char buffer[256] = {0,};
-		sprintf_s( buffer , 256 , "UpdateRate = %03d FrameRate = %03d RenderObject = %04d " , (int)updaterate , (int)rate , count );
+		sprintf_s( buffer , 256 , "UpdateRate = %03d Tick per OneFrame = %03d RenderObject = %04d " , (int)updaterate , (int)rate , count );
 		::SetWindowTextA( g_pSnowboard->GetWnd() , buffer );		
 	}
 

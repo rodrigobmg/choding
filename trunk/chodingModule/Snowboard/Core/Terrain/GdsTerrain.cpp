@@ -279,6 +279,8 @@ void GdsTerrain::genIndex( TILE* tile )
 	}
 	
 	GdsRenderObject* p = RENDERER.GetRenderer9()->GetRenderFrame()->AllocRenderObject( TERRAIN_RENDERSTATE );
+	GdsResTexturePtr texcolor = boost::shared_dynamic_cast< GdsResTexture >( RESMGR.Get( L"tile2.tga") );
+	p->SetTexture( texcolor->Get() );
 	p->SetFVF( GDSVERTEX::FVF );
 	p->SetVertexBuffer( tile->m_pVB->Get() );
 
