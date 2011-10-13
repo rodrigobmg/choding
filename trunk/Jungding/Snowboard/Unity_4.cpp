@@ -1,0 +1,13 @@
+#include "stdafx.h"
+
+#include "Framework\ThreadPool\GdsSynchronize.cpp"
+#include "Framework\Logger\html_logger.cpp"
+#include "Framework\InputSystem\GdsKeyboard.cpp"
+#include "Component\GdsComponent.cpp"
+#include "Component\ComVisual\GdsComVisualRect.cpp"
+#include "Camera\GdsCameraManagerDX9.cpp"
+#include "Renderer\GdsRendererManager.cpp"
+#include "ResourceManager\GdsResMgr.cpp"
+#include "ResourceManager\Type\GdsResTexture.cpp"
+#include "Terrain\GdsTerrain.cpp"
+#include "Snowboard.cpp"

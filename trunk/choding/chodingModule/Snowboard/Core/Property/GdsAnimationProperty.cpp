@@ -1,0 +1,2 @@
+#include "GdsAnimationProperty.h"
+
