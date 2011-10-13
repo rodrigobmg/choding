@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{e0ce0989-e5b2-4666-99ce-2dd6f8056283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\FileSystem">
+      <UniqueIdentifier>{2d4b1074-ea1a-47ef-8e46-c163d38a7f93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Util">
+      <UniqueIdentifier>{113768ab-7bdc-4595-bbb7-3c0ba4c76ecb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Singleton">
+      <UniqueIdentifier>{1bf493bb-6868-437f-8368-127068f8ea82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\FrameMemory">
+      <UniqueIdentifier>{c5566c60-4261-4361-9998-d7a36d02c86a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\ThreadPool">
+      <UniqueIdentifier>{f4e745ef-3e7b-43ea-9e18-f7b5a6f9ac0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Logger">
+      <UniqueIdentifier>{90d97515-f796-44ea-a10e-fbdd2d2dc7f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\InputSystem">
+      <UniqueIdentifier>{28286c88-286b-491a-806a-bf8d9a4cf28c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\PerformanceCheck">
+      <UniqueIdentifier>{d2d12c14-c957-48b9-b804-f57ca8b173eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{9139a515-f1a9-4440-8693-1d138dc83fca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{cc36a818-5ad2-428d-9dd4-2eedb4d50845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\ComVisual">
+      <UniqueIdentifier>{47d3b867-9e5d-4263-86b1-22e05f2cea2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\ComAnimation">
+      <UniqueIdentifier>{cabf1a93-5c58-4e2e-b4ca-846603236758}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{aa8f2ddd-0e4f-459b-b10c-59f419c0ef2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{e6bdc36e-80b7-424f-aaef-f651a2d28575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager">
+      <UniqueIdentifier>{3f3947f2-d6b9-4161-aea2-1f7354a3786f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager\Type">
+      <UniqueIdentifier>{524dbcf5-07c5-486f-812d-a12333860265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{8980196f-e93e-4f61-b915-b20b1e12b718}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain">
+      <UniqueIdentifier>{df5efc92-1d97-493e-839b-4a06d89898c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MemObject">
+      <UniqueIdentifier>{6047682c-8ce7-4cd3-8f0b-ba47bd780fe5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Framework\FileSystem\GdsFile.cpp">
+      <Filter>Framework\FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Util\Utility.cpp">
+      <Filter>Framework\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\ThreadPool\GdsSyncCriticalSection.cpp">
+      <Filter>Framework\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\ThreadPool\GdsSynchronize.cpp">
+      <Filter>Framework\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\ThreadPool\GdsThread.cpp">
+      <Filter>Framework\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\ThreadPool\GdsThreadPool.cpp">
+      <Filter>Framework\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Logger\console_logger.cpp">
+      <Filter>Framework\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Logger\html_logger.cpp">
+      <Filter>Framework\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Logger\logger.cpp">
+      <Filter>Framework\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Logger\output_logger.cpp">
+      <Filter>Framework\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\InputSystem\GdsInputSystem.cpp">
+      <Filter>Framework\InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\InputSystem\GdsKeyboard.cpp">
+      <Filter>Framework\InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\InputSystem\GdsMouse.cpp">
+      <Filter>Framework\InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\PerformanceCheck\Performance.cpp">
+      <Filter>Framework\PerformanceCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\GdsGameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\GdsComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\GdsComponentMaker.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ComVisual\GdsComVisual.cpp">
+      <Filter>Component\ComVisual</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ComVisual\GdsComVisualMesh.cpp">
+      <Filter>Component\ComVisual</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ComVisual\GdsComVisualRect.cpp">
+      <Filter>Component\ComVisual</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ComAnimation\GdsComAnimationFamily.cpp">
+      <Filter>Component\ComAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ComAnimation\GdsComMoveable.cpp">
+      <Filter>Component\ComAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\GdsCamera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\GdsCameraManagerDX9.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\GdsFrustum.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\GdsRendererBase.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\GdsRendererDX9.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\GdsRendererManager.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\GdsRenderFrame.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\GdsRenderObject.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\GdsRenderStateGroup.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\GdsResMgr.cpp">
+      <Filter>ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Type\GdsIndexBuffer.cpp">
+      <Filter>ResourceManager\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Type\GdsPixelshader.cpp">
+      <Filter>ResourceManager\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Type\GdsResBaseType.cpp">
+      <Filter>ResourceManager\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Type\GdsResTexture.cpp">
+      <Filter>ResourceManager\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Type\GdsVertexBuffer.cpp">
+      <Filter>ResourceManager\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Type\GdsVertexShader.cpp">
+      <Filter>ResourceManager\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GdsNode.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\GdsTerrain.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\GdsTerrain_Tile.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\GdsTerrain_Triangle.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="MemObject\GdsMemObject.cpp">
+      <Filter>MemObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Snowboard.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Unity_1.cpp" />
+    <ClCompile Include="Unity_2.cpp" />
+    <ClCompile Include="Unity_3.cpp" />
+    <ClCompile Include="Unity_4.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Framework\FileSystem\GdsFile.h">
+      <Filter>Framework\FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Util\Utility.h">
+      <Filter>Framework\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Singleton\Singleton.h">
+      <Filter>Framework\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\FrameMemory\GdsFrameMemory.h">
+      <Filter>Framework\FrameMemory</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\ThreadPool\GdsBGThread.h">
+      <Filter>Framework\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\ThreadPool\GdsSyncCriticalSection.h">
+      <Filter>Framework\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\ThreadPool\GdsSynchronize.h">
+      <Filter>Framework\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\ThreadPool\GdsThread.h">
+      <Filter>Framework\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\ThreadPool\GdsThreadPool.h">
+      <Filter>Framework\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Logger\console_logger.h">
+      <Filter>Framework\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Logger\html_logger.h">
+      <Filter>Framework\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Logger\logger.h">
+      <Filter>Framework\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Logger\output_logger.h">
+      <Filter>Framework\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\InputSystem\GdsInputSystem.h">
+      <Filter>Framework\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\InputSystem\GdsKeyboard.h">
+      <Filter>Framework\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\InputSystem\GdsMouse.h">
+      <Filter>Framework\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\PerformanceCheck\Performance.h">
+      <Filter>Framework\PerformanceCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\GdsGameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\GdsComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\GdsComponentMaker.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComVisual\GdsComVisual.h">
+      <Filter>Component\ComVisual</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComVisual\GdsComVisualMesh.h">
+      <Filter>Component\ComVisual</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComVisual\GdsComVisualRect.h">
+      <Filter>Component\ComVisual</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComAnimation\GdsComAnimationFamily.h">
+      <Filter>Component\ComAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComAnimation\GdsComMoveable.h">
+      <Filter>Component\ComAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\GdsCamera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\GdsCameraManagerDX9.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\GdsFrustum.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\GdsRendererBase.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\GdsRendererDX9.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\GdsRendererManager.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\GdsRenderFrame.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\GdsRenderObject.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\GdsRenderStateGroup.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\GdsResMgr.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Type\GdsIndexBuffer.h">
+      <Filter>ResourceManager\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Type\GdsPixelshader.h">
+      <Filter>ResourceManager\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Type\GdsResBaseType.h">
+      <Filter>ResourceManager\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Type\GdsResTexture.h">
+      <Filter>ResourceManager\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Type\GdsVertexBuffer.h">
+      <Filter>ResourceManager\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Type\GdsVertexShader.h">
+      <Filter>ResourceManager\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GdsNode.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\GdsTerrain.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\GdsTerrain_Tile.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\GdsTerrain_Triangle.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="MemObject\GdsMemObject.h">
+      <Filter>MemObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Snowboard.h" />
+    <ClInclude Include="Snowboard_Macro.h" />
+    <ClInclude Include="Snowboard_Type.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+</Project>

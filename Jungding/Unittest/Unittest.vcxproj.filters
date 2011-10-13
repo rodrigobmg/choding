@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="testUnit">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="testUnit\File">
+      <UniqueIdentifier>{a848101b-0ef3-4f4f-8052-9181c07f58f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testUnit\RenderFrame">
+      <UniqueIdentifier>{85527035-d584-4496-bf3a-7aff1f20d148}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testUnit\ASE">
+      <UniqueIdentifier>{eb6112fb-e1d1-49ca-a072-30087cf1d6ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testUnit\Node">
+      <UniqueIdentifier>{e8f87b88-e064-457f-b71c-e9714a56231f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testUnit\ResourceMgr">
+      <UniqueIdentifier>{271ee7bc-d139-4738-a119-4b2b213c3623}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testUnit\Singleton">
+      <UniqueIdentifier>{60bed958-459b-4eda-b72c-8b2a7bf30969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testUnit\Oc-Tree &amp; Terrain">
+      <UniqueIdentifier>{d6f572ef-43d5-4066-a372-65abf4b00ed3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testUnit\InputSystem">
+      <UniqueIdentifier>{6980184f-7693-456f-b887-8382959a2b6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testUnit\GdsIndexVertexBuffer">
+      <UniqueIdentifier>{d28642c2-43f5-4546-bcd5-0f2bf5c1ae23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testUnit\Component">
+      <UniqueIdentifier>{b75a14c5-884c-401b-890b-928ecf6434ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testUnit\Gameobject">
+      <UniqueIdentifier>{9f364feb-51bc-445b-84df-311c37b3eec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="gtest_main.cc">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="testUnit\GdsTransform_test.hpp">
+      <Filter>testUnit</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsVectorContainer_test.hpp">
+      <Filter>testUnit</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\Snowboard_test.hpp">
+      <Filter>testUnit</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsFile_test.hpp">
+      <Filter>testUnit\File</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsRenderFrame_test.hpp">
+      <Filter>testUnit\RenderFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsResASE_test.hpp">
+      <Filter>testUnit\ASE</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsNode_test.hpp">
+      <Filter>testUnit\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsResMgr_test.hpp">
+      <Filter>testUnit\ResourceMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsSingleton_test.hpp">
+      <Filter>testUnit\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsTerrain_test.hpp">
+      <Filter>testUnit\Oc-Tree &amp; Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsInputSystem_test.hpp">
+      <Filter>testUnit\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsIndexVertexBuffer_test.hpp">
+      <Filter>testUnit\GdsIndexVertexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsComponent_test.hpp">
+      <Filter>testUnit\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="testUnit\GdsGameObject_test.hpp">
+      <Filter>testUnit\Gameobject</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
