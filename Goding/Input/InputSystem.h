@@ -1,7 +1,13 @@
 #ifndef _INPUTSYSTEM_MAIN_H_
 #define _INPUTSYSTEM_MAIN_H_
 
-class InputSystem
+#ifdef _WINDLL
+#define DLLTYPE __declspec(dllexport)
+#else
+#define DLLTYPE __declspec(dllimport)
+#endif
+
+class DLLTYPE InputSystem
 {
 public:
 

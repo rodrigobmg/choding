@@ -1,9 +1,9 @@
 #pragma once
 
-class IEntity
+class DLLTYPE IEntity
 {
 public:
 	IEntity(void);
-	~IEntity(void);
+	virtual ~IEntity(void);
 };
 

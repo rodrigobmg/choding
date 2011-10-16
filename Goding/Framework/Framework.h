@@ -1,13 +1,16 @@
-#ifndef _GODING_FRAMEWORK_H_
-#define _GODING_FRAMEWORK_H_
-
+#pragma once
 #ifdef _WINDLL
-#define DLL __declspec(dllexport)
+#define DLLTYPE __declspec(dllexport)
 #else
-#define DLL __declspec(dllimport)
+#define DLLTYPE __declspec(dllimport)
 #endif
 
-class DLL Framework
+
+
+#include "..\Input\InputSystem.h"
+
+
+class DLLTYPE Framework
 {
 public:
 	Framework();
@@ -25,6 +28,6 @@ private:
 	void			OnIdle();
 
 	HWND			m_hWnd;	
+	InputSystem		inputsystem;
 };
 
-#endif
