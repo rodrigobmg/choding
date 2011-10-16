@@ -60,6 +60,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FileSystem\GdsFile.cpp" />
+    <ClCompile Include="Logger\console_logger.cpp" />
+    <ClCompile Include="Logger\html_logger.cpp" />
+    <ClCompile Include="Logger\logger.cpp" />
+    <ClCompile Include="Logger\output_logger.cpp" />
+    <ClCompile Include="PerformanceCheck\Performance.cpp" />
+    <ClCompile Include="Singleton\Singleton.cpp" />
+    <ClCompile Include="ThreadPool\GdsSyncCriticalSection.cpp" />
+    <ClCompile Include="ThreadPool\GdsSynchronize.cpp" />
+    <ClCompile Include="ThreadPool\GdsThread.cpp" />
+    <ClCompile Include="ThreadPool\GdsThreadPool.cpp" />
+    <ClCompile Include="Util\Utility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FileSystem\GdsFile.h" />
+    <ClInclude Include="FrameMemory\GdsFrameMemory.h" />
+    <ClInclude Include="Logger\console_logger.h" />
+    <ClInclude Include="Logger\html_logger.h" />
+    <ClInclude Include="Logger\logger.h" />
+    <ClInclude Include="Logger\output_logger.h" />
+    <ClInclude Include="PerformanceCheck\Performance.h" />
+    <ClInclude Include="Singleton\Singleton.h" />
+    <ClInclude Include="ThreadPool\GdsBGThread.h" />
+    <ClInclude Include="ThreadPool\GdsSyncCriticalSection.h" />
+    <ClInclude Include="ThreadPool\GdsSynchronize.h" />
+    <ClInclude Include="ThreadPool\GdsThread.h" />
+    <ClInclude Include="ThreadPool\GdsThreadPool.h" />
+    <ClInclude Include="Time\GdsSystemTime.h" />
+    <ClInclude Include="Util\Utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

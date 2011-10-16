@@ -9,10 +9,12 @@
     <ClInclude Include="Entity\IEntity.h">
       <Filter>Entity</Filter>
     </ClInclude>
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity\IEntity.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
 </Project>

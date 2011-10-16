@@ -1,2 +1,114 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" />
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Util">
+      <UniqueIdentifier>{15ee3833-5185-4697-b225-a313df378929}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThreadPool">
+      <UniqueIdentifier>{0724f06d-b6dd-48d4-be4f-7dab954d5283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logger">
+      <UniqueIdentifier>{5e7f77af-93ab-4a90-aba7-108697534da1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{08959b85-943f-425a-bd18-f5b34ca276e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{a6f494e3-4710-4d85-a76e-262911ef8166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameMemory">
+      <UniqueIdentifier>{fc49c466-8f51-4baf-9c3e-a5995631b113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Singleton">
+      <UniqueIdentifier>{f8b31730-c7ff-4fe9-ab33-85581c507c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Profile">
+      <UniqueIdentifier>{15f2b403-3905-4dcc-a95d-1e5a8b1dbe49}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FileSystem\GdsFile.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger\console_logger.cpp">
+      <Filter>Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger\html_logger.cpp">
+      <Filter>Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger\logger.cpp">
+      <Filter>Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger\output_logger.cpp">
+      <Filter>Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadPool\GdsSyncCriticalSection.cpp">
+      <Filter>ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadPool\GdsSynchronize.cpp">
+      <Filter>ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadPool\GdsThread.cpp">
+      <Filter>ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadPool\GdsThreadPool.cpp">
+      <Filter>ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Utility.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Singleton\Singleton.cpp">
+      <Filter>Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="PerformanceCheck\Performance.cpp">
+      <Filter>Profile</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FileSystem\GdsFile.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger\console_logger.h">
+      <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger\html_logger.h">
+      <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger\logger.h">
+      <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger\output_logger.h">
+      <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPool\GdsBGThread.h">
+      <Filter>ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPool\GdsSyncCriticalSection.h">
+      <Filter>ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPool\GdsSynchronize.h">
+      <Filter>ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPool\GdsThread.h">
+      <Filter>ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPool\GdsThreadPool.h">
+      <Filter>ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Utility.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\GdsSystemTime.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameMemory\GdsFrameMemory.h">
+      <Filter>FrameMemory</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton\Singleton.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceCheck\Performance.h">
+      <Filter>Profile</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
