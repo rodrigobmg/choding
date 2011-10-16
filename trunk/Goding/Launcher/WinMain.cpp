@@ -5,6 +5,7 @@
 #include <Windows.h>
 
 #include "../Framework/Framework.h"
+#pragma comment( lib , "framework.lib" )
 
 LRESULT CALLBACK MsgProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
@@ -46,13 +47,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int iWinMode)
 	ShowWindow(hWnd, iWinMode);
 	UpdateWindow(hWnd);
 
- 	//Framework mainFrame(hWnd);
-// 	mainFrame.MsgIdle();
-
-   	HINSTANCE hdll = LoadLibrary( L"Framework.dll" );
-	Framework* p = (Framework*)GetProcAddress( hdll , "Framework" );
-   	FreeLibrary( hdll );
-
+ 	Framework mainFrame(hWnd);
+ 	mainFrame.MsgIdle();
+	
 	return 0;
 }
 

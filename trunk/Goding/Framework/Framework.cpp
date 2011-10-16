@@ -18,7 +18,7 @@ Framework::~Framework()
 }
 
 void Framework::Init()
-{
+{	
 }
 
 void Framework::Destory()
