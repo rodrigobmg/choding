@@ -4,17 +4,22 @@
     <Filter Include="Entity">
       <UniqueIdentifier>{a2087c54-ccb1-4a0e-80a2-2a76535eef4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{5b765ef5-1835-41a2-9835-cf8304350b01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity\IEntity.h">
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="EntitySystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity\IEntity.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="EntitySystem.cpp" />
   </ItemGroup>
 </Project>

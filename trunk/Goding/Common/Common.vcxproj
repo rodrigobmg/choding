@@ -88,6 +88,7 @@
     <ClInclude Include="ThreadPool\GdsThread.h" />
     <ClInclude Include="ThreadPool\GdsThreadPool.h" />
     <ClInclude Include="Time\GdsSystemTime.h" />
+    <ClInclude Include="Type\type.h" />
     <ClInclude Include="Util\Utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

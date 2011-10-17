@@ -25,6 +25,12 @@
     <Filter Include="Profile">
       <UniqueIdentifier>{15f2b403-3905-4dcc-a95d-1e5a8b1dbe49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{e53380b4-02c3-42a4-8a88-1e2e119d4a03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Type">
+      <UniqueIdentifier>{da9f74aa-cdc6-41ed-a6f0-ae57a63e1915}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileSystem\GdsFile.cpp">
@@ -109,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="PerformanceCheck\Performance.h">
       <Filter>Profile</Filter>
+    </ClInclude>
+    <ClInclude Include="Type\type.h">
+      <Filter>Type</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

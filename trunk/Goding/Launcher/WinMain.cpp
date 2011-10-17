@@ -5,7 +5,6 @@
 #include <Windows.h>
 
 #include "../Framework/Framework.h"
-#pragma comment( lib , "framework.lib" )
 
 LRESULT CALLBACK MsgProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
