@@ -1,10 +1,14 @@
 #pragma once
+/*
+
+#include "..\EntitySystem\EntitySystem.h"
+*/
+
 
 #include "..\Input\InputSystem.h"
-#include "..\EntitySystem\EntitySystem.h"
+#pragma comment(lib , "Input.dll" )
 
-
-class DLLTYPE Framework
+class Framework
 {
 public:
 	
@@ -19,10 +23,11 @@ public:
 
 private:
 
+	std::vector<int>	m_vec;
 	void			OnIdle();
 
-	HWND			m_hWnd;	
+	HWND			m_hWnd;	/*
 	InputSystem		inputsystem;
-	EntitySystem*	m_pEntitySystem;
+	EntitySystem*	m_pEntitySystem;*/
 };
 

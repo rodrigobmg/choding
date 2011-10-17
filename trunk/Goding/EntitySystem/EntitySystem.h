@@ -6,7 +6,7 @@
 #include "..\Common\Type\type.h"
 #include <vector>
 
-class DLLTYPE EntitySystem
+class EntitySystem
 {
 public:
 	EntitySystem();

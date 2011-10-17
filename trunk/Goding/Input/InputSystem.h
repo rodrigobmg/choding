@@ -1,13 +1,8 @@
 #ifndef _INPUTSYSTEM_MAIN_H_
 #define _INPUTSYSTEM_MAIN_H_
 
-#ifdef _WINDLL
-#define DLLTYPE __declspec(dllexport)
-#else
-#define DLLTYPE __declspec(dllimport)
-#endif
 
-class DLLTYPE InputSystem
+class InputSystem
 {
 public:
 
@@ -47,6 +42,10 @@ public:
 
 	InputSystem();
 	~InputSystem();
+
+private:
+
+	std::map<int , int > m_map;
 
 };
 
