@@ -2,10 +2,20 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RendererSystem.h" />
+    <ClInclude Include="RenderFrame.h" />
+    <ClInclude Include="RenderObject.h" />
+    <ClInclude Include="RenderStateGroup.h" />
+    <ClInclude Include="RendererBase.h" />
+    <ClInclude Include="RendererDX9.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="RendererSystem.cpp" />
+    <ClCompile Include="RenderFrame.cpp" />
+    <ClCompile Include="RenderObject.cpp" />
+    <ClCompile Include="RenderStateGroup.cpp" />
+    <ClCompile Include="RendererBase.cpp" />
+    <ClCompile Include="RendererDX9.cpp" />
   </ItemGroup>
 </Project>
