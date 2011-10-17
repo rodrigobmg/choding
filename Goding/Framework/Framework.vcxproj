@@ -24,21 +24,13 @@
     <ClInclude Include="Framework.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EntitySystem\EntitySystem.vcxproj">
-      <Project>{e3a7b189-5cd3-482a-bc66-a6f032586b0a}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Input\Input.vcxproj">
-      <Project>{f7f9ca36-de6f-48b8-9b27-e5f8fb7e4fb6}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{43EB1FF0-FB97-4771-99CA-78D319ECB9FC}</ProjectGuid>
     <RootNamespace>Framework</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
