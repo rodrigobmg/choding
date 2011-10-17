@@ -1,4 +1,7 @@
-
 #include <Windows.h>
 
-#pragma comment( lib , "Input.lib" )
+#ifdef _WINDLL
+#define DLLTYPE __declspec(dllexport)
+#else
+#define DLLTYPE __declspec(dllimport)
+#endif

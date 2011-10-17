@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #include "Framework.h"
 
-Framework::Framework()
-{
-
-}
 
 Framework::Framework(HWND hwnd )
 :m_hWnd(hwnd)
@@ -18,7 +14,7 @@ Framework::~Framework()
 }
 
 void Framework::Init()
-{	
+{
 }
 
 void Framework::Destory()

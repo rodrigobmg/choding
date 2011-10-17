@@ -1,6 +1,6 @@
 #pragma once
 
-class DLLTYPE IEntity
+class IEntity
 {
 public:
 	IEntity(void);

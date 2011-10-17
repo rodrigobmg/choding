@@ -1,19 +1,13 @@
 #pragma once
-#ifdef _WINDLL
-#define DLLTYPE __declspec(dllexport)
-#else
-#define DLLTYPE __declspec(dllimport)
-#endif
-
-
 
 #include "..\Input\InputSystem.h"
+#include "..\EntitySystem\EntitySystem.h"
 
 
 class DLLTYPE Framework
 {
 public:
-	Framework();
+	
 	Framework( HWND hWnd );
 	virtual ~Framework();
 
@@ -29,5 +23,6 @@ private:
 
 	HWND			m_hWnd;	
 	InputSystem		inputsystem;
+	EntitySystem*	m_pEntitySystem;
 };
 
