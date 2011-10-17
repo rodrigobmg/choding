@@ -7,6 +7,9 @@
     <Filter Include="Component">
       <UniqueIdentifier>{5b765ef5-1835-41a2-9835-cf8304350b01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\RenderObject">
+      <UniqueIdentifier>{22dda6bb-8ae8-44ed-b21d-78f6d7c70dea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity\IEntity.h">
@@ -14,6 +17,12 @@
     </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="EntitySystem.h" />
+    <ClInclude Include="Component\IComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\RenderObject\ComRenderObject.h">
+      <Filter>Component\RenderObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity\IEntity.cpp">
@@ -21,5 +30,11 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="EntitySystem.cpp" />
+    <ClCompile Include="Component\IComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\RenderObject\ComRenderObject.cpp">
+      <Filter>Component\RenderObject</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

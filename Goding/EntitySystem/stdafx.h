@@ -6,3 +6,5 @@
 #define DLLTYPE __declspec(dllimport)
 #endif
 
+#include <map>
+#include "d3dx9.h"
