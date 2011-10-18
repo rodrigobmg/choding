@@ -3,6 +3,7 @@
   <ItemGroup>
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="dllMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputSystem.h" />

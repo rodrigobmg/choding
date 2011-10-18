@@ -3,6 +3,7 @@
   <ItemGroup>
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="dllMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />

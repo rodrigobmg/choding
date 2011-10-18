@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#define DLLEXPORT
 #include "Framework.h"
 
 

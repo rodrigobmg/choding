@@ -1,14 +1,13 @@
 #pragma once
-/*
+#include <vector>
 
-#include "..\EntitySystem\EntitySystem.h"
-*/
+#ifdef _WINDLL
+#define DLL __declspec(dllexport)
+#else
+#define DLL __declspec(dllimport)
+#endif
 
-
-#include "..\Input\InputSystem.h"
-#pragma comment(lib , "Input.dll" )
-
-class Framework
+class DLL Framework
 {
 public:
 	
@@ -26,8 +25,6 @@ private:
 	std::vector<int>	m_vec;
 	void			OnIdle();
 
-	HWND			m_hWnd;	/*
-	InputSystem		inputsystem;
-	EntitySystem*	m_pEntitySystem;*/
+	HWND			m_hWnd;
 };
 
