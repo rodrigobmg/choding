@@ -1,8 +1,15 @@
 #ifndef _INPUTSYSTEM_MAIN_H_
 #define _INPUTSYSTEM_MAIN_H_
 
+#ifdef _WINDLL
+#define DLL __declspec(dllexport)
+#else
+#define DLL __declspec(dllimport)
+#endif
 
-class InputSystem
+#include <map>
+
+class DLL InputSystem
 {
 public:
 
