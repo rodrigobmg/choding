@@ -1,10 +1,16 @@
 #ifndef _SNOWBOARD_RENDERER_MANAGER_H_
 #define _SNOWBOARD_RENDERER_MANAGER_H_
 
+#ifdef _WINDLL
+#define DLL __declspec(dllexport)
+#else
+#define DLL __declspec(dllimport)
+#endif
+
 #include "RendererDX9.h"
 #include "RenderFrame.h"
 
-class RendererSystem
+class DLL RendererSystem
 {	
 public:
 
