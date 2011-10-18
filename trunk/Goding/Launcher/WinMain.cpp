@@ -22,7 +22,7 @@ LRESULT CALLBACK MsgProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int iWinMode)
 {
-	WCHAR lpszName[] = L"Framework";
+	WCHAR lpszName[] = L"Goding";
 		
 	WNDCLASS wc;
 	wc.style			= CS_HREDRAW | CS_VREDRAW;
