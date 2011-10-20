@@ -11,7 +11,7 @@ ComRenderObject::~ComRenderObject(void)
 {
 }
 
-void ComRenderObject::vRender( LPDIRECT3DDEVICE9 device )
+void ComRenderObject::vRender( LPDEVICE device )
 {
 
 }

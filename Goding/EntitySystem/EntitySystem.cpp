@@ -1,6 +1,7 @@
 #include "stdafx.h"
-#include "EntitySystem.h"
+
 #include "EntityEvent.h"
+#include "EntitySystem.h"
 
 EntitySystem::EntitySystem()
 {
@@ -41,11 +42,15 @@ bool EntitySystem::ReleaseEntity( int32 entitytype )
 
 void EntitySystem::Update( float fAccumtime )
 {
+	EntityEvent event;
+	event.itype = EntityEvent::TRANS_XFORM;
+	event.fAccumtime = fAccumtime;
+
 	typedef std::vector< IEntity* >::iterator iter;
 	iter begin = m_entity_container.begin();
 	iter end = m_entity_container.end();
 	for ( iter it = begin ; it != end ; ++it )
 	{
-		*(it)->DispatchEvent( TRANS_XFORM );
+		(*it)->DispatchEvent( event );
 	}
 }
