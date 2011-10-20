@@ -1,7 +1,9 @@
 #pragma once
-#include "..\Component\IComponent.h"
 
 #include <map>
+
+#include "..\Component\IComponent.h"
+#include "..\EntityEvent.h"
 
 class IEntity
 {
@@ -18,6 +20,10 @@ public:
 	IComponent*				GetComponent( com_id id );
 	void					SetComponent( com_id id , IComponent* pCom );
 	
+	void					DispatchEvent( EVENT_TYPE event );
+
+	uint32					GetEntityID(){ return m_entityID; }
+	void					SetEntityID( uint32 id ){ m_entityID = id; }
 private:
 	
 	typedef std::map< com_id , IComponent* >component_table_t;
@@ -25,6 +31,7 @@ private:
 		
 	D3DXMATRIX				m_TM;
 	IEntity*				m_pLinkedTo;
+	uint32					m_entityID;
 
 };
 
