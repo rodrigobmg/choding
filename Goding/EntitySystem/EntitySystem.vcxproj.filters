@@ -23,6 +23,7 @@
     <ClInclude Include="Component\RenderObject\ComRenderObject.h">
       <Filter>Component\RenderObject</Filter>
     </ClInclude>
+    <ClInclude Include="EntityEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity\IEntity.cpp">

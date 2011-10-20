@@ -23,6 +23,8 @@ public:
 	IEntity*	AllocEntity( int32 entitytype );
 	bool		ReleaseEntity( int32 entitytype );
 
+	void		Update( float fAccumtime );
+
 private:
 
 	typedef std::vector< IEntity* > entity_table_t;
