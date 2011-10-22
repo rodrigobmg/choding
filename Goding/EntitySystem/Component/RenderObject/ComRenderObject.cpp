@@ -11,12 +11,7 @@ ComRenderObject::~ComRenderObject(void)
 {
 }
 
-void ComRenderObject::vRender( LPDEVICE device )
+void ComRenderObject::SetComponent( int32 id )
 {
 
-}
-
-void ComRenderObject::SetComponent( com_id id )
-{
-	m_ID = 0;
 }

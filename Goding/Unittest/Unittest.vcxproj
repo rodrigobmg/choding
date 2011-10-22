@@ -157,22 +157,6 @@
     <ClCompile Include="gtest_main.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="testUnit\GdsTransform_test.hpp" />
-    <ClInclude Include="testUnit\GdsVectorContainer_test.hpp" />
-    <ClInclude Include="testUnit\Snowboard_test.hpp" />
-    <ClInclude Include="testUnit\GdsFile_test.hpp" />
-    <ClInclude Include="testUnit\GdsRenderFrame_test.hpp" />
-    <ClInclude Include="testUnit\GdsResASE_test.hpp" />
-    <ClInclude Include="testUnit\GdsNode_test.hpp" />
-    <ClInclude Include="testUnit\GdsResMgr_test.hpp" />
-    <ClInclude Include="testUnit\GdsSingleton_test.hpp" />
-    <ClInclude Include="testUnit\GdsTerrain_test.hpp" />
-    <ClInclude Include="testUnit\GdsInputSystem_test.hpp" />
-    <ClInclude Include="testUnit\GdsIndexVertexBuffer_test.hpp" />
-    <ClInclude Include="testUnit\GdsComponent_test.hpp" />
-    <ClInclude Include="testUnit\GdsGameObject_test.hpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\gtest-1.6.0\msvc\gtest.vcxproj">
       <Project>{c8f6c172-56f2-4e76-b5fa-c3b423b31be7}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

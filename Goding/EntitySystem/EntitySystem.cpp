@@ -2,6 +2,7 @@
 
 #include "EntityEvent.h"
 #include "EntitySystem.h"
+#include "Component\RenderObject\ComRenderObject.h"
 
 EntitySystem::EntitySystem()
 {
@@ -32,6 +33,8 @@ IEntity* EntitySystem::GetEntity( int32 entityid )
 IEntity* EntitySystem::AllocEntity( int32 entitytype )
 {
 	IEntity* pEntity = new IEntity;
+	pEntity->SetEntityID( entitytype );
+	m_entity_container.push_back( pEntity );
 	return pEntity;
 }
 
@@ -53,4 +56,10 @@ void EntitySystem::Update( float fAccumtime )
 	{
 		(*it)->DispatchEvent( event );
 	}
+}
+
+IComponent* EntitySystem::AllocComponent( int32 comtype )
+{
+	ComRenderObject* p = new ComRenderObject;
+	return p;
 }

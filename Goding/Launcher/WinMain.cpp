@@ -4,7 +4,7 @@
 
 #include <Windows.h>
 
-#include "../System/System.h"
+#include "../Framework/Framework.h"
 
 LRESULT CALLBACK MsgProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
@@ -46,7 +46,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int iWinMode)
 	ShowWindow(hWnd, iWinMode);
 	UpdateWindow(hWnd);
 
- 	System mainFrame(hWnd);
+ 	Framework mainFrame(hWnd);
  	mainFrame.MsgIdle();
 	
 	return 0;

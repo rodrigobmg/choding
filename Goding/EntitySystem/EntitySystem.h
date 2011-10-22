@@ -11,6 +11,7 @@
 
 #include "..\Common\Type\type.h"
 #include <vector>
+#include "Component\IComponent.h"
 
 class DLL EntitySystem
 {
@@ -22,6 +23,8 @@ public:
 
 	IEntity*	AllocEntity( int32 entitytype );
 	bool		ReleaseEntity( int32 entitytype );
+
+	IComponent*	AllocComponent( int32 comtype );
 
 	void		Update( float fAccumtime );
 
