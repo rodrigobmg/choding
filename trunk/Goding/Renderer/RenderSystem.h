@@ -1,0 +1,36 @@
+#ifndef _RENDERER_RENDERSYSTEM9_H_
+#define _RENDERER_RENDERSYSTEM9_H_
+#pragma once
+
+
+#ifdef _WINDLL
+#define DLL __declspec(dllexport)
+#else
+#define DLL __declspec(dllimport)
+#endif
+
+
+#include "IRenderObject\IRenderObject.h"
+#include <vector>
+
+
+class DLL RenderSystem
+{
+public:
+	RenderSystem(void);
+	~RenderSystem(void);
+
+	void					Update( float fAccumtime );
+	void					Render();
+
+	IRenderObject*			AllocRenderObject( IRenderObject::ENABLE_RENDER_TYPE type );
+	bool					ReleaseRenderObject();
+
+private:
+
+	typedef	std::vector< IRenderObject* > renderObject_table_t;
+	renderObject_table_t	m_RenderObjectContainer;
+
+};
+
+#endif _RENDERER_RENDERSYSTEM9_H_

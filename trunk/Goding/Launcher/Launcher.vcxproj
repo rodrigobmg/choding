@@ -39,12 +39,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\Bin_Debug\</OutDir>
     <IntDir>../BinTemp/$(TargetName)/$(Configuration)\</IntDir>
-    <IncludePath>../Middleware\dx_sdk\Include;$(WindowsSdkDir)\common\include;$(IncludePath)</IncludePath>
-    <LibraryPath>../Middleware/dx_sdk/lib/x86;$(WindowsSdkDir)\common\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\Bin\</OutDir>
     <IntDir>../BinTemp/$(TargetName)/$(Configuration)\</IntDir>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -78,7 +80,7 @@
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\System\System.vcxproj">
+    <ProjectReference Include="..\Framework\Framework.vcxproj">
       <Project>{43eb1ff0-fb97-4771-99ca-78d319ecb9fc}</Project>
     </ProjectReference>
   </ItemGroup>
