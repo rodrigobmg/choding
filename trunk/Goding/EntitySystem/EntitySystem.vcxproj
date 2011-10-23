@@ -70,7 +70,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\Bin_Debug\</OutDir>
     <IntDir>../BinTemp/$(TargetName)/$(Configuration)\</IntDir>
-    <IncludePath>..\Middleware\collada_dom\include;$(WindowsSdkDir)\common\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Common;..\Middleware\collada_dom\include;$(WindowsSdkDir)\common\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(WindowsSdkDir)\common\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
