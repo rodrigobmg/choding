@@ -37,6 +37,9 @@ namespace WinApplication
 	//Main
 	void Run(EntitySystem* pEntitySystem , RenderSystem* pRenderSystem , float width, float height, bool fullscreen)
 	{
+		m_pEntitySystem = pEntitySystem;
+		m_pRenderSystem = pRenderSystem;
+
 		Width = width; Height = height; Fullscreen = fullscreen;
 
 		window = new Window(WinApplication::messageHandler, L"Goding", 0, 0, (int)Width, (int)Height);
@@ -143,21 +146,21 @@ namespace WinApplication
 		//Update Camera
 		//camera->Update(60.0f / time->getFps());
 
-		//pEntitySystem->Update(time->delta);
+		m_pEntitySystem->Update( 0.f );
 	}
 
 	//Draw Meshes
 	void Draw()
 	{
-// 		m_pRenderSystem->getDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0);
-// 
-// 		m_pRenderSystem->getDevice()->BeginScene();
-// 
-// 		//pRenderSystem->Draw(deviceManager, camera);
-// 
-// 		m_pRenderSystem->getDevice()->EndScene();
-// 
-// 		m_pRenderSystem->Present();
+ 		m_pRenderSystem->GetDeviceManager()->getDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0);
+ 
+ 		m_pRenderSystem->GetDeviceManager()->getDevice()->BeginScene();
+ 
+ 		//pRenderSystem->Draw(deviceManager, camera);
+ 
+ 		m_pRenderSystem->GetDeviceManager()->getDevice()->EndScene();
+ 
+ 		//m_pRenderSystem->GetDeviceManager()->Present();
 	}
 
 	//Message handler
