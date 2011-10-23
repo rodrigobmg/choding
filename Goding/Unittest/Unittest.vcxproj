@@ -157,10 +157,6 @@
     <ClCompile Include="gtest_main.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\gtest-1.6.0\msvc\gtest.vcxproj">
-      <Project>{c8f6c172-56f2-4e76-b5fa-c3b423b31be7}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\Middleware\gtest-1.6.0\msvc\gtest.vcxproj">
       <Project>{c8f6c172-56f2-4e76-b5fa-c3b423b31be7}</Project>
     </ProjectReference>

@@ -7,11 +7,13 @@
 #define DLL __declspec(dllimport)
 #endif
 
-#include "Entity\IEntity.h"
+#include <vector>
 
 #include "..\Common\Type\type.h"
-#include <vector>
+
+#include "Entity\IEntity.h"
 #include "Component\IComponent.h"
+
 
 class DLL EntitySystem
 {
@@ -24,7 +26,7 @@ public:
 	IEntity*	AllocEntity( int32 entitytype );
 	bool		ReleaseEntity( int32 entitytype );
 
-	IComponent*	AllocComponent( int32 comtype );
+	IComponent*	MakeComponent( int32 comtype );
 
 	void		Update( float fAccumtime );
 

@@ -7,8 +7,17 @@
     <Filter Include="Component">
       <UniqueIdentifier>{5b765ef5-1835-41a2-9835-cf8304350b01}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\RenderObject">
-      <UniqueIdentifier>{22dda6bb-8ae8-44ed-b21d-78f6d7c70dea}</UniqueIdentifier>
+    <Filter Include="Component\Visual">
+      <UniqueIdentifier>{5759c5bc-cf7b-4ccc-b3a6-aed363988a41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Visual\StaticMesh">
+      <UniqueIdentifier>{5ade1082-9fb5-4965-859f-0603fe67871c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Visual\SkinnedMesh">
+      <UniqueIdentifier>{d2415fa2-fb45-4747-bec5-3c2ba2a32ae2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Visual\MorphingMesh">
+      <UniqueIdentifier>{e820551d-fc1c-4667-827c-d3edacf874c6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -20,10 +29,19 @@
     <ClInclude Include="Component\IComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Component\RenderObject\ComRenderObject.h">
-      <Filter>Component\RenderObject</Filter>
-    </ClInclude>
     <ClInclude Include="EntityEvent.h" />
+    <ClInclude Include="Component\Visual\StaticMesh.h">
+      <Filter>Component\Visual\StaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Visual\SkinnedMesh.h">
+      <Filter>Component\Visual\SkinnedMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Visual\MorphingMesh.h">
+      <Filter>Component\Visual\MorphingMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Visual\Vertex.h">
+      <Filter>Component\Visual</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity\IEntity.cpp">
@@ -34,8 +52,14 @@
     <ClCompile Include="Component\IComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="Component\RenderObject\ComRenderObject.cpp">
-      <Filter>Component\RenderObject</Filter>
+    <ClCompile Include="Component\Visual\StaticMesh.cpp">
+      <Filter>Component\Visual\StaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Visual\SkinnedMesh.cpp">
+      <Filter>Component\Visual\SkinnedMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Visual\MorphingMesh.cpp">
+      <Filter>Component\Visual\MorphingMesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

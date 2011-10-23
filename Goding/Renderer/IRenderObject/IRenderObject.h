@@ -14,15 +14,13 @@ public:
 
 	enum ENABLE_RENDER_TYPE
 	{
-		STATIC_MESH,
-		SKINNED_MESH,
-		MORPHING_MESH,
+		MESH = 0,
 	};
 
 	virtual void Draw( D3DDevice* pDevice , D3DXEffect* pEffect ) = 0;
-	virtual void Update( float fAccumtime ) = 0;
 	virtual void onDeviceReset() = 0;
 	virtual void onDeviceLost() = 0;
+
 };
 
 #endif _RENDERER_IRENDEROBJECT_H_

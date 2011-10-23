@@ -9,9 +9,10 @@
 #define DLL __declspec(dllimport)
 #endif
 
+#include <vector>
 
 #include "IRenderObject\IRenderObject.h"
-#include <vector>
+#include "DeviceManager.h"
 
 
 class DLL RenderSystem
@@ -20,16 +21,23 @@ public:
 	RenderSystem(void);
 	~RenderSystem(void);
 
-	void					Update( float fAccumtime );
 	void					Render();
 
 	IRenderObject*			AllocRenderObject( IRenderObject::ENABLE_RENDER_TYPE type );
 	bool					ReleaseRenderObject();
 
+	DeviceManager*			CreateDeviceManager( HWND Window, UINT Width, UINT Height, bool Fullscreen );
+	DeviceManager*			GetDeviceManager();
+
+	void					onDeviceLost();
+	void					onDeviceReset();
+
 private:
 
 	typedef	std::vector< IRenderObject* > renderObject_table_t;
 	renderObject_table_t	m_RenderObjectContainer;
+
+	DeviceManager*			m_pDeviceManager;
 
 };
 

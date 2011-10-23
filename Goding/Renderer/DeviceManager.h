@@ -1,8 +1,7 @@
 #pragma once
 
 
-
-#include "Window.h"
+//#include "Window.h"
 #include "..\Common\Type\type.h"
 
 //Function pointers
@@ -46,23 +45,19 @@ public:
 	ON_DEVICE_LOST OnDeviceLost;
 	ON_DEVICE_RESET OnDeviceReset;
 
-#pragma region //Get methods
 	IDirect3D9* getContext() { return Context; }
 	IDirect3DDevice9* getDevice() { return Device; }
 	IDirect3DSurface9* getBackBuffer() { return BackBuffer; }
 	IDirect3DSurface9* getDepthBuffer() { return DepthBuffer; }
 	IDirect3DQuery9* getQuery() { return Query; }
 	D3DPRESENT_PARAMETERS getPresentationParameters() { return Parameters; }
-#pragma endregion
 
-#pragma region //Set methods
 	void setBackBuffer() { Device->SetRenderTarget(0, BackBuffer); }
 	void setAutoDepthStencil() { Device->SetDepthStencilSurface(DepthBuffer); }
 
 	void setMeshDeclaration() { Device->SetVertexDeclaration(MeshVD); }
 	void setSkinnedMeshDeclaration() { Device->SetVertexDeclaration(SkinnedMeshVD); }
 	void setMorphingMeshDeclaration() { Device->SetVertexDeclaration(MorphingMeshVD); }
-#pragma endregion
 
 	//Constructor
 	DeviceManager(HWND Window, UINT Width, UINT Height, bool Fullscreen);
@@ -74,7 +69,7 @@ public:
 	void onDeviceReset();
 
 	//Change view mode
-	void changeViewMode(Window* window, int Width, int Height, bool Fullscreen);
+	void changeViewMode( int Width, int Height, bool Fullscreen);
 
 	//Error check a DirectX thrown HRESULT
 	void errorCheck(HRESULT result, LPCTSTR debugInfo);

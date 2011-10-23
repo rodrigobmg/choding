@@ -12,7 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component\IComponent.h" />
-    <ClInclude Include="Component\RenderObject\ComRenderObject.h" />
+    <ClInclude Include="Component\Visual\MorphingMesh.h" />
+    <ClInclude Include="Component\Visual\SkinnedMesh.h" />
+    <ClInclude Include="Component\Visual\StaticMesh.h" />
+    <ClInclude Include="Component\Visual\Vertex.h" />
     <ClInclude Include="EntityEvent.h" />
     <ClInclude Include="EntitySystem.h" />
     <ClInclude Include="Entity\IEntity.h" />
@@ -23,10 +26,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Component\RenderObject\ComRenderObject.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="Component\Visual\MorphingMesh.cpp" />
+    <ClCompile Include="Component\Visual\SkinnedMesh.cpp" />
+    <ClCompile Include="Component\Visual\StaticMesh.cpp" />
     <ClCompile Include="EntitySystem.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
@@ -68,13 +70,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\Bin_Debug\</OutDir>
     <IntDir>../BinTemp/$(TargetName)/$(Configuration)\</IntDir>
-    <IncludePath>$(WindowsSdkDir)\common\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Middleware\collada_dom\include;$(WindowsSdkDir)\common\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(WindowsSdkDir)\common\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\Bin\</OutDir>
-    <IntDir>../BinTemp$(TargetName)/$(Configuration)\</IntDir>
-    <IncludePath>../Middleware\dx_sdk\Include;$(WindowsSdkDir)\common\include;$(IncludePath)</IncludePath>
+    <IntDir>../BinTemp/$(TargetName)/$(Configuration)\</IntDir>
+    <IncludePath>..\Middleware\collada_dom\include;../Middleware\dx_sdk\Include;$(WindowsSdkDir)\common\include;$(IncludePath)</IncludePath>
     <LibraryPath>../Middleware/dx_sdk/lib/x86$(WindowsSdkDir)\common\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -93,6 +95,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

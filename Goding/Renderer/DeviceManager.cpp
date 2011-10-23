@@ -6,7 +6,16 @@ DeviceManager::DeviceManager(HWND Window, UINT Width, UINT Height, bool Fullscre
 {
 
 	//Set all pointers to NULL in one line
-	Context = NULL; Device = NULL; BackBuffer = NULL; DepthBuffer = NULL; MeshVD = NULL; SkinnedMeshVD = NULL; MorphingMeshVD = NULL; Query = NULL; OnDeviceLost = NULL; OnDeviceReset = NULL;
+	Context = NULL; 
+	Device = NULL; 
+	BackBuffer = NULL; 
+	DepthBuffer = NULL; 
+	MeshVD = NULL; 
+	SkinnedMeshVD = NULL; 
+	MorphingMeshVD = NULL; 
+	Query = NULL; 
+	OnDeviceLost = NULL; 
+	OnDeviceReset = NULL;
 
 	//Initialize Context
 	Context = Direct3DCreate9(D3D_SDK_VERSION);
@@ -200,40 +209,28 @@ void DeviceManager::onDeviceReset()
 	if(OnDeviceReset) OnDeviceReset();
 }
 
-void DeviceManager::changeViewMode( Window* window, int Width, int Height, bool Fullscreen )
+void DeviceManager::changeViewMode( int Width, int Height, bool Fullscreen )
 {
-#pragma region //Change the parameters that create the device to the new ones
 	Parameters.BackBufferWidth = Width;
 	Parameters.BackBufferHeight = Height;
 	Parameters.Windowed = !Fullscreen;
 
-	if(Fullscreen) Parameters.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
-	else Parameters.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
+	if(Fullscreen) 
+		Parameters.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
+	else
+		Parameters.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
 
-#ifdef FREE
 	Parameters.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
-#endif
-#pragma endregion
 
 	//Release resources
 	onDeviceLost();
 
 	//Reset the device
-	if(Device->Reset(&Parameters) != D3D_OK) return;
-
-	//If in windowed mode change the window size
-	if(!Fullscreen) window->setSize(Width, Height);
+	if(Device->Reset(&Parameters) != D3D_OK) 
+		return;
 
 	//Reset resources
 	onDeviceReset();
-
-#pragma region //Turn the cursor off
-	if(Fullscreen)
-		while(ShowCursor(false) >= 0);
-	else
-		while(ShowCursor(true) < 0);
-	ShowCursor(false);
-#pragma endregion
 }
 
 void DeviceManager::errorCheck( HRESULT result, LPCTSTR debugInfo )

@@ -1,5 +1,5 @@
-#ifndef _RENDERER_MESH_VERTEX_H_
-#define _RENDERER_MESH_VERTEX_H_
+#ifndef _COMPONENT_VISUAL_VERTEX_H_
+#define _COMPONENT_VISUAL_VERTEX_H_
 
 #include "..\..\..\Common\Type\type.h"
 
@@ -24,4 +24,4 @@ public:
 	}
 };
 
-#endif _RENDERER_MESH_VERTEX_H_
+#endif _COMPONENT_VISUAL_VERTEX_H_
