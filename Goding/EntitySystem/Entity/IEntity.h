@@ -4,6 +4,7 @@
 
 #include "..\Component\IComponent.h"
 #include "..\EntityEvent.h"
+#include "..\..\Common\Camera\Camera.h"
 
 class IEntity
 {
@@ -28,11 +29,13 @@ public:
 private:
 	
 	typedef std::map< int32 , IComponent* >component_table_t;
-	component_table_t	m_Components;
+	component_table_t		m_Components;
 		
-	MAT44				m_TM;
+	MAT44					m_TM;
 	IEntity*				m_pLinkedTo;
 	uint32					m_entityID;
+
+	Camera					m_Camera;
 
 };
 
