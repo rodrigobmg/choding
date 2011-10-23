@@ -7,6 +7,9 @@
     <ClCompile Include="ColladaLoader\ColladaLoader.cpp">
       <Filter>ColladaLoader</Filter>
     </ClCompile>
+    <ClCompile Include="ColladaLoader\ColladaStaticMesh.cpp">
+      <Filter>ColladaLoader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -19,6 +22,9 @@
     </ClInclude>
     <ClInclude Include="Platform\Win_Window.h">
       <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="ColladaLoader\ColladaStaticMesh.h">
+      <Filter>ColladaLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
