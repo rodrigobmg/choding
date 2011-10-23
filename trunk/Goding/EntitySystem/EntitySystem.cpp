@@ -2,7 +2,10 @@
 
 #include "EntityEvent.h"
 #include "EntitySystem.h"
-#include "Component\RenderObject\ComRenderObject.h"
+#include "Component\Visual\StaticMesh.h"
+#include "Component\Visual\SkinnedMesh.h"
+#include "Component\Visual\MorphingMesh.h"
+#include "Component\IComponent.h"
 
 EntitySystem::EntitySystem()
 {
@@ -58,8 +61,24 @@ void EntitySystem::Update( float fAccumtime )
 	}
 }
 
-IComponent* EntitySystem::AllocComponent( int32 comtype )
+IComponent* EntitySystem::MakeComponent( int32 comtype )
 {
-	ComRenderObject* p = new ComRenderObject;
-	return p;
+	IComponent* pComponent = NULL;
+
+	switch ( comtype )
+	{
+	case IComponent::STATIC_MESH:
+		pComponent = new StaticMesh;
+		break;
+
+	case IComponent::SKINNED_MESH:
+		pComponent = new SkinnedMesh;
+		break;
+
+	case IComponent::MORPHING_MESH:
+		pComponent = new MorphingMesh;
+		break;
+	}
+
+	return pComponent;
 }

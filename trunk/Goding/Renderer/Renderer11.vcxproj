@@ -79,7 +79,7 @@
     <OutDir>$(SolutionDir)\Bin_Debug\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IntDir>../BinTemp$(TargetName)/$(Configuration)\</IntDir>
+    <IntDir>../BinTemp/$(TargetName)/$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)\Bin\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

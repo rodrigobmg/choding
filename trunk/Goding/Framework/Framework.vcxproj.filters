@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="dllMain.cpp" />
+    <ClCompile Include="Framework.cpp" />
+    <ClCompile Include="ColladaLoader\ColladaLoader.cpp">
+      <Filter>ColladaLoader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Framework.h" />
+    <ClInclude Include="ColladaLoader\ColladaLoader.h">
+      <Filter>ColladaLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\Win_Application.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\Win_Window.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ColladaLoader">
+      <UniqueIdentifier>{4075934b-78d7-4e2c-a8b0-4f367d7b4203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{04af7c9a-6861-4972-ae91-f287993a8587}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

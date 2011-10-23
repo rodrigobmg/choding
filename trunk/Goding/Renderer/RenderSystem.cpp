@@ -1,11 +1,9 @@
 #include "StdAfx.h"
 #include "RenderSystem.h"
-#include "IRenderObject\Mesh\Staticmesh.h"
-#include "IRenderObject\Mesh\SkinnedMesh.h"
-#include "IRenderObject\Mesh\MorphingMesh.h"
-
+#include "IRenderObject\Mesh\IMesh.h"
 
 RenderSystem::RenderSystem(void)
+:m_pDeviceManager(NULL)
 {
 }
 
@@ -19,16 +17,8 @@ IRenderObject* RenderSystem::AllocRenderObject( IRenderObject::ENABLE_RENDER_TYP
 	IRenderObject* pRenderObject = NULL;
 	switch( type )
 	{
-	case IRenderObject::ENABLE_RENDER_TYPE::STATIC_MESH:
-		pRenderObject = new StaticMesh;
-		break;
-
-	case IRenderObject::ENABLE_RENDER_TYPE::SKINNED_MESH:
-		pRenderObject = new SkinnedMesh;
-		break;
-
-	case IRenderObject::ENABLE_RENDER_TYPE::MORPHING_MESH:
-		pRenderObject = new MorphingMesh;
+	case IRenderObject::MESH:
+		pRenderObject = new IMesh;
 	}
 
 	if( pRenderObject != NULL )
@@ -44,11 +34,6 @@ bool RenderSystem::ReleaseRenderObject()
 	return true;
 }
 
-void RenderSystem::Update( float fAccumtime )
-{
-
-}
-
 void RenderSystem::Render()
 {
 	typedef	std::vector< IRenderObject* >::iterator renderObjectIter;
@@ -58,4 +43,25 @@ void RenderSystem::Render()
 	{
 		(*it)->Draw(NULL,NULL);
 	}
+}
+
+DeviceManager* RenderSystem::GetDeviceManager()
+{
+	return m_pDeviceManager;
+}
+
+void RenderSystem::onDeviceLost()
+{
+
+}
+
+void RenderSystem::onDeviceReset()
+{
+
+}
+
+DeviceManager* RenderSystem::CreateDeviceManager( HWND Window, UINT Width, UINT Height, bool Fullscreen )
+{
+	m_pDeviceManager = new DeviceManager( Window , Width ,Height , Fullscreen );
+	return m_pDeviceManager;
 }
