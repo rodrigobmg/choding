@@ -29,6 +29,7 @@
 #include <iostream>
 
 #include "gtest/gtest.h"
+#include "testUnit/collada_load.hpp"
 
 
 int main(int argc, char **argv)

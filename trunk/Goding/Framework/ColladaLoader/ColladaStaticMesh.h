@@ -3,10 +3,10 @@
 #include <dae.h>
 #include <dom.h>
 
-#include <vector>
 #include "..\..\EntitySystem\Component\Visual\StaticMesh.h"
+#include <dae\daeElement.h>
 
-using namespace std;
+#pragma comment( lib , "libcollada141dom21.lib" )
 
 class ColladaStaticMesh
 {
@@ -14,8 +14,8 @@ private:
 	//Dae file
 	DAE dae;
 
-	//Root node
-	daeElement* root;
+	//Root node	
+	domCOLLADA* root;
 	
 	//<library_visual_scenes> node
 	daeElement* library_visual_scenes;
@@ -25,33 +25,10 @@ private:
 
 public:
 	//Constructor
-	ColladaStaticMesh()
-	{
-		root = NULL;
-		library_visual_scenes = NULL;
-		library_animations = NULL;
-	}
+	ColladaStaticMesh();
+	~ColladaStaticMesh();
 
 	//Load all the meshes from a file
-	StaticMesh* Load(string filename);
+	StaticMesh* Load(std::string filename);
 
-private:
-	//Process a <library_visual_scenes> node
-	void processVisualScenes(MeshManager* Meshes);
-
-	//Process a string source
-	vector<string> processStringSource(daeElement* source);
-	
-	//Process a <geometry> node for each Static Mesh
-	void processGeometries(MeshManager* Meshes);
-
-	//Process a <source> node for Static Mesh
-	void processSource(StaticMesh* mesh, daeElement* source);
-
-	
-	//Process a <triangles> node for Static Mesh
-	void processTriangles(StaticMesh* mesh, daeElement* triangles);
-	
-	//Read a <matrix> node, better to have this as a generalized function, will read into OpenGL style, conversion to DirectX later...
-	D3DXMATRIX processMatrix(daeElement* matrix);
 };
