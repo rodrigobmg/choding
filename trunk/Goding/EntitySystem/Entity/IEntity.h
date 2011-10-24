@@ -13,8 +13,8 @@ public:
 	IEntity(void);
 	virtual ~IEntity(void);
 	
-	void					SetMatrix( MAT44& tm ){ m_TM = tm; }
-	MAT44					GetMatrix(){ return m_TM; }
+	void					SetMatrix( Matrix44& tm ){ m_TM = tm; }
+	Matrix44				GetMatrix(){ return m_TM; }
 
 	IEntity*				GetLinkedEntity(){ return m_pLinkedTo; }
 	void					SetLinkedEntity( IEntity* pEntity ){ m_pLinkedTo = pEntity; }
@@ -26,14 +26,19 @@ public:
 
 	uint32					GetEntityID(){ return m_entityID; }
 	void					SetEntityID( uint32 id ){ m_entityID = id; }
+
+	const wchar_t*			GetEntityName(){ return m_EntityName.c_str(); }
+	void					SetEntityName( const wchar_t* name ){ m_EntityName = name; }
+
 private:
 	
 	typedef std::map< int32 , IComponent* >component_table_t;
 	component_table_t		m_Components;
 		
-	MAT44					m_TM;
+	Matrix44					m_TM;
 	IEntity*				m_pLinkedTo;
 	uint32					m_entityID;
+	tstring					m_EntityName;
 
 	Camera					m_Camera;
 
