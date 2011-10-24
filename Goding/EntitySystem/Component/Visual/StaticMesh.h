@@ -2,7 +2,7 @@
 
 #include "..\IComponent.h"
 
-#include <dae\daeElement.h>
+//#include <dae\daeElement.h>
 #include "Vertex.h"
 
 
@@ -17,7 +17,7 @@ public:
 	//Combine the component vertex data to Vertices array
 	void combineComponents();
 
-	daeElement* geometry;
+	//daeElement* geometry;
 
 	//Component Vertex Data, to be compiled into Vertices later...
 	std::vector<Vec3> Positions;

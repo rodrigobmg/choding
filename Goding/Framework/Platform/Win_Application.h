@@ -6,6 +6,7 @@
 
 #include "Win_Window.h"
 #include "..\..\Renderer\RenderSystem.h"
+#include "..\ColladaLoader\ColladaStaticMesh.h"
 
 using namespace std;
 
@@ -39,10 +40,15 @@ namespace WinApplication
 	{
 		m_pEntitySystem = pEntitySystem;
 		m_pRenderSystem = pRenderSystem;
-
+		
 		Width = width; Height = height; Fullscreen = fullscreen;
 
 		window = new Window(WinApplication::messageHandler, L"Goding", 0, 0, (int)Width, (int)Height);
+
+
+		ColladaStaticMesh loader;
+		std::string str("fhi");
+		loader.Load( str );
 
 		pRenderSystem->CreateDeviceManager( window->getHandle(), (int)Width, (int)Height, Fullscreen );
 		pRenderSystem->GetDeviceManager()->OnDeviceLost = onDeviceLost;
