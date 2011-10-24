@@ -11,8 +11,9 @@
 
 #include "..\Common\Type\type.h"
 
-#include "Entity\IEntity.h"
+
 #include "Component\IComponent.h"
+#include "Entity\IEntity.h"
 
 
 class DLL EntitySystem
@@ -29,11 +30,10 @@ public:
 	IComponent*	MakeComponent( int32 comtype );
 
 	void		Update( float fAccumtime );
-
+	
 private:
 
 	typedef std::vector< IEntity* > entity_table_t;
-
 	entity_table_t	m_entity_container;
 
 };

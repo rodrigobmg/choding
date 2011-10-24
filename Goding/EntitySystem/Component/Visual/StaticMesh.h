@@ -15,16 +15,8 @@ public:
 	
 
 	//Combine the component vertex data to Vertices array
-	void combineComponents()
-	{
-		for(unsigned int i = 0; i < Positions.size(); i++)
-		{
-			Vertices.push_back(Vertex(Positions[i], Normals[i], UVs[i], Tangents[i], BiTangents[i]));
-		}
-	}
+	void combineComponents();
 
-
-private:
 	daeElement* geometry;
 
 	//Component Vertex Data, to be compiled into Vertices later...

@@ -4,6 +4,7 @@
 #include <dom.h>
 
 #include <vector>
+#include "..\..\EntitySystem\Component\Visual\StaticMesh.h"
 
 using namespace std;
 
@@ -32,7 +33,7 @@ public:
 	}
 
 	//Load all the meshes from a file
-	MeshManager* Load(string filename);
+	StaticMesh* Load(string filename);
 
 private:
 	//Process a <library_visual_scenes> node
@@ -45,11 +46,11 @@ private:
 	void processGeometries(MeshManager* Meshes);
 
 	//Process a <source> node for Static Mesh
-	void processSource(Mesh* mesh, daeElement* source);
+	void processSource(StaticMesh* mesh, daeElement* source);
 
 	
 	//Process a <triangles> node for Static Mesh
-	void processTriangles(Mesh* mesh, daeElement* triangles);
+	void processTriangles(StaticMesh* mesh, daeElement* triangles);
 	
 	//Read a <matrix> node, better to have this as a generalized function, will read into OpenGL style, conversion to DirectX later...
 	D3DXMATRIX processMatrix(daeElement* matrix);

@@ -98,68 +98,6 @@ void ColladaStaticMesh::processVisualScenes( MeshManager* Meshes )
 		if(!baseGeometry) continue;
 #pragma endregion
 
-		//Initialize a new MorphingMesh
-		MorphingMesh* mesh = new MorphingMesh(Name);
-
-		//Set this node to not be processed later
-		process[i] = false;
-
-		//Set the Base geometry
-		mesh->Base = new Mesh(Name + "Base", processMatrix(nodes[i]->getDescendant("matrix")));
-		mesh->Base->geometry = baseGeometry;
-
-#pragma endregion
-
-		//Now find each <node> in the <visual_scenes> whos <instance_geometry> corresponds with a target
-		for(unsigned int z = 0; z < nodes.getCount(); z++)
-		{
-#pragma region //Get the geometry name and the <instance_geometry>
-
-			//The name of the <geometry> node for this mesh
-			string geometryName;
-
-			//Get <instance_geometry>
-			domInstance_geometry* instance_geometry = NULL;
-			instance_geometry = (domInstance_geometry*)nodes[z]->getDescendant("instance_geometry");
-
-			//If there is no <instance_geometry>, this isn't a static mesh and we will skip it.
-			if(!instance_geometry) continue;
-
-			//Get it's source url
-			geometryName = instance_geometry->getAttribute("url").data();
-
-			//Remove the "#"
-			geometryName.erase(0, 1);
-
-#pragma endregion
-
-			//Does this match any of the Targets?
-			for(unsigned int x = 0; x < targets.size(); x++)
-			{
-				//Check
-				if(targets[x] == geometryName)
-				{
-#pragma region //Get its <geometry> node
-
-					//Get the <geometry> node that is referenced by the <instance_geometry>
-					daeElement* geometry = instance_geometry->getUrl().getElement();
-
-					//If the referenced node was not found, skip this node
-					if(!geometry) continue;
-
-#pragma endregion
-
-					//Add to the Targets for this mesh
-					mesh->Targets.push_back(new Mesh(nodes[z]->getAttribute("name"), processMatrix(nodes[z]->getDescendant("matrix"))));
-					mesh->Targets.back()->geometry = geometry;
-
-					//Set this node so it's not processed later
-					process[z] = false;
-				}
-			}
-		}
-
-		Meshes->MorphingMeshes.push_back(mesh);
 	}
 
 	//For each <node>...
@@ -252,7 +190,7 @@ void ColladaStaticMesh::processGeometries( MeshManager* Meshes )
 	}
 }
 
-void ColladaStaticMesh::processSource( Mesh* mesh, daeElement* source )
+void ColladaStaticMesh::processSource( StaticMesh* mesh, daeElement* source )
 {
 	//Get Positions
 	if(source->getAttribute("name").find("position") != string::npos)
@@ -409,7 +347,7 @@ void ColladaStaticMesh::processSource( Mesh* mesh, daeElement* source )
 	}
 }
 
-void ColladaStaticMesh::processTriangles( Mesh* mesh, daeElement* triangles )
+void ColladaStaticMesh::processTriangles( StaticMesh* mesh, daeElement* triangles )
 {
 	//Get the <p> node
 	daeElement* p = triangles->getDescendant("p");
@@ -434,9 +372,9 @@ void ColladaStaticMesh::processTriangles( Mesh* mesh, daeElement* triangles )
 	}
 }
 
-MAT44 ColladaStaticMesh::processMatrix( daeElement* matrix )
+Matrix44 ColladaStaticMesh::processMatrix( daeElement* matrix )
 {
-	MAT44 out;
+	Matrix44 out;
 	string world = matrix->getCharData();
 	stringstream stm(world);
 

@@ -16,12 +16,12 @@ typedef unsigned short		uint16;
 typedef unsigned int		uint32;
 typedef unsigned __int64	uint64;
 
-typedef D3DXMATRIX		MAT44;					
+typedef D3DXMATRIX		Matrix44;					
 typedef D3DXVECTOR3		Vec3;				
 typedef D3DXVECTOR2		Vec2;
 
 /*
-#define MAT44				D3DXMATRIX						
+#define Matrix44				D3DXMATRIX						
 #define Vec3				D3DXVECTOR3						
 #define Vec2				D3DXVECTOR2*/
 
