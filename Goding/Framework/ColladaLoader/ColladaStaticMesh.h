@@ -7,13 +7,14 @@
 #include "..\..\EntitySystem\Component\Visual\StaticMesh.h"
 #include <dae\daeElement.h>
 
-#pragma comment( lib , "libcollada141dom21.lib" )
+#pragma comment( lib , "libcollada14dom22-d.lib" )
 
 using namespace std;
 
 class ColladaStaticMesh
 {
 private:
+
 	//Dae file
 	DAE dae;
 
