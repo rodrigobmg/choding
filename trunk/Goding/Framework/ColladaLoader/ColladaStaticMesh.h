@@ -7,7 +7,12 @@
 #include "..\..\EntitySystem\Component\Visual\StaticMesh.h"
 #include <dae\daeElement.h>
 
-#pragma comment( lib , "libcollada14dom22-d.lib" )
+#ifdef _DEBUG
+	#pragma comment( lib , "libcollada14dom22-d.lib" )
+#else
+	#pragma comment( lib , "libcollada14dom22.lib" )
+#endif
+
 
 using namespace std;
 
