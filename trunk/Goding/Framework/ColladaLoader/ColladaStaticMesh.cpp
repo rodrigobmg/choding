@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ColladaStaticMesh.h"
+#include <vector>
 
 ColladaStaticMesh::ColladaStaticMesh()
 {
@@ -38,7 +39,8 @@ StaticMesh* ColladaStaticMesh::Load( std::string filename )
 		//cout << "<library_animations> not found.\n";
 
 	//Process <library_visual_scenes>
-	vector<StaticMesh*> Meshes;
+	vector<int> Meshes;
+	//Meshes.push_back( 1 );
 
 	processVisualScenes( );
 
@@ -69,11 +71,11 @@ void ColladaStaticMesh::processVisualScenes( )
 		if(!process[i]) continue;
 
 		//Get the name and the type, if they exist
-//		string Name = nodes[i]->getAttribute("name").data();
-	//	string Type = nodes[i]->getAttribute("type").data();
+		string Name = nodes[i]->getAttribute("name").c_str();
+		string Type = nodes[i]->getAttribute("type").c_str();
 
 		//Skip JOINT node's, only meshes
-		//if(Type == "JOINT") continue;
+		if(Type == "JOINT") continue;
 
 		//Get the <instance_controller> node that corresponds to this <node> if it exists
 		domInstance_controller* instance_controller = NULL;
