@@ -1,6 +1,5 @@
 #include <tchar.h>
-#include <String>
-
+#include <string>
 
 #include "..\..\Middleware\dx_sdk\Include\d3dx9math.h"
 
@@ -20,10 +19,6 @@ typedef D3DXMATRIX		Matrix44;
 typedef D3DXVECTOR3		Vec3;				
 typedef D3DXVECTOR2		Vec2;
 
-/*
-#define Matrix44				D3DXMATRIX						
-#define Vec3				D3DXVECTOR3						
-#define Vec2				D3DXVECTOR2*/
 
 #ifndef SAFE_DELETE
 #define SAFE_DELETE(p) { if(p) { delete p; p = NULL; } }

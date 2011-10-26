@@ -4,7 +4,14 @@
 
 class IEntity;
 
-class IComponent
+#ifdef _WINDLL
+#define DLL __declspec(dllexport)
+#else
+#define DLL __declspec(dllimport)
+#endif
+
+
+class DLL IComponent
 {
 public:
 	IComponent(void);

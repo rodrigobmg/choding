@@ -1,12 +1,13 @@
 #ifndef _ENTITYSYSTEM_H_
 #define _ENTITYSYSTEM_H_
 
+
 #ifdef _WINDLL
 #define DLL __declspec(dllexport)
 #else
 #define DLL __declspec(dllimport)
 #endif
-
+ 
 #include <vector>
 
 #include "..\Common\Type\type.h"

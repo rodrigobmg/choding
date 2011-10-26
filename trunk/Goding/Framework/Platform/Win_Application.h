@@ -92,7 +92,7 @@ namespace WinApplication
 						) 
  					{
 						//pRenderSystem->GetDeviceManager()->changeViewMode( (int)Width, (int)Height, Fullscreen );
-						if(!Fullscreen) window->setSize(Width, Height);
+						if(!Fullscreen) window->setSize( (int)Width, (int)Height );
 						if(Fullscreen)
 							while(ShowCursor(false) >= 0);
 						else

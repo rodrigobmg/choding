@@ -1,18 +1,32 @@
 #pragma once
 
+
+#include <string>
 #include "..\IComponent.h"
 
-//#include <dae\daeElement.h>
+#include <dae\daeElement.h>
 #include "Vertex.h"
+#ifdef _WINDLL
+#define DLL __declspec(dllexport)
+#else
+#define DLL __declspec(dllimport)
+#endif
 
-
-class StaticMesh : public IComponent
+class DLL StaticMesh : public IComponent
 {
 public:
-	StaticMesh(void);
+	StaticMesh(){};
+	StaticMesh( std::string& name , Matrix44 world );
 	virtual ~StaticMesh(void);
+
+
 	virtual void			SetComponent( int32 id );
 	
+	//Name of this mesh
+	std::string		Name;
+	daeElement* geometry;
+	//World transform
+	Matrix44		 World;
 
 	//Combine the component vertex data to Vertices array
 	void combineComponents();

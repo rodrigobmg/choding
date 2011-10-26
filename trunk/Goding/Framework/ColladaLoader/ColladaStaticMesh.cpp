@@ -14,42 +14,7 @@ ColladaStaticMesh::~ColladaStaticMesh()
 
 }
 
-StaticMesh* ColladaStaticMesh::Load( std::string filename )
-{
-	root = dae.open("..//asset//StaticExample.dae");
-
-	if(!root)
-	{
-		//cout << "Document import failed. \n";
-		return NULL;
-	}
-
-	//Get the library_visual_scenes
-	library_visual_scenes = root->getDescendant("library_visual_scenes");
-	//Check if there is a <library_visual_scenes>
-	if(!library_visual_scenes)
-	{
-		//cout << "<library_visual_scenes> not found.\n";
-		return NULL;
-	}
-
-	library_animations = root->getDescendant("library_animations");
-	//Check if there is a <library_animations>
-	if(!library_animations) 
-		//cout << "<library_animations> not found.\n";
-
-	//Process <library_visual_scenes>
-	vector<int> Meshes;
-	//Meshes.push_back( 1 );
-
-	processVisualScenes( );
-
-	dae.close(filename);
-
-	return NULL;
-}
-
-void ColladaStaticMesh::processVisualScenes( )
+void ColladaStaticMesh::processVisualScenes( std::vector<StaticMesh*>& Meshs )
 {
 	//Get the <visual_scene> node
 	daeElement* visual_scene = library_visual_scenes->getDescendant("visual_scene");
@@ -101,8 +66,286 @@ void ColladaStaticMesh::processVisualScenes( )
 			if(!geometry) continue;
 
 			//Now create a new Mesh, set it's <geometry> node and get it's World transform.
-			//Meshes.push_back(new Mesh(/*Name, processMatrix(nodes[i]->getDescendant("matrix"))*/));
-			//Meshes.back()->geometry = geometry;
+			Meshs.push_back(new StaticMesh( Name, processMatrix(nodes[i]->getDescendant("matrix")) ) );
+			Meshs.back()->geometry = geometry;
 		}
+	}
+}
+
+StaticMesh* ColladaStaticMesh::Load( std::string filename )
+{
+	root = dae.open("..//asset//StaticExample.dae");
+
+	if(!root)
+	{
+		//cout << "Document import failed. \n";
+		return NULL;
+	}
+
+	//Get the library_visual_scenes
+	library_visual_scenes = root->getDescendant("library_visual_scenes");
+	//Check if there is a <library_visual_scenes>
+	if(!library_visual_scenes)
+	{
+		//cout << "<library_visual_scenes> not found.\n";
+		return NULL;
+	}
+
+	library_animations = root->getDescendant("library_animations");
+	//Check if there is a <library_animations>
+	if(!library_animations) 
+		//cout << "<library_animations> not found.\n";
+
+	//Process <library_visual_scenes>
+	processVisualScenes( mesh_container_t );
+
+	processGeometries( mesh_container_t );
+
+	//Compile vertex components into one buffer
+	for(unsigned int i = 0; i < mesh_container_t.size(); i++) 
+		mesh_container_t[i]->combineComponents();
+
+
+	//Set the pointers back to NULL, safety precaution for Debug build
+	root = NULL; library_visual_scenes = NULL; library_geometries = NULL;
+
+
+	dae.close(filename);
+
+	return NULL;
+}
+
+Matrix44 ColladaStaticMesh::processMatrix( daeElement* matrix )
+{
+	Matrix44 out;
+	std::string world = matrix->getCharData();
+	stringstream stm(world);
+
+#pragma region Read the matrix
+	stm >> out.m[0][0];
+	stm >> out.m[0][1];
+	stm >> out.m[0][2];
+	stm >> out.m[0][3];
+
+	stm >> out.m[1][0];
+	stm >> out.m[1][1];
+	stm >> out.m[1][2];
+	stm >> out.m[1][3];
+
+	stm >> out.m[2][0];
+	stm >> out.m[2][1];
+	stm >> out.m[2][2];
+	stm >> out.m[2][3];
+
+	stm >> out.m[3][0];
+	stm >> out.m[3][1];
+	stm >> out.m[3][2];
+	stm >> out.m[3][3];
+#pragma endregion
+
+	return out;
+}
+
+void ColladaStaticMesh::processGeometries( std::vector<StaticMesh*>& meshes )
+{
+	//Foreach mesh...
+	for(unsigned int i = 0; i < meshes.size(); i++)
+	{
+		//Get the <mesh> node
+		daeElement* mesh = meshes[i]->geometry->getDescendant("mesh");
+
+		//Get the <source> nodes
+		daeTArray<daeElementRef> sources = mesh->getChildren();
+
+		//Get the <triangles> node (yes it will be in the sources array above if you wish to find it that way)
+		daeElement* triangles = mesh->getDescendant("triangles");
+
+		//Process each <source> child
+		for(unsigned int z = 0; z < sources.getCount(); z++) processSource(meshes[i], sources[z]);
+
+		//Process the <triangles> child
+		processTriangles(meshes[i], triangles);
+	}
+}
+
+void ColladaStaticMesh::processTriangles( StaticMesh* mesh, daeElement* triangles )
+{
+	//Get the <p> node
+	daeElement* p = triangles->getDescendant("p");
+
+	//Get the number of faces, multiply by 3 to get number of indices
+	unsigned int count = atoi(triangles->getAttribute("count").data()) * 3;
+
+	//Get the raw string representation
+	string pArray = p->getCharData();
+
+	//Set up a stringstream to read from the raw array
+	stringstream stm(pArray);
+
+	//Read each unsigned int
+	for(unsigned int i = 0; i < count; i++)
+	{
+		unsigned int p = 0;
+
+		stm >> p;
+
+		mesh->Indices.push_back(p);
+	}
+}
+
+void ColladaStaticMesh::processSource( StaticMesh* mesh, daeElement* source )
+{
+	//Get Positions
+	if(source->getAttribute("name").find("position") != string::npos)
+	{
+		//Get the <float_array> node
+		daeElement* float_array = source->getChild("float_array");
+
+		//Get the number of raw float's contained
+		unsigned int count = atoi(float_array->getAttribute("count").data());
+
+		//Get the raw string representation
+		string positionArray = float_array->getCharData();
+
+		//Set up a stringstream to read from the raw array
+		stringstream stm(positionArray);
+
+		//Read each float, in groups of three
+		for(unsigned int i = 0; i < (count / 3); i++)
+		{
+			float x, y, z;
+
+			stm >> x;
+			stm >> y;
+			stm >> z;
+
+			//Push this back as another Position component
+			mesh->Positions.push_back(D3DXVECTOR3(x, y, z));
+		}
+
+		return;
+	}
+
+	//Get Normals
+	if(source->getAttribute("name").find("normal") != string::npos)
+	{
+		//Get the <float_array> node
+		daeElement* float_array = source->getChild("float_array");
+
+		//Get the number of raw float's contained
+		unsigned int count = atoi(float_array->getAttribute("count").data());
+
+		//Get the raw string representation
+		string normalsArray = float_array->getCharData();
+
+		//Set up a stringstream to read from the raw array
+		stringstream stm(normalsArray);
+
+		//Read each float, in groups of three
+		for(unsigned int i = 0; i < (count / 3); i++)
+		{
+			float x, y, z;
+
+			stm >> x;
+			stm >> y;
+			stm >> z;
+
+			//Push this back as another Position component
+			mesh->Normals.push_back(D3DXVECTOR3(x, y, z));
+		}
+
+		return;
+	}
+
+	//Get UVs at layer0
+	if(source->getAttribute("name").find("map1") != string::npos)
+	{
+		//Get the <float_array> node
+		daeElement* float_array = source->getChild("float_array");
+
+		//Get the number of raw float's contained
+		unsigned int count = atoi(float_array->getAttribute("count").data());
+
+		//Get the raw string representation
+		string uvArray = float_array->getCharData();
+
+		//Set up a stringstream to read from the raw array
+		stringstream stm(uvArray);
+
+		//Read each float, in groups of three
+		for(unsigned int i = 0; i < (count / 2); i++)
+		{
+			float x, y;
+
+			stm >> x;
+			stm >> y;
+
+			//Push this back as another Position component
+			mesh->UVs.push_back(D3DXVECTOR2(x, y));
+		}
+
+		return;
+	}
+
+	//Get Tangents at layer0, the reason there are different naming schemes, this covers the ones I've come into contact with
+	if(source->getAttribute("id").find("map1-tangents") != string::npos || source->getAttribute("id").find("textangents") != string::npos)
+	{
+		//Get the <float_array> node
+		daeElement* float_array = source->getChild("float_array");
+
+		//Get the number of raw float's contained
+		unsigned int count = atoi(float_array->getAttribute("count").data());
+
+		//Get the raw string representation
+		string tangentsArray = float_array->getCharData();
+
+		//Set up a stringstream to read from the raw array
+		stringstream stm(tangentsArray);
+
+		//Read each float, in groups of three
+		for(unsigned int i = 0; i < (count / 3); i++)
+		{
+			float x, y, z;
+
+			stm >> x;
+			stm >> y;
+			stm >> z;
+
+			//Push this back as another Position component
+			mesh->Tangents.push_back(D3DXVECTOR3(x, y, z));
+		}
+
+		return;
+	}
+
+	//Get BiTangents at layer0, read above about the different names
+	if(source->getAttribute("id").find("map1-binormals") != string::npos || source->getAttribute("id").find("texbinormals") != string::npos)
+	{
+		//Get the <float_array> node
+		daeElement* float_array = source->getChild("float_array");
+
+		//Get the number of raw float's contained
+		unsigned int count = atoi(float_array->getAttribute("count").data());
+
+		//Get the raw string representation
+		string biTangentsArray = float_array->getCharData();
+
+		//Set up a stringstream to read from the raw array
+		stringstream stm(biTangentsArray);
+
+		//Read each float, in groups of three
+		for(unsigned int i = 0; i < (count / 3); i++)
+		{
+			float x, y, z;
+
+			stm >> x;
+			stm >> y;
+			stm >> z;
+
+			//Push this back as another Position component
+			mesh->BiTangents.push_back(D3DXVECTOR3(x, y, z));
+		}
+
+		return;
 	}
 }

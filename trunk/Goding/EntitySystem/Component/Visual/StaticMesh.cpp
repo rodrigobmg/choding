@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "StaticMesh.h"
 
-
-StaticMesh::StaticMesh(void)
+StaticMesh::StaticMesh( std::string& Name , Matrix44 world )
 {
+	this->Name = Name;
+	this->World = world;
 }
 
 
