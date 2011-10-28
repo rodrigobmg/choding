@@ -128,8 +128,8 @@ namespace util
 	template< class KEY , class T >
 	class GdsLookupTable
 	{
-		typedef pair< KEY , T > VALUE;
-		typedef vector< VALUE > CONTAINER;
+		typedef std::pair< KEY , T > VALUE;
+		typedef std::vector< VALUE > CONTAINER;
 		CONTAINER		m_vecData;
 
 		bool			m_isSorted;

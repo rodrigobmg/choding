@@ -7,6 +7,7 @@
 #include <dom/domCOLLADA.h>
 #include <dae\daeElement.h>
 
+#include "..\..\EntitySystem\EntitySystem.h"
 #include "StaticMesh\Mesh.h"
 
 #ifdef _DEBUG
@@ -45,7 +46,7 @@ public:
 	~ColladaStaticMesh();
 
 	//Load all the meshes from a file
-	void Load(std::string filename);
+	void Load(std::string filename , EntitySystem* pEntitySystem );
 
 	void processVisualScenes( std::vector<Mesh*>& Meshs );
 	void processGeometries( std::vector<Mesh*>& Meshs );
@@ -56,4 +57,6 @@ public:
 	void processTriangles(Mesh* mesh, daeElement* triangles);
 
 	Matrix44 processMatrix(daeElement* matrix);
+
+	void MakeMeshToComponent( std::vector<Mesh*>& Meshs );
 };

@@ -7,6 +7,7 @@
 #include "Component\Visual\MorphingMesh.h"
 #include "Component\IComponent.h"
 
+
 EntitySystem::EntitySystem()
 {
 
@@ -80,5 +81,14 @@ IComponent* EntitySystem::MakeComponent( int32 comtype )
 		break;
 	}
 
+	if ( pComponent != NULL )
+		m_component_container.push_back( pComponent );
+
 	return pComponent;
+}
+
+void EntitySystem::Release()
+{
+	for_each( m_component_container.begin() , m_component_container.end() , functor::deleter() );
+	for_each( m_entity_container.begin() , m_entity_container.end() , functor::deleter() );
 }

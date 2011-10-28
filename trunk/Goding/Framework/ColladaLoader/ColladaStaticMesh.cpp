@@ -72,7 +72,7 @@ void ColladaStaticMesh::processVisualScenes( std::vector<Mesh*>& Meshs )
 	}
 }
 
-void ColladaStaticMesh::Load( std::string filename )
+void ColladaStaticMesh::Load( std::string filename , EntitySystem* pEntitySystem )
 {
 	root = dae.open("..//asset//StaticExample.dae");
 
@@ -105,13 +105,11 @@ void ColladaStaticMesh::Load( std::string filename )
 	for(unsigned int i = 0; i < mesh_container_t.size(); i++) 
 		mesh_container_t[i]->combineComponents();
 
+	MakeMeshToComponent( mesh_container_t );
 
 	//Set the pointers back to NULL, safety precaution for Debug build
 	root = NULL; library_visual_scenes = NULL; library_geometries = NULL;
-
-
 	dae.close(filename);
-
 }
 
 Matrix44 ColladaStaticMesh::processMatrix( daeElement* matrix )
@@ -346,5 +344,16 @@ void ColladaStaticMesh::processSource( Mesh* mesh, daeElement* source )
 		}
 
 		return;
+	}
+}
+
+void ColladaStaticMesh::MakeMeshToComponent( std::vector<Mesh*>& Meshs )
+{
+	if ( Meshs.empty() )
+		return;
+
+	for ( int i=0 ; i < Meshs.size() ; i++ )
+	{
+//		StaticMesh* pStaticMesh = 
 	}
 }
