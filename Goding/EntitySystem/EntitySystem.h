@@ -23,6 +23,9 @@ public:
 	EntitySystem();
 	~EntitySystem();
 
+	void		Init();
+	void		Release();
+
 	IEntity*	GetEntity( int32 entityid );
 
 	IEntity*	AllocEntity( int32 entitytype );
@@ -36,6 +39,9 @@ private:
 
 	typedef std::vector< IEntity* > entity_table_t;
 	entity_table_t	m_entity_container;
+
+	typedef std::vector< IComponent* > component_table_t;
+	component_table_t m_component_container;
 
 };
 

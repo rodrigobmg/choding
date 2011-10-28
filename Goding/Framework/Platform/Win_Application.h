@@ -48,7 +48,7 @@ namespace WinApplication
 
 		ColladaStaticMesh loader;
 		std::string str("fhi");
-		loader.Load( str );
+		loader.Load( str  , pEntitySystem );
 
 		pRenderSystem->CreateDeviceManager( window->getHandle(), (int)Width, (int)Height, Fullscreen );
 		pRenderSystem->GetDeviceManager()->OnDeviceLost = onDeviceLost;
