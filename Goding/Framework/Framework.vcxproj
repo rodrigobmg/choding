@@ -31,6 +31,8 @@
   <ItemGroup>
     <ClInclude Include="ColladaLoader\ColladaLoader.h" />
     <ClInclude Include="ColladaLoader\ColladaStaticMesh.h" />
+    <ClInclude Include="ColladaLoader\StaticMesh\Mesh.h" />
+    <ClInclude Include="ColladaLoader\StaticMesh\Vertex.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Platform\Win_Application.h" />
     <ClInclude Include="Platform\Win_Window.h" />

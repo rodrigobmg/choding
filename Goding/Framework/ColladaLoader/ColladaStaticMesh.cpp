@@ -14,7 +14,7 @@ ColladaStaticMesh::~ColladaStaticMesh()
 
 }
 
-void ColladaStaticMesh::processVisualScenes( std::vector<StaticMesh*>& Meshs )
+void ColladaStaticMesh::processVisualScenes( std::vector<Mesh*>& Meshs )
 {
 	//Get the <visual_scene> node
 	daeElement* visual_scene = library_visual_scenes->getDescendant("visual_scene");
@@ -66,20 +66,20 @@ void ColladaStaticMesh::processVisualScenes( std::vector<StaticMesh*>& Meshs )
 			if(!geometry) continue;
 
 			//Now create a new Mesh, set it's <geometry> node and get it's World transform.
-			Meshs.push_back(new StaticMesh( Name, processMatrix(nodes[i]->getDescendant("matrix")) ) );
+			Meshs.push_back(new Mesh( Name, processMatrix(nodes[i]->getDescendant("matrix")) ) );
 			Meshs.back()->geometry = geometry;
 		}
 	}
 }
 
-StaticMesh* ColladaStaticMesh::Load( std::string filename )
+void ColladaStaticMesh::Load( std::string filename )
 {
 	root = dae.open("..//asset//StaticExample.dae");
 
 	if(!root)
 	{
 		//cout << "Document import failed. \n";
-		return NULL;
+		return;
 	}
 
 	//Get the library_visual_scenes
@@ -88,7 +88,7 @@ StaticMesh* ColladaStaticMesh::Load( std::string filename )
 	if(!library_visual_scenes)
 	{
 		//cout << "<library_visual_scenes> not found.\n";
-		return NULL;
+		return;
 	}
 
 	library_animations = root->getDescendant("library_animations");
@@ -112,7 +112,6 @@ StaticMesh* ColladaStaticMesh::Load( std::string filename )
 
 	dae.close(filename);
 
-	return NULL;
 }
 
 Matrix44 ColladaStaticMesh::processMatrix( daeElement* matrix )
@@ -146,7 +145,7 @@ Matrix44 ColladaStaticMesh::processMatrix( daeElement* matrix )
 	return out;
 }
 
-void ColladaStaticMesh::processGeometries( std::vector<StaticMesh*>& meshes )
+void ColladaStaticMesh::processGeometries( std::vector<Mesh*>& meshes )
 {
 	//Foreach mesh...
 	for(unsigned int i = 0; i < meshes.size(); i++)
@@ -168,7 +167,7 @@ void ColladaStaticMesh::processGeometries( std::vector<StaticMesh*>& meshes )
 	}
 }
 
-void ColladaStaticMesh::processTriangles( StaticMesh* mesh, daeElement* triangles )
+void ColladaStaticMesh::processTriangles( Mesh* mesh, daeElement* triangles )
 {
 	//Get the <p> node
 	daeElement* p = triangles->getDescendant("p");
@@ -193,7 +192,7 @@ void ColladaStaticMesh::processTriangles( StaticMesh* mesh, daeElement* triangle
 	}
 }
 
-void ColladaStaticMesh::processSource( StaticMesh* mesh, daeElement* source )
+void ColladaStaticMesh::processSource( Mesh* mesh, daeElement* source )
 {
 	//Get Positions
 	if(source->getAttribute("name").find("position") != string::npos)

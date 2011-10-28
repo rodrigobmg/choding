@@ -1,11 +1,11 @@
 #pragma once
 
-
 #include <string>
+#include <dae\daeElement.h>
+
+#include "Vertex.h"
 #include "..\IComponent.h"
 
-#include <dae\daeElement.h>
-#include "Vertex.h"
 #ifdef _WINDLL
 #define DLL __declspec(dllexport)
 #else
@@ -24,15 +24,12 @@ public:
 	
 	//Name of this mesh
 	std::string		Name;
-	daeElement* geometry;
 	//World transform
 	Matrix44		 World;
 
 	//Combine the component vertex data to Vertices array
 	void combineComponents();
-
-	//daeElement* geometry;
-
+	
 	//Component Vertex Data, to be compiled into Vertices later...
 	std::vector<Vec3> Positions;
 	std::vector<Vec2> UVs;
