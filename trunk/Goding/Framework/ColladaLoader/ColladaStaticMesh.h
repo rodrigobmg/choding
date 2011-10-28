@@ -1,12 +1,13 @@
 #pragma once
 
+#include <vector>
+
 #include <dae.h>
 #include <dom.h>
 #include <dom/domCOLLADA.h>
-
-#include "..\..\EntitySystem\Component\Visual\StaticMesh.h"
 #include <dae\daeElement.h>
-#include <vector>
+
+#include "StaticMesh\Mesh.h"
 
 #ifdef _DEBUG
 	#pragma comment( lib , "libcollada14dom22-d.lib" )
@@ -36,7 +37,7 @@ private:
 	//<library_animations> node
 	daeElement* library_animations;
 
-	std::vector<StaticMesh*> mesh_container_t;	
+	std::vector<Mesh*> mesh_container_t;	
 
 public:
 	//Constructor
@@ -44,15 +45,15 @@ public:
 	~ColladaStaticMesh();
 
 	//Load all the meshes from a file
-	StaticMesh* Load(std::string filename);
+	void Load(std::string filename);
 
-	void processVisualScenes( std::vector<StaticMesh*>& Meshs );
-	void processGeometries( std::vector<StaticMesh*>& Meshs );
+	void processVisualScenes( std::vector<Mesh*>& Meshs );
+	void processGeometries( std::vector<Mesh*>& Meshs );
 
 	//Process a <source> node
-	void processSource(StaticMesh* mesh, daeElement* source);
+	void processSource(Mesh* mesh, daeElement* source);
 	//Process a <triangles> node
-	void processTriangles(StaticMesh* mesh, daeElement* triangles);
+	void processTriangles(Mesh* mesh, daeElement* triangles);
 
 	Matrix44 processMatrix(daeElement* matrix);
 };

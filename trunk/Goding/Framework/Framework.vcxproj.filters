@@ -8,7 +8,7 @@
       <Filter>ColladaLoader</Filter>
     </ClCompile>
     <ClCompile Include="ColladaLoader\ColladaStaticMesh.cpp">
-      <Filter>ColladaLoader</Filter>
+      <Filter>ColladaLoader\StaticMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -23,8 +23,14 @@
     <ClInclude Include="Platform\Win_Window.h">
       <Filter>Platform</Filter>
     </ClInclude>
+    <ClInclude Include="ColladaLoader\StaticMesh\Mesh.h">
+      <Filter>ColladaLoader\StaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="ColladaLoader\StaticMesh\Vertex.h">
+      <Filter>ColladaLoader\StaticMesh</Filter>
+    </ClInclude>
     <ClInclude Include="ColladaLoader\ColladaStaticMesh.h">
-      <Filter>ColladaLoader</Filter>
+      <Filter>ColladaLoader\StaticMesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +39,15 @@
     </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{04af7c9a-6861-4972-ae91-f287993a8587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ColladaLoader\StaticMesh">
+      <UniqueIdentifier>{4b6fcdf5-3f41-4eb9-a9d0-8610316875a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ColladaLoader\SkinnedMesh">
+      <UniqueIdentifier>{ab0aae7f-3dd6-4ce1-b6dc-f3344efa95da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ColladaLoader\MorphingMesh">
+      <UniqueIdentifier>{b5beb686-baef-4c8b-8c27-878d0daf05d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
