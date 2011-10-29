@@ -30,7 +30,7 @@ public:
 	//Combine the component vertex data to Vertices array
 	void combineComponents();
 	
-	//Component Vertex Data, to be compiled into Vertices later...
+	//Component TempVertex Data, to be compiled into Vertices later...
 	std::vector<Vec3> Positions;
 	std::vector<Vec2> UVs;
 	std::vector<Vec3> Normals;

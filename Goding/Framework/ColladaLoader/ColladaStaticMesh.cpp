@@ -14,7 +14,7 @@ ColladaStaticMesh::~ColladaStaticMesh()
 
 }
 
-void ColladaStaticMesh::processVisualScenes( std::vector<Mesh*>& Meshs )
+void ColladaStaticMesh::processVisualScenes( std::vector<TempMesh*>& Meshs )
 {
 	//Get the <visual_scene> node
 	daeElement* visual_scene = library_visual_scenes->getDescendant("visual_scene");
@@ -65,8 +65,8 @@ void ColladaStaticMesh::processVisualScenes( std::vector<Mesh*>& Meshs )
 			//If the referenced node was not found, skip this node
 			if(!geometry) continue;
 
-			//Now create a new Mesh, set it's <geometry> node and get it's World transform.
-			Meshs.push_back(new Mesh( Name, processMatrix(nodes[i]->getDescendant("matrix")) ) );
+			//Now create a new TempMesh, set it's <geometry> node and get it's World transform.
+			Meshs.push_back(new TempMesh( Name, processMatrix(nodes[i]->getDescendant("matrix")) ) );
 			Meshs.back()->geometry = geometry;
 		}
 	}
@@ -143,7 +143,7 @@ Matrix44 ColladaStaticMesh::processMatrix( daeElement* matrix )
 	return out;
 }
 
-void ColladaStaticMesh::processGeometries( std::vector<Mesh*>& meshes )
+void ColladaStaticMesh::processGeometries( std::vector<TempMesh*>& meshes )
 {
 	//Foreach mesh...
 	for(unsigned int i = 0; i < meshes.size(); i++)
@@ -165,7 +165,7 @@ void ColladaStaticMesh::processGeometries( std::vector<Mesh*>& meshes )
 	}
 }
 
-void ColladaStaticMesh::processTriangles( Mesh* mesh, daeElement* triangles )
+void ColladaStaticMesh::processTriangles( TempMesh* mesh, daeElement* triangles )
 {
 	//Get the <p> node
 	daeElement* p = triangles->getDescendant("p");
@@ -190,7 +190,7 @@ void ColladaStaticMesh::processTriangles( Mesh* mesh, daeElement* triangles )
 	}
 }
 
-void ColladaStaticMesh::processSource( Mesh* mesh, daeElement* source )
+void ColladaStaticMesh::processSource( TempMesh* mesh, daeElement* source )
 {
 	//Get Positions
 	if(source->getAttribute("name").find("position") != string::npos)
@@ -347,7 +347,7 @@ void ColladaStaticMesh::processSource( Mesh* mesh, daeElement* source )
 	}
 }
 
-void ColladaStaticMesh::MakeMeshToComponent( std::vector<Mesh*>& Meshs )
+void ColladaStaticMesh::MakeMeshToComponent( std::vector<TempMesh*>& Meshs )
 {
 	if ( Meshs.empty() )
 		return;
