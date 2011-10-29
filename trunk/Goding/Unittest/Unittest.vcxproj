@@ -160,10 +160,6 @@
     <ProjectReference Include="..\Middleware\gtest-1.6.0\msvc\gtest.vcxproj">
       <Project>{c8f6c172-56f2-4e76-b5fa-c3b423b31be7}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Snowboard\Snowboard.vcxproj">
-      <Project>{4532e540-0fed-4a93-bb17-03f7214e661b}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="testUnit\collada_load.hpp" />
