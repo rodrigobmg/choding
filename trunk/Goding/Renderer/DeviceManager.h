@@ -29,7 +29,7 @@ private:
 	//AutoDepthBuffer
 	IDirect3DSurface9* DepthBuffer;
 
-	//Vertex Declarations
+	//TempVertex Declarations
 	IDirect3DVertexDeclaration9* MeshVD;
 	IDirect3DVertexDeclaration9* SkinnedMeshVD;
 	IDirect3DVertexDeclaration9* MorphingMeshVD;

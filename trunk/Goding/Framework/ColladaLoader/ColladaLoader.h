@@ -83,10 +83,10 @@ public:
 		//Process library_animations if it exists
 		if(library_animations) processAnimations(Meshes);
 
-		//Process the <geometry> node for each Static Mesh
+		//Process the <geometry> node for each Static TempMesh
 		processGeometries(Meshes);
 
-		//Compile vertex components into one buffer for each Morphing Mesh
+		//Compile vertex components into one buffer for each Morphing TempMesh
 		for(unsigned int i = 0; i < Meshes->MorphingMeshes.size(); i++)
 		{
 			//Sort Animations
@@ -102,14 +102,14 @@ public:
 			}
 		}
 
-		//Compile vertex components into one buffer for each Skinned Mesh and also combine Animation Keyframes list
+		//Compile vertex components into one buffer for each Skinned TempMesh and also combine Animation Keyframes list
 		for(unsigned int i = 0; i < Meshes->SkinnedMeshes.size(); i++) 
 		{
 			Meshes->SkinnedMeshes[i]->combineComponents();
 			Meshes->SkinnedMeshes[i]->combineJointAnimations();
 		}
 
-		//Compile vertex components into one buffer for each Static Mesh
+		//Compile vertex components into one buffer for each Static TempMesh
 		for(unsigned int i = 0; i < Meshes->StaticMeshes.size(); i++) Meshes->StaticMeshes[i]->combineComponents();
 
 		//Close the .dae file
@@ -228,7 +228,7 @@ private:
 			process[i] = false;
 			
 			//Set the Base geometry
-			mesh->Base = new Mesh(Name + "Base", processMatrix(nodes[i]->getDescendant("matrix")));
+			mesh->Base = new TempMesh(Name + "Base", processMatrix(nodes[i]->getDescendant("matrix")));
 			mesh->Base->geometry = baseGeometry;
 
 			#pragma endregion
@@ -273,7 +273,7 @@ private:
 						#pragma endregion
 
 						//Add to the Targets for this mesh
-						mesh->Targets.push_back(new Mesh(nodes[z]->getAttribute("name"), processMatrix(nodes[z]->getDescendant("matrix"))));
+						mesh->Targets.push_back(new TempMesh(nodes[z]->getAttribute("name"), processMatrix(nodes[z]->getDescendant("matrix"))));
 						mesh->Targets.back()->geometry = geometry;
 
 						//Set this node so it's not processed later
@@ -405,8 +405,8 @@ private:
 				//If the referenced node was not found, skip this node
 				if(!geometry) continue;
 
-				//Now create a new Mesh, set it's <geometry> node and get it's World transform.
-				Meshes->StaticMeshes.push_back(new Mesh(Name, processMatrix(nodes[i]->getDescendant("matrix"))));
+				//Now create a new TempMesh, set it's <geometry> node and get it's World transform.
+				Meshes->StaticMeshes.push_back(new TempMesh(Name, processMatrix(nodes[i]->getDescendant("matrix"))));
 				Meshes->StaticMeshes.back()->geometry = geometry;
 			}
 		}
@@ -441,10 +441,10 @@ private:
 		return Output;
 	}
 
-	//Process each Skinned Mesh's <controller> and also build a skeleton for them
+	//Process each Skinned TempMesh's <controller> and also build a skeleton for them
 	void processSkinnedMeshes(MeshManager* Meshes)
 	{
-		//Foreach Skinned Mesh
+		//Foreach Skinned TempMesh
 		for(unsigned int i = 0; i < Meshes->SkinnedMeshes.size(); i++)
 		{
 			//Build it's skeleton
@@ -456,30 +456,30 @@ private:
 	}
 
 	//Build a Skeleton from a SkinnedMesh's rootJoint <node>
-	void buildSkeleton(SkinnedMesh* Mesh)
+	void buildSkeleton(SkinnedMesh* TempMesh)
 	{
-		processJoint(Mesh, Mesh->rootJoint);
+		processJoint(TempMesh, TempMesh->rootJoint);
 
 		//Find each Joint's parent
-		for(unsigned int i = 1; i < Mesh->Joints.size(); i++)
+		for(unsigned int i = 1; i < TempMesh->Joints.size(); i++)
 		{
 			//Get the parent node's name in the COLLADA file
-			string parentName = Mesh->Joints[i].Node->getParent()->getAttribute("name").data();
+			string parentName = TempMesh->Joints[i].Node->getParent()->getAttribute("name").data();
 
 			//Check the array of Joints to see if any match the parentName
-			for(unsigned int z = 0; z < Mesh->Joints.size(); z++)
+			for(unsigned int z = 0; z < TempMesh->Joints.size(); z++)
 			{
 				//Get this joint node's name in the COLLADA file
-				string jointName = Mesh->Joints[z].Node->getAttribute("name").data();
+				string jointName = TempMesh->Joints[z].Node->getAttribute("name").data();
 
 				//Compare names
 				if(parentName == jointName)
 				{
 					//Set the parentIndex to z
-					Mesh->Joints[i].parentIndex = z;
+					TempMesh->Joints[i].parentIndex = z;
 
 					//Set the parentJoint reference to the address of the parentJoint
-					Mesh->Joints[i].parentJoint = &Mesh->Joints[z];
+					TempMesh->Joints[i].parentJoint = &TempMesh->Joints[z];
 
 					//Go to the next Joint in the list
 					break;
@@ -489,7 +489,7 @@ private:
 	}
 
 	//Process a Joint <node> and it's children recursively
-	void processJoint(SkinnedMesh* Mesh, daeElement* joint)
+	void processJoint(SkinnedMesh* TempMesh, daeElement* joint)
 	{
 		//Get the children of this joint
 		daeTArray<daeElementRef> Children = joint->getChildren();
@@ -507,28 +507,28 @@ private:
 			string Name = Children[i]->getAttribute("name").data();
 			string SID = Children[i]->getAttribute("sid").data();
 
-			//Add a Joint to this Mesh's Joint list
-			Mesh->Joints.push_back(Joint(Name, SID, Children[i]));
+			//Add a Joint to this TempMesh's Joint list
+			TempMesh->Joints.push_back(Joint(Name, SID, Children[i]));
 
 			//Get the bind_matrix for this Joint
-			Mesh->Joints.back().bind_matrix = processMatrix(Children[i]->getDescendant("matrix"));
+			TempMesh->Joints.back().bind_matrix = processMatrix(Children[i]->getDescendant("matrix"));
 
 			//Process this Joint's children
-			processJoint(Mesh, Children[i]);
+			processJoint(TempMesh, Children[i]);
 		}
 	}
 
 	//Process a <controller> node
-	void processController(SkinnedMesh* Mesh)
+	void processController(SkinnedMesh* TempMesh)
 	{
 		//Get the <skin> node
-		daeElement* skin = Mesh->controller->getDescendant("skin");
+		daeElement* skin = TempMesh->controller->getDescendant("skin");
 
 		//Only process skin nodes;
 		if(!skin) return;
 
 		//Get the BindShape matrix
-		Mesh->BindShape = processMatrix(Mesh->controller->getDescendant("bind_shape_matrix"));
+		TempMesh->BindShape = processMatrix(TempMesh->controller->getDescendant("bind_shape_matrix"));
 
 		#pragma region //Get the elements that hold the data we want
 		//These are the three nodes of interest for this skin
@@ -555,7 +555,7 @@ private:
 		#pragma endregion
 
 		//Get the inverse bind pose for each Joint
-		processBindPoseArray(Mesh->Joints, inversePoses);
+		processBindPoseArray(TempMesh->Joints, inversePoses);
 
 		//Get the raw weights
 		vector<float> weights = processWeightsArray(rawWeights);
@@ -583,8 +583,8 @@ private:
 			vtm >> influenceCount;
 
 			//Push back a new Index and Weight
-			Mesh->boneIndices.push_back(Index());
-			Mesh->Weights.push_back(Weight());
+			TempMesh->boneIndices.push_back(Index());
+			TempMesh->Weights.push_back(Weight());
 
 			//Read weights based on influences
 			for(unsigned int z = 0; z < influenceCount; z++)
@@ -599,10 +599,10 @@ private:
 				stm >> weightIndex;
 
 				//Add to the current boneIndices
-				Mesh->boneIndices.back().Indices[z] = boneIndex;
+				TempMesh->boneIndices.back().Indices[z] = boneIndex;
 
 				//Add to the current Weights by indexing weight array
-				Mesh->Weights.back().Weights[z] = weights[weightIndex];
+				TempMesh->Weights.back().Weights[z] = weights[weightIndex];
 			}
 		}
 		#pragma endregion
@@ -893,10 +893,10 @@ private:
 		}
 	}
 
-	//Process a <geometry> node for each Static Mesh
+	//Process a <geometry> node for each Static TempMesh
 	void processGeometries(MeshManager* Meshes)
 	{
-		//Foreach Static Mesh...
+		//Foreach Static TempMesh...
 		for(unsigned int i = 0; i < Meshes->StaticMeshes.size(); i++)
 		{
 			//Get the <mesh> node
@@ -915,7 +915,7 @@ private:
 			processTriangles(Meshes->StaticMeshes[i], triangles);
 		}
 
-		//Foreach Skinned Mesh...
+		//Foreach Skinned TempMesh...
 		for(unsigned int i = 0; i < Meshes->SkinnedMeshes.size(); i++)
 		{
 			//Get the <mesh> node
@@ -934,7 +934,7 @@ private:
 			processTriangles(Meshes->SkinnedMeshes[i], triangles);
 		}
 
-		//Foreach Morphing Mesh...
+		//Foreach Morphing TempMesh...
 		for(unsigned int i = 0; i < Meshes->MorphingMeshes.size(); i++)
 		{
 			#pragma region //Base geometry
@@ -977,8 +977,8 @@ private:
 		}
 	}
 
-	//Process a <source> node for Static Mesh
-	void processSource(Mesh* mesh, daeElement* source)
+	//Process a <source> node for Static TempMesh
+	void processSource(TempMesh* mesh, daeElement* source)
 	{
 		//Get Positions
 		if(source->getAttribute("name").find("position") != string::npos)
@@ -1134,7 +1134,7 @@ private:
 			return;
 		}
 	}
-	//Process a <source> node for Skinned Mesh
+	//Process a <source> node for Skinned TempMesh
 	void processSource(SkinnedMesh* mesh, daeElement* source)
 	{
 		//Get Positions
@@ -1292,8 +1292,8 @@ private:
 		}
 	}
 
-	//Process a <triangles> node for Static Mesh
-	void processTriangles(Mesh* mesh, daeElement* triangles)
+	//Process a <triangles> node for Static TempMesh
+	void processTriangles(TempMesh* mesh, daeElement* triangles)
 	{
 		//Get the <p> node
 		daeElement* p = triangles->getDescendant("p");
@@ -1318,7 +1318,7 @@ private:
 		}
 	}
 
-	//Process a <triangles> node for Skinned Mesh
+	//Process a <triangles> node for Skinned TempMesh
 	void processTriangles(SkinnedMesh* mesh, daeElement* triangles)
 	{
 		//Get the <p> node

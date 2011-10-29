@@ -13,7 +13,7 @@ public:
 	virtual void onDeviceReset();
 	virtual void onDeviceLost();
 
-		//Vertex Buffer
+		//TempVertex Buffer
 	IDirect3DVertexBuffer9* vertexBuffer;
 
 	//Index Buffer

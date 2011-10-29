@@ -23,14 +23,14 @@
     <ClInclude Include="Platform\Win_Window.h">
       <Filter>Platform</Filter>
     </ClInclude>
-    <ClInclude Include="ColladaLoader\StaticMesh\Mesh.h">
-      <Filter>ColladaLoader\StaticMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="ColladaLoader\StaticMesh\Vertex.h">
-      <Filter>ColladaLoader\StaticMesh</Filter>
-    </ClInclude>
     <ClInclude Include="ColladaLoader\ColladaStaticMesh.h">
       <Filter>ColladaLoader\StaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="ColladaLoader\TempMesh.h">
+      <Filter>ColladaLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="ColladaLoader\TempVertex.h">
+      <Filter>ColladaLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

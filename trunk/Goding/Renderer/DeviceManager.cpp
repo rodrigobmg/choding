@@ -93,7 +93,7 @@ DeviceManager::~DeviceManager(void)
 	//Release Query
 	SAFE_RELEASE(Query);
 
-	//Release Vertex Declarations
+	//Release TempVertex Declarations
 	SAFE_RELEASE(MeshVD);
 	SAFE_RELEASE(SkinnedMeshVD);
 	SAFE_RELEASE(MorphingMeshVD);
@@ -116,7 +116,7 @@ void DeviceManager::onDeviceLost()
 	//Call function pointer
 	if(OnDeviceLost) OnDeviceLost();
 
-	//Release Vertex Declarations
+	//Release TempVertex Declarations
 	SAFE_RELEASE(MeshVD);
 	SAFE_RELEASE(SkinnedMeshVD);
 	SAFE_RELEASE(MorphingMeshVD);

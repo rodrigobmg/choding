@@ -8,7 +8,7 @@
 #include <dae\daeElement.h>
 
 #include "..\..\EntitySystem\EntitySystem.h"
-#include "StaticMesh\Mesh.h"
+#include "TempMesh.h"
 
 #ifdef _DEBUG
 	#pragma comment( lib , "libcollada14dom22-d.lib" )
@@ -38,7 +38,7 @@ private:
 	//<library_animations> node
 	daeElement* library_animations;
 
-	std::vector<Mesh*> mesh_container_t;	
+	std::vector<TempMesh*> mesh_container_t;	
 
 public:
 	//Constructor
@@ -48,15 +48,15 @@ public:
 	//Load all the meshes from a file
 	void Load(std::string filename , EntitySystem* pEntitySystem );
 
-	void processVisualScenes( std::vector<Mesh*>& Meshs );
-	void processGeometries( std::vector<Mesh*>& Meshs );
+	void processVisualScenes( std::vector<TempMesh*>& Meshs );
+	void processGeometries( std::vector<TempMesh*>& Meshs );
 
 	//Process a <source> node
-	void processSource(Mesh* mesh, daeElement* source);
+	void processSource(TempMesh* mesh, daeElement* source);
 	//Process a <triangles> node
-	void processTriangles(Mesh* mesh, daeElement* triangles);
+	void processTriangles(TempMesh* mesh, daeElement* triangles);
 
 	Matrix44 processMatrix(daeElement* matrix);
 
-	void MakeMeshToComponent( std::vector<Mesh*>& Meshs );
+	void MakeMeshToComponent( std::vector<TempMesh*>& Meshs );
 };
