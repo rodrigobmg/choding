@@ -166,7 +166,7 @@ namespace WinApplication
  
  		m_pRenderSystem->GetDeviceManager()->getDevice()->EndScene();
  
- 		//m_pRenderSystem->GetDeviceManager()->Present();
+ 		m_pRenderSystem->GetDeviceManager()->Present();
 	}
 
 	//Message handler

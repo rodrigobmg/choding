@@ -3,29 +3,32 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="RenderSystem.h" />
-    <ClInclude Include="IRenderObject\IRenderObject.h">
-      <Filter>IRenderObject</Filter>
-    </ClInclude>
     <ClInclude Include="DeviceManager.h">
       <Filter>Devicemanager</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObject\RenderObject.h">
+      <Filter>RenderObject</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObject\IRenderObject.h">
+      <Filter>RenderObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
-    <ClCompile Include="IRenderObject\IRenderObject.cpp">
-      <Filter>IRenderObject</Filter>
-    </ClCompile>
     <ClCompile Include="DeviceManager.cpp">
       <Filter>Devicemanager</Filter>
     </ClCompile>
+    <ClCompile Include="RenderObject\RenderObject.cpp">
+      <Filter>RenderObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="IRenderObject">
-      <UniqueIdentifier>{bb286f15-4307-4ab8-ac56-b3f13a1f1439}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Devicemanager">
       <UniqueIdentifier>{7ef4a59f-af4c-451e-b76d-36214cbbd858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderObject">
+      <UniqueIdentifier>{bb286f15-4307-4ab8-ac56-b3f13a1f1439}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

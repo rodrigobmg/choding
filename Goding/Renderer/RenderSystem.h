@@ -11,7 +11,7 @@
 
 #include <vector>
 
-#include "IRenderObject\IRenderObject.h"
+#include "RenderObject\IRenderObject.h"
 #include "DeviceManager.h"
 
 

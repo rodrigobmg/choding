@@ -42,9 +42,6 @@
     <ClInclude Include="Component\Visual\MorphingMesh.h">
       <Filter>Component\Visual\Mesh\MorphingMesh</Filter>
     </ClInclude>
-    <ClInclude Include="Component\Visual\Vertex.h">
-      <Filter>Component\Visual\Mesh</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity\IEntity.cpp">

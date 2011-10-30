@@ -1,0 +1,49 @@
+
+#include "stdafx.h"
+#include "RenderObject.h"
+
+RenderObject::RenderObject()
+{
+
+}
+
+RenderObject::~RenderObject()
+{
+
+}
+
+void RenderObject::Draw( D3DDevice* pDevice , D3DXEffect* pEffect )
+{
+
+}
+
+void RenderObject::onDeviceReset( D3DDevice* pDevice )
+{
+	void* BufferMemory;
+
+	UINT bSize = m_VerticesSize * STRIDE_SIZE;
+	HRESULT r = pDevice->CreateVertexBuffer(bSize, D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &m_vertexBuffer, 0);
+
+	if(r == D3D_OK)
+	{
+		m_vertexBuffer->Lock(0, bSize, &BufferMemory, 0);
+		memcpy(BufferMemory, &Vertices[0], bSize);
+		m_vertexBuffer->Unlock();
+	}
+
+	bSize = sizeof(uint32) * Indices.size();
+	r = pDevice->CreateIndexBuffer(bSize, D3DUSAGE_WRITEONLY, D3DFMT_INDEX32, D3DPOOL_DEFAULT, &m_indexBuffer, 0);
+
+	if(r == D3D_OK)
+	{
+		m_indexBuffer->Lock(0, bSize, &BufferMemory, 0);
+		memcpy(BufferMemory, &Indices[0], bSize);
+		m_indexBuffer->Unlock();
+	}
+}
+
+void RenderObject::onDeviceLost()
+{
+	SAFE_RELEASE(m_indexBuffer);
+	SAFE_RELEASE(m_vertexBuffer);
+}

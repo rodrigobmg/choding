@@ -3,8 +3,8 @@
 #include <string>
 #include <dae\daeElement.h>
 
-#include "Vertex.h"
 #include "..\IComponent.h"
+#include "..\..\Common\Type\RendererType.h"
 
 #ifdef _WINDLL
 #define DLL __declspec(dllexport)
