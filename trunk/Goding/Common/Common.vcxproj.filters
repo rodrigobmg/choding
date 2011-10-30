@@ -119,11 +119,14 @@
     <ClInclude Include="PerformanceCheck\Performance.h">
       <Filter>Profile</Filter>
     </ClInclude>
-    <ClInclude Include="Type\type.h">
-      <Filter>Type</Filter>
-    </ClInclude>
     <ClInclude Include="Camera\Camera.h">
       <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Type\CommonType.h">
+      <Filter>Type</Filter>
+    </ClInclude>
+    <ClInclude Include="Type\ComponentType.h">
+      <Filter>Type</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

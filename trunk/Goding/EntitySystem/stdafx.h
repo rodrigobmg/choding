@@ -1,5 +1,5 @@
 #include <vector>
 #include <algorithm>
 
-#include "..\Common\Type\type.h"
+#include "..\Common\Type\CommonType.h"
 #include "..\Common\Util\Utility.h"

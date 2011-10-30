@@ -18,7 +18,7 @@ IRenderObject* RenderSystem::AllocRenderObject( IRenderObject::ENABLE_RENDER_TYP
 	switch( type )
 	{
 	case IRenderObject::MESH:
-		pRenderObject = new IMesh;
+		pRenderObject = new CRenderObject;
 	}
 
 	if( pRenderObject != NULL )

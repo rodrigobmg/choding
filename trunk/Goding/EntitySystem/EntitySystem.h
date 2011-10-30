@@ -10,7 +10,7 @@
  
 #include <vector>
 
-#include "..\Common\Type\type.h"
+#include "..\Common\Type\CommonType.h"
 
 
 #include "Component\IComponent.h"

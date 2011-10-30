@@ -2,15 +2,15 @@
 #define _RENDERER_IRENDEROBJECT_H_
 #pragma once
 
-#include "../../Common/Type/type.h"
+#include "../../Common/Type/CommonType.h"
 #include "../stdafx.h"
 
 
 class IRenderObject
 {
 public:
-	IRenderObject(void);
-	virtual ~IRenderObject(void);
+	IRenderObject(void){};
+	virtual ~IRenderObject(void){};
 
 	enum ENABLE_RENDER_TYPE
 	{
@@ -22,5 +22,18 @@ public:
 	virtual void onDeviceLost() = 0;
 
 };
+
+class CRenderObject : public IRenderObject
+{
+public:
+	CRenderObject(void);
+	virtual ~CRenderObject(void);
+
+	virtual void Draw( D3DDevice* pDevice , D3DXEffect* pEffect );
+	virtual void onDeviceReset();
+	virtual void onDeviceLost();
+
+};
+
 
 #endif _RENDERER_IRENDEROBJECT_H_

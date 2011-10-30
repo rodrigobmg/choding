@@ -5,4 +5,4 @@
 #include <cstdlib>
 #include <string>
 
-#include "..\Common\Type\type.h"
+#include "..\Common\Type\CommonType.h"
