@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "RenderSystem.h"
-#include "IRenderObject\Mesh\IMesh.h"
+#include "RenderObject\IRenderObject.h"
+#include "RenderObject\RenderObject.h"
 
 RenderSystem::RenderSystem(void)
 :m_pDeviceManager(NULL)
@@ -18,7 +19,7 @@ IRenderObject* RenderSystem::AllocRenderObject( IRenderObject::ENABLE_RENDER_TYP
 	switch( type )
 	{
 	case IRenderObject::MESH:
-		pRenderObject = new CRenderObject;
+		pRenderObject = new RenderObject;
 	}
 
 	if( pRenderObject != NULL )

@@ -128,5 +128,8 @@
     <ClInclude Include="Type\ComponentType.h">
       <Filter>Type</Filter>
     </ClInclude>
+    <ClInclude Include="Type\RendererType.h">
+      <Filter>Type</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

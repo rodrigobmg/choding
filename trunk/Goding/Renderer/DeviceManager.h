@@ -14,7 +14,13 @@ typedef void (*ON_DEVICE_RESET)();
 //Unlocked Framerate?
 #define FREE
 
-class DeviceManager
+#ifdef _WINDLL
+#define DLL __declspec(dllexport)
+#else
+#define DLL __declspec(dllimport)
+#endif
+
+class DLL DeviceManager
 {
 private:
 	//Context

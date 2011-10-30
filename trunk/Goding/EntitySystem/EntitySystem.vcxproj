@@ -15,7 +15,6 @@
     <ClInclude Include="Component\Visual\MorphingMesh.h" />
     <ClInclude Include="Component\Visual\SkinnedMesh.h" />
     <ClInclude Include="Component\Visual\StaticMesh.h" />
-    <ClInclude Include="Component\Visual\Vertex.h" />
     <ClInclude Include="EntityEvent.h" />
     <ClInclude Include="EntitySystem.h" />
     <ClInclude Include="Entity\IEntity.h" />
