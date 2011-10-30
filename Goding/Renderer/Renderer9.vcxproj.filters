@@ -6,9 +6,6 @@
     <ClInclude Include="IRenderObject\IRenderObject.h">
       <Filter>IRenderObject</Filter>
     </ClInclude>
-    <ClInclude Include="IRenderObject\Mesh\IMesh.h">
-      <Filter>IRenderObject\Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="DeviceManager.h">
       <Filter>Devicemanager</Filter>
     </ClInclude>
@@ -19,9 +16,6 @@
     <ClCompile Include="IRenderObject\IRenderObject.cpp">
       <Filter>IRenderObject</Filter>
     </ClCompile>
-    <ClCompile Include="IRenderObject\Mesh\IMesh.cpp">
-      <Filter>IRenderObject\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="DeviceManager.cpp">
       <Filter>Devicemanager</Filter>
     </ClCompile>
@@ -29,9 +23,6 @@
   <ItemGroup>
     <Filter Include="IRenderObject">
       <UniqueIdentifier>{bb286f15-4307-4ab8-ac56-b3f13a1f1439}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="IRenderObject\Mesh">
-      <UniqueIdentifier>{02f2dbbc-52da-4203-a9b8-253f5c52b766}</UniqueIdentifier>
     </Filter>
     <Filter Include="Devicemanager">
       <UniqueIdentifier>{7ef4a59f-af4c-451e-b76d-36214cbbd858}</UniqueIdentifier>

@@ -31,7 +31,7 @@ public:
 	IEntity*	AllocEntity( int32 entitytype );
 	bool		ReleaseEntity( int32 entitytype );
 
-	IComponent*	MakeComponent( int32 comtype );
+	IComponent*	MakeComponent( IComponent::ENABLE_COMPONENT_TYPE comtype );
 
 	void		Update( float fAccumtime );
 	

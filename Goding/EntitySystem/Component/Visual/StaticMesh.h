@@ -5,6 +5,7 @@
 
 #include "Vertex.h"
 #include "..\IComponent.h"
+#include "..\..\..\ShaderFactory\ShaderFactory.h"
 
 #ifdef _WINDLL
 #define DLL __declspec(dllexport)
@@ -43,6 +44,8 @@ public:
 
 	//Index data, ready for Index Buffer
 	std::vector<uint32> Indices;
+
+	SHADER_TYPE::TYPE	m_ShaderType;
 
 };
 

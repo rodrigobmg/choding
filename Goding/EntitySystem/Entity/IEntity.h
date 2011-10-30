@@ -35,7 +35,7 @@ private:
 	typedef std::map< int32 , IComponent* >component_table_t;
 	component_table_t		m_Components;
 		
-	Matrix44					m_TM;
+	Matrix44				m_TM;
 	IEntity*				m_pLinkedTo;
 	uint32					m_entityID;
 	tstring					m_EntityName;
