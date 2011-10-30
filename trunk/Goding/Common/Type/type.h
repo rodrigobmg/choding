@@ -5,6 +5,7 @@
 
 typedef std::basic_string<TCHAR> tstring;
 
+
 typedef char				int8;
 typedef short				int16;
 typedef int					int32;
@@ -18,6 +19,15 @@ typedef unsigned __int64	uint64;
 typedef D3DXMATRIX		Matrix44;					
 typedef D3DXVECTOR3		Vec3;				
 typedef D3DXVECTOR2		Vec2;
+
+namespace SHADER_TYPE
+{
+	enum TYPE
+	{
+		NONE = 0,
+		DIFFUSE = 1
+	};
+}
 
 
 #ifndef SAFE_DELETE

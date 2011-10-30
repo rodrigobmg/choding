@@ -8,6 +8,7 @@
 #include "Component\IComponent.h"
 
 
+
 EntitySystem::EntitySystem()
 {
 
@@ -62,7 +63,7 @@ void EntitySystem::Update( float fAccumtime )
 	}
 }
 
-IComponent* EntitySystem::MakeComponent( int32 comtype )
+IComponent* EntitySystem::MakeComponent( IComponent::ENABLE_COMPONENT_TYPE comtype )
 {
 	IComponent* pComponent = NULL;
 
@@ -79,6 +80,9 @@ IComponent* EntitySystem::MakeComponent( int32 comtype )
 	case IComponent::MORPHING_MESH:
 		pComponent = new MorphingMesh;
 		break;
+
+	default:
+		ASSERT( pComponent );
 	}
 
 	if ( pComponent != NULL )
