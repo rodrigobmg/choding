@@ -58,5 +58,5 @@ public:
 
 	Matrix44 processMatrix(daeElement* matrix);
 
-	void MakeMeshToComponent( std::vector<TempMesh*>& Meshs );
+	void MakeTempMeshToMeshComponent( std::vector<TempMesh*>& Meshs , EntitySystem* pEntitySystem );
 };

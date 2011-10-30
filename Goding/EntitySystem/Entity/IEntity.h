@@ -6,7 +6,14 @@
 #include "..\EntityEvent.h"
 #include "..\..\Common\Camera\Camera.h"
 
-class IEntity
+
+#ifdef _WINDLL
+#define DLL __declspec(dllexport)
+#else
+#define DLL __declspec(dllimport)
+#endif
+
+class DLL IEntity
 {
 public:
 
@@ -22,7 +29,7 @@ public:
 	IComponent*				GetComponent( int32 id );
 	void					SetComponent( int32 id , IComponent* pCom );
 	
-	void					DispatchEvent( EntityEvent event );
+	void					DispatchEvent( EntityEvent& event );
 
 	uint32					GetEntityID(){ return m_entityID; }
 	void					SetEntityID( uint32 id ){ m_entityID = id; }

@@ -1,7 +1,7 @@
 #ifndef _COMPONENT_VISUAL_VERTEX_H_
 #define _COMPONENT_VISUAL_VERTEX_H_
 
-#include "..\..\..\Common\Type\type.h"
+#include "..\..\..\Common\Type\CommonType.h"
 
 class Vertex
 {

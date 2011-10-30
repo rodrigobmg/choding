@@ -1,6 +1,7 @@
 #pragma once
 
-#include "..\..\Common\Type\type.h"
+#include "..\..\Common\Type\CommonType.h"
+#include "..\..\Common\Type\ComponentType.h"
 
 class IEntity;
 
@@ -16,7 +17,7 @@ class DLL IComponent
 public:
 	IComponent(void);
 	virtual ~IComponent(void);
-
+	
 	enum ENABLE_COMPONENT_TYPE
 	{
 		STATIC_MESH = 0,

@@ -81,8 +81,8 @@ IComponent* EntitySystem::MakeComponent( IComponent::ENABLE_COMPONENT_TYPE comty
 		pComponent = new MorphingMesh;
 		break;
 
-	default:
-		ASSERT( pComponent );
+	//default:
+		//ASSERT( pComponent );
 	}
 
 	if ( pComponent != NULL )

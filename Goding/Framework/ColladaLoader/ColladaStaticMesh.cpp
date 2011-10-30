@@ -1,6 +1,7 @@
 #include "stdafx.h"
+
 #include "ColladaStaticMesh.h"
-#include <vector>
+#include "..\..\EntitySystem\Component\Visual\StaticMesh.h"
 
 ColladaStaticMesh::ColladaStaticMesh()
 {
@@ -105,7 +106,7 @@ void ColladaStaticMesh::Load( std::string filename , EntitySystem* pEntitySystem
 	for(unsigned int i = 0; i < mesh_container_t.size(); i++) 
 		mesh_container_t[i]->combineComponents();
 
-	MakeMeshToComponent( mesh_container_t );
+	MakeTempMeshToMeshComponent( mesh_container_t , pEntitySystem );
 
 	//Set the pointers back to NULL, safety precaution for Debug build
 	root = NULL; library_visual_scenes = NULL; library_geometries = NULL;
@@ -347,13 +348,31 @@ void ColladaStaticMesh::processSource( TempMesh* mesh, daeElement* source )
 	}
 }
 
-void ColladaStaticMesh::MakeMeshToComponent( std::vector<TempMesh*>& Meshs )
+void ColladaStaticMesh::MakeTempMeshToMeshComponent( std::vector<TempMesh*>& Meshs , EntitySystem* pEntitySystem )
 {
 	if ( Meshs.empty() )
 		return;
 
-	for ( int i=0 ; i < Meshs.size() ; i++ )
+	for ( int i=0 ; i < (int)Meshs.size() ; i++ )
 	{
-//		StaticMesh* pStaticMesh = 
+		StaticMesh* pStaticMesh = static_cast< StaticMesh*>( pEntitySystem->MakeComponent( IComponent::STATIC_MESH ) );
+		IEntity* pEntity = pEntitySystem->AllocEntity( i );
+
+		pStaticMesh->Name = Meshs.at(i)->Name.c_str();
+		pStaticMesh->Positions = Meshs.at(i)->Positions;
+		pStaticMesh->UVs = Meshs.at(i)->UVs;
+		pStaticMesh->Normals = Meshs.at(i)->Normals;
+		pStaticMesh->Tangents = Meshs.at(i)->Tangents;
+		pStaticMesh->BiTangents = Meshs.at(i)->BiTangents;
+// 
+// 		std::vector<Vec2> UVs;
+// 		std::vector<Vec3> Normals;
+// 		std::vector<Vec3> Tangents;
+// 		std::vector<Vec3> BiTangents;
+
+		pEntity->SetMatrix( Meshs.at(i)->World );
+
+
+		pEntity->SetComponent( 1 , pStaticMesh );
 	}
 }
