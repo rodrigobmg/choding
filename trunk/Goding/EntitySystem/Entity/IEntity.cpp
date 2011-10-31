@@ -28,5 +28,10 @@ void IEntity::DispatchEvent( EntityEvent& event )
 
 void IEntity::SetComponent( int32 id , IComponent* pCom )
 {
+	if( pCom == NULL )
+		return;
+
+	pCom->SetEntity( this );
+
 	m_Components.insert( std::pair<int32 , IComponent*>( id , pCom ) );
 }

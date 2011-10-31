@@ -4,7 +4,8 @@
 #include "RenderObject\RenderObject.h"
 
 RenderSystem::RenderSystem(void)
-:m_pDeviceManager(NULL)
+:m_pDeviceManager(NULL),
+m_pCamera(NULL)
 {
 }
 
@@ -36,7 +37,17 @@ bool RenderSystem::ReleaseRenderObject()
 }
 
 void RenderSystem::Render()
-{
+{	
+	if( m_pDeviceManager == NULL )
+		return;
+
+	if( m_pCamera )
+	{
+		m_pCamera->Update( 0.f );
+		m_pDeviceManager->getDevice()->SetTransform( D3DTS_VIEW , &(m_pCamera->View) );
+		m_pDeviceManager->getDevice()->SetTransform( D3DTS_PROJECTION, &(m_pCamera->Projection) );
+	}	
+
 	typedef	std::vector< IRenderObject* >::iterator renderObjectIter;
 	renderObjectIter itB = m_RenderObjectContainer.begin();
 	renderObjectIter itE = m_RenderObjectContainer.end();

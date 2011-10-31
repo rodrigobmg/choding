@@ -108,6 +108,7 @@ void ColladaStaticMesh::Load( std::string filename , EntitySystem* pEntitySystem
 
 	MakeTempMeshToMeshComponent( mesh_container_t , pEntitySystem );
 
+
 	//Set the pointers back to NULL, safety precaution for Debug build
 	root = NULL; library_visual_scenes = NULL; library_geometries = NULL;
 	dae.close(filename);
@@ -357,22 +358,71 @@ void ColladaStaticMesh::MakeTempMeshToMeshComponent( std::vector<TempMesh*>& Mes
 	{
 		StaticMesh* pStaticMesh = static_cast< StaticMesh*>( pEntitySystem->MakeComponent( IComponent::STATIC_MESH ) );
 		IEntity* pEntity = pEntitySystem->AllocEntity( i );
+		
+		for ( int j=0 ; j< Meshs.at(i)->Positions.size() ; j++ )
+		{
+			pStaticMesh->Vertices.push_back( Vertex(Meshs.at(i)->Positions[j]
+											, Meshs.at(i)->Normals[j]
+											, Meshs.at(i)->UVs[j]
+											, Meshs.at(i)->Tangents[j]
+											, Meshs.at(i)->BiTangents[j] )
+												);
+		}		
 
-		pStaticMesh->Name = Meshs.at(i)->Name.c_str();
-		pStaticMesh->Positions = Meshs.at(i)->Positions;
-		pStaticMesh->UVs = Meshs.at(i)->UVs;
-		pStaticMesh->Normals = Meshs.at(i)->Normals;
-		pStaticMesh->Tangents = Meshs.at(i)->Tangents;
-		pStaticMesh->BiTangents = Meshs.at(i)->BiTangents;
-// 
-// 		std::vector<Vec2> UVs;
-// 		std::vector<Vec3> Normals;
-// 		std::vector<Vec3> Tangents;
-// 		std::vector<Vec3> BiTangents;
+		pStaticMesh->Indices = Meshs.at(i)->Indices;
+		pStaticMesh->Name = Meshs.at(i)->Name;
 
 		pEntity->SetMatrix( Meshs.at(i)->World );
 
-
+		MakeDirectXFriendly( pEntity , pStaticMesh );
+		
 		pEntity->SetComponent( 1 , pStaticMesh );
 	}
+}
+
+void ColladaStaticMesh::MakeDirectXFriendly( IEntity* pEntity , StaticMesh* pStaticMesh )
+{
+	Matrix44 Scale; D3DXMatrixScaling(&Scale, 1, 1, -1);
+
+	//Multiply World by Scale
+	pEntity->SetMatrix( collada2DirectX(pEntity->GetMatrix()) * Scale );
+
+	//Change Index buffer to render counter clockwise
+	for(unsigned int z = 0; z < pStaticMesh->Indices.size(); (z += 3))
+	{
+		unsigned int v0 = pStaticMesh->Indices[z];
+		unsigned int v1 = pStaticMesh->Indices[z+1];
+		unsigned int v2 = pStaticMesh->Indices[z+2];
+
+		pStaticMesh->Indices[z] = v0;
+		pStaticMesh->Indices[z+1] = v2;
+		pStaticMesh->Indices[z+2] = v1;
+	}
+}
+
+Matrix44 ColladaStaticMesh::collada2DirectX( Matrix44 input )
+{
+	Matrix44 out;
+
+	out.m[0][0] = input.m[0][0];
+	out.m[0][1] = input.m[1][0];
+	out.m[0][2] = input.m[2][0];
+	out.m[0][3] = input.m[3][0];
+
+	out.m[1][0] = input.m[0][1];
+	out.m[1][1] = input.m[1][1];
+	out.m[1][2] = input.m[2][1];
+	out.m[1][3] = input.m[3][1];
+
+	out.m[2][0] = input.m[0][2];
+	out.m[2][1] = input.m[1][2];
+	out.m[2][2] = input.m[2][2];
+	out.m[2][3] = input.m[3][2];
+
+	out.m[3][0] = input.m[0][3];
+	out.m[3][1] = input.m[1][3];
+	out.m[3][2] = input.m[2][3];
+	out.m[3][3] = input.m[3][3];
+
+	return out;
 }

@@ -47,7 +47,7 @@ private:
 	uint32					m_entityID;
 	tstring					m_EntityName;
 
-	Camera					m_Camera;
+	Camera*					m_pCamera;
 
 };
 

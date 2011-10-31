@@ -9,6 +9,7 @@
 
 #include "..\..\EntitySystem\EntitySystem.h"
 #include "TempMesh.h"
+#include "..\..\EntitySystem\Component\Visual\StaticMesh.h"
 
 #ifdef _DEBUG
 	#pragma comment( lib , "libcollada14dom22-d.lib" )
@@ -58,5 +59,10 @@ public:
 
 	Matrix44 processMatrix(daeElement* matrix);
 
+	//Convert matrix
+	Matrix44 collada2DirectX(Matrix44 input);
+
 	void MakeTempMeshToMeshComponent( std::vector<TempMesh*>& Meshs , EntitySystem* pEntitySystem );
+	void MakeDirectXFriendly( IEntity* pEntity, StaticMesh* Meshs );
+
 };
