@@ -24,9 +24,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Entity\IEntity.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="EntitySystem.h" />
     <ClInclude Include="Component\IComponent.h">
@@ -42,11 +39,11 @@
     <ClInclude Include="Component\Visual\MorphingMesh.h">
       <Filter>Component\Visual\Mesh\MorphingMesh</Filter>
     </ClInclude>
+    <ClInclude Include="Entity\Entity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Entity\IEntity.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="EntitySystem.cpp" />
     <ClCompile Include="Component\IComponent.cpp">
@@ -60,6 +57,9 @@
     </ClCompile>
     <ClCompile Include="Component\Visual\MorphingMesh.cpp">
       <Filter>Component\Visual\Mesh\MorphingMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\Entity.cpp">
+      <Filter>Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

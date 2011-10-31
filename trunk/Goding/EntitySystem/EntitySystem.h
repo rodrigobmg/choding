@@ -14,7 +14,7 @@
 
 
 #include "Component\IComponent.h"
-#include "Entity\IEntity.h"
+#include "Entity\Entity.h"
 
 
 class DLL EntitySystem
@@ -26,10 +26,10 @@ public:
 	void		Init();
 	void		Release();
 
-	IEntity*	GetEntity( int32 entityid );
+	Entity*		GetEntity( int32 entityid );
 
-	IEntity*	AllocEntity( int32 entitytype );
-	bool		ReleaseEntity( int32 entitytype );
+	Entity*		AllocEntity();
+	bool		ReleaseEntity( int32 entityid );
 
 	IComponent*	MakeComponent( IComponent::ENABLE_COMPONENT_TYPE comtype );
 
@@ -37,7 +37,7 @@ public:
 	
 private:
 
-	typedef std::vector< IEntity* > entity_table_t;
+	typedef std::vector< Entity* > entity_table_t;
 	entity_table_t	m_entity_container;
 
 	typedef std::vector< IComponent* > component_table_t;

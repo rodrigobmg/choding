@@ -1,18 +1,18 @@
 #include "stdafx.h"
 
-#include "IEntity.h"
+#include "Entity.h"
 
 
-IEntity::IEntity(void)
+Entity::Entity(void)
 {
 }
 
 
-IEntity::~IEntity(void)
+Entity::~Entity(void)
 {
 }
 
-void IEntity::DispatchEvent( EntityEvent& event )
+void Entity::DispatchEvent( EntityEvent& event )
 {
 	switch( event.itype )
 	{
@@ -26,7 +26,7 @@ void IEntity::DispatchEvent( EntityEvent& event )
 	}
 }
 
-void IEntity::SetComponent( int32 id , IComponent* pCom )
+void Entity::SetComponent( int32 id , IComponent* pCom )
 {
 	if( pCom == NULL )
 		return;

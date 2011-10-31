@@ -47,22 +47,7 @@ namespace WinApplication
 		Width = width; Height = height; Fullscreen = fullscreen;
 
 		window = new Window(WinApplication::messageHandler, L"Goding", 0, 0, (int)Width, (int)Height);
-
-
-		ColladaStaticMesh loader;
-		std::string str("fhi");
-		loader.Load( str  , pEntitySystem );
-
-		IEntity* pEntity = pEntitySystem->GetEntity( 1 );
-		StaticMesh* pComponenet = static_cast< StaticMesh*>( pEntity->GetComponent( 0 ) );
-		RenderObject* pRenderObject = static_cast< RenderObject*>( m_pRenderSystem->AllocRenderObject( IRenderObject::MESH ) );
-		for ( int i=0 ; i < pComponenet->Vertices.size() ; i++ )
-		{			
-			pRenderObject->PushVertex( pComponenet->Vertices[i] );
-			pRenderObject->PushIndex( pComponenet->Indices[i] );
-		}		
 		
-
 		pRenderSystem->CreateDeviceManager( window->getHandle(), (int)Width, (int)Height, Fullscreen );
 		pRenderSystem->GetDeviceManager()->OnDeviceLost = onDeviceLost;
 		pRenderSystem->GetDeviceManager()->OnDeviceReset = onDeviceReset;

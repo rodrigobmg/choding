@@ -357,7 +357,7 @@ void ColladaStaticMesh::MakeTempMeshToMeshComponent( std::vector<TempMesh*>& Mes
 	for ( int i=0 ; i < (int)Meshs.size() ; i++ )
 	{
 		StaticMesh* pStaticMesh = static_cast< StaticMesh*>( pEntitySystem->MakeComponent( IComponent::STATIC_MESH ) );
-		IEntity* pEntity = pEntitySystem->AllocEntity( i );
+		Entity* pEntity = pEntitySystem->AllocEntity();
 		
 		for ( int j=0 ; j< Meshs.at(i)->Positions.size() ; j++ )
 		{
@@ -380,7 +380,7 @@ void ColladaStaticMesh::MakeTempMeshToMeshComponent( std::vector<TempMesh*>& Mes
 	}
 }
 
-void ColladaStaticMesh::MakeDirectXFriendly( IEntity* pEntity , StaticMesh* pStaticMesh )
+void ColladaStaticMesh::MakeDirectXFriendly( Entity* pEntity , StaticMesh* pStaticMesh )
 {
 	Matrix44 Scale; D3DXMatrixScaling(&Scale, 1, 1, -1);
 

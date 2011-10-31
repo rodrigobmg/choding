@@ -30,5 +30,8 @@
     <Filter Include="RenderObject">
       <UniqueIdentifier>{bb286f15-4307-4ab8-ac56-b3f13a1f1439}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CameraSystem">
+      <UniqueIdentifier>{697c1f50-cd9d-4092-983a-a81426132ae4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

@@ -4,8 +4,6 @@
 
 #include "..\Component\IComponent.h"
 #include "..\EntityEvent.h"
-#include "..\..\Common\Camera\Camera.h"
-
 
 #ifdef _WINDLL
 #define DLL __declspec(dllexport)
@@ -13,18 +11,18 @@
 #define DLL __declspec(dllimport)
 #endif
 
-class DLL IEntity
+class DLL Entity
 {
 public:
 
-	IEntity(void);
-	virtual ~IEntity(void);
+	Entity(void);
+	virtual ~Entity(void);
 	
 	void					SetMatrix( Matrix44& tm ){ m_TM = tm; }
 	Matrix44				GetMatrix(){ return m_TM; }
 
-	IEntity*				GetLinkedEntity(){ return m_pLinkedTo; }
-	void					SetLinkedEntity( IEntity* pEntity ){ m_pLinkedTo = pEntity; }
+	Entity*					GetLinkedEntity(){ return m_pLinkedTo; }
+	void					SetLinkedEntity( Entity* pEntity ){ m_pLinkedTo = pEntity; }
 
 	IComponent*				GetComponent( int32 id );
 	void					SetComponent( int32 id , IComponent* pCom );
@@ -43,11 +41,8 @@ private:
 	component_table_t		m_Components;
 		
 	Matrix44				m_TM;
-	IEntity*				m_pLinkedTo;
+	Entity*					m_pLinkedTo;
 	uint32					m_entityID;
 	tstring					m_EntityName;
-
-	Camera*					m_pCamera;
-
 };
 

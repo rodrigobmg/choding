@@ -1,9 +1,8 @@
 #pragma once
 
 #include "..\..\Common\Type\CommonType.h"
-#include "..\..\Common\Type\ComponentType.h"
 
-class IEntity;
+class Entity;
 
 #ifdef _WINDLL
 #define DLL __declspec(dllexport)
@@ -29,11 +28,11 @@ public:
 
 	int32			GetComponentID(){ return m_ID; }
 
-	IEntity*		GetEntity(){ return m_pEntity; }
-	void			SetEntity( IEntity* entity ){ m_pEntity = entity; }
+	Entity*		GetEntity(){ return m_pEntity; }
+	void			SetEntity( Entity* entity ){ m_pEntity = entity; }
 
 protected:
-	IEntity*		m_pEntity;
+	Entity*		m_pEntity;
 	int32			m_ID;
 };
 

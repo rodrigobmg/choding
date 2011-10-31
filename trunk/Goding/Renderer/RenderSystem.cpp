@@ -55,6 +55,8 @@ void RenderSystem::Render()
 	{
 		(*it)->Draw(NULL,NULL);
 	}
+
+	m_RenderObjectContainer.clear();
 }
 
 DeviceManager* RenderSystem::GetDeviceManager()
