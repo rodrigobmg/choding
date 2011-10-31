@@ -17,8 +17,10 @@ typedef unsigned int		uint32;
 typedef unsigned __int64	uint64;
 
 typedef D3DXMATRIX		Matrix44;					
+typedef D3DXVECTOR4		Vec4;
 typedef D3DXVECTOR3		Vec3;				
 typedef D3DXVECTOR2		Vec2;
+typedef D3DXQUATERNION	Quat;
 
 
 #ifndef SAFE_DELETE

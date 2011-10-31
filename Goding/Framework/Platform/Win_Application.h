@@ -162,7 +162,7 @@ namespace WinApplication
  
  		m_pRenderSystem->GetDeviceManager()->getDevice()->BeginScene();
  
- 		//pRenderSystem->Draw(deviceManager, camera);
+ 		m_pRenderSystem->Render();
  
  		m_pRenderSystem->GetDeviceManager()->getDevice()->EndScene();
  

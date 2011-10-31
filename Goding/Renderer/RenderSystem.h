@@ -13,6 +13,7 @@
 
 #include "RenderObject\IRenderObject.h"
 #include "DeviceManager.h"
+#include "..\Common\Camera\Camera.h"
 
 
 class DLL RenderSystem
@@ -29,6 +30,7 @@ public:
 	DeviceManager*			CreateDeviceManager( HWND Window, UINT Width, UINT Height, bool Fullscreen );
 	DeviceManager*			GetDeviceManager();
 
+	Camera*					GetCamera(){ return m_pCamera; }
 	void					onDeviceLost();
 	void					onDeviceReset();
 
@@ -38,6 +40,8 @@ private:
 	renderObject_table_t	m_RenderObjectContainer;
 
 	DeviceManager*			m_pDeviceManager;
+
+	Camera*					m_pCamera;
 
 };
 

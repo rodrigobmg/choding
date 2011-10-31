@@ -27,5 +27,6 @@ private:
 
 	EntitySystem	m_EntitySystem;
 	RenderSystem	m_RenderSystem;
+	Camera*			m_pCamera;
 };
 
