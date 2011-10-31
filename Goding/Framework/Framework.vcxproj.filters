@@ -49,5 +49,11 @@
     <Filter Include="ColladaLoader\MorphingMesh">
       <UniqueIdentifier>{b5beb686-baef-4c8b-8c27-878d0daf05d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ActorSystem">
+      <UniqueIdentifier>{1e804d0e-6414-4fb7-b6e9-e3c38a617680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceSystem">
+      <UniqueIdentifier>{5bd749c3-6e2c-40ce-a0b4-a07f5d0543e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

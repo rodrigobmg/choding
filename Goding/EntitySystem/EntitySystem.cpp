@@ -19,9 +19,9 @@ EntitySystem::~EntitySystem()
 
 }
 
-IEntity* EntitySystem::GetEntity( int32 entityid )
+Entity* EntitySystem::GetEntity( int32 entityid )
 {
-	typedef std::vector< IEntity* >::iterator iter;
+	typedef std::vector< Entity* >::iterator iter;
 	iter begin = m_entity_container.begin();
 	iter end = m_entity_container.end();
 	for ( iter it = begin ; it != end ; ++it )
@@ -35,17 +35,17 @@ IEntity* EntitySystem::GetEntity( int32 entityid )
 	return NULL;
 }
 
-IEntity* EntitySystem::AllocEntity( int32 entitytype )
+Entity* EntitySystem::AllocEntity()
 {
-	IEntity* pEntity = new IEntity;
-	pEntity->SetEntityID( entitytype );
+	Entity* pEntity = new Entity;	
 	m_entity_container.push_back( pEntity );
+	pEntity->SetEntityID( m_entity_container.size() );
 	return pEntity;
 }
 
-bool EntitySystem::ReleaseEntity( int32 entitytype )
+bool EntitySystem::ReleaseEntity( int32 entityid )
 {
-	return true;
+	return false;
 }
 
 void EntitySystem::Update( float fAccumtime )
@@ -54,7 +54,7 @@ void EntitySystem::Update( float fAccumtime )
 	event.itype = EntityEvent::TRANS_XFORM;
 	event.fAccumtime = fAccumtime;
 
-	typedef std::vector< IEntity* >::iterator iter;
+	typedef std::vector< Entity* >::iterator iter;
 	iter begin = m_entity_container.begin();
 	iter end = m_entity_container.end();
 	for ( iter it = begin ; it != end ; ++it )

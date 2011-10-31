@@ -36,10 +36,7 @@ public:
 	
 	std::vector< Vertex >&	GetVertices(){ return Vertices; }
 	std::vector< uint32 >&	GetIndices(){ return Indices; }
-
-	void				PushVertex( Vertex& vertex );
-	void				PushIndex( uint32& index );
-
+	
 };
 
 
