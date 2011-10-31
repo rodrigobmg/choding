@@ -7,6 +7,9 @@
 #include "Win_Window.h"
 #include "..\..\Renderer\RenderSystem.h"
 #include "..\ColladaLoader\ColladaStaticMesh.h"
+#include "..\..\Renderer\RenderObject\RenderObject.h"
+#include "..\..\EntitySystem\Component\Visual\StaticMesh.h"
+#include "..\..\Renderer\RenderObject\IRenderObject.h"
 
 using namespace std;
 
@@ -49,6 +52,16 @@ namespace WinApplication
 		ColladaStaticMesh loader;
 		std::string str("fhi");
 		loader.Load( str  , pEntitySystem );
+
+		IEntity* pEntity = pEntitySystem->GetEntity( 1 );
+		StaticMesh* pComponenet = static_cast< StaticMesh*>( pEntity->GetComponent( 0 ) );
+		RenderObject* pRenderObject = static_cast< RenderObject*>( m_pRenderSystem->AllocRenderObject( IRenderObject::MESH ) );
+		for ( int i=0 ; i < pComponenet->Vertices.size() ; i++ )
+		{			
+			pRenderObject->PushVertex( pComponenet->Vertices[i] );
+			pRenderObject->PushIndex( pComponenet->Indices[i] );
+		}		
+		
 
 		pRenderSystem->CreateDeviceManager( window->getHandle(), (int)Width, (int)Height, Fullscreen );
 		pRenderSystem->GetDeviceManager()->OnDeviceLost = onDeviceLost;
