@@ -2,7 +2,7 @@
 
 
 //#include "Window.h"
-#include "..\Common\Type\CommonType.h"
+
 
 //Function pointers
 typedef void (*ON_DEVICE_LOST)();

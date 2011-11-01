@@ -3,24 +3,27 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="RenderSystem.h" />
-    <ClInclude Include="DeviceManager.h">
-      <Filter>Devicemanager</Filter>
-    </ClInclude>
     <ClInclude Include="RenderObject\RenderObject.h">
       <Filter>RenderObject</Filter>
     </ClInclude>
     <ClInclude Include="RenderObject\IRenderObject.h">
       <Filter>RenderObject</Filter>
     </ClInclude>
+    <ClInclude Include="DeviceManager\DeviceManager.h">
+      <Filter>Devicemanager</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager\Camera.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
-    <ClCompile Include="DeviceManager.cpp">
-      <Filter>Devicemanager</Filter>
-    </ClCompile>
     <ClCompile Include="RenderObject\RenderObject.cpp">
       <Filter>RenderObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceManager\DeviceManager.cpp">
+      <Filter>Devicemanager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

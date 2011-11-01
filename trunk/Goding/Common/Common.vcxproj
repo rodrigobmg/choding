@@ -79,7 +79,6 @@
     <ClCompile Include="Util\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="FileSystem\GdsFile.h" />
     <ClInclude Include="FrameMemory\GdsFrameMemory.h" />
     <ClInclude Include="Logger\console_logger.h" />
