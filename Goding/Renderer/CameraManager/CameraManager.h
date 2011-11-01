@@ -19,7 +19,7 @@ public:
 	//Update
 	void Update(float fpsMod);
 
-	Camera*			GetCurCam(){ return m_pCam; }
+	Camera			GetCurCam(){ return *m_pCam; }
 	void			SetCurCam( Camera* cam );
 
 private:
