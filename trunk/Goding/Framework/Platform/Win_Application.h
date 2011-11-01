@@ -37,9 +37,6 @@ namespace WinApplication
 	
 	RenderSystem* m_pRenderSystem;
 	EntitySystem* m_pEntitySystem;
-	//Main
-	typedef std::vector< Entity* > entity_container_table_t;
-	entity_container_table_t*		m_pEntityNodes;
 	
 	void Run( EntitySystem* pEntitySystem , RenderSystem* pRenderSystem , float width, float height, bool fullscreen)
 	{
@@ -148,7 +145,7 @@ namespace WinApplication
 		bool Escape = (GetAsyncKeyState(VK_ESCAPE) & 0x8000) ? true : false;
 
 		//Quit if pressed
-		if(Escape) PostQuitMessage(0);
+		
 
 		//Update Time
 		//time->Update();
@@ -156,12 +153,12 @@ namespace WinApplication
 		//Update Camera
 		//camera->Update(60.0f / time->getFps());
 
-		//m_pEntitySystem->Update( 0.f );
-// 		for (int i=0 ; i < m_pEntityNodes->size() ; i++)
-// 		{
-// 			m_pEntityNodes->at(i).Update(0.f);
-// 		}
-		
+		m_pEntitySystem->Update( 0.f );
+
+		typedef std::vector< Entity* > entity_container_table_t;
+		entity_container_table_t* activatelist = m_pEntitySystem->GetActivatedEntityList();
+
+		if(Escape) PostQuitMessage(0);
 	}
 
 	//Draw Meshes

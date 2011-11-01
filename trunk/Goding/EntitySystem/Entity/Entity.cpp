@@ -3,7 +3,9 @@
 #include "Entity.h"
 
 
-Entity::Entity(void)
+Entity::Entity(void):
+m_bActivated(true),
+m_pLinkedTo(NULL)
 {
 }
 

@@ -35,6 +35,9 @@ public:
 	const wchar_t*			GetEntityName(){ return m_EntityName.c_str(); }
 	void					SetEntityName( const wchar_t* name ){ m_EntityName = name; }
 
+	void					Activate( bool flag ){ m_bActivated = flag; }
+	bool					IsActivated(){ return m_bActivated; }
+
 private:
 	
 	typedef std::map< int32 , IComponent* >component_table_t;
@@ -44,5 +47,6 @@ private:
 	Entity*					m_pLinkedTo;
 	uint32					m_entityID;
 	tstring					m_EntityName;
+	bool					m_bActivated;
 };
 

@@ -28,11 +28,11 @@ public:
 
 	int32			GetComponentID(){ return m_ID; }
 
-	Entity*		GetEntity(){ return m_pEntity; }
+	Entity*			GetEntity(){ return m_pEntity; }
 	void			SetEntity( Entity* entity ){ m_pEntity = entity; }
 
 protected:
-	Entity*		m_pEntity;
+	Entity*			m_pEntity;
 	int32			m_ID;
 };
 
