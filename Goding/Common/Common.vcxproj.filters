@@ -31,9 +31,6 @@
     <Filter Include="Type">
       <UniqueIdentifier>{da9f74aa-cdc6-41ed-a6f0-ae57a63e1915}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{ef10cfa9-ac51-432a-9615-2b9dc0e7af69}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileSystem\GdsFile.cpp">
@@ -118,9 +115,6 @@
     </ClInclude>
     <ClInclude Include="PerformanceCheck\Performance.h">
       <Filter>Profile</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera\Camera.h">
-      <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="Type\CommonType.h">
       <Filter>Type</Filter>

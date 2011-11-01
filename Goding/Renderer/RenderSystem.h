@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "RenderObject\IRenderObject.h"
-#include "DeviceManager.h"
+#include "DeviceManager\DeviceManager.h"
 #include "..\Common\Camera\Camera.h"
 
 
