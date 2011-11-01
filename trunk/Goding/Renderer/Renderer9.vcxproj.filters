@@ -15,6 +15,9 @@
     <ClInclude Include="CameraManager\Camera.h">
       <Filter>CameraSystem</Filter>
     </ClInclude>
+    <ClInclude Include="CameraManager\CameraManager.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -24,6 +27,9 @@
     </ClCompile>
     <ClCompile Include="DeviceManager\DeviceManager.cpp">
       <Filter>Devicemanager</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager\CameraManager.cpp">
+      <Filter>CameraSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

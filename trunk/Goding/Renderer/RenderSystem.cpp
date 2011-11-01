@@ -5,7 +5,7 @@
 
 RenderSystem::RenderSystem(void)
 :m_pDeviceManager(NULL),
-m_pCamera(NULL)
+m_pCameraManager(NULL)
 {
 }
 
@@ -41,11 +41,11 @@ void RenderSystem::Render()
 	if( m_pDeviceManager == NULL )
 		return;
 
-	if( m_pCamera )
+	if( m_pCameraManager )
 	{
-		m_pCamera->Update( 0.f );
-		m_pDeviceManager->getDevice()->SetTransform( D3DTS_VIEW , &(m_pCamera->View) );
-		m_pDeviceManager->getDevice()->SetTransform( D3DTS_PROJECTION, &(m_pCamera->Projection) );
+		m_pCameraManager->Update( 0.f );
+		m_pDeviceManager->getDevice()->SetTransform( D3DTS_VIEW , &(m_pCameraManager->GetCurCam()->View) );
+		m_pDeviceManager->getDevice()->SetTransform( D3DTS_PROJECTION, &(m_pCameraManager->GetCurCam()->Projection) );
 	}	
 
 	typedef	std::vector< IRenderObject* >::iterator renderObjectIter;
