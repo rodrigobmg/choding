@@ -50,6 +50,8 @@ bool EntitySystem::ReleaseEntity( int32 entityid )
 
 void EntitySystem::Update( float fAccumtime )
 {
+	m_activated_entity_container.clear();
+
 	EntityEvent event;
 	event.itype = EntityEvent::TRANS_XFORM;
 	event.fAccumtime = fAccumtime;
@@ -59,7 +61,11 @@ void EntitySystem::Update( float fAccumtime )
 	iter end = m_entity_container.end();
 	for ( iter it = begin ; it != end ; ++it )
 	{
-		(*it)->DispatchEvent( event );
+		if ( (*it)->IsActivated() )
+		{
+			(*it)->DispatchEvent( event );
+			m_activated_entity_container.push_back( (*it) );
+		}		
 	}
 }
 

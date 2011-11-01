@@ -16,6 +16,8 @@
 #include "Component\IComponent.h"
 #include "Entity\Entity.h"
 
+typedef std::vector< Entity* > entity_table_t;
+typedef std::vector< IComponent* > component_table_t;
 
 class DLL EntitySystem
 {
@@ -32,16 +34,18 @@ public:
 	bool		ReleaseEntity( int32 entityid );
 
 	IComponent*	MakeComponent( IComponent::ENABLE_COMPONENT_TYPE comtype );
+	
+	entity_table_t*	GetActivatedEntityList(){ return &m_activated_entity_container; }
 
 	void		Update( float fAccumtime );
 	
+	
+
 private:
-
-	typedef std::vector< Entity* > entity_table_t;
-	entity_table_t	m_entity_container;
-
-	typedef std::vector< IComponent* > component_table_t;
+	
+	entity_table_t	m_entity_container;	
 	component_table_t m_component_container;
+	entity_table_t	m_activated_entity_container;
 
 };
 
