@@ -34,13 +34,14 @@ void RenderObject::Draw( D3DDevice* pDevice , D3DXEffect* pEffect )
 	pEffect->BeginPass(0);
 
 	//Draw
-	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, Vertices.size(), 0, Indices.size() / 3);
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_indexCount , 0, m_indexCount / 3 );
 
 	//End drawing
 	pEffect->EndPass();
 	pEffect->End();
 }
 
+/*
 void RenderObject::onDeviceReset( D3DDevice* pDevice )
 {
 	void* BufferMemory;
@@ -70,4 +71,4 @@ void RenderObject::onDeviceLost()
 {
 	SAFE_RELEASE(m_indexBuffer);
 	SAFE_RELEASE(m_vertexBuffer);
-}
+}*/

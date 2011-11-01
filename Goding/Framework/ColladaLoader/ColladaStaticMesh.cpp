@@ -376,7 +376,7 @@ void ColladaStaticMesh::MakeTempMeshToMeshComponent( std::vector<TempMesh*>& Mes
 
 		MakeDirectXFriendly( pEntity , pStaticMesh );
 		
-		pEntity->SetComponent( 1 , pStaticMesh );
+		pEntity->SetComponent( Entity::VISUAL , pStaticMesh );
 	}
 }
 

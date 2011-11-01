@@ -18,8 +18,6 @@ public:
 	};
 
 	virtual void Draw( D3DDevice* pDevice , D3DXEffect* pEffect ) = 0;
-	virtual void onDeviceReset( D3DDevice* pDevice ) = 0;
-	virtual void onDeviceLost() = 0;
 		
 };
 

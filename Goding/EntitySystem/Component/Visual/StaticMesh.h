@@ -14,13 +14,9 @@
 class DLL StaticMesh : public IComponent
 {
 public:
-	StaticMesh(){};
-	StaticMesh( std::string& name );
+	StaticMesh(){ m_ID = STATIC_MESH; }
 	virtual ~StaticMesh(void);
-
-
-	virtual void			SetComponent( int32 id );
-	
+		
 	D3DVertexBuffer*		m_vertexBuffer;
 	D3DIndexBuffer*			m_indexBuffer;
 	D3DXEffect*				m_pEffect;
