@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CameraManager\Camera.h" />
+    <ClInclude Include="CameraManager\CameraManager.h" />
     <ClInclude Include="DeviceManager\DeviceManager.h" />
     <ClInclude Include="RenderObject\IRenderObject.h" />
     <ClInclude Include="RenderObject\RenderObject.h" />
@@ -83,6 +84,7 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CameraManager\CameraManager.cpp" />
     <ClCompile Include="DeviceManager\DeviceManager.cpp" />
     <ClCompile Include="RenderObject\RenderObject.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
