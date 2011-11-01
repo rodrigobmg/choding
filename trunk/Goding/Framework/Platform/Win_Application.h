@@ -35,22 +35,28 @@ namespace WinApplication
 	float Height;
 	bool Fullscreen;
 	
-	EntitySystem* m_pEntitySystem;
 	RenderSystem* m_pRenderSystem;
-
+	EntitySystem* m_pEntitySystem;
 	//Main
-	void Run(EntitySystem* pEntitySystem , RenderSystem* pRenderSystem , float width, float height, bool fullscreen)
+	typedef std::vector< Entity* > entity_container_table_t;
+	entity_container_table_t*		m_pEntityNodes;
+	
+	void Run( EntitySystem* pEntitySystem , RenderSystem* pRenderSystem , float width, float height, bool fullscreen)
 	{
-		m_pEntitySystem = pEntitySystem;
 		m_pRenderSystem = pRenderSystem;
-		
-		Width = width; Height = height; Fullscreen = fullscreen;
+		m_pEntitySystem = pEntitySystem;
+		//m_pEntityNodes = pEntityNodes;
+
+		Width = width; 
+		Height = height; 
+		Fullscreen = fullscreen;
 
 		window = new Window(WinApplication::messageHandler, L"Goding", 0, 0, (int)Width, (int)Height);
 		
 		pRenderSystem->CreateDeviceManager( window->getHandle(), (int)Width, (int)Height, Fullscreen );
 		pRenderSystem->GetDeviceManager()->OnDeviceLost = onDeviceLost;
 		pRenderSystem->GetDeviceManager()->OnDeviceReset = onDeviceReset;
+		pRenderSystem->GetDeviceManager()->onDeviceReset();
 		
 		window->Show();
 
@@ -150,7 +156,12 @@ namespace WinApplication
 		//Update Camera
 		//camera->Update(60.0f / time->getFps());
 
-		m_pEntitySystem->Update( 0.f );
+		//m_pEntitySystem->Update( 0.f );
+// 		for (int i=0 ; i < m_pEntityNodes->size() ; i++)
+// 		{
+// 			m_pEntityNodes->at(i).Update(0.f);
+// 		}
+		
 	}
 
 	//Draw Meshes

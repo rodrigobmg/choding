@@ -20,7 +20,25 @@ void RenderObject::Draw( D3DDevice* pDevice , D3DXEffect* pEffect )
 	if( pDevice == NULL )
 		return;
 
+	//Set vertex buffer
+	pDevice->SetStreamSource(0, m_vertexBuffer, 0, STRIDE_SIZE);
 
+	//Set index buffer
+	pDevice->SetIndices(m_indexBuffer);
+
+	//Set parameters
+	//pEffect->SetMatrix("World", &World);
+
+	//Begin drawing
+	pEffect->Begin(NULL, NULL);
+	pEffect->BeginPass(0);
+
+	//Draw
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, Vertices.size(), 0, Indices.size() / 3);
+
+	//End drawing
+	pEffect->EndPass();
+	pEffect->End();
 }
 
 void RenderObject::onDeviceReset( D3DDevice* pDevice )
