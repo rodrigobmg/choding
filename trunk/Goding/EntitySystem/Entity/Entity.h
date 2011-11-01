@@ -15,6 +15,11 @@ class DLL Entity
 {
 public:
 
+	enum COMPONENT_TYPE
+	{
+		VISUAL = 0,
+	};
+
 	Entity(void);
 	virtual ~Entity(void);
 	
@@ -32,7 +37,7 @@ public:
 	uint32					GetEntityID(){ return m_entityID; }
 	void					SetEntityID( uint32 id ){ m_entityID = id; }
 
-	const wchar_t*			GetEntityName(){ return m_EntityName.c_str(); }
+	const TCHAR*			GetEntityName(){ return m_EntityName.c_str(); }
 	void					SetEntityName( const wchar_t* name ){ m_EntityName = name; }
 
 	void					Activate( bool flag ){ m_bActivated = flag; }

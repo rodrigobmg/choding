@@ -24,15 +24,14 @@ public:
 		MORPHING_MESH,
 	};
 
-	virtual void	SetComponent( int32 id ) = 0;
+	ENABLE_COMPONENT_TYPE	GetComponentID(){ return m_ID; }
 
-	int32			GetComponentID(){ return m_ID; }
-
-	Entity*			GetEntity(){ return m_pEntity; }
-	void			SetEntity( Entity* entity ){ m_pEntity = entity; }
+	Entity*					GetEntity(){ return m_pEntity; }
+	void					SetEntity( Entity* entity ){ m_pEntity = entity; }
 
 protected:
-	Entity*			m_pEntity;
-	int32			m_ID;
+
+	Entity*					m_pEntity;
+	ENABLE_COMPONENT_TYPE	m_ID;
 };
 
