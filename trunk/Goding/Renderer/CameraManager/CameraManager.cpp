@@ -30,11 +30,17 @@ void CameraManager::SetCurCam( Camera* cam )
 
 void CameraManager::onDeviceReset()
 {
+	if ( m_pCam == NULL )
+		return;
+
 	D3DXMatrixPerspectiveFovLH(&m_pCam->Projection, (D3DX_PI / 4.0f), (m_pCam->Width / m_pCam->Height), 1.0f, 1000.0f);
 }
 
 void CameraManager::Update( float fpsMod )
 {
+	if ( m_pCam == NULL )
+		return;
+
 	//Keyboard bools
 // 	bool W = (GetAsyncKeyState(0x0057) & 0x8000) ? true : false;
 // 	bool S = (GetAsyncKeyState(0x0053) & 0x8000) ? true : false;

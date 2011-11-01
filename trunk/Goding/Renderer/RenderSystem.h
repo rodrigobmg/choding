@@ -31,7 +31,8 @@ public:
 	DeviceManager*			CreateDeviceManager( HWND Window, UINT Width, UINT Height, bool Fullscreen );
 	DeviceManager*			GetDeviceManager();
 
-	Camera*					GetCamera(){ return m_pCameraManager->GetCurCam(); }
+	void					SetCamera( Camera* camera );
+	Camera					GetCamera(){ return m_pCameraManager->GetCurCam(); }
 	void					onDeviceLost();
 	void					onDeviceReset();
 

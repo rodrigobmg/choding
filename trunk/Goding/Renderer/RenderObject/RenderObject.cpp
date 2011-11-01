@@ -2,7 +2,10 @@
 #include "stdafx.h"
 #include "RenderObject.h"
 
-RenderObject::RenderObject()
+RenderObject::RenderObject():
+m_pEffect(NULL),
+m_indexBuffer(NULL),
+m_vertexBuffer(NULL)
 {
 
 }
@@ -14,6 +17,9 @@ RenderObject::~RenderObject()
 
 void RenderObject::Draw( D3DDevice* pDevice , D3DXEffect* pEffect )
 {
+	if( pDevice == NULL )
+		return;
+
 
 }
 
