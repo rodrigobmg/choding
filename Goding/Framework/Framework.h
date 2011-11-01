@@ -28,5 +28,9 @@ private:
 	EntitySystem	m_EntitySystem;
 	RenderSystem	m_RenderSystem;
 	Camera*			m_pCamera;
+
+	typedef std::vector< Entity* > entity_container_table_t;
+	entity_container_table_t	m_EntityContainer;
+
 };
 

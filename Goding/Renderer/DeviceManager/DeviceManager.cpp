@@ -75,14 +75,7 @@ DeviceManager::DeviceManager(HWND Window, UINT Width, UINT Height, bool Fullscre
 
 	//Check Device creation for error
 	errorCheck(result, L"DeviceManager Constructor: Failed to create device!\r\n");
-
-#pragma region //Turn the cursor off
-	if(Fullscreen)
-		while(ShowCursor(false) >= 0);
-	else
-		while(ShowCursor(true) < 0);
-#pragma endregion
-
+	
 	//Initialize resources
 	onDeviceReset();
 }
