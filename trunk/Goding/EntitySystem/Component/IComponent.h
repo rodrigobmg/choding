@@ -1,7 +1,5 @@
 #pragma once
 
-#include "..\..\Common\Type\CommonType.h"
-
 class Entity;
 
 #ifdef _WINDLL
@@ -28,6 +26,9 @@ public:
 
 	Entity*					GetEntity(){ return m_pEntity; }
 	void					SetEntity( Entity* entity ){ m_pEntity = entity; }
+
+	virtual	void			onDeviceReset( D3DDevice* pDevice ){};
+	virtual void			onDeviceLost(){};
 
 protected:
 

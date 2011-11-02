@@ -4,9 +4,9 @@
 #include "RenderObject\RenderObject.h"
 
 RenderSystem::RenderSystem(void)
-:m_pDeviceManager(NULL),
-m_pCameraManager(NULL)
+:m_pDeviceManager(NULL)
 {
+	m_pCameraManager = new CameraManager;
 }
 
 
@@ -64,10 +64,10 @@ void RenderSystem::Render()
 		(*it)->Draw( pDevice );
 	}
 
-	m_RenderObjectContainer.clear();
-
 	pDevice->EndScene();
 	GetDeviceManager()->Present();
+
+	m_RenderObjectContainer.clear();
 }
 
 DeviceManager* RenderSystem::GetDeviceManager()

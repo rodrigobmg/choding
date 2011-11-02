@@ -25,6 +25,7 @@ public:
 	D3DVertexBuffer*		m_vertexBuffer;
 	D3DIndexBuffer*			m_indexBuffer;
 	D3DXEffect*				m_pEffect;
+	D3DVertexDeclaration*	m_VertexDeclaration;
 
 	uint32					m_VerticesSize;
 
