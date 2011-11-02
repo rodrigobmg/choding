@@ -28,12 +28,22 @@ void Entity::DispatchEvent( EntityEvent& event )
 	}
 }
 
-void Entity::SetComponent( int32 id , IComponent* pCom )
+void Entity::SetComponent( COMPONENT_TYPE id , IComponent* pCom )
 {
 	if( pCom == NULL )
 		return;
 
 	pCom->SetEntity( this );
 
-	m_Components.insert( std::pair<int32 , IComponent*>( id , pCom ) );
+	m_Components.insert( std::pair<COMPONENT_TYPE , IComponent*>( id , pCom ) );
+}
+
+IComponent* Entity::GetComponent( COMPONENT_TYPE id )
+{
+ 	typedef std::map< COMPONENT_TYPE , IComponent* >component_table_t;
+ 	component_table_t::iterator it = m_Components.find( id );
+ 	if ( it != m_Components.end() )
+ 		return it->second;
+ 	else
+		return NULL;
 }

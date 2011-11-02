@@ -17,7 +17,7 @@ public:
 		MESH = 0,
 	};
 
-	virtual void Draw( D3DDevice* pDevice , D3DXEffect* pEffect ) = 0;
+	virtual void Draw( D3DDevice* pDevice ) = 0;
 		
 };
 

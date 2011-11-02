@@ -13,6 +13,15 @@ class RenderObject : public IRenderObject
 
 private:
 
+	static const int32 STRIDE_SIZE = (sizeof(DWORD) * 14);
+
+public:
+	RenderObject(void);
+	virtual ~RenderObject(void);
+
+	virtual void		Draw( D3DDevice* pDevice );	
+
+	
 	D3DVertexBuffer*		m_vertexBuffer;
 	D3DIndexBuffer*			m_indexBuffer;
 	D3DXEffect*				m_pEffect;
@@ -23,13 +32,8 @@ private:
 	uint32					m_indexCount;
 	uint32					m_vertexSize;
 
-	static const int32 STRIDE_SIZE = (sizeof(DWORD) * 14);
+	Matrix44				m_world;
 
-public:
-	RenderObject(void);
-	virtual ~RenderObject(void);
-
-	virtual void		Draw( D3DDevice* pDevice , D3DXEffect* pEffect );	
 };
 
 

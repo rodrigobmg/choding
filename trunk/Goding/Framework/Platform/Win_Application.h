@@ -145,7 +145,7 @@ namespace WinApplication
 		bool Escape = (GetAsyncKeyState(VK_ESCAPE) & 0x8000) ? true : false;
 
 		//Quit if pressed
-		
+		if(Escape) PostQuitMessage(0);
 
 		//Update Time
 		//time->Update();
@@ -153,26 +153,28 @@ namespace WinApplication
 		//Update Camera
 		//camera->Update(60.0f / time->getFps());
 
-		m_pEntitySystem->Update( 0.f );
-
-		typedef std::vector< Entity* > entity_container_table_t;
-		entity_container_table_t* activatelist = m_pEntitySystem->GetActivatedEntityList();
-
-		if(Escape) PostQuitMessage(0);
+		m_pEntitySystem->Update( 0.f );		
 	}
 
 	//Draw Meshes
 	void Draw()
-	{
- 		m_pRenderSystem->GetDeviceManager()->getDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0);
- 
- 		m_pRenderSystem->GetDeviceManager()->getDevice()->BeginScene();
- 
- 		m_pRenderSystem->Render();
- 
- 		m_pRenderSystem->GetDeviceManager()->getDevice()->EndScene();
- 
- 		m_pRenderSystem->GetDeviceManager()->Present();
+	{ 
+		typedef std::vector< Entity* > entity_container_table_t;
+		entity_container_table_t* activatelist = m_pEntitySystem->GetActivatedEntityList();
+
+		for ( int i=0 ; i < activatelist->size() ; i++ )
+		{
+			RenderObject* pRenderObject = static_cast<RenderObject*>( m_pRenderSystem->AllocRenderObject( IRenderObject::MESH ) );
+			pRenderObject->m_world = activatelist->at(i)->GetMatrix();
+
+			StaticMesh* pCom = static_cast<StaticMesh*>( activatelist->at(i)->GetComponent( Entity::VISUAL ) );
+
+			pRenderObject->m_indexBuffer = pCom->m_indexBuffer;
+			pRenderObject->m_vertexBuffer = pCom->m_vertexBuffer;
+			pRenderObject->m_pEffect	= NULL;
+		}
+		
+ 		m_pRenderSystem->Render(); 		
 	}
 
 	//Message handler
