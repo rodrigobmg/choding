@@ -15,9 +15,12 @@ RenderObject::~RenderObject()
 
 }
 
-void RenderObject::Draw( D3DDevice* pDevice , D3DXEffect* pEffect )
+void RenderObject::Draw( D3DDevice* pDevice )
 {
 	if( pDevice == NULL )
+		return;
+
+	if ( m_pEffect == NULL )
 		return;
 
 	//Set vertex buffer
@@ -27,18 +30,18 @@ void RenderObject::Draw( D3DDevice* pDevice , D3DXEffect* pEffect )
 	pDevice->SetIndices(m_indexBuffer);
 
 	//Set parameters
-	//pEffect->SetMatrix("World", &World);
+	m_pEffect->SetMatrix("World", &m_world );
 
 	//Begin drawing
-	pEffect->Begin(NULL, NULL);
-	pEffect->BeginPass(0);
+	m_pEffect->Begin(NULL, NULL);
+	m_pEffect->BeginPass(0);
 
 	//Draw
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_indexCount , 0, m_indexCount / 3 );
 
 	//End drawing
-	pEffect->EndPass();
-	pEffect->End();
+	m_pEffect->EndPass();
+	m_pEffect->End();
 }
 
 /*

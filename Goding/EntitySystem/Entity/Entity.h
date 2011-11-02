@@ -29,8 +29,8 @@ public:
 	Entity*					GetLinkedEntity(){ return m_pLinkedTo; }
 	void					SetLinkedEntity( Entity* pEntity ){ m_pLinkedTo = pEntity; }
 
-	IComponent*				GetComponent( int32 id );
-	void					SetComponent( int32 id , IComponent* pCom );
+	IComponent*				GetComponent( COMPONENT_TYPE id );
+	void					SetComponent( COMPONENT_TYPE id , IComponent* pCom );
 	
 	void					DispatchEvent( EntityEvent& event );
 
@@ -45,7 +45,7 @@ public:
 
 private:
 	
-	typedef std::map< int32 , IComponent* >component_table_t;
+	typedef std::map< COMPONENT_TYPE , IComponent* >component_table_t;
 	component_table_t		m_Components;
 		
 	Matrix44				m_TM;

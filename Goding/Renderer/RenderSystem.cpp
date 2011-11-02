@@ -41,24 +41,33 @@ void RenderSystem::Render()
 	if( m_pDeviceManager == NULL )
 		return;
 
+	D3DDevice* pDevice = m_pDeviceManager->getDevice();
+	if ( pDevice == NULL )
+		return;
+
+
+	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0);
+	pDevice->BeginScene();
+
 	if( m_pCameraManager )
 	{
 		m_pCameraManager->Update( 0.f );
-		m_pDeviceManager->getDevice()->SetTransform( D3DTS_VIEW , &(m_pCameraManager->GetCurCam().View) );
-		m_pDeviceManager->getDevice()->SetTransform( D3DTS_PROJECTION, &(m_pCameraManager->GetCurCam().Projection) );
-	}	
-	
-	D3DDevice* pDevice = m_pDeviceManager->getDevice();
+		pDevice->SetTransform( D3DTS_VIEW , &(m_pCameraManager->GetCurCam().View) );
+		pDevice->SetTransform( D3DTS_PROJECTION, &(m_pCameraManager->GetCurCam().Projection) );
+	}		
 
 	typedef	std::vector< IRenderObject* >::iterator renderObjectIter;
 	renderObjectIter itB = m_RenderObjectContainer.begin();
 	renderObjectIter itE = m_RenderObjectContainer.end();
 	for (renderObjectIter it = itB ; it != itE ; ++it )
 	{
-		(*it)->Draw( pDevice , NULL );
+		(*it)->Draw( pDevice );
 	}
 
 	m_RenderObjectContainer.clear();
+
+	pDevice->EndScene();
+	GetDeviceManager()->Present();
 }
 
 DeviceManager* RenderSystem::GetDeviceManager()
