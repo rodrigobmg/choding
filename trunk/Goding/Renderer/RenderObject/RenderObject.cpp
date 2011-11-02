@@ -16,7 +16,7 @@ RenderObject::~RenderObject()
 
 }
 
-void RenderObject::Draw( D3DDevice* pDevice )
+void RenderObject::Draw( D3DDevice* pDevice , Camera* camera )
 {
 	if( pDevice == NULL )
 		return;
@@ -25,6 +25,9 @@ void RenderObject::Draw( D3DDevice* pDevice )
 		return;
 
 	pDevice->SetVertexDeclaration( m_VertexDeclaration );
+
+	m_pEffect->SetMatrix("View", &(camera->View) );
+	m_pEffect->SetMatrix("Projection", &(camera->Projection) );
 
 	//Set vertex buffer
 	pDevice->SetStreamSource(0, m_vertexBuffer, 0, STRIDE_SIZE);

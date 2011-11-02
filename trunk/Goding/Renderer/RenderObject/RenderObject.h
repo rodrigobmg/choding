@@ -4,9 +4,8 @@
 
 #include "../../Common/Type/CommonType.h"
 #include "../../Common/Type/RendererType.h"
-#include "../stdafx.h"
 #include "IRenderObject.h"
-#include <vector>
+
 
 class RenderObject : public IRenderObject
 {
@@ -19,8 +18,7 @@ public:
 	RenderObject(void);
 	virtual ~RenderObject(void);
 
-	virtual void		Draw( D3DDevice* pDevice );	
-
+	virtual void		Draw( D3DDevice* pDevice , Camera* camera );	
 	
 	D3DVertexBuffer*		m_vertexBuffer;
 	D3DIndexBuffer*			m_indexBuffer;
