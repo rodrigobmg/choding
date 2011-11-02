@@ -6,7 +6,6 @@
 #define DLL __declspec(dllimport)
 #endif
 
-#include <vector>
 
 #include "..\EntitySystem\EntitySystem.h"
 #include "..\Renderer\RenderSystem.h"
