@@ -3,7 +3,7 @@
 #pragma once
 
 #include "../../Common/Type/CommonType.h"
-#include "../stdafx.h"
+#include "../CameraManager/Camera.h"
 
 
 class IRenderObject
@@ -17,7 +17,7 @@ public:
 		MESH = 0,
 	};
 
-	virtual void Draw( D3DDevice* pDevice ) = 0;
+	virtual void Draw( D3DDevice* pDevice , Camera* camera ) = 0;
 		
 };
 
