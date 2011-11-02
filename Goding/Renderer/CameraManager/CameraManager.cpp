@@ -2,9 +2,16 @@
 #include "CameraManager.h"
 
 
-CameraManager::CameraManager() :
-m_pCam(NULL)
-{	
+CameraManager::CameraManager()
+{
+	m_pCam = new Camera;//(D3DXVECTOR3(0, 0, -5), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 1, 0), Width, Height);
+	m_pCam->Position = Vec3( 0, 0, -5);
+	m_pCam->Target	 = Vec3( 0, 0, 0 );
+	m_pCam->Up		 = Vec3( 0, 1, 0 );
+	m_pCam->Width	 = 640;
+	m_pCam->Height	 = 480;
+
+	SetCurCam( m_pCam );
 }
 
 CameraManager::~CameraManager()

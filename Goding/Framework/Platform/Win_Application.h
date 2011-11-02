@@ -168,10 +168,13 @@ namespace WinApplication
 			pRenderObject->m_world = activatelist->at(i)->GetMatrix();
 
 			StaticMesh* pCom = static_cast<StaticMesh*>( activatelist->at(i)->GetComponent( Entity::VISUAL ) );
+			pCom->onDeviceReset( m_pRenderSystem->GetDeviceManager()->getDevice() );
 
-			pRenderObject->m_indexBuffer = pCom->m_indexBuffer;
-			pRenderObject->m_vertexBuffer = pCom->m_vertexBuffer;
-			pRenderObject->m_pEffect	= NULL;
+			pRenderObject->m_indexBuffer		= pCom->m_indexBuffer;
+			pRenderObject->m_vertexBuffer		= pCom->m_vertexBuffer;
+			pRenderObject->m_pEffect			= pCom->m_pEffect;
+			pRenderObject->m_VertexDeclaration  = pCom->m_VertexDeclaration;
+			pRenderObject->m_indexCount			= pCom->Indices.size();
 		}
 		
  		m_pRenderSystem->Render(); 		

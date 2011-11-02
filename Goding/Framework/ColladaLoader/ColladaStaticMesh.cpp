@@ -75,7 +75,7 @@ void ColladaStaticMesh::processVisualScenes( std::vector<TempMesh*>& Meshs )
 
 void ColladaStaticMesh::Load( std::string filename , EntitySystem* pEntitySystem )
 {
-	root = dae.open("..//asset//StaticExample.dae");
+	root = dae.open( filename.c_str() );
 
 	if(!root)
 	{

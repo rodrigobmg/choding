@@ -1,8 +1,5 @@
 #pragma once
 
-#include <string>
-#include <dae\daeElement.h>
-
 #include "..\IComponent.h"
 
 #ifdef _WINDLL
@@ -14,12 +11,17 @@
 class DLL StaticMesh : public IComponent
 {
 public:
-	StaticMesh(){ m_ID = STATIC_MESH; }
+	StaticMesh();
 	virtual ~StaticMesh(void);
-		
+
+	virtual void onDeviceReset( D3DDevice* pDevice );
+	virtual void onDeviceLost();
+
+
 	D3DVertexBuffer*		m_vertexBuffer;
 	D3DIndexBuffer*			m_indexBuffer;
 	D3DXEffect*				m_pEffect;
+	D3DVertexDeclaration*	m_VertexDeclaration;
 
 	uint32					m_VerticesSize;
 
@@ -28,5 +30,7 @@ public:
 
 	//Name of this mesh
 	std::string				Name;
+
+	bool					m_bLoaded;
 };
 

@@ -36,6 +36,7 @@ public:
 	IComponent*	MakeComponent( IComponent::ENABLE_COMPONENT_TYPE comtype );
 	
 	entity_table_t*	GetActivatedEntityList(){ return &m_activated_entity_container; }
+	entity_table_t*	GetAallEntityList(){ return &m_entity_container; }
 
 	void		Update( float fAccumtime );
 	
