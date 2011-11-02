@@ -4,5 +4,3 @@
 #include <vector>
 
 #include "../Common/Type/CommonType.h"
-
-#include <Windows.h>

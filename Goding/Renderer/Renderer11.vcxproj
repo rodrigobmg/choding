@@ -77,6 +77,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>../BinTemp/$(TargetName)/$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)\Bin_Debug\</OutDir>
+    <IncludePath>..\Middleware\dx_sdk\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Middleware\dx_sdk\Lib\x86;$(WindowsSdkDir)\common\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>../BinTemp/$(TargetName)/$(Configuration)\</IntDir>

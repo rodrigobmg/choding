@@ -66,8 +66,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\Bin_Debug\</OutDir>
     <IntDir>../BinTemp/$(TargetName)/$(Configuration)\</IntDir>
-    <IncludePath>..\Middleware\dx_sdk\Lib\x86;..\Middleware\dx_sdk\Include;..\Middleware\collada_dom\1.4;..\Middleware\collada_dom;$(WindowsSdkDir)\common\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(WindowsSdkDir)\common\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Middleware\dx_sdk\Include;..\Middleware\collada_dom\1.4;..\Middleware\collada_dom;$(WindowsSdkDir)\common\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Middleware\dx_sdk\Lib\x86;$(WindowsSdkDir)\common\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\Bin\</OutDir>
