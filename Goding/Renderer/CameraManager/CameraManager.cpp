@@ -4,7 +4,7 @@
 
 CameraManager::CameraManager()
 {
-	m_pCam = new Camera;//(D3DXVECTOR3(0, 0, -5), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 1, 0), Width, Height);
+	m_pCam = new Camera;//(Vec3(0, 0, -5), Vec3(0, 0, 0), Vec3(0, 1, 0), Width, Height);
 	m_pCam->Position = Vec3( 0, 0, -5);
 	m_pCam->Target	 = Vec3( 0, 0, 0 );
 	m_pCam->Up		 = Vec3( 0, 1, 0 );
@@ -49,62 +49,60 @@ void CameraManager::Update( float fpsMod )
 		return;
 
 	//Keyboard bools
-// 	bool W = (GetAsyncKeyState(0x0057) & 0x8000) ? true : false;
-// 	bool S = (GetAsyncKeyState(0x0053) & 0x8000) ? true : false;
-// 	bool A = (GetAsyncKeyState(0x0041) & 0x8000) ? true : false;
-// 	bool D = (GetAsyncKeyState(0x0044) & 0x8000) ? true : false;
-// 	
-// 	//Mouse position
-// 	POINT Mouse;
-// 	GetCursorPos(&Mouse);
-// 	
-// 	//Set cursor back to middle
-// 	SetCursorPos(600, 600);
-	
+	bool W = (GetAsyncKeyState(0x0057) & 0x8000) ? true : false;
+	bool S = (GetAsyncKeyState(0x0053) & 0x8000) ? true : false;
+	bool A = (GetAsyncKeyState(0x0041) & 0x8000) ? true : false;
+	bool D = (GetAsyncKeyState(0x0044) & 0x8000) ? true : false;
+
+	//Mouse position
+	POINT Mouse;
+	GetCursorPos(&Mouse);
+
+	//Set cursor back to middle
+	SetCursorPos(600, 600);
+
 	Vec3 cAxis;
 	D3DXVec3Cross(&cAxis, &m_pCam->Up, &m_pCam->Direction);
-	
-// 	if(W) Position += Direction * (Speed * fpsMod);
-// 	if(S) Position -= Direction * (Speed * fpsMod);
-// 	if(A) Position -= cAxis * (Speed * fpsMod);
-// 	if(D) Position +=  cAxis * (Speed * fpsMod);
-	
+
+	float Speed = 1.0f;
+	fpsMod = 0.01f;
+	if(W) m_pCam->Position += m_pCam->Direction * (Speed * fpsMod);
+	if(S) m_pCam->Position -= m_pCam->Direction * (Speed * fpsMod);
+	if(A) m_pCam->Position -= cAxis * (Speed * fpsMod);
+	if(D) m_pCam->Position +=  cAxis * (Speed * fpsMod);
+
 	Vec4 TransformTemp; // Vec3Transform returns Vector4, use this to convert
-	
+
 	//Yaw Quaternion
 	Quat RXq;
-	D3DXQuaternionRotationAxis(&RXq, &m_pCam->Up, ( (D3DX_PI / 4.0f) / 150) /** (Mouse.x - 600)*/);
-	
+	D3DXQuaternionRotationAxis(&RXq, &m_pCam->Up, ( (D3DX_PI / 4.0f) / 150) * (Mouse.x - 600));
+
 	//Converted to Matrix
 	Matrix44 RX;
 	D3DXMatrixRotationQuaternion(&RX, &RXq);
-	
+
 	//Transform Direction
 	D3DXVec3Transform(&TransformTemp, &m_pCam->Direction, &RX);
-	m_pCam->Direction.x = TransformTemp.x; 
-	m_pCam->Direction.y = TransformTemp.y; 
-	m_pCam->Direction.z = TransformTemp.z;
-	
+	m_pCam->Direction.x = TransformTemp.x; m_pCam->Direction.y = TransformTemp.y; m_pCam->Direction.z = TransformTemp.z;
+
 	//Pitch Quaternion
 	Quat RYq;
 	D3DXVec3Cross(&cAxis, &m_pCam->Up, &m_pCam->Direction);
-	D3DXQuaternionRotationAxis(&RYq, &cAxis, ( (D3DX_PI / 4.0f) / 150)/* * (Mouse.y - 600)*/);
-	
+	D3DXQuaternionRotationAxis(&RYq, &cAxis, ( (D3DX_PI / 4.0f) / 150) * (Mouse.y - 600));
+
 	//Convert to Matrix
 	Matrix44 RY;
 	D3DXMatrixRotationQuaternion(&RY, &RYq);
-	
+
 	//Transform Direction
 	D3DXVec3Transform(&TransformTemp, &m_pCam->Direction, &RY);
-	m_pCam->Direction.x = TransformTemp.x; 
-	m_pCam->Direction.y = TransformTemp.y; 
-	m_pCam->Direction.z = TransformTemp.z;
-	
+	m_pCam->Direction.x = TransformTemp.x; m_pCam->Direction.y = TransformTemp.y; m_pCam->Direction.z = TransformTemp.z;
+
 	//Calculate Target
 	Vec3 Target = m_pCam->Position + m_pCam->Direction;
-	
+
 	//Calculate View Matrix
-	D3DXMatrixLookAtLH(&m_pCam->View, &m_pCam->Position, &m_pCam->Target, &m_pCam->Up);
+	D3DXMatrixLookAtLH(&m_pCam->View, &m_pCam->Position, &Target, &m_pCam->Up);
 }
 
 

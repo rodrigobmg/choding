@@ -49,12 +49,10 @@ void RenderSystem::Render()
 	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB( 128, 128, 128 ) , 1.0f, 0);
 	pDevice->BeginScene();
 
-// 	if( m_pCameraManager )
-// 	{
-// 		m_pCameraManager->Update( 0.f );
-// 		pDevice->SetTransform( D3DTS_VIEW , &(m_pCameraManager->GetCurCam().View) );
-// 		pDevice->SetTransform( D3DTS_PROJECTION, &(m_pCameraManager->GetCurCam().Projection) );
-// 	}		
+ 	if( m_pCameraManager )
+ 	{
+ 		m_pCameraManager->Update( 0.f );
+ 	}		
 
 	typedef	std::vector< IRenderObject* >::iterator renderObjectIter;
 	renderObjectIter itB = m_RenderObjectContainer.begin();
