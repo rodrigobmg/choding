@@ -22,6 +22,7 @@ namespace WinApplication
 	void onDeviceReset();
 	void Update();
 	void Draw();
+	void Init();
 
 	//Base
 	Window* window;
@@ -35,25 +36,30 @@ namespace WinApplication
 	float Height;
 	bool Fullscreen;
 	
-	RenderSystem* m_pRenderSystem;
-	EntitySystem* m_pEntitySystem;
-	
-	void Run( EntitySystem* pEntitySystem , RenderSystem* pRenderSystem , float width, float height, bool fullscreen)
+	RenderSystem* m_pRenderSystem = NULL;
+	EntitySystem* m_pEntitySystem = NULL;
+
+	RenderSystem* GetRenderSystem(){ return m_pRenderSystem; }
+	EntitySystem* GetEntitySystem(){ return m_pEntitySystem; }
+
+	void Init( EntitySystem* pEntitySystem , RenderSystem* pRenderSystem )
 	{
 		m_pRenderSystem = pRenderSystem;
 		m_pEntitySystem = pEntitySystem;
-		//m_pEntityNodes = pEntityNodes;
-
+	}
+	
+	void Run( float width, float height, bool fullscreen )
+	{
 		Width = width; 
 		Height = height; 
 		Fullscreen = fullscreen;
 
 		window = new Window(WinApplication::messageHandler, L"Goding", 0, 0, (int)Width, (int)Height);
 		
-		pRenderSystem->CreateDeviceManager( window->getHandle(), (int)Width, (int)Height, Fullscreen );
-		pRenderSystem->GetDeviceManager()->OnDeviceLost = onDeviceLost;
-		pRenderSystem->GetDeviceManager()->OnDeviceReset = onDeviceReset;
-		pRenderSystem->GetDeviceManager()->onDeviceReset();
+		m_pRenderSystem->CreateDeviceManager( window->getHandle(), (int)Width, (int)Height, Fullscreen );
+		m_pRenderSystem->GetDeviceManager()->OnDeviceLost = onDeviceLost;
+		m_pRenderSystem->GetDeviceManager()->OnDeviceReset = onDeviceReset;
+		m_pRenderSystem->GetDeviceManager()->onDeviceReset();
 		
 		window->Show();
 
@@ -79,20 +85,20 @@ namespace WinApplication
  				bool windowFocus = (window->getHandle() == GetActiveWindow());
  
  				//If the window has the full attention, input focus and active focus as well as device focus
- 				if(inputFocus && windowFocus && (pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3D_OK))
+ 				if(inputFocus && windowFocus && (m_pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3D_OK))
  				{
  					//Then Update and draw
  					Update();
  					Draw();
  				}
- 				else if(windowFocus && (pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() != D3D_OK)) //If window focus is regained but the device is lost
+ 				else if(windowFocus && (m_pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() != D3D_OK)) //If window focus is regained but the device is lost
  				{
  					//If the device is recoverable then recover
- 					if(pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3DERR_DEVICELOST  
- 						|| pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3DERR_DEVICENOTRESET
+ 					if(m_pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3DERR_DEVICELOST  
+ 						|| m_pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3DERR_DEVICENOTRESET
 						) 
  					{
-						//pRenderSystem->GetDeviceManager()->changeViewMode( (int)Width, (int)Height, Fullscreen );
+						//m_pRenderSystem->GetDeviceManager()->changeViewMode( (int)Width, (int)Height, Fullscreen );
 						if(!Fullscreen) window->setSize( (int)Width, (int)Height );
 						if(Fullscreen)
 							while(ShowCursor(false) >= 0);
@@ -102,7 +108,7 @@ namespace WinApplication
 					}
  
  					//If theres a driver error then say goodbye
- 					if(pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3DERR_DRIVERINTERNALERROR)
+ 					if(m_pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3DERR_DRIVERINTERNALERROR)
  					{
  						MessageBox(NULL, TEXT("Driver Internal Error"), TEXT("Error"), MB_OK | MB_ICONERROR);
  
