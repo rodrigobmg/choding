@@ -366,7 +366,7 @@ void ColladaStaticMesh::MakeTempMeshToMeshComponent( std::vector<TempMesh*>& Mes
 											, Meshs.at(i)->UVs[j]
 											, Meshs.at(i)->Tangents[j]
 											, Meshs.at(i)->BiTangents[j] )
-												);
+											);
 		}		
 
 		pStaticMesh->Indices = Meshs.at(i)->Indices;

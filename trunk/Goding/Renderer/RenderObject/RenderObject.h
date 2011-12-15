@@ -31,6 +31,8 @@ public:
 	uint32					m_indexCount;
 	uint32					m_vertexSize;
 
+	Vec4					m_vecLight;
+
 	Matrix44				m_world;
 
 };

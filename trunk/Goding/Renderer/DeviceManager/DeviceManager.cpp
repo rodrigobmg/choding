@@ -11,8 +11,6 @@ DeviceManager::DeviceManager(HWND Window, UINT Width, UINT Height, bool Fullscre
 	BackBuffer = NULL; 
 	DepthBuffer = NULL; 
 	MeshVD = NULL; 
-	SkinnedMeshVD = NULL; 
-	MorphingMeshVD = NULL; 
 	Query = NULL; 
 	OnDeviceLost = NULL; 
 	OnDeviceReset = NULL;
@@ -83,57 +81,30 @@ DeviceManager::DeviceManager(HWND Window, UINT Width, UINT Height, bool Fullscre
 
 DeviceManager::~DeviceManager(void)
 {
-	//Release Query
 	SAFE_RELEASE(Query);
-
-	//Release TempVertex Declarations
 	SAFE_RELEASE(MeshVD);
-	SAFE_RELEASE(SkinnedMeshVD);
-	SAFE_RELEASE(MorphingMeshVD);
-
-	//Release AutoDepthBuffer
 	SAFE_RELEASE(DepthBuffer);
-
-	//Release BackBuffer
 	SAFE_RELEASE(BackBuffer);
-
-	//Release Device
 	SAFE_RELEASE(Device);
-
-	//Release Context
 	SAFE_RELEASE(Context);
 }
 
 void DeviceManager::onDeviceLost()
 {
-	//Call function pointer
 	if(OnDeviceLost) OnDeviceLost();
 
-	//Release TempVertex Declarations
 	SAFE_RELEASE(MeshVD);
-	SAFE_RELEASE(SkinnedMeshVD);
-	SAFE_RELEASE(MorphingMeshVD);
-
-	//Release AutoDepthBuffer
 	SAFE_RELEASE(DepthBuffer);
-
-	//Release BackBuffer
 	SAFE_RELEASE(BackBuffer);
-
-	//Release Query
 	SAFE_RELEASE(Query);
 }
 
 void DeviceManager::onDeviceReset()
 {
-	//Create Query
 	Device->CreateQuery(D3DQUERYTYPE_EVENT, &Query);
-
-	//Store a reference to the Back and AutoDepth buffers
 	Device->GetRenderTarget(0, &BackBuffer);
 	Device->GetDepthStencilSurface(&DepthBuffer);
 
-	//Create vertex declaration for static meshes
 	{
 		D3DVERTEXELEMENT9 ve[] =
 		{
@@ -148,57 +119,6 @@ void DeviceManager::onDeviceReset()
 		Device->CreateVertexDeclaration(ve, &MeshVD);
 	}
 
-	//Create vertex declaration for skinned meshes
-	{
-		D3DVERTEXELEMENT9 ve[] =
-		{
-			{0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
-			{0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0},
-			{0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
-			{0, 32, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TANGENT, 0},
-			{0, 44, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BINORMAL, 0},
-			{0, 56, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BLENDWEIGHT, 0},
-			{0, 72, D3DDECLTYPE_SHORT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BLENDINDICES, 0},
-			D3DDECL_END()
-		};
-
-		Device->CreateVertexDeclaration(ve, &SkinnedMeshVD);
-	}
-
-	//Create vertex declaration for morphing meshes
-	{
-		D3DVERTEXELEMENT9 ve[] =
-		{
-			//1st Stream: Base Mesh
-			{0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
-			{0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0},
-			{0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
-			{0, 32, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TANGENT, 0},
-			{0, 44, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BINORMAL, 0},
-
-			//2nd Stream
-			{1, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 1},
-			{1, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 1},
-
-			//3rd Stream
-			{2, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 2},
-			{2, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 2},
-
-			//4th Stream
-			{3, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 3},
-			{3, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 3},
-
-			//5th Stream
-			{4, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 4},
-			{4, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 4},
-
-			D3DDECL_END()
-		};
-
-		Device->CreateVertexDeclaration(ve, &MorphingMeshVD);
-	}
-
-	//Call function pointer
 	if(OnDeviceReset) OnDeviceReset();
 }
 
@@ -215,14 +135,11 @@ void DeviceManager::changeViewMode( int Width, int Height, bool Fullscreen )
 
 	Parameters.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 
-	//Release resources
 	onDeviceLost();
 
-	//Reset the device
 	if(Device->Reset(&Parameters) != D3D_OK) 
 		return;
 
-	//Reset resources
 	onDeviceReset();
 }
 
@@ -344,14 +261,11 @@ void DeviceManager::errorCheck( HRESULT result, LPCTSTR debugInfo )
 
 void DeviceManager::Present()
 {
-	//Present the BackBuffer
 	Device->Present(0, 0, 0, 0);
 
-	//End the query
 	Query->Issue(D3DISSUE_END);
 	Query->GetData( NULL, 0, D3DGETDATA_FLUSH );
 
-	//Until query is processed, do not move on
 	while(Query->GetData(NULL, 0, D3DGETDATA_FLUSH) == S_FALSE)
 	{
 		if(Query->GetData(NULL, 0, D3DGETDATA_FLUSH) == D3DERR_DEVICELOST) break;

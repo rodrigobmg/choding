@@ -4,7 +4,7 @@
 
 CameraManager::CameraManager()
 {
-	m_pCam = new Camera;//(Vec3(0, 0, -5), Vec3(0, 0, 0), Vec3(0, 1, 0), Width, Height);
+	m_pCam = new Camera;
 	m_pCam->Position = Vec3( 0, 0, -5);
 	m_pCam->Target	 = Vec3( 0, 0, 0 );
 	m_pCam->Up		 = Vec3( 0, 1, 0 );
@@ -58,7 +58,6 @@ void CameraManager::Update( float fpsMod )
 	POINT Mouse;
 	GetCursorPos(&Mouse);
 
-	//Set cursor back to middle
 	SetCursorPos(600, 600);
 
 	Vec3 cAxis;

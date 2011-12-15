@@ -70,7 +70,6 @@ namespace WinApplication
 		MSG msg;
 		ZeroMemory(&msg, sizeof(msg));
 		
-		//Main loop
 		SetCursorPos(600, 600);
 		while(msg.message != WM_QUIT)
 		{
@@ -81,24 +80,20 @@ namespace WinApplication
 			}
 			else
 			{
-				//Check for the active window focus
  				bool windowFocus = (window->getHandle() == GetActiveWindow());
  
- 				//If the window has the full attention, input focus and active focus as well as device focus
  				if(inputFocus && windowFocus && (m_pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3D_OK))
  				{
- 					//Then Update and draw
  					Update();
  					Draw();
  				}
- 				else if(windowFocus && (m_pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() != D3D_OK)) //If window focus is regained but the device is lost
+ 				else if(windowFocus && (m_pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() != D3D_OK))
  				{
- 					//If the device is recoverable then recover
  					if(m_pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3DERR_DEVICELOST  
  						|| m_pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3DERR_DEVICENOTRESET
 						) 
  					{
-						//m_pRenderSystem->GetDeviceManager()->changeViewMode( (int)Width, (int)Height, Fullscreen );
+						m_pRenderSystem->GetDeviceManager()->changeViewMode( (int)Width, (int)Height, Fullscreen );
 						if(!Fullscreen) window->setSize( (int)Width, (int)Height );
 						if(Fullscreen)
 							while(ShowCursor(false) >= 0);
@@ -107,7 +102,6 @@ namespace WinApplication
 						ShowCursor(false);
 					}
  
- 					//If theres a driver error then say goodbye
  					if(m_pRenderSystem->GetDeviceManager()->getDevice()->TestCooperativeLevel() == D3DERR_DRIVERINTERNALERROR)
  					{
  						MessageBox(NULL, TEXT("Driver Internal Error"), TEXT("Error"), MB_OK | MB_ICONERROR);
@@ -121,20 +115,16 @@ namespace WinApplication
 		Clean();
 	}
 
-	//Clean Application
 	void Clean()
 	{
 		SAFE_DELETE( window );
 	}
 
-	//Handle device lost event
 	void onDeviceLost()
 	{
-		//Handle meshes
 		m_pRenderSystem->onDeviceLost();
 	}
 
-	//Handle device reset event
 	void onDeviceReset()
 	{
 		//Handle meshes
@@ -144,7 +134,6 @@ namespace WinApplication
 		//camera->onDeviceReset(Width, Height);
 	}
 
-	//Update Application
 	void Update()
 	{
 		//Get Escape key state
@@ -162,7 +151,6 @@ namespace WinApplication
 		m_pEntitySystem->Update( 0.f );		
 	}
 
-	//Draw Meshes
 	void Draw()
 	{ 
 		typedef std::vector< Entity* > entity_container_table_t;
@@ -181,12 +169,12 @@ namespace WinApplication
 			pRenderObject->m_pEffect			= pCom->m_pEffect;
 			pRenderObject->m_VertexDeclaration  = pCom->m_VertexDeclaration;
 			pRenderObject->m_indexCount			= pCom->Indices.size();
+			pRenderObject->m_vecLight			= Vec4(-0.4, -0.3, 0.85 , 1 );
 		}
 		
  		m_pRenderSystem->Render(); 		
 	}
 
-	//Message handler
 	LRESULT CALLBACK messageHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch(msg)
