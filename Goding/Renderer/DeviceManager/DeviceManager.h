@@ -1,6 +1,5 @@
 #pragma once
 
-//Function pointers
 typedef void (*ON_DEVICE_LOST)();
 typedef void (*ON_DEVICE_RESET)();
 
@@ -29,7 +28,6 @@ private:
 	D3DPRESENT_PARAMETERS Parameters;
 
 public:
-	//Pointer to onDeviceLost/onDeviceReset functions outside of this class
 	ON_DEVICE_LOST OnDeviceLost;
 	ON_DEVICE_RESET OnDeviceReset;
 
@@ -45,21 +43,15 @@ public:
 
 	void setMeshDeclaration() { Device->SetVertexDeclaration(MeshVD); }
 
-	//Constructor
 	DeviceManager(HWND Window, UINT Width, UINT Height, bool Fullscreen);
 	~DeviceManager();
 
-	//OnDeviceLost
 	void onDeviceLost();
-	//OnDeviceReset
 	void onDeviceReset();
 
-	//Change view mode
 	void changeViewMode( int Width, int Height, bool Fullscreen);
 
-	//Error check a DirectX thrown HRESULT
 	void errorCheck(HRESULT result, LPCTSTR debugInfo);
 
-	//Synchronising function
 	void Present();
 };
