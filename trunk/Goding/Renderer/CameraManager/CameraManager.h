@@ -9,14 +9,11 @@
 class CameraManager
 {
 public:
-	//Constructor
 	CameraManager();
 	~CameraManager();
 
-	//onDeviceReset
 	void onDeviceReset();
 
-	//Update
 	void Update(float fpsMod);
 
 	Camera			GetCurCam(){ return *m_pCam; }
