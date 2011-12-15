@@ -1,9 +1,5 @@
 #pragma once
 
-
-//#include "Window.h"
-
-
 //Function pointers
 typedef void (*ON_DEVICE_LOST)();
 typedef void (*ON_DEVICE_RESET)();
@@ -23,27 +19,13 @@ typedef void (*ON_DEVICE_RESET)();
 class DLL DeviceManager
 {
 private:
-	//Context
+
 	IDirect3D9* Context;
-
-	//Device
 	IDirect3DDevice9* Device;
-
-	//BackBuffer
 	IDirect3DSurface9* BackBuffer;
-
-	//AutoDepthBuffer
 	IDirect3DSurface9* DepthBuffer;
-
-	//TempVertex Declarations
 	IDirect3DVertexDeclaration9* MeshVD;
-	IDirect3DVertexDeclaration9* SkinnedMeshVD;
-	IDirect3DVertexDeclaration9* MorphingMeshVD;
-
-	//Synchronising Query
 	IDirect3DQuery9* Query;
-
-	//Presentation Parameters
 	D3DPRESENT_PARAMETERS Parameters;
 
 public:
@@ -62,8 +44,6 @@ public:
 	void setAutoDepthStencil() { Device->SetDepthStencilSurface(DepthBuffer); }
 
 	void setMeshDeclaration() { Device->SetVertexDeclaration(MeshVD); }
-	void setSkinnedMeshDeclaration() { Device->SetVertexDeclaration(SkinnedMeshVD); }
-	void setMorphingMeshDeclaration() { Device->SetVertexDeclaration(MorphingMeshVD); }
 
 	//Constructor
 	DeviceManager(HWND Window, UINT Width, UINT Height, bool Fullscreen);

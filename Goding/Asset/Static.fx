@@ -1,6 +1,7 @@
 float4x4 World;
 float4x4 View;
 float4x4 Projection;
+float3	 Light;
 
 struct VSI
 {
@@ -39,10 +40,10 @@ VSO VS(VSI input)
 float4 PS(VSO input) : COLOR0
 {
 	//Light direction
-	float3 L = float3(-0.4, -0.3, 0.85);
+	//float3 L = float3(-0.4, -0.3, 0.85);
 
 	//Just output Diffuse
-	return abs(dot(input.Normal, L));
+	return abs(dot(input.Normal, Light));
 }
 
 technique Default

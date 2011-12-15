@@ -6,14 +6,13 @@
 class TempVertex
 {
 public:
-	//Components of a Vertex
+	
 	D3DXVECTOR3 Position;
 	D3DXVECTOR3 Normal;
 	D3DXVECTOR2 UV;
 	D3DXVECTOR3 Tangent;
 	D3DXVECTOR3 BiTangent;
 
-	//Constructor
 	TempVertex(D3DXVECTOR3 Position, D3DXVECTOR3 Normal, D3DXVECTOR2 UV, D3DXVECTOR3 Tangent, D3DXVECTOR3 BiTangent)
 	{
 		this->Position = Position;

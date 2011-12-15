@@ -52,7 +52,7 @@ void RenderSystem::Render()
  	if( m_pCameraManager )
  	{
  		m_pCameraManager->Update( 0.f );
- 	}		
+ 	}
 
 	typedef	std::vector< IRenderObject* >::iterator renderObjectIter;
 	renderObjectIter itB = m_RenderObjectContainer.begin();
